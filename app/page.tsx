@@ -80,8 +80,10 @@ export default function Home() {
 
   // Counter animation effect
   useEffect(() => {
+    console.log('Counter effect triggered, statsVisible:', statsVisible);
     if (!statsVisible) return;
 
+    console.log('Starting counter animation!');
     const duration = 2000; // 2 seconds
     const steps = 60;
     const interval = duration / steps;
@@ -104,6 +106,7 @@ export default function Home() {
       if (currentStep >= steps) {
         clearInterval(timer);
         setCounters(targets); // Ensure final values are exact
+        console.log('Counter animation complete!');
       }
     }, interval);
 
@@ -112,23 +115,31 @@ export default function Home() {
 
   // Intersection Observer for stats visibility
   useEffect(() => {
+    console.log('Setting up IntersectionObserver for stats counter');
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          console.log('Stats section intersecting:', entry.isIntersecting);
           if (entry.isIntersecting) {
+            console.log('Triggering counter animation!');
             setStatsVisible(true);
             // Disconnect after triggering to avoid re-triggering
             observer.disconnect();
           }
         });
       },
-      { threshold: 0.2, rootMargin: '0px' }
+      { threshold: 0.1, rootMargin: '0px' }
     );
 
-    const statsSection = document.getElementById('stats-section');
-    if (statsSection) {
-      observer.observe(statsSection);
-    }
+    // Wait for DOM to be ready
+    setTimeout(() => {
+      const statsSection = document.getElementById('stats-section');
+      console.log('Stats section found:', !!statsSection);
+      if (statsSection) {
+        observer.observe(statsSection);
+      }
+    }, 100);
 
     return () => observer.disconnect();
   }, []); // Empty dependency array - only run once on mount
