@@ -17,13 +17,13 @@ NEXTAUTH_SECRET = 8FkrCryaWi1AWug13XvBFW+kIysm1HTHeW6Ltne/cP0=
 NEXTAUTH_URL = https://createawebsite.click
 ```
 
-### Google OAuth Configuration (Optional - for "Sign in with Google")
+### Google OAuth Configuration (for "Sign in with Google")
 ```
-GOOGLE_CLIENT_ID = your_google_client_id
-GOOGLE_CLIENT_SECRET = your_google_client_secret
+GOOGLE_CLIENT_ID = 884684090277-gs18tm4[...your-full-client-id]
+GOOGLE_CLIENT_SECRET = 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
 ```
 
-**Note:** Add your actual Google OAuth credentials directly in Vercel Dashboard (not in this file for security).
+**Note:** These credentials are already configured. Make sure they are set in Vercel Dashboard.
 
 ### Admin Panel Credentials
 ```
