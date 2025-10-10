@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import ConditionalLayout from '../components/conditional-layout';
 import Link from 'next/link';
-// import { useUser } from '@clerk/nextjs';
+import { useSession } from 'next-auth/react';
 
 interface Site {
   id: string;
@@ -20,7 +20,7 @@ interface CreditInfo {
 
 
 export default function Dashboard() {
-  // const { user, isLoaded } = useUser();
+  const { data: session, status } = useSession();
   const [user, setUser] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [sites, setSites] = useState<Site[]>([]);
@@ -33,29 +33,50 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load user from localStorage
+    // Check NextAuth session first (for Google OAuth users)
+    if (status === 'authenticated' && session?.user) {
+      console.log('NextAuth session found:', session.user);
+      setUser({
+        email: session.user.email,
+        name: session.user.name,
+        id: (session.user as any).id
+      });
+      setIsLoaded(true);
+      return;
+    }
+
+    // Fallback to localStorage (for email/password users)
     const currentUser = localStorage.getItem('currentUser');
     if (currentUser) {
+      console.log('localStorage user found');
       setUser(JSON.parse(currentUser));
     }
     setIsLoaded(true);
-  }, []);
+  }, [session, status]);
 
   const fetchCredits = async () => {
     try {
-      // Get user from localStorage
-      const currentUser = localStorage.getItem('currentUser');
-      if (!currentUser) {
-        console.log('No user found in localStorage');
+      // Get user email from either session or localStorage
+      let userEmail = null;
+      
+      if (session?.user?.email) {
+        userEmail = session.user.email;
+      } else {
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+          userEmail = JSON.parse(currentUser).email;
+        }
+      }
+      
+      if (!userEmail) {
+        console.log('No user found');
         return;
       }
-
-      const user = JSON.parse(currentUser);
       
-      // Fetch credits from Supabase API
+      // Fetch credits from Supabase API using email
       const response = await fetch('/api/credits/check', {
         headers: {
-          'x-user-id': user.id
+          'x-user-email': userEmail
         }
       });
       

@@ -100,13 +100,7 @@ const handler = NextAuth({
         return `${baseUrl}/login`;
       }
       
-      // If URL starts with baseUrl, use it
-      if (url.startsWith(baseUrl)) {
-        console.log('Using provided URL:', url);
-        return url;
-      }
-      
-      // Default to dashboard
+      // Always redirect to dashboard after successful OAuth
       console.log('Redirecting to dashboard');
       return `${baseUrl}/dashboard`;
     },
