@@ -1313,8 +1313,9 @@ export async function POST(req: NextRequest) {
     await generateDynamicPages(zip, themeSlug, bsgSettings, data);
 
     // Create README.txt
-    const readmeTxt = `BSG Theme - ${bsgSettings.business_name}
+    const readmeTxt = `Create A Website Click Theme - ${bsgSettings.business_name}
 Generated: ${new Date().toISOString()}
+Created by: Sudhanshu Rana
 
 Business: ${bsgSettings.business_name}
 Type: ${bsgSettings.business_type}
