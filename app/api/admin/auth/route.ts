@@ -4,10 +4,10 @@ export async function POST(request: NextRequest) {
   try {
     const { username, password } = await request.json()
 
-    // Simple admin authentication (you can make this more secure)
+    // Admin authentication with environment variables
     const adminCredentials = {
-      username: process.env.ADMIN_USERNAME || 'admin',
-      password: process.env.ADMIN_PASSWORD || 'admin123'
+      username: process.env.ADMIN_USERNAME || 'sudhanshuxmen@gmail.com',
+      password: process.env.ADMIN_PASSWORD || 'NMR@P@ssw0rd@1234'
     }
 
     if (username === adminCredentials.username && password === adminCredentials.password) {

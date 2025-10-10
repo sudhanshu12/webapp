@@ -200,20 +200,6 @@ export default function AdminLoginPage() {
             {loading ? '🔄 Logging in...' : '🚀 Login to Admin Panel'}
           </button>
         </form>
-
-        <div style={{
-          marginTop: '24px',
-          padding: '16px',
-          background: '#f3f4f6',
-          borderRadius: '8px',
-          fontSize: '12px',
-          color: '#6b7280',
-          textAlign: 'center'
-        }}>
-          <strong>Default Admin Credentials:</strong><br/>
-          Username: admin<br/>
-          Password: admin123
-        </div>
       </div>
     </div>
   );

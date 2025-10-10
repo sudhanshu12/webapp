@@ -25,6 +25,14 @@ GOOGLE_CLIENT_SECRET = your_google_client_secret
 
 **Note:** Add your actual Google OAuth credentials directly in Vercel Dashboard (not in this file for security).
 
+### Admin Panel Credentials
+```
+ADMIN_USERNAME = sudhanshuxmen@gmail.com
+ADMIN_PASSWORD = NMR@P@ssw0rd@1234
+```
+
+**Note:** These credentials are for accessing the admin panel at `/admin-login`. Store them securely in Vercel environment variables.
+
 ---
 
 ## For Local Development
@@ -44,6 +52,10 @@ NEXTAUTH_URL=http://localhost:3000
 # Google OAuth (Optional - for "Sign in with Google")
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+# Admin Panel Credentials
+ADMIN_USERNAME=sudhanshuxmen@gmail.com
+ADMIN_PASSWORD=NMR@P@ssw0rd@1234
 ```
 
 ---
