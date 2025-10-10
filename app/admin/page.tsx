@@ -489,7 +489,6 @@ export default function AdminPage() {
                     padding: '20px',
                     border: '1px solid #e5e7eb',
                     borderRadius: '12px',
-                    background: '#f9fafb',
                     cursor: selectedUserId === user.id ? 'pointer' : 'default',
                     borderColor: selectedUserId === user.id ? '#7c3aed' : '#e5e7eb',
                     background: selectedUserId === user.id ? '#f3f4f6' : '#f9fafb'
