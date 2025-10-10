@@ -958,7 +958,7 @@ $hero_subheadline = '${escapePhpString(heroSubheadline)}';
 Theme Name: ${businessName} - Professional ${businessType}
 Description: Custom professional ${businessType} website with embedded content
 Version: 1.0
-Author: Business Site Generator
+Author: Sudhanshu Rana
 */`);
     zip.file('index.php', `<?php
 /*

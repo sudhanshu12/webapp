@@ -7,7 +7,7 @@ import AuthSessionProvider from './components/session-provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Business Sites Generator',
+  title: 'Create A Website Click',
   description: 'Launch AI‑written, SEO‑ready business sites in minutes.',
 }
 

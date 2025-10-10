@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from 'react';
@@ -6,7 +7,7 @@ import ConditionalLayout from './components/conditional-layout';
 export default function Home() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [metaData, setMetaData] = useState({
-    title: 'Business Sites Generator',
+    title: 'Create A Website Click',
     description: 'Launch AI‑written, SEO‑ready business sites in minutes.'
   });
 
@@ -19,7 +20,7 @@ export default function Home() {
           const formData = JSON.parse(wizardData);
           if (formData.homepage_meta_title || formData.homepage_meta_description) {
             const newMetaData = {
-              title: formData.homepage_meta_title || 'Business Sites Generator',
+              title: formData.homepage_meta_title || 'Create A Website Click',
               description: formData.homepage_meta_description || 'Launch AI‑written, SEO‑ready business sites in minutes.'
             };
             
