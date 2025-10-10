@@ -10,6 +10,8 @@ export default function Home() {
     title: 'Create A Website Click',
     description: 'Launch AI‑written, SEO‑ready business sites in minutes.'
   });
+  const [statsVisible, setStatsVisible] = useState(false);
+  const [counters, setCounters] = useState({ websites: 0, rating: 0, time: 0, uptime: 0 });
 
   // Load meta data from wizard form
   useEffect(() => {
@@ -76,6 +78,59 @@ export default function Home() {
     setOpenFAQ(openFAQ === index ? null : index);
   };
 
+  // Counter animation effect
+  useEffect(() => {
+    if (!statsVisible) return;
+
+    const duration = 2000; // 2 seconds
+    const steps = 60;
+    const interval = duration / steps;
+
+    const targets = { websites: 5000, rating: 4.9, time: 8, uptime: 99.9 };
+    let currentStep = 0;
+
+    const timer = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      const easeOut = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+
+      setCounters({
+        websites: Math.floor(targets.websites * easeOut),
+        rating: parseFloat((targets.rating * easeOut).toFixed(1)),
+        time: Math.floor(targets.time * easeOut),
+        uptime: parseFloat((targets.uptime * easeOut).toFixed(1))
+      });
+
+      if (currentStep >= steps) {
+        clearInterval(timer);
+        setCounters(targets); // Ensure final values are exact
+      }
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, [statsVisible]);
+
+  // Intersection Observer for stats visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !statsVisible) {
+            setStatsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const statsSection = document.getElementById('stats-section');
+    if (statsSection) {
+      observer.observe(statsSection);
+    }
+
+    return () => observer.disconnect();
+  }, [statsVisible]);
+
   return (
     <ConditionalLayout>
       <div className="bg-background text-text-primary overflow-x-hidden">
@@ -90,12 +145,16 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight max-w-4xl">
             Build Professional<br />
             <span style={{
-              color: '#10b981',
-              textShadow: '0 0 40px rgba(16, 185, 129, 0.8), 0 0 80px rgba(16, 185, 129, 0.4), 0 4px 8px rgba(0,0,0,0.3)',
+              background: 'linear-gradient(135deg, #fbbf24 0%, #10b981 50%, #22d3ee 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: 'none',
               fontSize: '1.15em',
               fontWeight: '900',
               display: 'inline-block',
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.02em',
+              filter: 'drop-shadow(0 0 20px rgba(251, 191, 36, 0.4)) drop-shadow(0 0 40px rgba(16, 185, 129, 0.3))'
             }}>Business Websites</span><br />
             in Minutes, Not Months
           </h1>
