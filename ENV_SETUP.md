@@ -51,3 +51,4 @@ Your Supabase project is at: https://supabase.com/dashboard/project/xuxfcirqocxl
 - The `SUPABASE_SERVICE_ROLE_KEY` is a secret key - keep it secure
 - The `NEXTAUTH_SECRET` should be unique and random
 
+# Deployment trigger
