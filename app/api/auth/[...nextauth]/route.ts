@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import { supabase } from '@/lib/supabase'
 
 const handler = NextAuth({
   providers: [
@@ -10,52 +11,90 @@ const handler = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
-      // Store user data in localStorage for our system
-      if (account?.provider === 'google') {
-        const userData = {
-          id: user.id,
-          firstName: user.name?.split(' ')[0] || '',
-          lastName: user.name?.split(' ').slice(1).join(' ') || '',
-          email: user.email,
-          emailVerified: true, // Google accounts are pre-verified
-          createdAt: new Date().toISOString(),
-          provider: 'google'
-        };
+      // Store user data in Supabase when signing in with Google
+      if (account?.provider === 'google' && user.email) {
+        try {
+          // Check if user already exists
+          const { data: existingUser } = await supabase
+            .from('users')
+            .select('*')
+            .eq('email', user.email)
+            .single();
 
-        // Store in localStorage (in a real app, this would be in a database)
-        if (typeof window !== 'undefined') {
-          const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-          const userExists = existingUsers.find((u: any) => u.email === user.email);
-          
-          if (!userExists) {
-            const updatedUsers = [...existingUsers, userData];
-            localStorage.setItem('users', JSON.stringify(updatedUsers));
+          if (!existingUser) {
+            // Create new user
+            const { error } = await supabase
+              .from('users')
+              .insert([
+                {
+                  email: user.email,
+                  first_name: user.name?.split(' ')[0] || '',
+                  last_name: user.name?.split(' ').slice(1).join(' ') || '',
+                  email_verified: true,
+                  provider: 'google',
+                  created_at: new Date().toISOString(),
+                }
+              ]);
+
+            if (error) {
+              console.error('Error creating user:', error);
+              return false;
+            }
+
+            // Get the newly created user to get their ID
+            const { data: newUser } = await supabase
+              .from('users')
+              .select('id')
+              .eq('email', user.email)
+              .single();
+
+            // Create initial credits for new user
+            if (newUser) {
+              await supabase
+                .from('user_credits')
+                .insert([
+                  {
+                    user_id: newUser.id,
+                    total_credits: 1,
+                    used_credits: 0,
+                    remaining_credits: 1,
+                    plan_type: 'free',
+                  }
+                ]);
+            }
           }
-          
-          // Set current user
-          localStorage.setItem('currentUser', JSON.stringify(userData));
-          
-          // Create user credits if they don't exist
-          const userCredits = JSON.parse(localStorage.getItem('userCredits') || '{}');
-          if (!userCredits[user.id]) {
-            userCredits[user.id] = {
-              totalCredits: 1,
-              usedCredits: 0,
-              planType: 'free'
-            };
-            localStorage.setItem('userCredits', JSON.stringify(userCredits));
-          }
+        } catch (error) {
+          console.error('Error in Google sign-in:', error);
+          return false;
         }
       }
-      return true
+      return true;
     },
     async redirect({ url, baseUrl }) {
-      // Redirect to dashboard after successful login
-      return `${baseUrl}/dashboard`
+      // Always redirect to dashboard after successful login
+      if (url.startsWith(baseUrl)) {
+        return url;
+      }
+      return `${baseUrl}/dashboard`;
+    },
+    async session({ session, token }) {
+      // Add user ID to session if available
+      if (session.user && token.sub) {
+        // Get user from Supabase
+        const { data: user } = await supabase
+          .from('users')
+          .select('id')
+          .eq('email', session.user.email)
+          .single();
+        
+        if (user) {
+          (session.user as any).id = user.id;
+        }
+      }
+      return session;
     }
   },
   pages: {
-    signIn: '/login',
     error: '/login',
   },
 })
