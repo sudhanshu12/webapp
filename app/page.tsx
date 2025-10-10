@@ -631,24 +631,41 @@ export default function Home() {
         </section>
 
         {/* Statistics Section - Updated */}
-        <section className="py-16 px-8 bg-background text-text-primary">
+        <section id="stats-section" className="py-16 px-8 bg-background text-text-primary">
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-              {[
-                { number: '5000+', label: 'Websites Created' },
-                { number: '4.9/5', label: 'Customer Satisfaction' },
-                { number: '8 Min', label: 'Average Setup Time' },
-                { number: '99.9%', label: 'Uptime Guarantee' }
-              ].map((stat, index) => (
-                <div key={index}>
-                  <div className="text-4xl md:text-5xl font-bold text-accent mb-2">
-                    {stat.number}
-                  </div>
-                  <div className="text-base text-text-secondary font-medium">
-                    {stat.label}
-                  </div>
+              <div>
+                <div className="text-4xl md:text-5xl font-bold text-accent mb-2">
+                  {counters.websites.toLocaleString()}+
                 </div>
-              ))}
+                <div className="text-base text-text-secondary font-medium">
+                  Websites Created
+                </div>
+              </div>
+              <div>
+                <div className="text-4xl md:text-5xl font-bold text-accent mb-2">
+                  {counters.rating}/5
+                </div>
+                <div className="text-base text-text-secondary font-medium">
+                  Customer Satisfaction
+                </div>
+              </div>
+              <div>
+                <div className="text-4xl md:text-5xl font-bold text-accent mb-2">
+                  {counters.time} Min
+                </div>
+                <div className="text-base text-text-secondary font-medium">
+                  Average Setup Time
+                </div>
+              </div>
+              <div>
+                <div className="text-4xl md:text-5xl font-bold text-accent mb-2">
+                  {counters.uptime}%
+                </div>
+                <div className="text-base text-text-secondary font-medium">
+                  Uptime Guarantee
+                </div>
+              </div>
             </div>
           </div>
         </section>
