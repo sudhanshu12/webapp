@@ -31,7 +31,7 @@ const handler = NextAuth({
             .eq('email', user.email)
             .maybeSingle();
 
-          if (fetchError) {
+          if (fetchError && fetchError.code !== 'PGRST116') {
             console.error('Error fetching user:', fetchError);
             // Continue anyway - don't block sign-in
           }
@@ -58,7 +58,7 @@ const handler = NextAuth({
               console.error('Error creating user:', insertError);
               // Continue anyway - don't block sign-in
             } else if (newUser) {
-              console.log('User created, adding credits');
+              console.log('User created successfully, adding credits');
               // Create initial credits for new user
               const { error: creditsError } = await supabase
                 .from('user_credits')
@@ -74,6 +74,8 @@ const handler = NextAuth({
               
               if (creditsError) {
                 console.error('Error creating credits:', creditsError);
+              } else {
+                console.log('Credits created successfully');
               }
             }
           } else {
@@ -84,27 +86,48 @@ const handler = NextAuth({
           // Don't block sign-in even if database operations fail
         }
       }
+      
+      console.log('Sign-in callback returning true');
       return true;
     },
     async redirect({ url, baseUrl }) {
-      // Always redirect to dashboard after successful login
+      console.log('Redirect callback - url:', url, 'baseUrl:', baseUrl);
+      
+      // Handle error redirects
+      if (url.includes('/api/auth/error')) {
+        console.log('Error detected, redirecting to login');
+        return `${baseUrl}/login`;
+      }
+      
+      // If URL starts with baseUrl, use it
       if (url.startsWith(baseUrl)) {
+        console.log('Using provided URL:', url);
         return url;
       }
+      
+      // Default to dashboard
+      console.log('Redirecting to dashboard');
       return `${baseUrl}/dashboard`;
     },
     async session({ session, token }) {
-      // Add user ID to session if available
-      if (session.user && token.sub) {
-        // Get user from Supabase
-        const { data: user } = await supabase
-          .from('users')
-          .select('id')
-          .eq('email', session.user.email)
-          .single();
-        
-        if (user) {
-          (session.user as any).id = user.id;
+      // Add user ID and email to session
+      if (session.user && session.user.email) {
+        try {
+          // Get user from Supabase
+          const { data: user, error } = await supabase
+            .from('users')
+            .select('id, email, first_name, last_name')
+            .eq('email', session.user.email)
+            .single();
+          
+          if (user && !error) {
+            (session.user as any).id = user.id;
+            console.log('Session enriched with user ID:', user.id);
+          } else if (error) {
+            console.error('Error fetching user for session:', error);
+          }
+        } catch (error) {
+          console.error('Error in session callback:', error);
         }
       }
       return session;
