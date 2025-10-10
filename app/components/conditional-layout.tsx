@@ -274,7 +274,7 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
                     <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  Business Sites Generator
+                  Create A Website Click
                 </span>
               </Link>
               {!isPublicPage && pathname !== '/dashboard' && (
@@ -494,7 +494,7 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
           borderTop: '1px solid #e5e7eb'
         }}>
           <div style={{maxWidth: '1200px', margin: '0 auto'}}>
-            <p>© 2025 Business Sites Generator. All rights reserved.</p>
+            <p>© 2025 Create A Website Click. All rights reserved.</p>
           </div>
         </footer>
       )}
