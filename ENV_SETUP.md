@@ -14,10 +14,16 @@ SUPABASE_SERVICE_ROLE_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXB
 ### NextAuth Configuration
 ```
 NEXTAUTH_SECRET = 8FkrCryaWi1AWug13XvBFW+kIysm1HTHeW6Ltne/cP0=
-NEXTAUTH_URL = https://your-app.vercel.app
+NEXTAUTH_URL = https://webapp-fhchbx66s-sudhanshuxmen-gmailcoms-projects.vercel.app
 ```
 
-**Important:** Update `NEXTAUTH_URL` with your actual Vercel deployment URL after first deploy.
+### Google OAuth Configuration (Optional - for "Sign in with Google")
+```
+GOOGLE_CLIENT_ID = your_google_client_id
+GOOGLE_CLIENT_SECRET = your_google_client_secret
+```
+
+**Note:** Add your actual Google OAuth credentials directly in Vercel Dashboard (not in this file for security).
 
 ---
 
@@ -34,6 +40,10 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 # NextAuth Configuration
 NEXTAUTH_SECRET=8FkrCryaWi1AWug13XvBFW+kIysm1HTHeW6Ltne/cP0=
 NEXTAUTH_URL=http://localhost:3000
+
+# Google OAuth (Optional - for "Sign in with Google")
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
 ```
 
 ---
