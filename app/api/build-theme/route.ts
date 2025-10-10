@@ -1315,7 +1315,6 @@ export async function POST(req: NextRequest) {
     // Create README.txt
     const readmeTxt = `Create A Website Click Theme - ${bsgSettings.business_name}
 Generated: ${new Date().toISOString()}
-Created by: Sudhanshu Rana
 
 Business: ${bsgSettings.business_name}
 Type: ${bsgSettings.business_type}

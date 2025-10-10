@@ -1771,7 +1771,7 @@ export default function WizardClient() {
           <div className="bsg-header">
           <div className="bsg-header-content">
             <h2 style={{color: form.heading_color || undefined}}>Create A Website Click</h2>
-            <p>Create and manage your professional business website with ease - by Sudhanshu Rana</p>
+            <p>Create and manage your professional business website with ease</p>
           </div>
         </div>
         
