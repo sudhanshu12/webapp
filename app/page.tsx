@@ -145,16 +145,15 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight max-w-4xl">
             Build Professional<br />
             <span style={{
-              background: 'linear-gradient(135deg, #fbbf24 0%, #10b981 50%, #22d3ee 100%)',
+              background: 'linear-gradient(90deg, #06b6d4 0%, #10b981 50%, #22d3ee 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              textShadow: 'none',
               fontSize: '1.15em',
               fontWeight: '900',
               display: 'inline-block',
               letterSpacing: '-0.02em',
-              filter: 'drop-shadow(0 0 20px rgba(251, 191, 36, 0.4)) drop-shadow(0 0 40px rgba(16, 185, 129, 0.3))'
+              filter: 'drop-shadow(0 0 30px rgba(6, 182, 212, 0.6)) drop-shadow(0 0 60px rgba(16, 185, 129, 0.4))'
             }}>Business Websites</span><br />
             in Minutes, Not Months
           </h1>
