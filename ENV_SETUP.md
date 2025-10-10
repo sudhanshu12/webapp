@@ -14,7 +14,7 @@ SUPABASE_SERVICE_ROLE_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXB
 ### NextAuth Configuration
 ```
 NEXTAUTH_SECRET = 8FkrCryaWi1AWug13XvBFW+kIysm1HTHeW6Ltne/cP0=
-NEXTAUTH_URL = https://webapp-fhchbx66s-sudhanshuxmen-gmailcoms-projects.vercel.app
+NEXTAUTH_URL = https://createawebsite.click
 ```
 
 ### Google OAuth Configuration (Optional - for "Sign in with Google")
