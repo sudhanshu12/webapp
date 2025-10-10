@@ -7,23 +7,39 @@ const handler = NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
     })
   ],
+  debug: true,
   callbacks: {
     async signIn({ user, account, profile }) {
       // Store user data in Supabase when signing in with Google
       if (account?.provider === 'google' && user.email) {
         try {
+          console.log('Google sign-in attempt for:', user.email);
+          
           // Check if user already exists
-          const { data: existingUser } = await supabase
+          const { data: existingUser, error: fetchError } = await supabase
             .from('users')
             .select('*')
             .eq('email', user.email)
-            .single();
+            .maybeSingle();
+
+          if (fetchError) {
+            console.error('Error fetching user:', fetchError);
+            // Continue anyway - don't block sign-in
+          }
 
           if (!existingUser) {
+            console.log('Creating new user:', user.email);
             // Create new user
-            const { error } = await supabase
+            const { data: newUser, error: insertError } = await supabase
               .from('users')
               .insert([
                 {
@@ -34,23 +50,17 @@ const handler = NextAuth({
                   provider: 'google',
                   created_at: new Date().toISOString(),
                 }
-              ]);
-
-            if (error) {
-              console.error('Error creating user:', error);
-              return false;
-            }
-
-            // Get the newly created user to get their ID
-            const { data: newUser } = await supabase
-              .from('users')
-              .select('id')
-              .eq('email', user.email)
+              ])
+              .select()
               .single();
 
-            // Create initial credits for new user
-            if (newUser) {
-              await supabase
+            if (insertError) {
+              console.error('Error creating user:', insertError);
+              // Continue anyway - don't block sign-in
+            } else if (newUser) {
+              console.log('User created, adding credits');
+              // Create initial credits for new user
+              const { error: creditsError } = await supabase
                 .from('user_credits')
                 .insert([
                   {
@@ -61,11 +71,17 @@ const handler = NextAuth({
                     plan_type: 'free',
                   }
                 ]);
+              
+              if (creditsError) {
+                console.error('Error creating credits:', creditsError);
+              }
             }
+          } else {
+            console.log('Existing user found:', user.email);
           }
         } catch (error) {
-          console.error('Error in Google sign-in:', error);
-          return false;
+          console.error('Error in Google sign-in callback:', error);
+          // Don't block sign-in even if database operations fail
         }
       }
       return true;
