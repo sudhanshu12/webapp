@@ -845,6 +845,7 @@ export default function WizardClient() {
   const [activeTab, setActiveTab] = useState('general');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [serviceLoading, setServiceLoading] = useState<{ [key: string]: boolean }>({});
   const [locationLoading, setLocationLoading] = useState<{ [key: string]: boolean }>({});
   const [showDownloadSection, setShowDownloadSection] = useState(false);
