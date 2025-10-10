@@ -115,12 +115,14 @@ export default function Home() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !statsVisible) {
+          if (entry.isIntersecting) {
             setStatsVisible(true);
+            // Disconnect after triggering to avoid re-triggering
+            observer.disconnect();
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.2, rootMargin: '0px' }
     );
 
     const statsSection = document.getElementById('stats-section');
@@ -129,7 +131,7 @@ export default function Home() {
     }
 
     return () => observer.disconnect();
-  }, [statsVisible]);
+  }, []); // Empty dependency array - only run once on mount
 
   return (
     <ConditionalLayout>
