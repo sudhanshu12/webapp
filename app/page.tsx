@@ -136,85 +136,84 @@ export default function Home() {
       <div className="bg-background text-text-primary overflow-x-hidden">
         {/* Hero Section */}
         <section className="gradient-bg text-white py-20 px-4 text-center min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
-          <div className="max-w-4xl mx-auto w-full">
           <div className="absolute inset-0 opacity-50" style={{
             background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\' fill-opacity=\'0.05\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'2\'%3E%3C/g%3E%3C/svg%3E")'
           }}></div>
           
+          <div className="max-w-4xl mx-auto w-full relative z-10">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight mx-auto text-center">
+              Build Professional<br />
+              <span style={{
+                background: 'linear-gradient(90deg, #06b6d4 0%, #10b981 50%, #22d3ee 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                fontSize: '1.15em',
+                fontWeight: '900',
+                display: 'inline-block',
+                letterSpacing: '-0.02em',
+                filter: 'drop-shadow(0 0 30px rgba(6, 182, 212, 0.6)) drop-shadow(0 0 60px rgba(16, 185, 129, 0.4))'
+              }}>Business Websites</span><br />
+              in Minutes, Not Months
+            </h1>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight max-w-4xl">
-            Build Professional<br />
-            <span style={{
-              background: 'linear-gradient(90deg, #06b6d4 0%, #10b981 50%, #22d3ee 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              fontSize: '1.15em',
-              fontWeight: '900',
-              display: 'inline-block',
-              letterSpacing: '-0.02em',
-              filter: 'drop-shadow(0 0 30px rgba(6, 182, 212, 0.6)) drop-shadow(0 0 60px rgba(16, 185, 129, 0.4))'
-            }}>Business Websites</span><br />
-            in Minutes, Not Months
-          </h1>
+            <p className="text-lg md:text-2xl mb-8 max-w-3xl mx-auto opacity-90 leading-relaxed text-center">
+              Create stunning, professional websites with AI in under 10 minutes. No coding, no design skills, no expensive developers required.
+            </p>
 
-          <p className="text-lg md:text-2xl mb-8 max-w-3xl opacity-90 leading-relaxed">
-            Create stunning, professional websites with AI in under 10 minutes. No coding, no design skills, no expensive developers required.
-          </p>
-
-          {/* Trust Bar */}
-          <div className="flex flex-wrap justify-center items-center gap-8 mb-12 text-sm opacity-90">
-            <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-              </svg>
-              <span>4.9/5 Rating</span>
+            {/* Trust Bar */}
+            <div className="flex flex-wrap justify-center items-center gap-8 mb-12 text-sm opacity-90">
+              <div className="flex items-center">
+                <svg className="w-5 h-5 mr-2 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                </svg>
+                <span>4.9/5 Rating</span>
+              </div>
+              <div className="flex items-center">
+                <svg className="w-5 h-5 mr-2 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                </svg>
+                <span>5000+ Websites Created</span>
+              </div>
+              <div className="flex items-center">
+                <svg className="w-5 h-5 mr-2 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
+                </svg>
+                <span>Avg. 8 Min Launch Time</span>
+              </div>
             </div>
-            <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-              </svg>
-              <span>5000+ Websites Created</span>
-            </div>
-            <div className="flex items-center">
-              <svg className="w-5 h-5 mr-2 text-accent" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
-              </svg>
-              <span>Avg. 8 Min Launch Time</span>
-            </div>
-          </div>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4 justify-center items-center mb-16 relative z-20">
-            <a 
-              href="/register" 
-              className="bg-accent text-background font-bold text-lg px-8 py-4 rounded-lg flex items-center gap-2 transition-all duration-300 hover:shadow-glow relative z-10 cursor-pointer"
-              onClick={(e) => {
-                console.log('Start Building Free clicked!');
-                e.preventDefault();
-                window.location.href = '/register';
-              }}
-            >
-              Start Building Free
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
-              </svg>
-            </a>
-            <a 
-              href="#video-demo" 
-              className="bg-transparent text-white border-2 border-white text-lg px-8 py-4 rounded-lg font-bold flex items-center gap-2 transition-all duration-300 hover:bg-white/10 relative z-10 cursor-pointer"
-              onClick={(e) => {
-                console.log('Watch 60-Second Demo clicked!');
-                e.preventDefault();
-                document.getElementById('video-demo')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/>
-              </svg>
-              Watch 60-Second Demo
-            </a>
-          </div>
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-4 justify-center items-center mb-16 relative z-20">
+              <a 
+                href="/register" 
+                className="bg-accent text-background font-bold text-lg px-8 py-4 rounded-lg flex items-center gap-2 transition-all duration-300 hover:shadow-glow relative z-10 cursor-pointer"
+                onClick={(e) => {
+                  console.log('Start Building Free clicked!');
+                  e.preventDefault();
+                  window.location.href = '/register';
+                }}
+              >
+                Start Building Free
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
+                </svg>
+              </a>
+              <a 
+                href="#video-demo" 
+                className="bg-transparent text-white border-2 border-white text-lg px-8 py-4 rounded-lg font-bold flex items-center gap-2 transition-all duration-300 hover:bg-white/10 relative z-10 cursor-pointer"
+                onClick={(e) => {
+                  console.log('Watch 60-Second Demo clicked!');
+                  e.preventDefault();
+                  document.getElementById('video-demo')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd"/>
+                </svg>
+                Watch 60-Second Demo
+              </a>
+            </div>
           </div>
         </section>
 
