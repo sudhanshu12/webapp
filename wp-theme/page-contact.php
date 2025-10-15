@@ -1,0 +1,92 @@
+<?php
+/**
+ * Template Name: BSG Contact Page
+ */
+
+get_header();
+
+$colors = bsg_get_color_scheme();
+$settings = bsg_get_settings();
+?>
+
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="https://gmpg.org/xfn/11">
+    <?php bsg_output_meta_tags('contact'); ?>
+    <?php bsg_output_structured_data('contact'); ?>
+    <?php wp_head(); ?>
+</head>
+
+<body <?php body_class(); ?>>
+    <?php include dirname(__FILE__) . '/section-header.php'; ?>
+
+    <main>
+        <section class="contact-hero" style="background-color: var(--surface-color); padding: 80px 0; color: #ffffff;">
+  <div class="container">
+                <div class="contact-hero-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
+                    <h1 style="font-size: 3rem; font-weight: 800; margin: 0 0 1rem 0; color: var(--heading-color);">
+                        Contact Roofing Pros 
+                    </h1>
+                    <p style="font-size: 1.2rem; color: #8f8f8f; margin: 0 0 2rem 0;">
+                        Get in touch for professional roofing services
+                    </p>
+    </div>
+  </div>
+</section>
+
+        <section class="contact-content" style="padding: 80px 0; background-color: #ffffff;">
+  <div class="container">
+                <div class="contact-details" style="max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+                    <div class="contact-info">
+                        <h2>Get In Touch</h2>
+                        <div class="contact-item" style="margin-bottom: 2rem;">
+                            <h3>Phone</h3>
+                            <p><a href="tel:8755026291" style="color: var(--button-color); text-decoration: none;">8755026291</a></p>
+      </div>
+                        <div class="contact-item" style="margin-bottom: 2rem;">
+                            <h3>Email</h3>
+                            <p><a href="mailto:sudhanshuxmen@gmail.com" style="color: var(--button-color); text-decoration: none;">sudhanshuxmen@gmail.com</a></p>
+      </div>
+                        
+                        <div class="contact-item" style="margin-bottom: 2rem;">
+                            <h3>Address</h3>
+                            <p>Azolla St Orlando, FL 32808<br>Orlando, Florida 12345</p>
+      </div>
+                        
+                        <div class="contact-item">
+                            <h3>Service Area</h3>
+                            <p>Orlando and surrounding areas</p>
+    </div>
+  </div>
+                    
+                    <div class="contact-form">
+                        <h2>Send Us a Message</h2>
+                        <form style="display: flex; flex-direction: column; gap: 1rem;">
+                            <input type="text" name="name" placeholder="Your Name" required style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px;">
+                            <input type="email" name="email" placeholder="Your Email" required style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px;">
+                            <input type="tel" name="phone" placeholder="Your Phone" style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px;">
+                            <select name="service" style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px;">
+                                <option value="">Select Service</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="quote">Free Quote</option>
+                                <option value="emergency">Emergency Service</option>
+                            </select>
+                            <textarea name="message" placeholder="Your Message" rows="5" required style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px; resize: vertical;"></textarea>
+                            <button type="submit" class="btn btn-primary" style="background: var(--button-color); color: #ffffff; padding: 1rem 2rem; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
+                                Send Message
+                            </button>
+                        </form>
+      </div>
+    </div>
+  </div>
+</section>
+    </main>
+
+    <?php include dirname(__FILE__) . '/section-footer.php'; ?>
+    <?php wp_footer(); ?>
+</body>
+</html>
+<?php get_footer(); ?>

@@ -1,0 +1,22 @@
+
+> next-site-generator@0.1.0 dev
+> next dev -p 3000
+
+  ▲ Next.js 14.2.4
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1695ms
+ ○ Compiling /wizard ...
+ ✓ Compiled /wizard in 643ms (489 modules)
+ GET /wizard 200 in 808ms
+ ✓ Compiled in 160ms (244 modules)
+ ✓ Compiled in 91ms (244 modules)
+ ✓ Compiled in 52ms (244 modules)
+ ✓ Compiled in 100ms (244 modules)
+   Reload env: .env.local
+ ✓ Compiled in 91ms (244 modules)
+   Reload env: .env.local
+ ✓ Compiled in 33ms (244 modules)
+[?25h
