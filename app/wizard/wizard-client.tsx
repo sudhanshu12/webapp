@@ -1675,6 +1675,7 @@ export default function WizardClient() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-user-id': userId,
           'x-user-email': userEmail
         },
         body: JSON.stringify({
