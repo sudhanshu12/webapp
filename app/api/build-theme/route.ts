@@ -1255,10 +1255,12 @@ export async function POST(req: NextRequest) {
     }
 
     // Locate wp-theme folder
-    const projectRoot = path.join(process.cwd(), '..');
+    const projectRoot = process.cwd();
     const wpThemeDir = path.join(projectRoot, 'wp-theme');
     
     if (!fs.existsSync(wpThemeDir)) {
+      console.error('wp-theme folder not found at:', wpThemeDir);
+      console.error('Current working directory:', projectRoot);
       throw new Error('wp-theme folder not found in project root');
     }
     
