@@ -973,10 +973,6 @@ export default function WizardClient() {
         next.service_hero_heading_color = '#ffffff';
         next.service_hero_description_color = '#cfd8dc';
         next.service_content_bg_color = '#232834';
-        next.services_contact_title = 'GET A QUOTE';
-        next.service_contact_box_bg = '#2a3440';
-        next.service_contact_box_text = '#cfd8dc';
-        next.service_contact_icons_color = '#2ee6c5';
         
         // Features section defaults
         next.features_bg_color = '#1e2834';
