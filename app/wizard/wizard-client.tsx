@@ -945,6 +945,141 @@ export default function WizardClient() {
   const updateForm = (field: keyof FormData, value: any) => {
     setForm(prev => {
       const next = { ...prev, [field]: value } as FormData;
+      
+      // Apply default professional dark theme colors when checkbox is checked
+      if (field === 'use_default_color_scheme' && value === true) {
+        // Hero section defaults
+        next.hero_bg_color = '#1f2937';
+        next.hero_company_color = '#9ca3af';
+        next.hero_heading_color = '#ffffff';
+        next.hero_subheading_color = '#e5e7eb';
+        next.hero_description_color = '#d1d5db';
+        next.hero_reviews_text_color = '#fbbf24';
+        next.hero_reviews_star_color = '#fbbf24';
+        next.hero_book_btn_bg = '#ffffff';
+        next.hero_book_btn_text = '#232834';
+        next.hero_call_btn_bg = '#232834';
+        next.hero_call_btn_text = '#ffffff';
+        
+        // Services section defaults
+        next.services_bg_color = '#313746';
+        next.services_card_color = '#232834';
+        next.services_text_color = '#ffffff';
+        next.services_icon_color = '#2ee6c5';
+        next.services_cta_bg = '#2ee6c5';
+        next.services_cta_text_color = '#232834';
+        next.services_button_text = '#2ee6c5';
+        next.services_progress_color = '#2ee6c5';
+        next.service_hero_heading_color = '#ffffff';
+        next.service_hero_description_color = '#cfd8dc';
+        next.service_content_bg_color = '#232834';
+        next.services_contact_title = 'GET A QUOTE';
+        next.service_contact_box_bg = '#2a3440';
+        next.service_contact_box_text = '#cfd8dc';
+        next.service_contact_icons_color = '#2ee6c5';
+        
+        // Features section defaults
+        next.features_bg_color = '#1e2834';
+        next.features_card_bg = '#1e2834';
+        next.features_text_color = '#ffffff';
+        next.features_icon_color = '#14b8a6';
+        
+        // About section defaults
+        next.about_bg_color = '#1f2937';
+        next.about_text_color = '#ffffff';
+        next.about_tagline_color = '#14b8a6';
+        next.about_heading_color = '#ffffff';
+        next.about_description_color = '#d1d5db';
+        next.about_experience_bg = '#374151';
+        next.about_experience_text_color = '#0ea5e9';
+        next.about_button_color = '#0ea5e9';
+        next.about_button_text_color = '#374151';
+        
+        // Service areas defaults
+        next.service_areas_bg_color = '#1f2937';
+        next.service_areas_text_color = '#ffffff';
+        next.service_areas_heading_color = '#ffffff';
+        next.service_areas_card_bg = 'rgba(255,255,255,0.08)';
+        
+        // Location page defaults
+        next.location_hero_heading_color = '#ffffff';
+        next.location_hero_description_color = '#cfd8dc';
+        next.location_description_bg = '#ffffff';
+        next.location_description_heading_color = '#232834';
+        next.location_description_text_color = '#374151';
+        next.location_quote_box_bg = '#1a1f28';
+        next.location_quote_box_text = '#ffffff';
+        next.location_quote_box_heading_color = '#ffffff';
+        next.location_quote_box_button_bg = '#2ee6c5';
+        next.location_quote_box_button_text = '#ffffff';
+        
+        // Reviews section defaults (light section for contrast)
+        next.reviews_bg_color = '#ffffff';
+        next.reviews_card_bg = '#f9fafb';
+        next.reviews_heading_color = '#111827';
+        next.reviews_subtitle_color = '#6b7280';
+        next.reviews_star_color = '#fbbf24';
+        
+        // Commitment section defaults
+        next.commitment_bg_color = '#232834';
+        next.commitment_text_color = '#ffffff';
+        next.commitment_heading_color = '#ffffff';
+        next.commitment_subtitle_color = '#cfd8dc';
+        
+        // FAQ section defaults
+        next.faq_bg_color = '#1f2732';
+        next.faq_text_color = '#ffffff';
+        next.faq_heading_color = '#ffffff';
+        next.faq_description_color = '#d1d5db';
+        next.faq_box_color = '#374151';
+        next.faq_question_color = '#ffffff';
+        next.faq_answer_color = '#d1d5db';
+        next.faq_toggle_color = '#2ee6c5';
+        
+        // Contact section defaults
+        next.contact_section_bg_color = '#232a36';
+        next.contact_left_side_color = '#2ee6c5';
+        next.contact_right_side_color = '#ffffff';
+        next.contact_text_color = '#ffffff';
+        next.contact_headline_color = '#ffffff';
+        next.contact_description_color = 'rgba(255,255,255,0.9)';
+        
+        // Footer defaults
+        next.footer_bg_color = '#0f172a';
+        next.footer_heading_color = '#ffffff';
+        next.footer_links_color = '#d1d5db';
+        next.footer_text_color = '#ffffff';
+        next.footer_link_color = '#2ee6c5';
+        
+        // Navigation defaults
+        next.nav_bg_color = '#1f2937';
+        next.nav_text_color = '#ffffff';
+        next.heading_color = '#ffffff';
+        next.button_primary_color = '#0ea5e9';
+        
+        // About page defaults
+        next.about_page_hero_bg_color = '#1f2937';
+        next.about_page_hero_heading_color = '#ffffff';
+        next.about_page_hero_tagline_color = '#9ca3af';
+        next.about_page_who_tagline_color = '#0ea5e9';
+        next.about_page_who_bg = '#ffffff';
+        next.about_page_who_text = '#374151';
+        next.about_page_who_desc_color = '#374151';
+        next.about_page_experience_bg = '#0ea5e9';
+        next.about_page_experience_text = '#000000';
+        next.about_page_cta_bg = '#0ea5e9';
+        next.about_page_cta_text_color = '#000000';
+        next.about_page_why_bg = '#1e3a8a';
+        next.about_page_why_heading_color = '#ffffff';
+        next.about_page_why_subtitle_color = '#ffffff';
+        next.about_page_why_item_title = '#ffffff';
+        next.about_page_why_item_desc = '#ffffff';
+        next.about_page_why_icon_bg = '#1e3a8a';
+        next.about_page_why_icon = '#ffffff';
+        next.about_page_why_section_bg = '#374151';
+        next.about_page_why_section_text = '#000000';
+      }
+      
       if (field === 'color_theme') {
         const palette = getThemeColors(value as string);
         next.global_primary_color = palette.primary;
@@ -2153,15 +2288,41 @@ export default function WizardClient() {
                     <div className="bsg-section">
                       <h3 style={{color: form.heading_color || undefined}}>Color Theme</h3>
                       <p className="description">Choose a color scheme for your website</p>
-                      <div style={{margin: '8px 0 16px 0'}}>
-                        <label style={{display: 'inline-flex', alignItems: 'center', gap: 8}}>
+                      <div style={{
+                        margin: '8px 0 16px 0',
+                        padding: '12px',
+                        background: form.use_default_color_scheme ? '#d1fae5' : '#f9fafb',
+                        border: form.use_default_color_scheme ? '2px solid #10b981' : '2px solid #e5e7eb',
+                        borderRadius: '8px',
+                        transition: 'all 0.3s ease'
+                      }}>
+                        <label style={{display: 'inline-flex', alignItems: 'center', gap: 8, cursor: 'pointer'}}>
                           <input
                             type="checkbox"
                             checked={form.use_default_color_scheme ?? true}
-                            onChange={(e) => updateForm('use_default_color_scheme', e.target.checked)}
+                            onChange={(e) => {
+                              updateForm('use_default_color_scheme', e.target.checked);
+                              if (e.target.checked) {
+                                setSuccess('✅ Professional dark theme applied to all sections!');
+                                setTimeout(() => setSuccess(''), 3000);
+                              }
+                            }}
+                            style={{width: '18px', height: '18px', cursor: 'pointer'}}
                           />
-                          <span>Use default color scheme (recommended)</span>
+                          <span style={{fontWeight: 500, color: form.use_default_color_scheme ? '#065f46' : '#374151'}}>
+                            Use default color scheme (recommended)
+                          </span>
                         </label>
+                        {form.use_default_color_scheme && (
+                          <p style={{
+                            margin: '8px 0 0 26px',
+                            fontSize: '13px',
+                            color: '#059669',
+                            lineHeight: '1.5'
+                          }}>
+                            ✓ Professional dark theme with white text is now applied to all sections. Uncheck to customize colors manually.
+                          </p>
+                        )}
                       </div>
                       
                       <div style={{
