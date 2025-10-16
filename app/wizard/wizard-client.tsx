@@ -321,7 +321,7 @@ export default function WizardClient() {
     const themes = {
       ocean: { primary: '#2563eb', secondary: '#0ea5e9', light: '#f1f5f9', dark: '#0f172a', text: '#23282d' },
       emerald: { primary: '#059669', secondary: '#10b981', light: '#d1fae5', dark: '#064e3b', text: '#23282d' },
-      amber: { primary: '#f59e0b', secondary: '#d97706', light: '#fef9e7', dark: '#78350f', text: '#78350f' },
+      amber: { primary: '#f59e0b', secondary: '#d97706', light: '#fef9e7', dark: '#fffbeb', text: '#78350f' },
       rose: { primary: '#e11d48', secondary: '#fb7185', light: '#fce7f3', dark: '#4c0519', text: '#23282d' },
       slate: { primary: '#475569', secondary: '#64748b', light: '#f1f5f9', dark: '#0f172a', text: '#23282d' },
       violet: { primary: '#7c3aed', secondary: '#a855f7', light: '#f3e8ff', dark: '#2e1065', text: '#23282d' },
@@ -600,8 +600,8 @@ export default function WizardClient() {
     footer_links_color: '#d1d5db',
     footer_copyright_text: '©2025, Your Business Name. All Rights Reserved.',
     footer_disclaimer_text: 'This website and its content are for informational purposes only. Results may vary based on individual circumstances.',
-    nav_bg_color: '#78350f',
-    nav_text_color: '#ffffff',
+    nav_bg_color: '#fffbeb',
+    nav_text_color: '#78350f',
     heading_color: '#78350f',
     button_primary_color: '#f59e0b',
     global_primary_color: '#f59e0b',
@@ -651,8 +651,8 @@ export default function WizardClient() {
         footer_bg_color: '#0f172a',
         footer_heading_color: '#ffffff',
         footer_links_color: '#d1d5db',
-        nav_bg_color: '#78350f',
-        nav_text_color: '#ffffff',
+        nav_bg_color: '#fffbeb',
+        nav_text_color: '#78350f',
         heading_color: '#78350f',
         // Global color scheme palette (for Customize Colors section)
         global_primary_color: '#f59e0b',
@@ -1099,8 +1099,8 @@ export default function WizardClient() {
         next.footer_link_color = '#2ee6c5';
         
         // Navigation defaults
-        next.nav_bg_color = '#78350f';
-        next.nav_text_color = '#ffffff';
+        next.nav_bg_color = '#fffbeb';
+        next.nav_text_color = '#78350f';
         next.heading_color = '#78350f';
         
         // Global color scheme palette (for Customize Colors section)
@@ -1138,7 +1138,7 @@ export default function WizardClient() {
         next.global_accent_color = palette.dark;
         next.nav_bg_color = palette.dark;
         if ((value as string).toLowerCase() === 'amber') {
-          next.nav_text_color = '#92400e';
+          next.nav_text_color = '#78350f';
         } else {
           next.nav_text_color = getContrastText(palette.dark);
         }
