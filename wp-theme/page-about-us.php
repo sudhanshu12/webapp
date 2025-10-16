@@ -116,11 +116,8 @@ get_header();
                     <!-- Main About Description -->
                     <div style="font-size: 1.05rem; margin-bottom: 2.5rem; line-height: 1.8;">
                         <?php 
-                        // First try about_page_who_description, then fall back to about_description
-                        if (isset($settings['about_page_who_description']) && !empty($settings['about_page_who_description'])) {
-                            // Output the full HTML content
-                            echo wp_kses_post($settings['about_page_who_description']);
-                        } elseif (isset($settings['about_description']) && !empty($settings['about_description'])) {
+                        // Use the clean about_description text (not the full about_page_who_description with all sections)
+                        if (isset($settings['about_description']) && !empty($settings['about_description'])) {
                             echo wp_kses_post($settings['about_description']);
                         } else {
                             echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
