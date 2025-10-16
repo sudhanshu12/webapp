@@ -20,12 +20,29 @@ get_header();
         margin: 0 auto !important;
     }
 }
+
+.about-content h2,
+.about-content h3,
+.about-content h4 {
+    color: #1f2937 !important;
+}
+
+.about-content p,
+.about-content li {
+    color: #4b5563 !important;
+    line-height: 1.8 !important;
+}
+
+.about-content .tagline {
+    color: #14b8a6 !important;
+}
 </style>
 
 <main>
-    <section style="background-color: #1f2937; padding: 80px 20px; color: #ffffff;">
+    <!-- Hero Section -->
+    <section style="background-color: <?php echo isset($settings['about_page_hero_bg_color']) ? esc_attr($settings['about_page_hero_bg_color']) : '#1f2937'; ?>; padding: 80px 20px; color: #ffffff;">
         <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
-            <h1 style="font-size: 3rem; font-weight: 800; margin: 0 0 1rem 0; color: #ffffff;">
+            <h1 style="font-size: 3rem; font-weight: 800; margin: 0 0 1rem 0; color: <?php echo isset($settings['about_page_hero_heading_color']) ? esc_attr($settings['about_page_hero_heading_color']) : '#ffffff'; ?>;">
                 About <?php echo isset($settings['business_name']) ? esc_html($settings['business_name']) : 'Our Company'; ?>
             </h1>
             <p style="font-size: 1.2rem; color: #d1d5db; margin: 0;">
@@ -34,7 +51,8 @@ get_header();
         </div>
     </section>
 
-    <section style="background: #ffffff; padding: 80px 20px;">
+    <!-- Main About Content with Image and Description Side by Side -->
+    <section style="background: <?php echo isset($settings['about_page_who_bg']) ? esc_attr($settings['about_page_who_bg']) : '#ffffff'; ?>; padding: 80px 20px;">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div class="about-grid" style="display: flex; gap: 4rem; align-items: flex-start;">
                 <!-- Image -->
@@ -48,8 +66,9 @@ get_header();
                     <?php endif; ?>
                 </div>
                 
-                <!-- Content -->
-                <div style="flex: 1; min-width: 300px;">
+                <!-- Full Content from wizard -->
+                <div class="about-content" style="flex: 1; min-width: 300px; color: <?php echo isset($settings['about_page_who_text']) ? esc_attr($settings['about_page_who_text']) : '#374151'; ?>;">
+                    <!-- WHO WE ARE Tagline -->
                     <div style="color: <?php echo isset($settings['about_page_who_tagline_color']) ? esc_attr($settings['about_page_who_tagline_color']) : '#14b8a6'; ?>; font-weight: 700; font-size: 0.95rem; margin-bottom: 1rem; letter-spacing: 1px; text-transform: uppercase;">
                         <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
@@ -61,17 +80,22 @@ get_header();
                         About <?php echo isset($settings['business_name']) ? esc_html($settings['business_name']) : 'Our Company'; ?>
                     </h2>
                     
-                    <div style="font-size: 1.05rem; margin-bottom: 2.5rem; color: <?php echo isset($settings['about_page_who_desc_color']) ? esc_attr($settings['about_page_who_desc_color']) : '#4b5563'; ?>; line-height: 1.8;">
+                    <!-- Main About Description -->
+                    <div style="font-size: 1.05rem; margin-bottom: 2.5rem; line-height: 1.8;">
                         <?php 
-                        // Use about_description from settings
-                        if (isset($settings['about_description']) && !empty($settings['about_description'])) {
+                        // First try about_page_who_description, then fall back to about_description
+                        if (isset($settings['about_page_who_description']) && !empty($settings['about_page_who_description'])) {
+                            // Output the full HTML content
+                            echo wp_kses_post($settings['about_page_who_description']);
+                        } elseif (isset($settings['about_description']) && !empty($settings['about_description'])) {
                             echo wp_kses_post($settings['about_description']);
                         } else {
-                            echo 'We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.';
+                            echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
                         }
                         ?>
                     </div>
                     
+                    <!-- Experience Badge and CTA Button - Side by Side -->
                     <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; margin-top: 2rem;">
                         <div style="background: <?php echo isset($settings['about_page_experience_bg']) ? esc_attr($settings['about_page_experience_bg']) : '#14b8a6'; ?>; color: <?php echo isset($settings['about_page_experience_text']) ? esc_attr($settings['about_page_experience_text']) : '#ffffff'; ?>; padding: 1.5rem 2rem; border-radius: 8px; text-align: center; min-width: 140px;">
                             <div style="font-size: 2.25rem; font-weight: 800; margin: 0; line-height: 1;">
@@ -91,6 +115,7 @@ get_header();
         </div>
     </section>
 
+    <!-- Contact CTA Section -->
     <section style="padding: 80px 20px; background-color: #1f2937; color: #ffffff;">
         <div style="max-width: 600px; margin: 0 auto; text-align: center;">
             <h2 style="font-size: 2.5rem; font-weight: 700; margin: 0 0 1rem 0;">Get In Touch</h2>
