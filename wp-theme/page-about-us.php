@@ -313,8 +313,48 @@ get_header();
                     $about_page_description = $settings['about_page_who_description'] ?? '';
                     
                     if (!empty($about_page_description)) {
-                        // Display the full HTML content from about page description
-                        echo wp_kses_post($about_page_description);
+                        // Extract clean text from about page description
+                        $clean_text = strip_tags($about_page_description);
+                        
+                        // Find the main about paragraph (after "About Us" heading)
+                        $about_pos = stripos($clean_text, 'About Us');
+                        if ($about_pos !== false) {
+                            $after_about = substr($clean_text, $about_pos + 7);
+                            // Get the first substantial paragraph
+                            $paragraphs = preg_split('/\n\n+/', $after_about);
+                            $main_paragraph = '';
+                            foreach ($paragraphs as $para) {
+                                $para = trim($para);
+                                if (strlen($para) > 100 && !preg_match('/(Our Mission|Our Values|Our Team|Our Commitment|Ready to Get Started|\d+\+)/i', $para)) {
+                                    $main_paragraph = $para;
+                                    break;
+                                }
+                            }
+                            
+                            if (!empty($main_paragraph)) {
+                                echo '<p>' . esc_html($main_paragraph) . '</p>';
+                            } else {
+                                // Fallback: show first substantial sentence
+                                $sentences = preg_split('/[.!?]+/', $after_about);
+                                foreach ($sentences as $sentence) {
+                                    $sentence = trim($sentence);
+                                    if (strlen($sentence) > 50 && !preg_match('/(Our Mission|Our Values|Our Team|Our Commitment|Ready to Get Started|\d+\+)/i', $sentence)) {
+                                        echo '<p>' . esc_html($sentence) . '</p>';
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            // If no "About Us" found, show first substantial paragraph
+                            $paragraphs = preg_split('/\n\n+/', $clean_text);
+                            foreach ($paragraphs as $para) {
+                                $para = trim($para);
+                                if (strlen($para) > 100 && !preg_match('/(Our Mission|Our Values|Our Team|Our Commitment|Ready to Get Started|\d+\+)/i', $para)) {
+                                    echo '<p>' . esc_html($para) . '</p>';
+                                    break;
+                                }
+                            }
+                        }
                     } else {
                         // Fallback content
                         echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
@@ -399,9 +439,7 @@ get_header();
     // Force reviews to be visible
     $original_reviews_visible = $settings['reviews_visible'] ?? null;
     $settings['reviews_visible'] = true;
-    echo "<!-- DEBUG: Including Reviews Section -->\n";
     include dirname(__FILE__) . '/section-reviews.php';
-    echo "<!-- DEBUG: Reviews Section Included -->\n";
     // Restore original setting
     if ($original_reviews_visible !== null) {
         $settings['reviews_visible'] = $original_reviews_visible;
@@ -413,9 +451,7 @@ get_header();
     // Force services to be visible
     $original_services_visible = $settings['services_visible'] ?? null;
     $settings['services_visible'] = true;
-    echo "<!-- DEBUG: Including Services Section -->\n";
     include dirname(__FILE__) . '/section-services.php';
-    echo "<!-- DEBUG: Services Section Included -->\n";
     // Restore original setting
     if ($original_services_visible !== null) {
         $settings['services_visible'] = $original_services_visible;
@@ -427,9 +463,7 @@ get_header();
     // Force areas to be visible
     $original_areas_visible = $settings['areas_visible'] ?? null;
     $settings['areas_visible'] = true;
-    echo "<!-- DEBUG: Including Areas Section -->\n";
     include dirname(__FILE__) . '/section-areas.php';
-    echo "<!-- DEBUG: Areas Section Included -->\n";
     // Restore original setting
     if ($original_areas_visible !== null) {
         $settings['areas_visible'] = $original_areas_visible;
@@ -441,9 +475,7 @@ get_header();
     // Force commitment to be visible
     $original_commitment_visible = $settings['commitment_visible'] ?? null;
     $settings['commitment_visible'] = true;
-    echo "<!-- DEBUG: Including Commitment Section -->\n";
     include dirname(__FILE__) . '/section-commitment.php';
-    echo "<!-- DEBUG: Commitment Section Included -->\n";
     // Restore original setting
     if ($original_commitment_visible !== null) {
         $settings['commitment_visible'] = $original_commitment_visible;
