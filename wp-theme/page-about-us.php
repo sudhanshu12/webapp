@@ -9,8 +9,9 @@ $settings = bsg_get_settings();
 $business_name = $settings['business_name'] ?? 'Our Company';
 $phone = $settings['phone'] ?? '';
 
-// Add styles to wp_head
-add_action('wp_head', function() use ($settings) {
+// Add styles to wp_head BEFORE get_header()
+function bsg_about_page_styles() {
+    global $settings;
 ?>
 <style>
     /* Hero Section */
@@ -268,7 +269,8 @@ add_action('wp_head', function() use ($settings) {
     }
 </style>
 <?php
-}, 20);
+}
+add_action('wp_head', 'bsg_about_page_styles', 20);
 
 get_header();
 ?>
@@ -310,12 +312,12 @@ get_header();
                 
                 <div class="about-description-content">
                 <?php 
-                // Display the about description from wizard with HTML formatting preserved
-                $about_description = $settings['about_description'] ?? '';
+                // Display the about page description from wizard with HTML formatting preserved
+                $about_page_description = $settings['about_page_who_description'] ?? '';
                 
-                if (!empty($about_description)) {
+                if (!empty($about_page_description)) {
                     // Use wp_kses_post to allow safe HTML rendering
-                    echo wp_kses_post($about_description);
+                    echo wp_kses_post($about_page_description);
                 } else {
                     // Fallback content
                     echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
