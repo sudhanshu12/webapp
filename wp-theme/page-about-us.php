@@ -5,6 +5,13 @@
 
 // Get settings safely
 $settings = get_option('bsg_settings', array());
+$colors = bsg_get_color_scheme();
+
+// Get all section visibility flags
+$features_visible = $settings['features_visible'] ?? 1;
+$services_visible = $settings['services_visible'] ?? 1;
+$locations_visible = $settings['locations_visible'] ?? 1;
+$reviews_visible = $settings['reviews_visible'] ?? 1;
 
 get_header();
 ?>
@@ -35,6 +42,32 @@ get_header();
 
 .about-content .tagline {
     color: #14b8a6 !important;
+}
+
+/* Features Section Styles */
+.features-section {
+    background-color: <?php echo esc_attr($settings['features_bg_color'] ?? '#1f2732'); ?> !important;
+    padding: 80px 0 !important;
+}
+.feature-item {
+    background-color: <?php echo esc_attr($settings['features_card_bg'] ?? '#ffffff'); ?> !important;
+    color: <?php echo esc_attr($settings['features_text_color'] ?? '#333333'); ?> !important;
+    padding: 30px 20px !important;
+    margin-bottom: 20px !important;
+}
+.feature-item h3 {
+    color: <?php echo esc_attr($settings['features_text_color'] ?? '#333333'); ?> !important;
+    margin-top: 15px !important;
+    margin-bottom: 10px !important;
+}
+.feature-item p {
+    color: <?php echo esc_attr($settings['features_text_color'] ?? '#666666'); ?> !important;
+    margin-bottom: 0 !important;
+}
+.feature-item svg {
+    stroke: <?php echo esc_attr(!empty($settings['features_icon_color']) ? $settings['features_icon_color'] : $colors['button']); ?> !important;
+    color: <?php echo esc_attr(!empty($settings['features_icon_color']) ? $settings['features_icon_color'] : $colors['button']); ?> !important;
+    margin-bottom: 10px !important;
 }
 </style>
 
@@ -114,6 +147,64 @@ get_header();
             </div>
         </div>
     </section>
+
+    <!-- Features Section (Why Work With Us?) -->
+    <?php if ($features_visible && !empty($settings['features'])): ?>
+    <section class="features-section" style="padding: 80px 20px; background-color: <?php echo esc_attr($settings['features_bg_color'] ?? '#1f2732'); ?>;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem; font-weight: 700; color: <?php echo esc_attr($settings['features_text_color'] ?? '#ffffff'); ?>; margin: 0;">
+                    <?php echo esc_html($settings['features_title'] ?? 'Why Work With Us?'); ?>
+                </h2>
+                <?php if (!empty($settings['features_label'])): ?>
+                <p style="color: <?php echo esc_attr($settings['features_text_color'] ?? '#d1d5db'); ?>; margin-top: 0.5rem;">
+                    <?php echo esc_html($settings['features_label']); ?>
+                </p>
+                <?php endif; ?>
+            </div>
+            <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <?php foreach ($settings['features'] as $feature): ?>
+                <div class="feature-item" style="background-color: <?php echo esc_attr($settings['features_card_bg'] ?? '#ffffff'); ?>; color: <?php echo esc_attr($settings['features_text_color'] ?? '#333333'); ?>; padding: 2rem; border-radius: 12px; text-align: center;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="<?php echo esc_attr(!empty($settings['features_icon_color']) ? $settings['features_icon_color'] : $colors['button']); ?>" style="color: <?php echo esc_attr(!empty($settings['features_icon_color']) ? $settings['features_icon_color'] : $colors['button']); ?>; margin: 0 auto 1rem;" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <h3 style="color: <?php echo esc_attr($settings['features_text_color'] ?? '#333333'); ?>; margin: 1rem 0 0.5rem; font-size: 1.3rem; font-weight: 700;">
+                        <?php echo esc_html($feature['title'] ?? ''); ?>
+                    </h3>
+                    <p style="color: <?php echo esc_attr($settings['features_text_color'] ?? '#666666'); ?>; margin: 0; line-height: 1.6;">
+                        <?php echo esc_html($feature['description'] ?? ''); ?>
+                    </p>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+    <?php endif; ?>
+
+    <!-- Services Section -->
+    <?php if ($services_visible): ?>
+        <?php include dirname(__FILE__) . '/section-services.php'; ?>
+    <?php endif; ?>
+
+    <!-- Service Areas Section -->
+    <?php if ($locations_visible): ?>
+        <?php include dirname(__FILE__) . '/section-areas.php'; ?>
+    <?php endif; ?>
+
+    <!-- Reviews Section -->
+    <?php if ($reviews_visible): ?>
+        <?php include dirname(__FILE__) . '/section-reviews.php'; ?>
+    <?php endif; ?>
+
+    <!-- FAQ Section -->
+    <?php include dirname(__FILE__) . '/faq-section.php'; ?>
+
+    <!-- Commitment Section -->
+    <?php include dirname(__FILE__) . '/section-commitment.php'; ?>
 
     <!-- Contact CTA Section -->
     <section style="padding: 80px 20px; background-color: #1f2937; color: #ffffff;">
