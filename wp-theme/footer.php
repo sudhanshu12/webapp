@@ -55,22 +55,23 @@ if ($services_menu) {
 // If no services from menu, try wizard settings
 if (empty($services) && !empty($settings['services'])) {
     foreach (array_slice($settings['services'], 0, 5) as $service) {
-        if (!empty($service['title'])) {
+        // Check for both 'title' and 'name' fields
+        $service_name = !empty($service['name']) ? $service['name'] : (!empty($service['title']) ? $service['title'] : '');
+        $service_slug = !empty($service['slug']) ? $service['slug'] : sanitize_title($service_name);
+        
+        if (!empty($service_name)) {
             $services[] = array(
-                'title' => $service['title'],
-                'url' => home_url('/services/' . sanitize_title($service['title']) . '/')
+                'title' => $service_name,
+                'url' => home_url('/services/' . $service_slug . '/')
             );
         }
     }
 }
 
-// Final fallback: hardcoded services
-if (empty($services)) {
-    $services = array(
-        array('title' => 'Roof Installation', 'url' => home_url('/services/roof-installation/')),
-        array('title' => 'Solar Installation', 'url' => home_url('/services/solar-installation/')),
-        array('title' => 'Lawn Care', 'url' => home_url('/services/lawn-care/'))
-    );
+// Only use fallback if truly no services exist (don't show hardcoded if wizard has 0 services)
+if (empty($services) && empty($settings['services'])) {
+    // No fallback - just show nothing if no services are configured
+    $services = array();
 }
 
 $first_five_services = array_slice($services, 0, 5);
