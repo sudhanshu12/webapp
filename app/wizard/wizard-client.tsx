@@ -2115,7 +2115,7 @@ export default function WizardClient() {
                 {activeTab === 'general' && (
 					<div>
                     <div className="bsg-section">
-                      <h3 style={{color: form.heading_color || undefined}}>Business Information</h3>
+                      <h3 style={{color: '#1f2937'}}>Business Information</h3>
                       <table className="form-table">
                         <tbody>
                           <tr>
@@ -2327,7 +2327,7 @@ export default function WizardClient() {
 					</div>
 
                     <div className="bsg-section">
-                      <h3 style={{color: form.heading_color || undefined}}>Color Theme</h3>
+                      <h3 style={{color: '#1f2937'}}>Color Theme</h3>
                       <p className="description">Choose a color scheme for your website</p>
                       <div style={{
                         margin: '8px 0 16px 0',
@@ -2516,20 +2516,20 @@ export default function WizardClient() {
 
                       {/* Preview Box */}
                       <div style={{
-                        border: '1px solid #e5e7eb',
+                        border: '2px solid #fbbf24',
                         borderRadius: '12px',
-                        padding: '20px',
-                        backgroundColor: '#fffbeb',
+                        padding: '24px',
+                        backgroundColor: '#fef3c7',
                         marginTop: '20px',
-                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                        boxShadow: '0 4px 12px rgba(245, 158, 11, 0.2)'
                       }}>
                         <div style={{
-                          fontWeight: 700,
-                          marginBottom: '12px',
-                          color: '#78350f',
-                          fontSize: '14px',
+                          fontWeight: 800,
+                          marginBottom: '16px',
+                          color: '#92400e',
+                          fontSize: '15px',
                           textTransform: 'uppercase',
-                          letterSpacing: '0.5px'
+                          letterSpacing: '1px'
                         }}>
                           PREVIEW
                         </div>
@@ -2538,19 +2538,20 @@ export default function WizardClient() {
                         <div style={{
                           padding: '8px 0',
                           color: '#78350f',
-                          marginBottom: '12px',
-                          fontSize: '16px',
-                          fontWeight: 600,
+                          marginBottom: '16px',
+                          fontSize: '20px',
+                          fontWeight: 700,
                           textAlign: 'left'
                         }}>
                           Section Heading
                         </div>
                         
                         <p style={{
-                          fontSize: '14px',
+                          fontSize: '15px',
                           color: '#451a03',
-                          marginBottom: '12px',
-                          lineHeight: '1.5'
+                          marginBottom: '20px',
+                          lineHeight: '1.6',
+                          fontWeight: 500
                         }}>
                           Body text preview showing how your content will look.
                         </p>
@@ -2559,21 +2560,21 @@ export default function WizardClient() {
                           backgroundColor: '#f59e0b',
                           color: '#ffffff',
                           border: 'none',
-                          padding: '10px 20px',
-                          borderRadius: '6px',
-                          fontSize: '14px',
-                          fontWeight: 600,
+                          padding: '12px 24px',
+                          borderRadius: '8px',
+                          fontSize: '15px',
+                          fontWeight: 700,
                           cursor: 'pointer',
-                          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                          boxShadow: '0 4px 6px rgba(245, 158, 11, 0.3)',
                           transition: 'all 0.2s ease'
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.transform = 'translateY(-1px)';
-                          e.currentTarget.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.15)';
+                          e.currentTarget.style.boxShadow = '0 6px 12px rgba(245, 158, 11, 0.4)';
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                          e.currentTarget.style.boxShadow = '0 4px 6px rgba(245, 158, 11, 0.3)';
                         }}>
                           Primary Button
                         </button>
@@ -2592,7 +2593,7 @@ export default function WizardClient() {
                     </div>
 
                     <div className="bsg-section">
-                      <h3 style={{color: form.heading_color || undefined}}>SEO Settings</h3>
+                      <h3 style={{color: '#1f2937'}}>SEO Settings</h3>
                       <p className="description">Optimize your homepage for search engines</p>
                       <table className="form-table">
                         <tbody>
@@ -2695,7 +2696,7 @@ export default function WizardClient() {
                 {/* Hero Tab */}
                 {activeTab === 'hero' && (
                   <div className="bsg-section">
-                    <h3 style={{color: form.heading_color || undefined}}>Hero Section</h3>
+                    <h3 style={{color: '#1f2937'}}>Hero Section</h3>
                     <table className="form-table">
                       <tbody>
                         <tr>
@@ -3326,7 +3327,7 @@ export default function WizardClient() {
                   <div>
                     {/* Homepage About Section */}
                     <div className="bsg-section">
-                      <h3 style={{color: form.heading_color || undefined}}>Homepage About Section</h3>
+                      <h3 style={{color: '#1f2937'}}>Homepage About Section</h3>
                       <table className="form-table">
                         <tbody>
                           <tr>
@@ -3594,7 +3595,7 @@ export default function WizardClient() {
 
                     {/* About Us Page Section */}
                     <div className="bsg-section">
-                      <h3 style={{color: form.heading_color || undefined}}>About Us Page Section</h3>
+                      <h3 style={{color: '#1f2937'}}>About Us Page Section</h3>
                       
                       {/* Hero Section */}
                       <h4 style={{marginTop: '20px', marginBottom: '15px', color: '#374151'}}>Hero Section</h4>
@@ -4076,7 +4077,7 @@ export default function WizardClient() {
 
                     {/* About Page SEO Settings */}
                     <div className="bsg-section">
-                      <h3 style={{color: form.heading_color || undefined}}>About Page SEO Settings</h3>
+                      <h3 style={{color: '#1f2937'}}>About Page SEO Settings</h3>
                       <table className="form-table">
                         <tbody>
                           <tr>
@@ -4133,7 +4134,7 @@ export default function WizardClient() {
                 {/* Services Tab with Dynamic Functionality */}
                 {activeTab === 'services' && (
                   <div className="bsg-section">
-                    <h3 style={{color: form.heading_color || undefined}}>Services</h3>
+                    <h3 style={{color: '#1f2937'}}>Services</h3>
                     
                     {/* General Service Section Settings */}
                     <h4>General Service Section Settings</h4>
@@ -4622,7 +4623,7 @@ export default function WizardClient() {
                 {/* Locations Tab */}
                 {activeTab === 'locations' && (
                   <div className="bsg-section">
-                    <h3 style={{color: form.heading_color || undefined}}>Locations</h3>
+                    <h3 style={{color: '#1f2937'}}>Locations</h3>
                     
                     {/* General Location Section Settings */}
                     <h4>General Location Section Settings</h4>
@@ -5170,7 +5171,7 @@ export default function WizardClient() {
                 {/* Reviews Tab */}
                 {activeTab === 'reviews' && (
                   <div className="bsg-section">
-                    <h3 style={{color: form.heading_color || undefined}}>Reviews</h3>
+                    <h3 style={{color: '#1f2937'}}>Reviews</h3>
                     <table className="form-table">
                       <tbody>
                         <tr>
@@ -5826,7 +5827,7 @@ export default function WizardClient() {
                 {/* FAQ Tab */}
                 {activeTab === 'faq' && (
                   <div className="bsg-section">
-                    <h3 style={{color: form.heading_color || undefined}}>FAQ</h3>
+                    <h3 style={{color: '#1f2937'}}>FAQ</h3>
                     <table className="form-table">
                       <tbody>
                         <tr>
