@@ -1,50 +1,49 @@
 <?php
 /**
- * Template Name: BSG About Us Template
- * Description: About Us page with dynamic content and sections.
+ * Template Name: About Us Page
+ * 
+ * This template displays the about us page with all sections
  */
 
-// Get settings before header
-$settings = bsg_get_settings();
-$business_name = $settings['business_name'] ?? 'Our Company';
+// Get settings
+$settings = get_option('bsg_settings', array());
+$business_name = $settings['business_name'] ?? 'Your Business';
 $phone = $settings['phone'] ?? '';
+$email = $settings['email'] ?? '';
 
-// Add styles to wp_head BEFORE get_header()
+// Add custom styles
 function bsg_about_page_styles() {
-    global $settings;
-?>
-<style>
-    /* Hero Section - Match Service Page */
+    $settings = get_option('bsg_settings', array());
+    ?>
+    <style>
+    /* About Page Hero Section */
     .about-hero-section {
-        padding: 90px 0 !important;
-        min-height: 80vh !important;
+        padding: 90px 0;
+        min-height: 80vh;
         background-size: cover;
         background-position: center;
         display: flex;
         align-items: center;
+        position: relative;
     }
     .about-hero-content {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 60px;
         color: #ffffff;
-        margin-right: 20px;
     }
     .about-hero-content h1 {
         font-size: 3.2rem;
         font-weight: 800;
         margin: 0 0 24px 0;
         line-height: 1.2;
-        color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#000000'); ?> !important;
+        color: #1f2937;
         white-space: normal;
         word-wrap: break-word;
     }
-    .about-hero-content .hero-actions {
-        margin-top: 0;
-    }
     .about-hero-content .btn {
-        background: #f59e0b !important;
-        color: #ffffff !important;
+        background: #f59e0b;
+        color: #ffffff;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -64,254 +63,197 @@ function bsg_about_page_styles() {
     }
 
     /* About Content Section */
+    .about-content-section {
+        padding: 80px 20px;
+        background: #ffffff;
+    }
     .about-grid {
-        display: flex;
-        gap: 4rem;
-        align-items: flex-start;
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
     }
     .about-image-wrapper {
-        flex: 0 0 420px;
-        min-width: 300px;
+        width: 100%;
+        height: 500px;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
     .about-image-wrapper img {
         width: 100%;
-        height: 550px;
+        height: 100%;
         object-fit: cover;
     }
     .about-content-text {
-        flex: 1;
-        min-width: 300px;
-        padding-top: 1rem;
+        padding: 20px 0;
     }
     .about-content-text .tagline {
-        color: <?php echo esc_attr($settings['about_page_who_tagline_color'] ?? '#14b8a6'); ?>;
-        font-weight: 700;
-        font-size: 0.95rem;
-        margin-bottom: 1rem;
-        letter-spacing: 1px;
+        color: #14b8a6;
+        font-size: 0.9rem;
+        font-weight: 600;
         text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
     .about-content-text h2 {
-        font-size: 2.25rem;
-        font-weight: 800;
-        margin: 0 0 1.5rem 0;
-        color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#1f2937'); ?>;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin: 0.5rem 0 1.5rem 0;
         line-height: 1.2;
     }
-    .about-content-text p {
-        font-size: 1.05rem;
-        margin-bottom: 1.5rem;
-        line-height: 1.8;
-        color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#4b5563'); ?>;
+    .about-description-content {
+        margin-bottom: 2rem;
+        line-height: 1.7;
+        color: #374151;
+        font-size: 1.1rem;
     }
-    
-    /* Rich content sections */
-    .about-content-text h3 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#2c3e50'); ?>;
-        margin: 2rem 0 1rem 0;
-        border-left: 4px solid <?php echo esc_attr($settings['about_page_who_tagline_color'] ?? '#4ecdc4'); ?>;
-        padding-left: 1rem;
-    }
-    .about-content-text ul {
-        margin: 1rem 0;
-        padding-left: 1.5rem;
-        color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#34495e'); ?>;
-    }
-    .about-content-text ul li {
-        margin-bottom: 0.5rem;
-        line-height: 1.6;
-    }
-    
     .about-actions {
         display: flex;
-        gap: 1.5rem;
         align-items: center;
-        flex-wrap: wrap;
+        gap: 2rem;
         margin-top: 2rem;
     }
     .experience-badge {
-        background: <?php echo esc_attr($settings['about_page_experience_bg'] ?? '#14b8a6'); ?>;
-        color: <?php echo esc_attr($settings['about_page_experience_text'] ?? '#ffffff'); ?>;
+        background: #374151;
+        color: #ffffff;
         padding: 1.5rem 2rem;
-        border-radius: 8px;
+        border-radius: 12px;
         text-align: center;
-        min-width: 140px;
+        min-width: 150px;
     }
-    .experience-badge div:first-child {
-        font-size: 2.25rem;
+    .experience-badge .number {
+        font-size: 2.5rem;
         font-weight: 800;
         line-height: 1;
+        color: #14b8a6;
     }
-    .experience-badge div:last-child {
-        font-size: 0.85rem;
-        font-weight: 500;
+    .experience-badge .label {
+        font-size: 0.9rem;
+        font-weight: 600;
         margin-top: 0.5rem;
     }
-    .cta-button {
-        background: <?php echo esc_attr($settings['about_page_cta_bg'] ?? '#14b8a6'); ?>;
-        color: <?php echo esc_attr($settings['about_page_cta_text_color'] ?? '#ffffff'); ?>;
-        padding: 1rem 2.5rem;
+    .about-cta-btn {
+        background: #14b8a6;
+        color: #ffffff;
+        padding: 1rem 2rem;
         border-radius: 8px;
         text-decoration: none;
         font-weight: 700;
         font-size: 1rem;
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
         transition: all 0.3s ease;
     }
+    .about-cta-btn:hover {
+        background: #0d9488;
+        transform: translateY(-2px);
+    }
 
-    /* Why Work With Us (About Page Specific) - Compact Layout */
+    /* Why Work With Us Section */
     .why-section {
-        padding: 60px 20px;
-        background: <?php echo esc_attr($settings['about_page_why_bg'] ?? '#1e3a8a'); ?>;
+        padding: 80px 20px;
+        background: #1e3a8a;
     }
     .why-section h2 {
-        color: <?php echo esc_attr($settings['about_page_why_heading_color'] ?? '#ffffff'); ?>;
-        font-size: 2.25rem;
+        color: #ffffff;
+        font-size: 2.5rem;
         font-weight: 700;
         text-align: center;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
     }
     .why-section .subtitle {
-        color: <?php echo esc_attr($settings['about_page_why_subtitle_color'] ?? '#ffffff'); ?>;
-        font-size: 1rem;
+        color: #ffffff;
+        font-size: 1.1rem;
         text-align: center;
-        margin-bottom: 2.5rem;
-        font-weight: 400;
+        margin-bottom: 3rem;
         opacity: 0.9;
     }
     .benefits-container {
-        max-width: 1100px;
+        max-width: 1200px;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 2.5rem;
+        gap: 3rem;
     }
     .benefits-row-top {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 2.5rem;
+        gap: 3rem;
         width: 100%;
         max-width: 900px;
     }
     .benefits-row-bottom {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 2.5rem;
+        gap: 3rem;
         width: 100%;
-        max-width: 550px;
+        max-width: 600px;
     }
     .benefit-item {
         text-align: center;
-        padding: 0.5rem;
+        padding: 1rem;
     }
     .benefit-item .icon {
-        width: 60px;
-        height: 60px;
-        background: <?php echo esc_attr($settings['about_page_why_icon_bg'] ?? '#3b82f6'); ?>;
+        width: 70px;
+        height: 70px;
+        background: #3b82f6;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1rem;
-        border: none;
+        margin: 0 auto 1.5rem;
     }
     .benefit-item h3 {
-        color: <?php echo esc_attr($settings['about_page_why_item_title'] ?? '#ffffff'); ?>;
-        font-size: 1.15rem;
+        color: #ffffff;
+        font-size: 1.25rem;
         font-weight: 600;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
     }
     .benefit-item p {
-        color: <?php echo esc_attr($settings['about_page_why_item_desc'] ?? '#ffffff'); ?>;
-        line-height: 1.5;
+        color: #ffffff;
+        line-height: 1.6;
         margin: 0;
-        font-size: 0.875rem;
+        font-size: 0.95rem;
         opacity: 0.9;
     }
 
-    /* Contact Section */
-    .contact-section {
-        padding: 80px 20px;
-        background-color: #1f2937;
-        color: #ffffff;
-        text-align: center;
-    }
-    .contact-section h2 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin: 0 0 1rem 0;
-    }
-    .contact-section p {
-        font-size: 1.1rem;
-        margin: 0 0 2rem 0;
-        color: #d1d5db;
-    }
-    .contact-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    .contact-buttons a {
-        padding: 1rem 2rem;
-        text-decoration: none;
-        border-radius: 6px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    .btn-primary {
-        background: <?php echo esc_attr($settings['button_primary_color'] ?? '#f59e0b'); ?>;
-        color: #ffffff;
-    }
-    .btn-secondary {
-        background: transparent;
-        color: <?php echo esc_attr($settings['button_primary_color'] ?? '#f59e0b'); ?>;
-        border: 2px solid <?php echo esc_attr($settings['button_primary_color'] ?? '#f59e0b'); ?>;
-    }
-
+    /* Responsive Design */
     @media (max-width: 768px) {
         .about-hero-section {
-            min-height: 60vh !important;
-            padding: 60px 0 !important;
+            min-height: 60vh;
+            padding: 60px 0;
         }
         .about-hero-content {
-            padding: 0 20px !important;
+            padding: 0 20px;
         }
         .about-hero-content h1 {
-            font-size: 2.5rem !important;
+            font-size: 2.5rem;
         }
         .about-hero-content .btn {
-            max-width: 100% !important;
+            max-width: 100%;
         }
         .about-grid {
-            flex-direction: column;
-            gap: 2rem;
+            grid-template-columns: 1fr;
+            gap: 40px;
         }
         .about-image-wrapper {
-            flex: none;
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
+            height: 400px;
         }
-        .benefits-container {
-            gap: 2rem;
+        .about-actions {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
         }
-        .benefits-row-top {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
+        .benefits-row-top,
         .benefits-row-bottom {
             grid-template-columns: 1fr;
             gap: 2rem;
@@ -319,12 +261,9 @@ function bsg_about_page_styles() {
         .why-section h2 {
             font-size: 2rem;
         }
-        .why-section .subtitle {
-            font-size: 1rem;
-        }
     }
-</style>
-<?php
+    </style>
+    <?php
 }
 add_action('wp_head', 'bsg_about_page_styles', 20);
 
@@ -334,22 +273,18 @@ get_header();
 <main>
     <!-- Hero Section -->
     <section class="about-hero-section" style="<?php if (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? '#1f2937'); ?>;<?php endif; ?>">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 60px;">
-            <div class="about-hero-content">
-                <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#000000'); ?>; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 24px 0;">
-                    About <?php echo esc_html($business_name); ?>
-                </h1>
-                <div class="hero-actions">
-                    <a href="tel:<?php echo esc_attr($phone); ?>" class="btn btn-dark" style="background: #f59e0b; color: #ffffff; display:inline-flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; max-width:520px; border-radius:10px; padding:1rem 1.25rem; font-weight:700; font-size:1.1rem;">
-                        <i class="fa-solid fa-phone"></i> Call us Today
-                    </a>
-                </div>
-            </div>
+        <div class="about-hero-content">
+            <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#1f2937'); ?>;">
+                About <?php echo esc_html($business_name); ?>
+            </h1>
+            <a href="tel:<?php echo esc_attr($phone); ?>" class="btn">
+                <i class="fa-solid fa-phone"></i> Call us Today
+            </a>
         </div>
     </section>
 
-    <!-- About Content Section with Image Side by Side -->
-    <section style="background: <?php echo esc_attr($settings['about_page_who_bg'] ?? '#ffffff'); ?>; padding: 80px 20px;">
+    <!-- About Content Section -->
+    <section class="about-content-section">
         <div class="about-grid">
             <!-- Image on Left -->
             <div class="about-image-wrapper">
@@ -368,39 +303,42 @@ get_header();
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                     </svg>
-                    <?php echo esc_html($settings['about_page_who_tagline'] ?? 'WHO WE ARE'); ?>
+                    WHO WE ARE
                 </p>
                 <h2>About <?php echo esc_html($business_name); ?></h2>
                 
                 <div class="about-description-content">
-                <?php 
-                // Display full HTML content from wizard's about page description
-                $about_page_description = $settings['about_page_who_description'] ?? '';
-                
-                if (!empty($about_page_description)) {
-                    // Use wp_kses_post to allow safe HTML formatting
-                    echo wp_kses_post($about_page_description);
-                } else {
-                    // Fallback content
-                    echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
-                }
-                ?>
+                    <?php 
+                    // Display full HTML content from wizard's about page description
+                    $about_page_description = $settings['about_page_who_description'] ?? '';
+                    
+                    if (!empty($about_page_description)) {
+                        // Use wp_kses_post to allow safe HTML formatting
+                        echo wp_kses_post($about_page_description);
+                    } else {
+                        // Fallback content
+                        echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
+                    }
+                    ?>
                 </div>
                 
                 <div class="about-actions">
                     <div class="experience-badge">
-                        <div><?php echo esc_html($settings['about_page_years'] ?? '15+'); ?></div>
-                        <div><?php echo esc_html($settings['about_page_experience_label'] ?? 'Years of Experience'); ?></div>
+                        <div class="number"><?php echo esc_html($settings['about_page_years'] ?? '15+'); ?></div>
+                        <div class="label">Years of Experience</div>
                     </div>
-                    <a href="<?php echo esc_url($settings['about_page_cta_link'] ?? '#contact'); ?>" class="cta-button">
-                        <?php echo esc_html($settings['about_page_cta_text'] ?? 'Get Started'); ?>
+                    <a href="tel:<?php echo esc_attr($phone); ?>" class="about-cta-btn">
+                        Get Started Today
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6-6 6-1.41-1.41z"/>
+                        </svg>
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Why Work With Us? (About Page Specific) -->
+    <!-- Why Work With Us Section -->
     <?php 
     // Check if about_page_why_items exist, if not use features as fallback
     $why_items = !empty($settings['about_page_why_items']) ? $settings['about_page_why_items'] : (!empty($settings['features']) ? $settings['features'] : []);
@@ -467,7 +405,7 @@ get_header();
     <?php endif; ?>
 
     <!-- Service Areas Section -->
-    <?php if ($settings['locations_visible'] ?? 1): ?>
+    <?php if ($settings['areas_visible'] ?? 1): ?>
         <?php include dirname(__FILE__) . '/section-areas.php'; ?>
     <?php endif; ?>
 
@@ -477,20 +415,20 @@ get_header();
     <?php endif; ?>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container" style="max-width: 600px; margin: 0 auto;">
-            <h2>Get In Touch</h2>
-            <p>Ready to work with us? Contact <?php echo esc_html($business_name); ?> today.</p>
-            <div class="contact-buttons">
+    <section id="contact" class="contact-section" style="padding: 80px 20px; background-color: #1f2937;">
+        <div class="container" style="max-width: 600px; margin: 0 auto; text-align: center;">
+            <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Get In Touch</h2>
+            <p style="color: #ffffff; font-size: 1.1rem; margin-bottom: 2rem;">Ready to work with us? Contact <?php echo esc_html($business_name); ?> today.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <?php if (!empty($phone)): ?>
-                <a href="tel:<?php echo esc_attr($phone); ?>" class="btn-primary">
-                    Call: <?php echo esc_html($phone); ?>
+                <a href="tel:<?php echo esc_attr($phone); ?>" style="background: #f59e0b; color: #ffffff; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-phone"></i> Call: <?php echo esc_html($phone); ?>
                 </a>
                 <?php endif; ?>
                 
                 <?php if (!empty($settings['email'])): ?>
-                <a href="mailto:<?php echo esc_attr($settings['email']); ?>" class="btn-secondary">
-                    Email Us
+                <a href="mailto:<?php echo esc_attr($settings['email']); ?>" style="border: 2px solid #f59e0b; color: #f59e0b; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa-solid fa-envelope"></i> Email Us
                 </a>
                 <?php endif; ?>
             </div>
