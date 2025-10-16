@@ -409,7 +409,7 @@ export default function WizardClient() {
     service_page_hero_bg_image: '',
     location_page_hero_bg_image: '',
     hero_company_color: '#9ca3af',
-    hero_heading_color: '#ffffff',
+    hero_heading_color: '#000000',
     hero_subheading_color: '#e5e7eb',
     hero_description_color: '#d1d5db',
     hero_reviews_text_color: '#fbbf24',
@@ -951,7 +951,7 @@ export default function WizardClient() {
         // Hero section defaults
         next.hero_bg_color = '#1f2937';
         next.hero_company_color = '#9ca3af';
-        next.hero_heading_color = '#ffffff';
+        next.hero_heading_color = '#000000';
         next.hero_subheading_color = '#e5e7eb';
         next.hero_description_color = '#d1d5db';
         next.hero_reviews_text_color = '#fbbf24';
