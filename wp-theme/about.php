@@ -967,10 +967,8 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 </div>
             </div>
         </section>
-        
-        <?php return; } ?>
-                    <div class="old-about-content-to-remove" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
-                        <div class="about-hero-section" style="text-align: center; margin-bottom: 3rem;">
+
+        <!-- Rest of content removed, keeping sections below -->
                             
                             <h2 style="font-size: 2.5rem; font-weight: 700; color: #2c3e50; margin: 0.5rem 0;">Your Trusted Roofing Experts</h2>
                             <p class="location" style="color: #7f8c8d; font-size: 1.1rem; margin: 0;">Serving Orlando and surrounding areas</p>
