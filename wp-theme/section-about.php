@@ -18,7 +18,8 @@ $about_experience_color = $settings['about_experience_bg'] ?? '#232f38';
 $about_experience_text_color = $settings['about_experience_text_color'] ?? '#4ecdc4';
 $about_cta = $settings['about_button_text'] ?? 'About Us';
 $about_cta_link = $settings['about_button_link'] ?? '/about-us';
-$about_image = $settings['about_image'] ?? '';
+// Use about_home_image first, fallback to about_image
+$about_image = !empty($settings['about_home_image']) ? $settings['about_home_image'] : ($settings['about_image'] ?? '');
 $about_bg_color = $settings['about_bg_color'] ?? '#232834';
 $about_text_color = $settings['about_text_color'] ?? '#fff';
 $about_margin_left = $settings['about_margin_left'] ?? 60;
