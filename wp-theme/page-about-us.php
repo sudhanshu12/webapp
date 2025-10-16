@@ -114,31 +114,12 @@ $settings = bsg_get_settings();
                         
                         <div class="bsg-who-description" style="font-size: 1.05rem; margin-bottom: 2.5rem; color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#4b5563'); ?>; line-height: 1.8;">
                             <?php 
-                            // Get the description from the wizard's about page section
-                            $wizard_description = $settings['about_page_who_description'] ?? '';
-                            
-                            if (!empty($wizard_description)) {
-                                // Extract just the text from the "WHO WE ARE" section
-                                // Look for the about-who-we-are div and extract its main paragraph
-                                if (preg_match('/<div class="about-who-we-are"[^>]*>.*?<h2[^>]*>About Us<\/h2>\s*<div[^>]*>(.*?)<\/div>/s', $wizard_description, $matches)) {
-                                    echo wp_kses_post(trim($matches[1]));
-                                } else {
-                                    // Fallback: display from settings or use default
-                                    $about_text = $settings['about_description'] ?? '';
-                                    if (!empty($about_text)) {
-                                        echo wp_kses_post($about_text);
-                                    } else {
-                                        echo esc_html('We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.');
-                                    }
-                                }
+                            // Simple and safe: Use about_description from settings (same as homepage)
+                            $about_text = $settings['about_description'] ?? '';
+                            if (!empty($about_text)) {
+                                echo wp_kses_post($about_text);
                             } else {
-                                // Use about_description from settings as fallback
-                                $about_text = $settings['about_description'] ?? '';
-                                if (!empty($about_text)) {
-                                    echo wp_kses_post($about_text);
-                                } else {
-                                    echo esc_html('We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.');
-                                }
+                                echo esc_html('We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.');
                             }
                             ?>
                         </div>
