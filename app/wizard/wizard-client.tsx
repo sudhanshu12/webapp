@@ -2371,7 +2371,9 @@ export default function WizardClient() {
                         gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', 
                         gap: '12px', 
                         marginBottom: '20px',
-                        maxWidth: '100%'
+                        maxWidth: '100%',
+                        opacity: (form.use_default_color_scheme ?? true) ? 0.5 : 1,
+                        pointerEvents: (form.use_default_color_scheme ?? true) ? 'none' : 'auto'
                       }}>
                         {[
                           { name: 'Landscaping', primary: '#059669', secondary: '#10b981', accent: '#16a34a' },
@@ -2517,14 +2519,14 @@ export default function WizardClient() {
                         border: '1px solid #e5e7eb',
                         borderRadius: '12px',
                         padding: '20px',
-                        backgroundColor: form.use_default_color_scheme ? getThemeColors(form.color_theme).light : (form.global_primary_color ? '#f8f9fa' : getThemeColors(form.color_theme).light),
+                        backgroundColor: '#fffbeb',
                         marginTop: '20px',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
                       }}>
                         <div style={{
                           fontWeight: 700,
                           marginBottom: '12px',
-                          color: form.use_default_color_scheme ? (form.heading_color || getThemeColors(form.color_theme).text) : (form.heading_color || getThemeColors(form.color_theme).text),
+                          color: '#78350f',
                           fontSize: '14px',
                           textTransform: 'uppercase',
                           letterSpacing: '0.5px'
@@ -2535,7 +2537,7 @@ export default function WizardClient() {
                         {/* Preview content */}
                         <div style={{
                           padding: '8px 0',
-                          color: form.use_default_color_scheme ? (form.heading_color || getThemeColors(form.color_theme).text) : (form.heading_color || getThemeColors(form.color_theme).text),
+                          color: '#78350f',
                           marginBottom: '12px',
                           fontSize: '16px',
                           fontWeight: 600,
@@ -2546,7 +2548,7 @@ export default function WizardClient() {
                         
                         <p style={{
                           fontSize: '14px',
-                          color: '#374151',
+                          color: '#451a03',
                           marginBottom: '12px',
                           lineHeight: '1.5'
                         }}>
@@ -2554,7 +2556,7 @@ export default function WizardClient() {
                         </p>
                         
                         <button style={{
-                          backgroundColor: form.use_default_color_scheme ? (form.button_primary_color || getThemeColors(form.color_theme).primary) : (form.button_primary_color || getThemeColors(form.color_theme).primary),
+                          backgroundColor: '#f59e0b',
                           color: '#ffffff',
                           border: 'none',
                           padding: '10px 20px',
