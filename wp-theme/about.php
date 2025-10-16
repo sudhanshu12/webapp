@@ -903,21 +903,73 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             </div>
         </section>
 
-        <!-- About Page Content -->
-        <section class="about-content-section animate-on-scroll-section" style="background: #ffffff; color: #374151; padding: 5rem 0;">
-            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-                <?php 
-                // Get the full about page content from wizard settings (about page, not homepage about section)
-                $wizard_about_content = $settings['about_page_description'] ?? $settings['about_page_who_description'] ?? '';
-                
-                // Check if wizard content is empty or contains test data
-                if (!empty($wizard_about_content) && strlen(trim($wizard_about_content)) > 50 && strpos($wizard_about_content, 'hi thi stess') === false) {
-                    // Display the full wizard content
-                    echo wp_kses_post($wizard_about_content);
-                } else {
-                    // Fallback: Display the full about content structure
-                    ?>
-                    <div class="about-content" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+        <!-- About Page Content - Image on Left, Content on Right -->
+        <section class="bsg-who-we-are animate-on-scroll-section" style="background: <?php echo esc_attr($settings['about_page_who_bg'] ?? '#ffffff'); ?>; color: <?php echo esc_attr($settings['about_page_who_text'] ?? '#000000'); ?>; padding: 5rem 0;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+                <div class="bsg-who-we-are" style="display: flex; align-items: flex-start; gap: 4rem;">
+                    <!-- Image on Left -->
+                    <div class="bsg-who-image" style="flex: 0 0 420px; height: 550px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+                        <?php if (!empty($settings['about_page_team_image'])): ?>
+                            <img src="<?php echo esc_url($settings['about_page_team_image']); ?>" alt="About <?php echo esc_attr($settings['business_name'] ?? 'Our Team'); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                        <?php else: ?>
+                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600;">
+                                <div style="text-align: center;">
+                                    <svg width="64" height="64" fill="white" viewBox="0 0 24 24" style="margin-bottom: 1rem; opacity: 0.9;">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <div>Team Photo</div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <!-- Content on Right -->
+                    <div class="bsg-who-content" style="flex: 1; color: <?php echo esc_attr($settings['about_page_who_text'] ?? '#000000'); ?>;">
+                        <div class="bsg-who-tagline" style="display: flex; align-items: center; gap: 0.5rem; color: <?php echo esc_attr($settings['about_page_who_tagline_color'] ?? '#14b8a6'); ?>; font-weight: 700; font-size: 0.95rem; margin-bottom: 1rem; letter-spacing: 1px; text-transform: uppercase;">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <?php echo esc_html($settings['about_page_who_tagline'] ?? 'WHO WE ARE'); ?>
+                        </div>
+                        
+                        <h2 style="font-size: 2.75rem; font-weight: 800; margin: 0 0 1.5rem 0; color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#1f2937'); ?>; line-height: 1.2;">
+                            About <?php echo esc_html($settings['business_name'] ?? 'Our Company'); ?>
+                        </h2>
+                        
+                        <div class="bsg-who-description" style="font-size: 1.05rem; margin-bottom: 2.5rem; color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#4b5563'); ?>; line-height: 1.8;">
+                            <?php 
+                            // Get the about description from wizard settings
+                            $about_description = $settings['about_page_who_description'] ?? $settings['about_description'] ?? '';
+                            
+                            // Clean and display the description
+                            if (!empty($about_description)) {
+                                // Remove any HTML tags and decode entities
+                                $clean_description = html_entity_decode(strip_tags($about_description));
+                                echo wp_kses_post(wpautop($clean_description));
+                            } else {
+                                // Default description
+                                echo '<p>We are a professional service provider dedicated to delivering exceptional results. With years of experience and a commitment to quality, we serve our community with integrity and expertise.</p>';
+                            }
+                        </div>
+                        
+                        <!-- Experience Badge and CTA Button - Side by Side -->
+                        <div class="bsg-who-actions" style="display: flex; align-items: center; gap: 1.5rem; margin-top: 2rem;">
+                            <div class="bsg-experience-badge" style="background: <?php echo esc_attr($settings['about_page_experience_bg'] ?? '#14b8a6'); ?>; color: <?php echo esc_attr($settings['about_page_experience_text'] ?? '#ffffff'); ?>; padding: 1.5rem 2rem; border-radius: 8px; text-align: center; min-width: 140px;">
+                                <div style="font-size: 2.25rem; font-weight: 800; margin: 0; line-height: 1;"><?php echo esc_html($settings['about_page_years'] ?? '15+'); ?></div>
+                                <div style="font-size: 0.85rem; margin: 0.5rem 0 0 0; font-weight: 500;"><?php echo esc_html($settings['about_page_experience_label'] ?? 'Years of Experience'); ?></div>
+                            </div>
+                            
+                            <a href="<?php echo esc_url($settings['about_page_cta_link'] ?? '#contact'); ?>" class="bsg-cta-button" style="background: <?php echo esc_attr($settings['about_page_cta_bg'] ?? '#14b8a6'); ?>; color: <?php echo esc_attr($settings['about_page_cta_text_color'] ?? '#ffffff'); ?>; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1rem; transition: all 0.3s ease; display: inline-block;">
+                                <?php echo esc_html($settings['about_page_cta_text'] ?? 'Get Started'); ?>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <?php return; } ?>
+                    <div class="old-about-content-to-remove" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
                         <div class="about-hero-section" style="text-align: center; margin-bottom: 3rem;">
                             
                             <h2 style="font-size: 2.5rem; font-weight: 700; color: #2c3e50; margin: 0.5rem 0;">Your Trusted Roofing Experts</h2>
