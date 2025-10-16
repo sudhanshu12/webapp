@@ -301,52 +301,20 @@ $phone = $settings['phone'] ?? '';
                 </p>
                 <h2>About <?php echo esc_html($business_name); ?></h2>
                 
+                <div class="about-description-content">
                 <?php 
-                // Extract just the main about description from the wizard
-                $about_full_html = $settings['about_page_who_description'] ?? '';
-                $about_simple = $settings['about_description'] ?? '';
+                // Display the about description from wizard with HTML formatting preserved
+                $about_description = $settings['about_description'] ?? '';
                 
-                // Try to extract the main description paragraph from the HTML
-                if (!empty($about_full_html)) {
-                    // Remove all HTML tags and style attributes to get clean text
-                    $about_full_html = strip_tags($about_full_html);
-                    
-                    // Look for the main description paragraph (usually starts with the business name or "At")
-                    // Split by common section headers
-                    $sections = preg_split('/(Our Mission|Our Values|Our Team|Our Commitment|Why Choose|Ready to Get Started)/i', $about_full_html);
-                    
-                    if (!empty($sections[0])) {
-                        // Get the first section and clean it up
-                        $main_description = trim($sections[0]);
-                        
-                        // Remove any extra whitespace and newlines
-                        $main_description = preg_replace('/\s+/', ' ', $main_description);
-                        
-                        // Remove taglines and headings (WHO WE ARE, ABOUT YOUR BUSINESS, etc.)
-                        $main_description = preg_replace('/(WHO WE ARE|ABOUT YOUR BUSINESS|About Us|Your Trusted.*Partner|Serving.*areas)/i', '', $main_description);
-                        
-                        // Clean up any remaining extra spaces
-                        $main_description = trim(preg_replace('/\s+/', ' ', $main_description));
-                        
-                        // Display the clean description
-                        if (!empty($main_description) && strlen($main_description) > 50) {
-                            echo '<p>' . esc_html($main_description) . '</p>';
-                        } else {
-                            // Fallback to simple about description
-                            echo '<p>' . esc_html(wp_strip_all_tags($about_simple)) . '</p>';
-                        }
-                    } else {
-                        // Fallback
-                        echo '<p>' . esc_html(wp_strip_all_tags($about_simple)) . '</p>';
-                    }
-                } else if (!empty($about_simple)) {
-                    // Use the simple about description
-                    echo '<p>' . esc_html(wp_strip_all_tags($about_simple)) . '</p>';
+                if (!empty($about_description)) {
+                    // Use wp_kses_post to allow safe HTML rendering
+                    echo wp_kses_post($about_description);
                 } else {
-                    // Final fallback
+                    // Fallback content
                     echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
                 }
                 ?>
+                </div>
                 
                 <div class="about-actions">
                     <div class="experience-badge">
