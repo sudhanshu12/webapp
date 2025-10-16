@@ -349,9 +349,9 @@ get_header();
                     // Remove all HTML tags to get plain text
                     $clean_text = strip_tags($about_page_description);
                     
-                    // Extract the main "About Us" paragraph (between "WHO WE ARE" and "Our Mission")
-                    // This is typically the first substantive paragraph
-                    preg_match('/WHO WE ARE.*?About Us(.*?)(Our Mission|Years of Experience|Get Started Today)/s', $clean_text, $matches);
+                    // Extract the main "About Us" paragraph (between "WHO WE ARE" and various end markers)
+                    // Stop at: Our Mission, Years of Experience, Get Started, or numeric patterns like "10+", "15+"
+                    preg_match('/WHO WE ARE.*?About Us(.*?)(?:Our Mission|Years of Experience|\d+\+\s*Years|Get Started Today|Our Values|Our Team)/s', $clean_text, $matches);
                     
                     if (!empty($matches[1])) {
                         $about_text = trim($matches[1]);
@@ -361,6 +361,10 @@ get_header();
                         $about_text = '';
                         foreach ($paragraphs as $para) {
                             $para = trim($para);
+                            // Stop if we hit numeric experience indicators
+                            if (preg_match('/^\d+\+/', $para)) {
+                                break;
+                            }
                             if (strlen($para) > 100 && !preg_match('/(WHO WE ARE|ABOUT YOUR BUSINESS|Our Mission|Our Values|Our Team|Ready to Get Started)/i', $para)) {
                                 $about_text = $para;
                                 break;
@@ -368,8 +372,10 @@ get_header();
                         }
                     }
                     
-                    // Clean up extra whitespace
+                    // Clean up extra whitespace and remove any trailing numeric patterns
                     $about_text = preg_replace('/\s+/', ' ', $about_text);
+                    $about_text = preg_replace('/\s*\d+\+\s*$/', '', $about_text); // Remove trailing "10+", "15+", etc.
+                    $about_text = trim($about_text);
                     
                     // Display the clean text
                     if (!empty($about_text) && strlen($about_text) > 50) {
