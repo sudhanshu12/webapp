@@ -534,26 +534,28 @@ $contact_page = get_page_by_path('contact-us');
     .location-content h4, 
     .location-content h5, 
     .location-content h6 {
-        color: <?php echo esc_attr($settings['location_description_heading_color'] ?? '#232834'); ?> !important;
+        color: #1f2937 !important;
     }
     
     .location-content h2 {
         font-size: 2.5rem !important;
         font-weight: 800 !important;
         margin: 0 0 1rem 0 !important;
+        color: #1f2937 !important;
     }
     
     .location-content h3 {
         font-size: 1.8rem !important;
         font-weight: 700 !important;
         margin: 2rem 0 1rem 0 !important;
+        color: #1f2937 !important;
     }
     
     .location-content p {
         font-size: 1.1rem !important;
         line-height: 1.6 !important;
         margin-bottom: 1.5rem !important;
-        color: <?php echo esc_attr($settings['location_description_text_color'] ?? '#374151'); ?> !important;
+        color: #374151 !important;
     }
     
     /* Ensure quote box is visible and properly styled */
@@ -626,9 +628,9 @@ $contact_page = get_page_by_path('contact-us');
                     } else { ?>
                         <!-- Location Description Placeholder - Fallback -->
                         <div class="location-description-placeholder">
-                    <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1rem 0; color: <?php echo esc_attr($settings['location_description_heading_color'] ?? '#232834'); ?>;">Our Services in <?php echo esc_html(get_the_title()); ?> <?php echo esc_html($zip); ?></h2>
-                    <h3 style="font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem 0; color: <?php echo esc_attr($settings['location_description_heading_color'] ?? '#232834'); ?>;">Professional Services in <?php echo esc_html(get_the_title()); ?></h3>
-                    <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; color: <?php echo esc_attr($settings['location_description_text_color'] ?? '#374151'); ?>;">
+                    <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1rem 0; color: #1f2937;">Our Services in <?php echo esc_html(get_the_title()); ?> <?php echo esc_html($zip); ?></h2>
+                    <h3 style="font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem 0; color: #1f2937;">Professional Services in <?php echo esc_html(get_the_title()); ?></h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem; color: #374151;">
                         We are a professional team dedicated to delivering exceptional service and quality workmanship in <?php echo esc_html(get_the_title()); ?>. With years of experience in the industry, we take pride in every project we undertake. Our commitment to quality, reliability, and customer satisfaction makes us the trusted choice for professional services in <?php echo esc_html(get_the_title()); ?>.
                     </p>
                         </div>

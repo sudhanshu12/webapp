@@ -127,7 +127,10 @@ if ($service_description === '') {
     $service_description = get_post_meta(get_the_ID(), 'service_content', true) ?: '';
 }
 if (empty($service_description)) {
-    $service_description = 'Professional ' . strtolower($service_title) . ' services';
+    // Default description with HTML formatting
+    $service_description = '<h2>Professional ' . esc_html($service_title) . ' Services in ' . esc_html($business['state']) . '</h2>
+    <p>We provide comprehensive ' . strtolower($service_title) . ' services designed to meet your specific needs. Our experienced team uses industry-leading techniques and materials to ensure the highest quality results.</p>
+    <p>Whether you need new installation, repairs, or maintenance, we have the expertise to handle projects of any size. We take pride in our attention to detail and commitment to customer satisfaction.</p>';
 }
 
 // Add meta tags to head
@@ -472,26 +475,28 @@ get_header(); ?>
                     .service-content h4, 
                     .service-content h5, 
                     .service-content h6 {
-                        color: <?php echo esc_attr($settings['service_hero_heading_color'] ?? '#232834'); ?> !important;
+                        color: #1f2937 !important;
                     }
                     
                     .service-content h2 {
                         font-size: 2.5rem !important;
                         font-weight: 800 !important;
                         margin: 0 0 1rem 0 !important;
+                        color: #1f2937 !important;
                     }
                     
                     .service-content h3 {
                         font-size: 1.8rem !important;
                         font-weight: 700 !important;
                         margin: 2rem 0 1rem 0 !important;
+                        color: #1f2937 !important;
                     }
                     
                     .service-content p {
                         font-size: 1.1rem !important;
                         line-height: 1.6 !important;
                         margin-bottom: 1.5rem !important;
-                        color: <?php echo esc_attr($settings['service_hero_description_color'] ?? '#374151'); ?> !important;
+                        color: #374151 !important;
                     }
                     
                     /* Ensure quote box is visible and properly styled */
@@ -594,7 +599,7 @@ get_header(); ?>
                     }
                     
                     // Always display features section
-                    echo '<h3 style="font-size: 1.8rem; font-weight: 700; margin: 2rem 0 1rem 0; color: ' . esc_attr($settings['service_hero_heading_color'] ?? '#232834') . ';">What\'s Included In Our Services</h3>';
+                    echo '<h3 style="font-size: 1.8rem; font-weight: 700; margin: 2rem 0 1rem 0; color: #1f2937;">What\'s Included In Our Services</h3>';
                     echo '<ul style="list-style: none; padding: 0; margin-bottom: 2rem;">';
                     
                     foreach ($features as $feature) {
@@ -602,7 +607,7 @@ get_header(); ?>
                         echo '<div style="width: 24px; height: 24px; background: #2ee6c5; border-radius: 50%; display: flex; align-items: center; justify-content: center;">';
                         echo '<i class="fa-solid fa-check" style="color: white; font-size: 0.9rem;"></i>';
                         echo '</div>';
-                        echo '<span style="color: ' . esc_attr($settings['service_hero_description_color'] ?? '#374151') . '; font-weight: 500;">' . esc_html($feature) . '</span>';
+                        echo '<span style="color: #374151; font-weight: 500;">' . esc_html($feature) . '</span>';
                         echo '</li>';
                     }
                     
