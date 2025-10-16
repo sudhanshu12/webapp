@@ -1210,6 +1210,7 @@ export async function POST(req: NextRequest) {
       locations: data.locations || [],
       reviews: data.reviews || [],
       features: data.features || [],
+      about_page_why_items: data.aboutPageWhyItems || data.about_page_why_items || [],
       commitments: data.commitments || [],
       faqs: data.faqs || [],
     };

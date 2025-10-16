@@ -47,6 +47,13 @@ interface Feature {
   icon: string;
 }
 
+interface AboutPageWhyItem {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
 interface Commitment {
   id: string;
   title: string;
@@ -805,6 +812,30 @@ export default function WizardClient() {
   const [features, setFeatures] = useState<Feature[]>([
     {
       id: '1',
+      title: 'Expert Team',
+      description: 'Our dedicated team of experts combines creativity and knowledge to transform your space.',
+      icon: '👥'
+    }
+  ]);
+  
+  // Load features from localStorage after component mounts
+  useEffect(() => {
+    if (isLoaded) {
+      const savedFeatures = loadLS<Feature[]>('bsg_features', features);
+      setFeatures(savedFeatures);
+    }
+  }, [isLoaded]);
+  
+  useEffect(() => { 
+    if (isLoaded) {
+      saveLS('bsg_features', features); 
+    }
+  }, [features, isLoaded]);
+
+  // About Page - Why Work With Us Items (separate from homepage Features)
+  const [aboutPageWhyItems, setAboutPageWhyItems] = useState<AboutPageWhyItem[]>([
+    {
+      id: '1',
       title: 'Proven Expertise',
       description: 'Years of successful delivery.',
       icon: '✓'
@@ -835,19 +866,19 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load features from localStorage after component mounts
+  // Load about page why items from localStorage
   useEffect(() => {
     if (isLoaded) {
-      const savedFeatures = loadLS<Feature[]>('bsg_features', features);
-      setFeatures(savedFeatures);
+      const savedAboutPageWhyItems = loadLS<AboutPageWhyItem[]>('bsg_about_page_why_items', aboutPageWhyItems);
+      setAboutPageWhyItems(savedAboutPageWhyItems);
     }
   }, [isLoaded]);
   
   useEffect(() => { 
     if (isLoaded) {
-      saveLS('bsg_features', features); 
+      saveLS('bsg_about_page_why_items', aboutPageWhyItems); 
     }
-  }, [features, isLoaded]);
+  }, [aboutPageWhyItems, isLoaded]);
 
   const [commitments, setCommitments] = useState<Commitment[]>([
     {
@@ -1934,7 +1965,7 @@ export default function WizardClient() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify((() => {
-          const payload: any = { ...form, services: servicesWithSlugs, locations: locationsWithSlugs, reviews, features, commitments, faqs };
+          const payload: any = { ...form, services: servicesWithSlugs, locations: locationsWithSlugs, reviews, features, aboutPageWhyItems, commitments, faqs };
           return payload;
         })())
       });
@@ -4073,6 +4104,92 @@ export default function WizardClient() {
                           </tr>
                         </tbody>
                       </table>
+
+                      {/* Manage Why Items */}
+                      <h4 style={{marginTop: '30px', marginBottom: '15px', color: '#374151'}}>Manage "Why Work With Us" Items</h4>
+                      <div style={{marginBottom: '20px'}}>
+                        {aboutPageWhyItems.map((item, index) => (
+                          <div key={item.id} style={{
+                            backgroundColor: '#f9fafb',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '8px',
+                            padding: '15px',
+                            marginBottom: '15px'
+                          }}>
+                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px'}}>
+                              <h5 style={{margin: 0, color: '#374151'}}>Item #{index + 1}</h5>
+                              <button
+                                type="button"
+                                className="button"
+                                style={{backgroundColor: '#ef4444', color: 'white', borderColor: '#ef4444'}}
+                                onClick={() => {
+                                  setAboutPageWhyItems(aboutPageWhyItems.filter(i => i.id !== item.id));
+                                }}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                            <div style={{marginBottom: '10px'}}>
+                              <label style={{display: 'block', marginBottom: '5px', fontWeight: '500'}}>Title</label>
+                              <input
+                                type="text"
+                                value={item.title}
+                                onChange={(e) => {
+                                  setAboutPageWhyItems(aboutPageWhyItems.map(i =>
+                                    i.id === item.id ? {...i, title: e.target.value} : i
+                                  ));
+                                }}
+                                className="regular-text"
+                                placeholder="e.g., Proven Expertise"
+                              />
+                            </div>
+                            <div style={{marginBottom: '10px'}}>
+                              <label style={{display: 'block', marginBottom: '5px', fontWeight: '500'}}>Description</label>
+                              <textarea
+                                value={item.description}
+                                onChange={(e) => {
+                                  setAboutPageWhyItems(aboutPageWhyItems.map(i =>
+                                    i.id === item.id ? {...i, description: e.target.value} : i
+                                  ));
+                                }}
+                                className="large-text"
+                                rows={2}
+                                placeholder="e.g., Years of successful delivery."
+                              />
+                            </div>
+                            <div>
+                              <label style={{display: 'block', marginBottom: '5px', fontWeight: '500'}}>Icon (emoji or text)</label>
+                              <input
+                                type="text"
+                                value={item.icon}
+                                onChange={(e) => {
+                                  setAboutPageWhyItems(aboutPageWhyItems.map(i =>
+                                    i.id === item.id ? {...i, icon: e.target.value} : i
+                                  ));
+                                }}
+                                className="regular-text"
+                                placeholder="e.g., ✓ or 🎯"
+                                style={{maxWidth: '100px'}}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                        <button
+                          type="button"
+                          className="button button-primary"
+                          onClick={() => {
+                            const newItem: AboutPageWhyItem = {
+                              id: Date.now().toString(),
+                              title: 'New Item',
+                              description: 'Description here',
+                              icon: '✓'
+                            };
+                            setAboutPageWhyItems([...aboutPageWhyItems, newItem]);
+                          }}
+                        >
+                          + Add Item
+                        </button>
+                      </div>
                       
                       {/* AI Generation Box for About Page */}
                       <div style={{

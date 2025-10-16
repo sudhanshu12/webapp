@@ -156,20 +156,20 @@ function bsg_about_page_styles() {
         transition: all 0.3s ease;
     }
 
-    /* Why Work With Us */
+    /* Why Work With Us (About Page Specific) */
     .why-section {
         padding: 80px 20px;
-        background: <?php echo esc_attr($settings['features_bg_color'] ?? '#1e2834'); ?>;
+        background: <?php echo esc_attr($settings['about_page_why_bg'] ?? '#1e3a8a'); ?>;
     }
     .why-section h2 {
-        color: #ffffff;
+        color: <?php echo esc_attr($settings['about_page_why_heading_color'] ?? '#ffffff'); ?>;
         font-size: 2.75rem;
         font-weight: 800;
         text-align: center;
         margin-bottom: 0.75rem;
     }
     .why-section .subtitle {
-        color: #ffffff;
+        color: <?php echo esc_attr($settings['about_page_why_subtitle_color'] ?? '#ffffff'); ?>;
         font-size: 1.15rem;
         text-align: center;
         margin-bottom: 4rem;
@@ -204,7 +204,7 @@ function bsg_about_page_styles() {
     .benefit-item .icon {
         width: 70px;
         height: 70px;
-        background: <?php echo esc_attr($settings['features_icon_color'] ?? '#3b82f6'); ?>;
+        background: <?php echo esc_attr($settings['about_page_why_icon_bg'] ?? '#1e3a8a'); ?>;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -213,13 +213,13 @@ function bsg_about_page_styles() {
         border: none;
     }
     .benefit-item h3 {
-        color: #ffffff;
+        color: <?php echo esc_attr($settings['about_page_why_item_title'] ?? '#ffffff'); ?>;
         font-size: 1.3rem;
         font-weight: 700;
         margin-bottom: 0.75rem;
     }
     .benefit-item p {
-        color: #ffffff;
+        color: <?php echo esc_attr($settings['about_page_why_item_desc'] ?? '#ffffff'); ?>;
         line-height: 1.6;
         margin: 0;
         font-size: 0.95rem;
@@ -403,20 +403,20 @@ get_header();
         </div>
     </section>
 
-    <!-- Why Work With Us? (Features Section) -->
-    <?php if (!empty($settings['features']) && ($settings['features_visible'] ?? 1)): ?>
+    <!-- Why Work With Us? (About Page Specific) -->
+    <?php if (!empty($settings['about_page_why_items'])): ?>
     <section class="why-section">
         <div class="container" style="max-width: 1200px; margin: 0 auto;">
-            <h2><?php echo esc_html($settings['features_title'] ?? 'Why Work With Us?'); ?></h2>
-            <p class="subtitle"><?php echo esc_html($settings['features_label'] ?? 'Benefits of Working with an Expert Team'); ?></p>
+            <h2><?php echo esc_html($settings['about_page_why_heading'] ?? 'Why Work With Us?'); ?></h2>
+            <p class="subtitle"><?php echo esc_html($settings['about_page_why_subheading'] ?? 'Benefits of Working with an Expert Team'); ?></p>
             
             <div class="benefits-container">
                 <!-- Top Row: First 3 items -->
                 <div class="benefits-row-top">
                     <?php 
-                    $feature_count = count($settings['features']);
-                    $top_features = array_slice($settings['features'], 0, 3);
-                    foreach ($top_features as $feature): 
+                    $item_count = count($settings['about_page_why_items']);
+                    $top_items = array_slice($settings['about_page_why_items'], 0, 3);
+                    foreach ($top_items as $item): 
                     ?>
                     <div class="benefit-item">
                         <div class="icon">
@@ -425,18 +425,18 @@ get_header();
                                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
                             </svg>
                         </div>
-                        <h3><?php echo esc_html($feature['title'] ?? ''); ?></h3>
-                        <p><?php echo esc_html($feature['description'] ?? ''); ?></p>
+                        <h3><?php echo esc_html($item['title'] ?? ''); ?></h3>
+                        <p><?php echo esc_html($item['description'] ?? ''); ?></p>
                     </div>
                     <?php endforeach; ?>
                 </div>
                 
                 <!-- Bottom Row: Remaining items (centered) -->
-                <?php if ($feature_count > 3): 
-                    $bottom_features = array_slice($settings['features'], 3);
+                <?php if ($item_count > 3): 
+                    $bottom_items = array_slice($settings['about_page_why_items'], 3);
                 ?>
                 <div class="benefits-row-bottom">
-                    <?php foreach ($bottom_features as $feature): ?>
+                    <?php foreach ($bottom_items as $item): ?>
                     <div class="benefit-item">
                         <div class="icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5">
@@ -444,8 +444,8 @@ get_header();
                                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
                             </svg>
                         </div>
-                        <h3><?php echo esc_html($feature['title'] ?? ''); ?></h3>
-                        <p><?php echo esc_html($feature['description'] ?? ''); ?></p>
+                        <h3><?php echo esc_html($item['title'] ?? ''); ?></h3>
+                        <p><?php echo esc_html($item['description'] ?? ''); ?></p>
                     </div>
                     <?php endforeach; ?>
                 </div>
