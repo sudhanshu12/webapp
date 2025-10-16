@@ -2516,30 +2516,30 @@ export default function WizardClient() {
 
                       {/* Preview Box */}
                       <div style={{
-                        border: '2px solid #fbbf24',
+                        border: '2px solid #f59e0b',
                         borderRadius: '12px',
-                        padding: '24px',
-                        backgroundColor: '#fef3c7',
+                        padding: '28px',
+                        backgroundColor: '#fef9e7',
                         marginTop: '20px',
-                        boxShadow: '0 4px 12px rgba(245, 158, 11, 0.2)'
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
                       }}>
                         <div style={{
-                          fontWeight: 800,
-                          marginBottom: '16px',
-                          color: '#92400e',
-                          fontSize: '15px',
+                          fontWeight: 700,
+                          marginBottom: '20px',
+                          color: '#78350f',
+                          fontSize: '14px',
                           textTransform: 'uppercase',
-                          letterSpacing: '1px'
+                          letterSpacing: '0.5px'
                         }}>
                           PREVIEW
                         </div>
                         
                         {/* Preview content */}
                         <div style={{
-                          padding: '8px 0',
+                          padding: '0',
                           color: '#78350f',
                           marginBottom: '16px',
-                          fontSize: '20px',
+                          fontSize: '22px',
                           fontWeight: 700,
                           textAlign: 'left'
                         }}>
@@ -2548,10 +2548,10 @@ export default function WizardClient() {
                         
                         <p style={{
                           fontSize: '15px',
-                          color: '#451a03',
-                          marginBottom: '20px',
+                          color: '#1a1a1a',
+                          marginBottom: '24px',
                           lineHeight: '1.6',
-                          fontWeight: 500
+                          fontWeight: 400
                         }}>
                           Body text preview showing how your content will look.
                         </p>
@@ -2561,20 +2561,18 @@ export default function WizardClient() {
                           color: '#ffffff',
                           border: 'none',
                           padding: '12px 24px',
-                          borderRadius: '8px',
+                          borderRadius: '6px',
                           fontSize: '15px',
                           fontWeight: 700,
                           cursor: 'pointer',
-                          boxShadow: '0 4px 6px rgba(245, 158, 11, 0.3)',
+                          boxShadow: 'none',
                           transition: 'all 0.2s ease'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.transform = 'translateY(-1px)';
-                          e.currentTarget.style.boxShadow = '0 6px 12px rgba(245, 158, 11, 0.4)';
+                          e.currentTarget.style.opacity = '0.9';
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.transform = 'translateY(0)';
-                          e.currentTarget.style.boxShadow = '0 4px 6px rgba(245, 158, 11, 0.3)';
+                          e.currentTarget.style.opacity = '1';
                         }}>
                           Primary Button
                         </button>
