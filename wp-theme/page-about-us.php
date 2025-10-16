@@ -159,7 +159,7 @@ function bsg_about_page_styles() {
     /* Why Work With Us */
     .why-section {
         padding: 80px 20px;
-        background: <?php echo esc_attr($settings['features_bg_color'] ?? '#1e3a8a'); ?>;
+        background: <?php echo esc_attr($settings['features_bg_color'] ?? '#1e2834'); ?>;
     }
     .why-section h2 {
         color: #ffffff;
