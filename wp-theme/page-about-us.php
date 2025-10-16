@@ -309,64 +309,12 @@ get_header();
                 
                 <div class="about-description-content">
                     <?php 
-                    // Use homepage about description as primary source
-                    $about_page_description = $settings['about_description'] ?? $settings['about_page_who_description'] ?? '';
+                    // Use only about page description from wizard
+                    $about_page_description = $settings['about_page_who_description'] ?? '';
                     
                     if (!empty($about_page_description)) {
-                        // Remove all HTML tags to get plain text
-                        $clean_text = strip_tags($about_page_description);
-                        
-                        // Extract the main "About Us" paragraph (between "WHO WE ARE" and various end markers)
-                        // Stop at: Our Mission, Years of Experience, Get Started, or numeric patterns like "10+", "15+"
-                        preg_match('/WHO WE ARE.*?About Us(.*?)(?:Our Mission|Years of Experience|\d+\+\s*Years|Get Started Today|Our Values|Our Team|Ready to Get Started)/s', $clean_text, $matches);
-                        
-                        if (!empty($matches[1])) {
-                            $about_text = trim($matches[1]);
-                        } else {
-                            // Fallback: try to find any substantial paragraph
-                            $paragraphs = preg_split('/\n\n+/', $clean_text);
-                            $about_text = '';
-                            foreach ($paragraphs as $para) {
-                                $para = trim($para);
-                                // Stop if we hit numeric experience indicators
-                                if (preg_match('/^\d+\+/', $para)) {
-                                    break;
-                                }
-                                if (strlen($para) > 100 && !preg_match('/(WHO WE ARE|ABOUT YOUR BUSINESS|Our Mission|Our Values|Our Team|Ready to Get Started)/i', $para)) {
-                                    $about_text = $para;
-                                    break;
-                                }
-                            }
-                            
-                            // If still no text found, use a simple approach
-                            if (empty($about_text)) {
-                                // Find the first substantial paragraph after "About Us"
-                                $about_pos = stripos($clean_text, 'About Us');
-                                if ($about_pos !== false) {
-                                    $after_about = substr($clean_text, $about_pos + 7);
-                                    $sentences = preg_split('/[.!?]+/', $after_about);
-                                    foreach ($sentences as $sentence) {
-                                        $sentence = trim($sentence);
-                                        if (strlen($sentence) > 50 && !preg_match('/(Our Mission|Our Values|Our Team|Ready to Get Started|\d+\+)/i', $sentence)) {
-                                            $about_text = $sentence;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        // Clean up extra whitespace and remove any trailing numeric patterns
-                        $about_text = preg_replace('/\s+/', ' ', $about_text);
-                        $about_text = preg_replace('/\s*\d+\+\s*$/', '', $about_text); // Remove trailing "10+", "15+", etc.
-                        $about_text = trim($about_text);
-                        
-                        // Display the clean text
-                        if (!empty($about_text) && strlen($about_text) > 50) {
-                            echo '<p>' . esc_html($about_text) . '</p>';
-                        } else {
-                            echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
-                        }
+                        // Display the full HTML content from about page description
+                        echo wp_kses_post($about_page_description);
                     } else {
                         // Fallback content
                         echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
