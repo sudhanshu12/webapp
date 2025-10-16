@@ -200,9 +200,6 @@ get_header();
         <?php include dirname(__FILE__) . '/section-reviews.php'; ?>
     <?php endif; ?>
 
-    <!-- FAQ Section -->
-    <?php include dirname(__FILE__) . '/faq-section.php'; ?>
-
     <!-- Commitment Section -->
     <?php include dirname(__FILE__) . '/section-commitment.php'; ?>
 
