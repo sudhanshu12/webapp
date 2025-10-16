@@ -397,26 +397,26 @@ export default function WizardClient() {
     about_page_values_title: '',
     about_page_values_description: '',
     hero_visible: true,
-    hero_headline: 'Find Roofers Near You',
-    hero_description: '',
+    hero_headline: 'Find Best Roofers Near You',
+    hero_description: 'Check here for the description',
     hero_cta: 'Rated 5 Stars On Google',
     hero_cta_link: '#contact',
     hero_rating: 'Rated 5 Stars On Google',
     hero_bg_image: '',
-    hero_bg_color: '#1f2937',
+    hero_bg_color: '#f5f5f5',
         hero_padding: 90,
     use_global_hero_image: true,
     service_page_hero_bg_image: '',
     location_page_hero_bg_image: '',
-    hero_company_color: '#9ca3af',
+    hero_company_color: '#f59e0b',
     hero_heading_color: '#000000',
-    hero_subheading_color: '#e5e7eb',
-    hero_description_color: '#d1d5db',
-    hero_reviews_text_color: '#fbbf24',
+    hero_subheading_color: '#6b7280',
+    hero_description_color: '#6b7280',
+    hero_reviews_text_color: '#000000',
     hero_reviews_star_color: '#fbbf24',
-    hero_book_btn_bg: '#ffffff',
-    hero_book_btn_text: '#232834',
-    hero_call_btn_bg: '#232834',
+    hero_book_btn_bg: '#14b8a6',
+    hero_book_btn_text: '#ffffff',
+    hero_call_btn_bg: '#1f2937',
     hero_call_btn_text: '#ffffff',
     hero_book_btn_link: '#',
     hero_call_btn_link: 'tel:',
@@ -948,17 +948,19 @@ export default function WizardClient() {
       
       // Apply default professional dark theme colors when checkbox is checked
       if (field === 'use_default_color_scheme' && value === true) {
-        // Hero section defaults
-        next.hero_bg_color = '#1f2937';
-        next.hero_company_color = '#9ca3af';
+        // Hero section defaults (matching reference design)
+        next.hero_headline = 'Find Best Roofers Near You';
+        next.hero_description = 'Check here for the description';
+        next.hero_bg_color = '#f5f5f5';
+        next.hero_company_color = '#f59e0b';
         next.hero_heading_color = '#000000';
-        next.hero_subheading_color = '#e5e7eb';
-        next.hero_description_color = '#d1d5db';
-        next.hero_reviews_text_color = '#fbbf24';
+        next.hero_subheading_color = '#6b7280';
+        next.hero_description_color = '#6b7280';
+        next.hero_reviews_text_color = '#000000';
         next.hero_reviews_star_color = '#fbbf24';
-        next.hero_book_btn_bg = '#ffffff';
-        next.hero_book_btn_text = '#232834';
-        next.hero_call_btn_bg = '#232834';
+        next.hero_book_btn_bg = '#14b8a6';
+        next.hero_book_btn_text = '#ffffff';
+        next.hero_call_btn_bg = '#1f2937';
         next.hero_call_btn_text = '#ffffff';
         
         // Services section defaults
