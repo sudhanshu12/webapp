@@ -422,7 +422,7 @@ export default function WizardClient() {
     hero_call_btn_link: 'tel:',
     hero_side_image: '',
     services_visible: true,
-    services_label: 'TOP RATED LANDSCAPING SERVICES',
+    services_label: 'TOP RATED SERVICES',
     services_title: 'Our Services',
     services_cta_text: 'Get A Free Estimate',
     services_cta_link: '#',
@@ -611,7 +611,50 @@ export default function WizardClient() {
 
   // Load data from localStorage after component mounts
   useEffect(() => {
-    const savedForm = loadLS<FormData>('bsg_form', form);
+    let savedForm = loadLS<FormData>('bsg_form', form);
+    
+    // If form has default color scheme enabled, apply the default colors
+    if (savedForm && (savedForm.use_default_color_scheme ?? true)) {
+      savedForm = {
+        ...savedForm,
+        // Apply all default colors
+        hero_headline: savedForm.hero_headline || 'Find Best Roofers Near You',
+        hero_description: savedForm.hero_description || 'Check here for the description',
+        hero_bg_color: '#f5f5f5',
+        hero_company_color: '#f59e0b',
+        hero_heading_color: '#000000',
+        hero_subheading_color: '#6b7280',
+        hero_description_color: '#6b7280',
+        hero_reviews_text_color: '#000000',
+        hero_reviews_star_color: '#fbbf24',
+        hero_book_btn_bg: '#14b8a6',
+        hero_book_btn_text: '#ffffff',
+        hero_call_btn_bg: '#1f2937',
+        hero_call_btn_text: '#ffffff',
+        services_bg_color: '#313746',
+        services_card_color: '#232834',
+        services_text_color: '#ffffff',
+        services_icon_color: '#2ee6c5',
+        features_bg_color: '#1e2834',
+        features_card_bg: '#1e2834',
+        features_text_color: '#ffffff',
+        about_bg_color: '#1f2937',
+        about_text_color: '#ffffff',
+        about_heading_color: '#ffffff',
+        reviews_bg_color: '#ffffff',
+        reviews_card_bg: '#f9fafb',
+        faq_bg_color: '#1f2732',
+        faq_text_color: '#ffffff',
+        faq_heading_color: '#ffffff',
+        footer_bg_color: '#0f172a',
+        footer_heading_color: '#ffffff',
+        footer_links_color: '#d1d5db',
+        nav_bg_color: '#1f2937',
+        nav_text_color: '#ffffff',
+        heading_color: '#ffffff',
+      };
+    }
+    
     if (savedForm) {
       setForm(savedForm);
     }
