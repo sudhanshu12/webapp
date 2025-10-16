@@ -14,10 +14,10 @@ function bsg_about_page_styles() {
     global $settings;
 ?>
 <style>
-    /* Hero Section */
+    /* Hero Section - Match Service Page */
     .about-hero-section {
         padding: 90px 0 !important;
-        min-height: 60vh;
+        min-height: 80vh !important;
         background-size: cover;
         background-position: center;
         display: flex;
@@ -26,27 +26,41 @@ function bsg_about_page_styles() {
     .about-hero-content {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 0 60px;
         color: #ffffff;
+        margin-right: 20px;
     }
     .about-hero-content h1 {
-        font-size: 3rem;
+        font-size: 3.2rem;
         font-weight: 800;
-        margin-bottom: 1.5rem;
+        margin: 0 0 24px 0;
         line-height: 1.2;
-        color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#000000'); ?>;
+        color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#000000'); ?> !important;
+        white-space: normal;
+        word-wrap: break-word;
+    }
+    .about-hero-content .hero-actions {
+        margin-top: 0;
     }
     .about-hero-content .btn {
-        background: <?php echo esc_attr($settings['button_primary_color'] ?? '#f59e0b'); ?>;
-        color: #ffffff;
-        padding: 1rem 2rem;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 700;
+        background: #f59e0b !important;
+        color: #ffffff !important;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 0.6rem;
-        transition: background 0.3s ease;
+        width: 100%;
+        max-width: 520px;
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .about-hero-content .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
 
     /* About Content Section */
@@ -266,6 +280,19 @@ function bsg_about_page_styles() {
     }
 
     @media (max-width: 768px) {
+        .about-hero-section {
+            min-height: 60vh !important;
+            padding: 60px 0 !important;
+        }
+        .about-hero-content {
+            padding: 0 20px !important;
+        }
+        .about-hero-content h1 {
+            font-size: 2.5rem !important;
+        }
+        .about-hero-content .btn {
+            max-width: 100% !important;
+        }
         .about-grid {
             flex-direction: column;
             gap: 2rem;
@@ -275,9 +302,6 @@ function bsg_about_page_styles() {
             width: 100%;
             max-width: 400px;
             margin: 0 auto;
-        }
-        .about-hero-content h1 {
-            font-size: 2rem;
         }
         .benefits-container {
             gap: 2rem;
@@ -307,12 +331,18 @@ get_header();
 
 <main>
     <!-- Hero Section -->
-    <section class="about-hero-section" style="<?php if (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,0.95) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>');<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? '#1f2937'); ?>;<?php endif; ?>">
-        <div class="about-hero-content">
-            <h1>About <?php echo esc_html($business_name); ?></h1>
-            <a href="tel:<?php echo esc_attr($phone); ?>" class="btn">
-                <i class="fa-solid fa-phone"></i> Call us Today
-            </a>
+    <section class="about-hero-section" style="<?php if (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? '#1f2937'); ?>;<?php endif; ?>">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 60px;">
+            <div class="about-hero-content">
+                <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#000000'); ?>; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 24px 0;">
+                    About <?php echo esc_html($business_name); ?>
+                </h1>
+                <div class="hero-actions">
+                    <a href="tel:<?php echo esc_attr($phone); ?>" class="btn btn-dark" style="background: #f59e0b; color: #ffffff; display:inline-flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; max-width:520px; border-radius:10px; padding:1rem 1.25rem; font-weight:700; font-size:1.1rem;">
+                        <i class="fa-solid fa-phone"></i> Call us Today
+                    </a>
+                </div>
+            </div>
         </div>
     </section>
 
