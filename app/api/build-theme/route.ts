@@ -1264,7 +1264,7 @@ export async function POST(req: NextRequest) {
       throw new Error('wp-theme folder not found in project root');
     }
     
-    const themeSlug = `${bsgSettings.business_name.toLowerCase().replace(/\s+/g, '-')}-theme`;
+    const themeSlug = bsgSettings.business_name.toLowerCase().replace(/\s+/g, '-');
     
     // Read functions.php and set $settings from wizard data
     const functionsPhpPath = path.join(wpThemeDir, 'functions.php');
