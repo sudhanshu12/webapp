@@ -442,7 +442,7 @@ $contact_page = get_page_by_path('contact-us');
             color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#000000'); ?> !important;
         }
         .hero-section .btn-dark {
-            background: <?php echo esc_attr($settings['button_primary_color'] ?? '#f59e0b'); ?> !important;
+            background: #f59e0b !important;
             color: #ffffff !important;
         }
         
@@ -515,7 +515,7 @@ $contact_page = get_page_by_path('contact-us');
                     <?php echo esc_html($hero_title); ?>
                 </h1>
                 <div class="hero-actions">
-                    <a href="tel:<?php echo esc_attr($phone); ?>" class="btn btn-dark" style="background: <?php echo esc_attr($settings['button_primary_color'] ?? '#f59e0b'); ?>; color: #ffffff; display:inline-flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; max-width:520px; border-radius:10px; padding:1rem 1.25rem; font-weight:700; font-size:1.1rem;">
+                    <a href="tel:<?php echo esc_attr($phone); ?>" class="btn btn-dark" style="background: #f59e0b; color: #ffffff; display:inline-flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; max-width:520px; border-radius:10px; padding:1rem 1.25rem; font-weight:700; font-size:1.1rem;">
                         <i class="fa-solid fa-phone"></i> Call us Today
                     </a>
                 </div>
