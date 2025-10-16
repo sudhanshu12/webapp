@@ -309,8 +309,8 @@ get_header();
                 
                 <div class="about-description-content">
                     <?php 
-                    // Extract clean about description text from wizard
-                    $about_page_description = $settings['about_page_who_description'] ?? '';
+                    // Use homepage about description as primary source
+                    $about_page_description = $settings['about_description'] ?? $settings['about_page_who_description'] ?? '';
                     
                     if (!empty($about_page_description)) {
                         // Remove all HTML tags to get plain text
@@ -451,7 +451,9 @@ get_header();
     // Force reviews to be visible
     $original_reviews_visible = $settings['reviews_visible'] ?? null;
     $settings['reviews_visible'] = true;
+    echo "<!-- DEBUG: Including Reviews Section -->\n";
     include dirname(__FILE__) . '/section-reviews.php';
+    echo "<!-- DEBUG: Reviews Section Included -->\n";
     // Restore original setting
     if ($original_reviews_visible !== null) {
         $settings['reviews_visible'] = $original_reviews_visible;
@@ -463,7 +465,9 @@ get_header();
     // Force services to be visible
     $original_services_visible = $settings['services_visible'] ?? null;
     $settings['services_visible'] = true;
+    echo "<!-- DEBUG: Including Services Section -->\n";
     include dirname(__FILE__) . '/section-services.php';
+    echo "<!-- DEBUG: Services Section Included -->\n";
     // Restore original setting
     if ($original_services_visible !== null) {
         $settings['services_visible'] = $original_services_visible;
@@ -475,7 +479,9 @@ get_header();
     // Force areas to be visible
     $original_areas_visible = $settings['areas_visible'] ?? null;
     $settings['areas_visible'] = true;
+    echo "<!-- DEBUG: Including Areas Section -->\n";
     include dirname(__FILE__) . '/section-areas.php';
+    echo "<!-- DEBUG: Areas Section Included -->\n";
     // Restore original setting
     if ($original_areas_visible !== null) {
         $settings['areas_visible'] = $original_areas_visible;
@@ -487,7 +493,9 @@ get_header();
     // Force commitment to be visible
     $original_commitment_visible = $settings['commitment_visible'] ?? null;
     $settings['commitment_visible'] = true;
+    echo "<!-- DEBUG: Including Commitment Section -->\n";
     include dirname(__FILE__) . '/section-commitment.php';
+    echo "<!-- DEBUG: Commitment Section Included -->\n";
     // Restore original setting
     if ($original_commitment_visible !== null) {
         $settings['commitment_visible'] = $original_commitment_visible;
