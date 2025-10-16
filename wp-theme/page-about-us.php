@@ -163,42 +163,58 @@ function bsg_about_page_styles() {
     }
     .why-section h2 {
         color: #ffffff;
-        font-size: 2.5rem;
+        font-size: 2.75rem;
         font-weight: 800;
         text-align: center;
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
     }
     .why-section .subtitle {
         color: #ffffff;
-        font-size: 1.1rem;
+        font-size: 1.15rem;
         text-align: center;
         margin-bottom: 4rem;
+        font-weight: 400;
     }
-    .benefits-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 3rem;
+    .benefits-container {
         max-width: 1200px;
         margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4rem;
+    }
+    .benefits-row-top {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 4rem;
+        width: 100%;
+        max-width: 900px;
+    }
+    .benefits-row-bottom {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4rem;
+        width: 100%;
+        max-width: 600px;
     }
     .benefit-item {
         text-align: center;
-        padding: 2rem;
+        padding: 1rem;
     }
     .benefit-item .icon {
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 70px;
         background: <?php echo esc_attr($settings['features_icon_color'] ?? '#3b82f6'); ?>;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 1.5rem;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        border: none;
     }
     .benefit-item h3 {
         color: #ffffff;
-        font-size: 1.25rem;
+        font-size: 1.3rem;
         font-weight: 700;
         margin-bottom: 0.75rem;
     }
@@ -206,6 +222,7 @@ function bsg_about_page_styles() {
         color: #ffffff;
         line-height: 1.6;
         margin: 0;
+        font-size: 0.95rem;
     }
 
     /* Contact Section */
@@ -262,9 +279,22 @@ function bsg_about_page_styles() {
         .about-hero-content h1 {
             font-size: 2rem;
         }
-        .benefits-grid {
+        .benefits-container {
+            gap: 2rem;
+        }
+        .benefits-row-top {
             grid-template-columns: 1fr;
             gap: 2rem;
+        }
+        .benefits-row-bottom {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .why-section h2 {
+            font-size: 2rem;
+        }
+        .why-section .subtitle {
+            font-size: 1rem;
         }
     }
 </style>
@@ -374,19 +404,46 @@ get_header();
             <h2><?php echo esc_html($settings['features_title'] ?? 'Why Work With Us?'); ?></h2>
             <p class="subtitle"><?php echo esc_html($settings['features_label'] ?? 'Benefits of Working with an Expert Team'); ?></p>
             
-            <div class="benefits-grid">
-                <?php foreach ($settings['features'] as $feature): ?>
-                <div class="benefit-item">
-                    <div class="icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
-                            <path d="M9 11l3 3L22 4"/>
-                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-                        </svg>
+            <div class="benefits-container">
+                <!-- Top Row: First 3 items -->
+                <div class="benefits-row-top">
+                    <?php 
+                    $feature_count = count($settings['features']);
+                    $top_features = array_slice($settings['features'], 0, 3);
+                    foreach ($top_features as $feature): 
+                    ?>
+                    <div class="benefit-item">
+                        <div class="icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5">
+                                <path d="M9 11l3 3L22 4"/>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                            </svg>
+                        </div>
+                        <h3><?php echo esc_html($feature['title'] ?? ''); ?></h3>
+                        <p><?php echo esc_html($feature['description'] ?? ''); ?></p>
                     </div>
-                    <h3><?php echo esc_html($feature['title'] ?? ''); ?></h3>
-                    <p><?php echo esc_html($feature['description'] ?? ''); ?></p>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
+                
+                <!-- Bottom Row: Remaining items (centered) -->
+                <?php if ($feature_count > 3): 
+                    $bottom_features = array_slice($settings['features'], 3);
+                ?>
+                <div class="benefits-row-bottom">
+                    <?php foreach ($bottom_features as $feature): ?>
+                    <div class="benefit-item">
+                        <div class="icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5">
+                                <path d="M9 11l3 3L22 4"/>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                            </svg>
+                        </div>
+                        <h3><?php echo esc_html($feature['title'] ?? ''); ?></h3>
+                        <p><?php echo esc_html($feature['description'] ?? ''); ?></p>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>
