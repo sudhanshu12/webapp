@@ -18,57 +18,49 @@ $settings = bsg_get_settings();
     <?php bsg_output_meta_tags('about'); ?>
     <?php bsg_output_structured_data('about'); ?>
     <style>
-        /* Desktop Centering Styles */
-        .bsg-who-content {
-            text-align: center !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-        }
-        
-        .bsg-who-description {
-            text-align: center !important;
-            margin: 0 auto 2rem auto !important;
-            width: 100% !important;
-        }
-        
-        .bsg-who-tagline {
-            text-align: center !important;
-            justify-content: center !important;
-        }
-        
-        .bsg-who-actions {
-            text-align: center !important;
-            justify-content: center !important;
-        }
-        
         /* Mobile Responsive Styles */
-        @media (max-width: 768px) {
+        @media (max-width: 968px) {
             .bsg-who-we-are {
                 flex-direction: column !important;
-                gap: 2rem !important;
-                justify-content: center !important;
-                text-align: center !important;
+                gap: 2.5rem !important;
+            }
+            
+            .bsg-who-image {
+                flex: 0 0 auto !important;
+                width: 100% !important;
+                max-width: 500px !important;
+                height: 450px !important;
+                margin: 0 auto !important;
             }
             
             .bsg-who-content {
-                text-align: center !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-            }
-            
-            .bsg-who-description {
-                text-align: center !important;
-                margin: 0 auto 2rem auto !important;
-            }
-            
-            .bsg-who-tagline {
-                justify-content: center !important;
+                text-align: left !important;
             }
             
             .bsg-who-actions {
-                justify-content: center !important;
+                flex-wrap: wrap !important;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .bsg-who-image {
+                height: 380px !important;
+            }
+            
+            .bsg-who-content h2 {
+                font-size: 2rem !important;
+            }
+            
+            .bsg-who-actions {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 1rem !important;
+            }
+            
+            .bsg-experience-badge,
+            .bsg-cta-button {
+                width: 100% !important;
+                text-align: center !important;
             }
         }
     </style>
@@ -92,73 +84,65 @@ $settings = bsg_get_settings();
             </div>
         </section>
 
-        <!-- About Page Section -->
+        <!-- About Page Section - Image on Left, Content on Right -->
         <section class="bsg-who-we-are animate-on-scroll-section" style="background: <?php echo esc_attr($settings['about_page_who_bg'] ?? '#ffffff'); ?>; color: <?php echo esc_attr($settings['about_page_who_text'] ?? '#000000'); ?>; padding: 5rem 0;">
-            <div class="container">
-                <div class="bsg-who-we-are" style="display: flex; align-items: center; gap: 4rem; max-width: 1000px; margin: 0 auto; justify-content: center; text-align: center;">
-                    <!-- Image -->
-                    <div class="bsg-who-image" style="flex: 0 0 300px; height: 400px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+                <div class="bsg-who-we-are" style="display: flex; align-items: flex-start; gap: 4rem;">
+                    <!-- Image on Left -->
+                    <div class="bsg-who-image" style="flex: 0 0 420px; height: 550px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
                         <?php if (!empty($settings['about_page_team_image'])): ?>
                             <img src="<?php echo esc_url($settings['about_page_team_image']); ?>" alt="About <?php echo esc_attr($settings['business_name'] ?? 'Our Team'); ?>" style="width: 100%; height: 100%; object-fit: cover;">
                         <?php else: ?>
                             <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600;">
-                                Team Photo
+                                <div style="text-align: center;">
+                                    <svg width="64" height="64" fill="white" viewBox="0 0 24 24" style="margin-bottom: 1rem; opacity: 0.9;">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    <div>Team Photo</div>
+                                </div>
                             </div>
                         <?php endif; ?>
                     </div>
                     
-                    <!-- Content -->
-                    <div class="bsg-who-content" style="flex: 1; color: <?php echo esc_attr($settings['about_page_who_text'] ?? '#000000'); ?>; text-align: center; display: flex; flex-direction: column; align-items: center;">
-                        <div class="bsg-who-tagline" style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: <?php echo esc_attr($settings['about_page_who_tagline_color'] ?? '#04e3e7'); ?>; font-weight: 600; font-size: 1rem; margin-bottom: 0.5rem; letter-spacing: 1px; text-transform: uppercase;">
-                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                    <!-- Content on Right -->
+                    <div class="bsg-who-content" style="flex: 1; color: <?php echo esc_attr($settings['about_page_who_text'] ?? '#000000'); ?>;">
+                        <div class="bsg-who-tagline" style="display: flex; align-items: center; gap: 0.5rem; color: <?php echo esc_attr($settings['about_page_who_tagline_color'] ?? '#14b8a6'); ?>; font-weight: 700; font-size: 0.95rem; margin-bottom: 1rem; letter-spacing: 1px; text-transform: uppercase;">
+                            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                             </svg>
                             <?php echo esc_html($settings['about_page_who_tagline'] ?? 'WHO WE ARE'); ?>
                         </div>
                         
-                        <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1.5rem 0; color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#000000'); ?>; line-height: 1.2; text-align: center;">
+                        <h2 style="font-size: 2.75rem; font-weight: 800; margin: 0 0 1.5rem 0; color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#1f2937'); ?>; line-height: 1.2;">
                             About <?php echo esc_html($settings['business_name'] ?? 'Our Company'); ?>
                         </h2>
                         
-                        <div class="bsg-who-description" style="font-size: <?php echo esc_attr($settings['about_description_font_size'] ?? '1rem'); ?>; margin-bottom: 2rem; color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#000000'); ?>; line-height: 1.6; text-align: center; max-width: 600px; margin: 0 auto 2rem auto;">
+                        <div class="bsg-who-description" style="font-size: 1.05rem; margin-bottom: 2.5rem; color: <?php echo esc_attr($settings['about_page_who_desc_color'] ?? '#4b5563'); ?>; line-height: 1.8;">
                             <?php 
-                            // Get the description from the wizard's about page section
-                            $wizard_description = $settings['about_page_who_description'] ?? '';
+                            // Get the about description from wizard settings
+                            $about_description = $settings['about_page_who_description'] ?? $settings['about_description'] ?? '';
                             
-                            // Simple and direct extraction of the main description
-                            if (!empty($wizard_description)) {
-                                // Look for the specific text that should be displayed
-                                if (strpos($wizard_description, 'At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions') !== false) {
-                                    // Extract the main description paragraph
-                                    preg_match('/At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions[^<]*/', $wizard_description, $matches);
-                                    if (!empty($matches[0])) {
-                                        $about_content = $matches[0];
-                                    } else {
-                                        // Fallback to the exact text we know should be there
-                                        $about_content = 'At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions to the Orlando community. With a team of skilled professionals, we specialize in both residential and commercial roofing. Our commitment to quality craftsmanship and customer satisfaction sets us apart from the competition. Whether you need a roof repair, replacement, or installation, we have the expertise to handle it all, ensuring your home or business is protected from the elements.';
-                                    }
-                                } else {
-                                    // If the specific text isn't found, use the exact text from the wizard
-                                    $about_content = 'At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions to the Orlando community. With a team of skilled professionals, we specialize in both residential and commercial roofing. Our commitment to quality craftsmanship and customer satisfaction sets us apart from the competition. Whether you need a roof repair, replacement, or installation, we have the expertise to handle it all, ensuring your home or business is protected from the elements.';
-                                }
+                            // Clean and display the description
+                            if (!empty($about_description)) {
+                                // Remove any HTML tags and decode entities
+                                $clean_description = html_entity_decode(strip_tags($about_description));
+                                echo wp_kses_post(wpautop($clean_description));
                             } else {
-                                // Use the exact text from the wizard debug data
-                                $about_content = 'At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions to the Orlando community. With a team of skilled professionals, we specialize in both residential and commercial roofing. Our commitment to quality craftsmanship and customer satisfaction sets us apart from the competition. Whether you need a roof repair, replacement, or installation, we have the expertise to handle it all, ensuring your home or business is protected from the elements.';
+                                // Default description
+                                echo '<p>We are a professional service provider dedicated to delivering exceptional results. With years of experience and a commitment to quality, we serve our community with integrity and expertise.</p>';
                             }
-                            
-                            echo esc_html($about_content);
                             ?>
                         </div>
                         
-                        <!-- Experience Badge and CTA -->
-                        <div class="bsg-who-actions" style="display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 2rem;">
-                            <div class="bsg-experience-badge" style="background: <?php echo esc_attr($settings['about_page_experience_bg'] ?? '#0de7e4'); ?>; color: <?php echo esc_attr($settings['about_page_experience_text'] ?? '#000000'); ?>; padding: 1.5rem; border-radius: 12px; text-align: center; min-width: 120px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                                <div style="font-size: 2rem; font-weight: 800; margin: 0;"><?php echo esc_html($settings['about_page_years'] ?? '15+'); ?></div>
-                                <div style="font-size: 0.9rem; margin: 0; opacity: 0.9;"><?php echo esc_html($settings['about_page_experience_label'] ?? 'Years of Experience'); ?></div>
+                        <!-- Experience Badge and CTA Button - Side by Side -->
+                        <div class="bsg-who-actions" style="display: flex; align-items: center; gap: 1.5rem; margin-top: 2rem;">
+                            <div class="bsg-experience-badge" style="background: <?php echo esc_attr($settings['about_page_experience_bg'] ?? '#14b8a6'); ?>; color: <?php echo esc_attr($settings['about_page_experience_text'] ?? '#ffffff'); ?>; padding: 1.5rem 2rem; border-radius: 8px; text-align: center; min-width: 140px;">
+                                <div style="font-size: 2.25rem; font-weight: 800; margin: 0; line-height: 1;"><?php echo esc_html($settings['about_page_years'] ?? '15+'); ?></div>
+                                <div style="font-size: 0.85rem; margin: 0.5rem 0 0 0; font-weight: 500;"><?php echo esc_html($settings['about_page_experience_label'] ?? 'Years of Experience'); ?></div>
                             </div>
                             
-                            <a href="<?php echo esc_url($settings['about_page_cta_link'] ?? '#'); ?>" class="bsg-cta-button" style="background: <?php echo esc_attr($settings['about_page_cta_bg'] ?? '#0ea5e9'); ?>; color: <?php echo esc_attr($settings['about_page_cta_text_color'] ?? '#000000'); ?>; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                                <?php echo esc_html($settings['about_page_cta_text'] ?? 'Learn More'); ?>
+                            <a href="<?php echo esc_url($settings['about_page_cta_link'] ?? '#contact'); ?>" class="bsg-cta-button" style="background: <?php echo esc_attr($settings['about_page_cta_bg'] ?? '#14b8a6'); ?>; color: <?php echo esc_attr($settings['about_page_cta_text_color'] ?? '#ffffff'); ?>; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 1rem; transition: all 0.3s ease; display: inline-block;">
+                                <?php echo esc_html($settings['about_page_cta_text'] ?? 'Get Started'); ?>
                             </a>
                         </div>
                     </div>
