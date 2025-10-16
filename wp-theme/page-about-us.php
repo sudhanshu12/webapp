@@ -318,7 +318,7 @@ get_header();
                         
                         // Extract the main "About Us" paragraph (between "WHO WE ARE" and various end markers)
                         // Stop at: Our Mission, Years of Experience, Get Started, or numeric patterns like "10+", "15+"
-                        preg_match('/WHO WE ARE.*?About Us(.*?)(?:Our Mission|Years of Experience|\d+\+\s*Years|Get Started Today|Our Values|Our Team)/s', $clean_text, $matches);
+                        preg_match('/WHO WE ARE.*?About Us(.*?)(?:Our Mission|Years of Experience|\d+\+\s*Years|Get Started Today|Our Values|Our Team|Ready to Get Started)/s', $clean_text, $matches);
                         
                         if (!empty($matches[1])) {
                             $about_text = trim($matches[1]);
@@ -335,6 +335,23 @@ get_header();
                                 if (strlen($para) > 100 && !preg_match('/(WHO WE ARE|ABOUT YOUR BUSINESS|Our Mission|Our Values|Our Team|Ready to Get Started)/i', $para)) {
                                     $about_text = $para;
                                     break;
+                                }
+                            }
+                            
+                            // If still no text found, use a simple approach
+                            if (empty($about_text)) {
+                                // Find the first substantial paragraph after "About Us"
+                                $about_pos = stripos($clean_text, 'About Us');
+                                if ($about_pos !== false) {
+                                    $after_about = substr($clean_text, $about_pos + 7);
+                                    $sentences = preg_split('/[.!?]+/', $after_about);
+                                    foreach ($sentences as $sentence) {
+                                        $sentence = trim($sentence);
+                                        if (strlen($sentence) > 50 && !preg_match('/(Our Mission|Our Values|Our Team|Ready to Get Started|\d+\+)/i', $sentence)) {
+                                            $about_text = $sentence;
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -430,16 +447,52 @@ get_header();
     <?php endif; ?>
 
     <!-- Reviews Section -->
-    <?php include dirname(__FILE__) . '/section-reviews.php'; ?>
+    <?php 
+    // Force reviews to be visible
+    $original_reviews_visible = $settings['reviews_visible'] ?? null;
+    $settings['reviews_visible'] = true;
+    include dirname(__FILE__) . '/section-reviews.php';
+    // Restore original setting
+    if ($original_reviews_visible !== null) {
+        $settings['reviews_visible'] = $original_reviews_visible;
+    }
+    ?>
 
     <!-- Services Section -->
-    <?php include dirname(__FILE__) . '/section-services.php'; ?>
+    <?php 
+    // Force services to be visible
+    $original_services_visible = $settings['services_visible'] ?? null;
+    $settings['services_visible'] = true;
+    include dirname(__FILE__) . '/section-services.php';
+    // Restore original setting
+    if ($original_services_visible !== null) {
+        $settings['services_visible'] = $original_services_visible;
+    }
+    ?>
 
     <!-- Service Areas Section -->
-    <?php include dirname(__FILE__) . '/section-areas.php'; ?>
+    <?php 
+    // Force areas to be visible
+    $original_areas_visible = $settings['areas_visible'] ?? null;
+    $settings['areas_visible'] = true;
+    include dirname(__FILE__) . '/section-areas.php';
+    // Restore original setting
+    if ($original_areas_visible !== null) {
+        $settings['areas_visible'] = $original_areas_visible;
+    }
+    ?>
 
     <!-- Commitment Section -->
-    <?php include dirname(__FILE__) . '/section-commitment.php'; ?>
+    <?php 
+    // Force commitment to be visible
+    $original_commitment_visible = $settings['commitment_visible'] ?? null;
+    $settings['commitment_visible'] = true;
+    include dirname(__FILE__) . '/section-commitment.php';
+    // Restore original setting
+    if ($original_commitment_visible !== null) {
+        $settings['commitment_visible'] = $original_commitment_visible;
+    }
+    ?>
 
     <!-- Contact Section -->
     <section id="contact" class="contact-section" style="padding: 80px 20px; background-color: #1f2937;">
