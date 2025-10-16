@@ -556,34 +556,8 @@ get_header(); ?>
                         // Remove script tags for security
                         $clean_html = preg_replace('/<script\b[^>]*>.*?<\/script>/is', '', $clean_html);
                         
-                        // Remove any existing style attributes from headings and paragraphs first
-                        $clean_html = preg_replace('/<h([1-6])([^>]*)\s+style="[^"]*"([^>]*)>/i', '<h$1$2$3>', $clean_html);
-                        $clean_html = preg_replace('/<p([^>]*)\s+style="[^"]*"([^>]*)>/i', '<p$1$2>', $clean_html);
-                        
-                        // Allow HTML tags with styling
-                        $allowed_html = array(
-                            'h1' => array('class' => array(), 'style' => array()),
-                            'h2' => array('class' => array(), 'style' => array()),
-                            'h3' => array('class' => array(), 'style' => array()),
-                            'h4' => array('class' => array(), 'style' => array()),
-                            'h5' => array('class' => array(), 'style' => array()),
-                            'h6' => array('class' => array(), 'style' => array()),
-                            'p' => array('class' => array(), 'style' => array()),
-                            'div' => array('class' => array(), 'id' => array(), 'style' => array()),
-                            'span' => array('class' => array(), 'style' => array()),
-                            'strong' => array('class' => array(), 'style' => array()),
-                            'em' => array('class' => array(), 'style' => array()),
-                            'b' => array('class' => array(), 'style' => array()),
-                            'i' => array('class' => array(), 'style' => array()),
-                            'ul' => array('class' => array(), 'style' => array()),
-                            'ol' => array('class' => array(), 'style' => array()),
-                            'li' => array('class' => array(), 'style' => array()),
-                            'a' => array('href' => array(), 'title' => array(), 'target' => array(), 'rel' => array(), 'class' => array(), 'style' => array()),
-                            'br' => array(),
-                        );
-                        
-                        // Output the processed HTML
-                        echo wp_kses($clean_html, $allowed_html);
+                        // Use WordPress's wp_kses_post which allows most HTML tags
+                        echo wp_kses_post($clean_html);
                     } else { ?>
                         <!-- Service Description Placeholder - Fallback -->
                         <div class="service-description-placeholder">
