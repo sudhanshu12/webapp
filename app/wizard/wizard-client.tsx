@@ -441,8 +441,8 @@ export default function WizardClient() {
     service_content_bg_color: '#232834',
     service_content_padding: 80,
     features_visible: true,
-    features_label: 'WHY CHOOSE US',
-    features_title: 'What Makes Us Different',
+    features_label: 'Benefits of Working with an Expert Team',
+    features_title: 'Why Work With Us?',
     features_description: '',
     features_bg_color: '#1e2834',
     features_card_bg: '#1e2834',
@@ -805,9 +805,33 @@ export default function WizardClient() {
   const [features, setFeatures] = useState<Feature[]>([
     {
       id: '1',
-      title: 'Expert Team',
-      description: 'Experienced professionals',
-      icon: '👥'
+      title: 'Proven Expertise',
+      description: 'Years of successful delivery.',
+      icon: '✓'
+    },
+    {
+      id: '2',
+      title: 'Tailored Solutions',
+      description: 'Built for your unique needs.',
+      icon: '$'
+    },
+    {
+      id: '3',
+      title: 'End-to-End Support',
+      description: 'Guidance at every step.',
+      icon: '📋'
+    },
+    {
+      id: '4',
+      title: 'Cutting-Edge Technology',
+      description: 'Modern, reliable, scalable systems.',
+      icon: '💻'
+    },
+    {
+      id: '5',
+      title: 'Results-Driven',
+      description: 'Focused on measurable business impact.',
+      icon: '🎯'
     }
   ]);
   
