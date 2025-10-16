@@ -117,28 +117,29 @@ $settings = bsg_get_settings();
                             // Get the description from the wizard's about page section
                             $wizard_description = $settings['about_page_who_description'] ?? '';
                             
-                            // Simple and direct extraction of the main description
                             if (!empty($wizard_description)) {
-                                // Look for the specific text that should be displayed
-                                if (strpos($wizard_description, 'At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions') !== false) {
-                                    // Extract the main description paragraph
-                                    preg_match('/At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions[^<]*/', $wizard_description, $matches);
-                                    if (!empty($matches[0])) {
-                                        $about_content = $matches[0];
-                                    } else {
-                                        // Fallback to the exact text we know should be there
-                                        $about_content = 'At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions to the Orlando community. With a team of skilled professionals, we specialize in both residential and commercial roofing. Our commitment to quality craftsmanship and customer satisfaction sets us apart from the competition. Whether you need a roof repair, replacement, or installation, we have the expertise to handle it all, ensuring your home or business is protected from the elements.';
-                                    }
+                                // Extract just the text from the "WHO WE ARE" section
+                                // Look for the about-who-we-are div and extract its main paragraph
+                                if (preg_match('/<div class="about-who-we-are"[^>]*>.*?<h2[^>]*>About Us<\/h2>\s*<div[^>]*>(.*?)<\/div>/s', $wizard_description, $matches)) {
+                                    echo wp_kses_post(trim($matches[1]));
                                 } else {
-                                    // If the specific text isn't found, use the exact text from the wizard
-                                    $about_content = 'At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions to the Orlando community. With a team of skilled professionals, we specialize in both residential and commercial roofing. Our commitment to quality craftsmanship and customer satisfaction sets us apart from the competition. Whether you need a roof repair, replacement, or installation, we have the expertise to handle it all, ensuring your home or business is protected from the elements.';
+                                    // Fallback: display from settings or use default
+                                    $about_text = $settings['about_description'] ?? '';
+                                    if (!empty($about_text)) {
+                                        echo wp_kses_post($about_text);
+                                    } else {
+                                        echo esc_html('We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.');
+                                    }
                                 }
                             } else {
-                                // Use the exact text from the wizard debug data
-                                $about_content = 'At Roofing Pros, we pride ourselves on delivering top-notch roofing solutions to the Orlando community. With a team of skilled professionals, we specialize in both residential and commercial roofing. Our commitment to quality craftsmanship and customer satisfaction sets us apart from the competition. Whether you need a roof repair, replacement, or installation, we have the expertise to handle it all, ensuring your home or business is protected from the elements.';
+                                // Use about_description from settings as fallback
+                                $about_text = $settings['about_description'] ?? '';
+                                if (!empty($about_text)) {
+                                    echo wp_kses_post($about_text);
+                                } else {
+                                    echo esc_html('We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.');
+                                }
                             }
-                            
-                            echo esc_html($about_content);
                             ?>
                         </div>
                         
