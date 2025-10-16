@@ -158,6 +158,15 @@ $about_margin_right = $settings['about_margin_right'] ?? 60;
         <div class="homepage-about-img" style="flex: 1; display: flex; align-items: center; justify-content: center;">
             <?php if (!empty($about_image)): ?>
                 <img src="<?php echo esc_url($about_image); ?>" alt="Our Team" style="max-width: 350px; width: 100%; border-radius: 8px; box-shadow: 0 2px 16px rgba(0,0,0,0.08);">
+            <?php else: ?>
+                <div style="max-width: 350px; width: 100%; height: 400px; border-radius: 8px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600; box-shadow: 0 2px 16px rgba(0,0,0,0.08);">
+                    <div style="text-align: center;">
+                        <svg width="64" height="64" fill="white" viewBox="0 0 24 24" style="margin-bottom: 1rem; opacity: 0.9;">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                        <div>About Us Image</div>
+                    </div>
+                </div>
             <?php endif; ?>
         </div>
         <div class="homepage-about-content" style="flex: 2; color: <?php echo esc_attr($about_text_color); ?>;">
