@@ -33,14 +33,10 @@ async function generateDynamicPages(zip: JSZip, themeSlug: string, bsgSettings: 
     }
   }
 
-  // Generate about page if content exists
-  if (data.about_visible) { // Changed condition to just check visibility
-    console.log('Generating about page');
-    const aboutPageContent = generateAboutPage(bsgSettings);
-    zip.file(`${themeSlug}/page-about.php`, aboutPageContent);
-    zip.file(`${themeSlug}/page-about-us.php`, aboutPageContent); // Alternative slug
-    console.log('Generated about page: page-about.php and page-about-us.php');
-  }
+  // About page is now handled by the wp-theme/page-about-us.php file
+  // which includes all sections (Features, Services, Reviews, etc.)
+  // No need to generate it dynamically
+  console.log('About page will be copied from wp-theme folder');
 
   // Generate contact page if contact info exists
   if (data.contact_visible && (data.phone || data.email)) {
