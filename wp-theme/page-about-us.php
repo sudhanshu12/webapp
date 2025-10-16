@@ -4,12 +4,14 @@
  * Description: About Us page with dynamic content and sections.
  */
 
-get_header();
+// Get settings before header
 $settings = bsg_get_settings();
 $business_name = $settings['business_name'] ?? 'Our Company';
 $phone = $settings['phone'] ?? '';
-?>
 
+// Add styles to wp_head
+add_action('wp_head', function() use ($settings) {
+?>
 <style>
     /* Hero Section */
     .about-hero-section {
@@ -265,6 +267,11 @@ $phone = $settings['phone'] ?? '';
         }
     }
 </style>
+<?php
+}, 20);
+
+get_header();
+?>
 
 <main>
     <!-- Hero Section -->
