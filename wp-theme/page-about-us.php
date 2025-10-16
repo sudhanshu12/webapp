@@ -312,12 +312,41 @@ get_header();
                 
                 <div class="about-description-content">
                 <?php 
-                // Display the about page description from wizard with HTML formatting preserved
+                // Extract clean about description text from wizard
                 $about_page_description = $settings['about_page_who_description'] ?? '';
                 
                 if (!empty($about_page_description)) {
-                    // Use wp_kses_post to allow safe HTML rendering
-                    echo wp_kses_post($about_page_description);
+                    // Remove all HTML tags to get plain text
+                    $clean_text = strip_tags($about_page_description);
+                    
+                    // Extract the main "About Us" paragraph (between "WHO WE ARE" and "Our Mission")
+                    // This is typically the first substantive paragraph
+                    preg_match('/WHO WE ARE.*?About Us(.*?)(Our Mission|Years of Experience|Get Started Today)/s', $clean_text, $matches);
+                    
+                    if (!empty($matches[1])) {
+                        $about_text = trim($matches[1]);
+                    } else {
+                        // Fallback: try to find any substantial paragraph
+                        $paragraphs = preg_split('/\n\n+/', $clean_text);
+                        $about_text = '';
+                        foreach ($paragraphs as $para) {
+                            $para = trim($para);
+                            if (strlen($para) > 100 && !preg_match('/(WHO WE ARE|ABOUT YOUR BUSINESS|Our Mission|Our Values|Our Team|Ready to Get Started)/i', $para)) {
+                                $about_text = $para;
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // Clean up extra whitespace
+                    $about_text = preg_replace('/\s+/', ' ', $about_text);
+                    
+                    // Display the clean text
+                    if (!empty($about_text) && strlen($about_text) > 50) {
+                        echo '<p>' . esc_html($about_text) . '</p>';
+                    } else {
+                        echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
+                    }
                 } else {
                     // Fallback content
                     echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
