@@ -309,12 +309,47 @@ get_header();
                 
                 <div class="about-description-content">
                     <?php 
-                    // Display full HTML content from wizard's about page description
+                    // Extract clean about description text from wizard
                     $about_page_description = $settings['about_page_who_description'] ?? '';
                     
                     if (!empty($about_page_description)) {
-                        // Use wp_kses_post to allow safe HTML formatting
-                        echo wp_kses_post($about_page_description);
+                        // Remove all HTML tags to get plain text
+                        $clean_text = strip_tags($about_page_description);
+                        
+                        // Extract the main "About Us" paragraph (between "WHO WE ARE" and various end markers)
+                        // Stop at: Our Mission, Years of Experience, Get Started, or numeric patterns like "10+", "15+"
+                        preg_match('/WHO WE ARE.*?About Us(.*?)(?:Our Mission|Years of Experience|\d+\+\s*Years|Get Started Today|Our Values|Our Team)/s', $clean_text, $matches);
+                        
+                        if (!empty($matches[1])) {
+                            $about_text = trim($matches[1]);
+                        } else {
+                            // Fallback: try to find any substantial paragraph
+                            $paragraphs = preg_split('/\n\n+/', $clean_text);
+                            $about_text = '';
+                            foreach ($paragraphs as $para) {
+                                $para = trim($para);
+                                // Stop if we hit numeric experience indicators
+                                if (preg_match('/^\d+\+/', $para)) {
+                                    break;
+                                }
+                                if (strlen($para) > 100 && !preg_match('/(WHO WE ARE|ABOUT YOUR BUSINESS|Our Mission|Our Values|Our Team|Ready to Get Started)/i', $para)) {
+                                    $about_text = $para;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // Clean up extra whitespace and remove any trailing numeric patterns
+                        $about_text = preg_replace('/\s+/', ' ', $about_text);
+                        $about_text = preg_replace('/\s*\d+\+\s*$/', '', $about_text); // Remove trailing "10+", "15+", etc.
+                        $about_text = trim($about_text);
+                        
+                        // Display the clean text
+                        if (!empty($about_text) && strlen($about_text) > 50) {
+                            echo '<p>' . esc_html($about_text) . '</p>';
+                        } else {
+                            echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
+                        }
                     } else {
                         // Fallback content
                         echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
@@ -395,24 +430,16 @@ get_header();
     <?php endif; ?>
 
     <!-- Reviews Section -->
-    <?php if ($settings['reviews_visible'] ?? 1): ?>
-        <?php include dirname(__FILE__) . '/section-reviews.php'; ?>
-    <?php endif; ?>
+    <?php include dirname(__FILE__) . '/section-reviews.php'; ?>
 
     <!-- Services Section -->
-    <?php if ($settings['services_visible'] ?? 1): ?>
-        <?php include dirname(__FILE__) . '/section-services.php'; ?>
-    <?php endif; ?>
+    <?php include dirname(__FILE__) . '/section-services.php'; ?>
 
     <!-- Service Areas Section -->
-    <?php if ($settings['areas_visible'] ?? 1): ?>
-        <?php include dirname(__FILE__) . '/section-areas.php'; ?>
-    <?php endif; ?>
+    <?php include dirname(__FILE__) . '/section-areas.php'; ?>
 
     <!-- Commitment Section -->
-    <?php if ($settings['commitment_visible'] ?? 1): ?>
-        <?php include dirname(__FILE__) . '/section-commitment.php'; ?>
-    <?php endif; ?>
+    <?php include dirname(__FILE__) . '/section-commitment.php'; ?>
 
     <!-- Contact Section -->
     <section id="contact" class="contact-section" style="padding: 80px 20px; background-color: #1f2937;">
