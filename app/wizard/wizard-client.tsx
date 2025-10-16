@@ -472,10 +472,10 @@ export default function WizardClient() {
     about_description_font_size: '0.90rem',
     about_experience_text: 'Years of Experience',
     about_experience_bg: '#374151',
-    about_experience_text_color: '#0ea5e9',
+    about_experience_text_color: '#14b8a6',
     about_button_text: 'About Us',
-    about_button_color: '#0ea5e9',
-    about_button_text_color: '#374151',
+    about_button_color: '#14b8a6',
+    about_button_text_color: '#ffffff',
     about_button_link: 'about-us',
     about_use_default_prompts: true,
     // About page fields
@@ -484,7 +484,7 @@ export default function WizardClient() {
     about_page_hero_heading_color: '#ffffff',
     about_page_hero_bg_color: '#1f2937',
     about_page_who_tagline: 'WHO WE ARE',
-    about_page_who_tagline_color: '#0ea5e9',
+    about_page_who_tagline_color: '#14b8a6',
     about_page_who_headline: 'About',
     about_page_who_description: '',
     about_page_team_image: '',
@@ -493,11 +493,11 @@ export default function WizardClient() {
     about_page_who_desc_color: '#374151',
     about_page_years: '15+',
     about_page_experience_label: 'Years of Experience',
-    about_page_experience_bg: '#0ea5e9',
+    about_page_experience_bg: '#14b8a6',
     about_page_experience_text: '#000000',
     about_page_cta_text: 'Learn More',
     about_page_cta_link: '#',
-    about_page_cta_bg: '#0ea5e9',
+    about_page_cta_bg: '#14b8a6',
     about_page_cta_text_color: '#000000',
     about_page_button_bg: '#0d9488',
     about_page_button_text: '#374151',
@@ -1032,9 +1032,9 @@ export default function WizardClient() {
         next.about_heading_color = '#ffffff';
         next.about_description_color = '#d1d5db';
         next.about_experience_bg = '#374151';
-        next.about_experience_text_color = '#0ea5e9';
-        next.about_button_color = '#0ea5e9';
-        next.about_button_text_color = '#374151';
+        next.about_experience_text_color = '#14b8a6';
+        next.about_button_color = '#14b8a6';
+        next.about_button_text_color = '#ffffff';
         
         // Service areas defaults
         next.service_areas_bg_color = '#1f2937';
@@ -1102,13 +1102,13 @@ export default function WizardClient() {
         next.about_page_hero_bg_color = '#1f2937';
         next.about_page_hero_heading_color = '#ffffff';
         next.about_page_hero_tagline_color = '#9ca3af';
-        next.about_page_who_tagline_color = '#0ea5e9';
+        next.about_page_who_tagline_color = '#14b8a6';
         next.about_page_who_bg = '#ffffff';
         next.about_page_who_text = '#374151';
         next.about_page_who_desc_color = '#374151';
-        next.about_page_experience_bg = '#0ea5e9';
+        next.about_page_experience_bg = '#14b8a6';
         next.about_page_experience_text = '#000000';
-        next.about_page_cta_bg = '#0ea5e9';
+        next.about_page_cta_bg = '#14b8a6';
         next.about_page_cta_text_color = '#000000';
         next.about_page_why_bg = '#1e3a8a';
         next.about_page_why_heading_color = '#ffffff';
@@ -3467,7 +3467,7 @@ export default function WizardClient() {
                             <td>
                               <input 
                                 type="color" 
-                                value={form.about_button_color || '#0ea5e9'}
+                                value={form.about_button_color || '#14b8a6'}
                                 onChange={(e) => updateForm('about_button_color', e.target.value)}
                               />
                             </td>
@@ -3676,7 +3676,7 @@ export default function WizardClient() {
                             <td>
                               <input 
                                 type="color" 
-                                value={form.about_page_who_tagline_color || '#0ea5e9'}
+                                value={form.about_page_who_tagline_color || '#14b8a6'}
                                 onChange={(e) => updateForm('about_page_who_tagline_color', e.target.value)}
                               />
                             </td>
@@ -3832,7 +3832,7 @@ export default function WizardClient() {
                             <td>
                               <input 
                                 type="color" 
-                                value={form.about_page_experience_bg || '#0ea5e9'}
+                                value={form.about_page_experience_bg || '#14b8a6'}
                                 onChange={(e) => updateForm('about_page_experience_bg', e.target.value)}
                               />
                             </td>
@@ -3876,7 +3876,7 @@ export default function WizardClient() {
                             <td>
                               <input 
                                 type="color" 
-                                value={form.about_page_cta_bg || '#0ea5e9'}
+                                value={form.about_page_cta_bg || '#14b8a6'}
                                 onChange={(e) => updateForm('about_page_cta_bg', e.target.value)}
                               />
                             </td>
