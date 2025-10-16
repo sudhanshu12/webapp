@@ -321,7 +321,7 @@ export default function WizardClient() {
     const themes = {
       ocean: { primary: '#2563eb', secondary: '#0ea5e9', light: '#f1f5f9', dark: '#0f172a', text: '#23282d' },
       emerald: { primary: '#059669', secondary: '#10b981', light: '#d1fae5', dark: '#064e3b', text: '#23282d' },
-      amber: { primary: '#f59e0b', secondary: '#d97706', light: '#fef3c7', dark: '#fffbeb', text: '#92400e' },
+      amber: { primary: '#f59e0b', secondary: '#d97706', light: '#fef9e7', dark: '#78350f', text: '#78350f' },
       rose: { primary: '#e11d48', secondary: '#fb7185', light: '#fce7f3', dark: '#4c0519', text: '#23282d' },
       slate: { primary: '#475569', secondary: '#64748b', light: '#f1f5f9', dark: '#0f172a', text: '#23282d' },
       violet: { primary: '#7c3aed', secondary: '#a855f7', light: '#f3e8ff', dark: '#2e1065', text: '#23282d' },
@@ -649,9 +649,13 @@ export default function WizardClient() {
         footer_bg_color: '#0f172a',
         footer_heading_color: '#ffffff',
         footer_links_color: '#d1d5db',
-        nav_bg_color: '#1f2937',
+        nav_bg_color: '#78350f',
         nav_text_color: '#ffffff',
-        heading_color: '#ffffff',
+        heading_color: '#78350f',
+        // Global color scheme palette (for Customize Colors section)
+        global_primary_color: '#f59e0b',
+        global_secondary_color: '#d97706',
+        button_primary_color: '#f59e0b',
       };
     }
     
@@ -1093,10 +1097,14 @@ export default function WizardClient() {
         next.footer_link_color = '#2ee6c5';
         
         // Navigation defaults
-        next.nav_bg_color = '#1f2937';
+        next.nav_bg_color = '#78350f';
         next.nav_text_color = '#ffffff';
-        next.heading_color = '#ffffff';
-        next.button_primary_color = '#0ea5e9';
+        next.heading_color = '#78350f';
+        
+        // Global color scheme palette (for Customize Colors section)
+        next.global_primary_color = '#f59e0b';
+        next.global_secondary_color = '#d97706';
+        next.button_primary_color = '#f59e0b';
         
         // About page defaults
         next.about_page_hero_bg_color = '#1f2937';
