@@ -600,10 +600,12 @@ export default function WizardClient() {
     footer_links_color: '#d1d5db',
     footer_copyright_text: '©2025, Your Business Name. All Rights Reserved.',
     footer_disclaimer_text: 'This website and its content are for informational purposes only. Results may vary based on individual circumstances.',
-    nav_bg_color: '#1f2937',
+    nav_bg_color: '#78350f',
     nav_text_color: '#ffffff',
-    heading_color: '#ffffff',
-    button_primary_color: '#0ea5e9',
+    heading_color: '#78350f',
+    button_primary_color: '#f59e0b',
+    global_primary_color: '#f59e0b',
+    global_secondary_color: '#d97706',
   });
 
   // Add loading state to prevent hydration mismatches
