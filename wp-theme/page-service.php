@@ -126,11 +126,23 @@ if ($service_description === '') {
 if ($service_description === '') {
     $service_description = get_post_meta(get_the_ID(), 'service_content', true) ?: '';
 }
-if (empty($service_description)) {
-    // Default description with HTML formatting
+
+// If description is empty or too short (less than 100 chars) or has no HTML tags, use a rich default
+if (empty($service_description) || strlen($service_description) < 100 || strip_tags($service_description) === $service_description) {
+    // Store the short description if it exists
+    $short_desc = !empty($service_description) ? $service_description : 'professional ' . strtolower($service_title) . ' services';
+    
+    // Create rich default description with HTML formatting
     $service_description = '<h2>Professional ' . esc_html($service_title) . ' Services in ' . esc_html($business['state']) . '</h2>
-    <p>We provide comprehensive ' . strtolower($service_title) . ' services designed to meet your specific needs. Our experienced team uses industry-leading techniques and materials to ensure the highest quality results.</p>
-    <p>Whether you need new installation, repairs, or maintenance, we have the expertise to handle projects of any size. We take pride in our attention to detail and commitment to customer satisfaction.</p>';
+    <p>' . esc_html(ucfirst($short_desc)) . '. Our experienced team specializes in delivering top-quality results that exceed expectations.</p>
+    
+    <h3>Why Choose Our ' . esc_html($service_title) . ' Services?</h3>
+    <p>With years of experience serving ' . esc_html($business['state']) . ', we have built a reputation for excellence in ' . strtolower($service_title) . '. Our dedicated professionals use the latest techniques and highest quality materials to ensure your complete satisfaction.</p>
+    
+    <p>We understand that every project is unique. That\'s why we take the time to listen to your needs, assess your situation, and provide customized solutions that fit your budget and timeline. From initial consultation to project completion, we\'re with you every step of the way.</p>
+    
+    <h3>Our Commitment to Quality</h3>
+    <p>Quality is at the heart of everything we do. We don\'t cut corners or compromise on standards. Every member of our team is trained, experienced, and committed to delivering workmanship that stands the test of time. We back our work with comprehensive warranties for your peace of mind.</p>';
 }
 
 // Add meta tags to head

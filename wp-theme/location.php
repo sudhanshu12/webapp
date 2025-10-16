@@ -164,8 +164,23 @@ $location_description = $current_location['description'] ?? '';
 if (empty($location_description)) {
     $location_description = get_post_meta(get_the_ID(), 'location_description', true) ?: '';
 }
-if (empty($location_description)) {
-    $location_description = 'Professional services in ' . $location_title . ' and surrounding areas.';
+
+// If description is empty or too short (less than 100 chars) or has no HTML tags, use a rich default
+if (empty($location_description) || strlen($location_description) < 100 || strip_tags($location_description) === $location_description) {
+    // Store the short description if it exists
+    $short_desc = !empty($location_description) ? $location_description : 'professional services in ' . $location_title;
+    
+    // Create rich default description with HTML formatting
+    $location_description = '<h2>Quality Services in ' . esc_html($location_title) . '</h2>
+    <p>' . esc_html(ucfirst($short_desc)) . '. Our team is proud to serve the ' . esc_html($location_title) . ' community with dedicated, professional service.</p>
+    
+    <h3>Why Choose Us in ' . esc_html($location_title) . '?</h3>
+    <p>As a trusted local service provider in ' . esc_html($location_title) . ', we understand the unique needs of our community. Our experienced team brings years of expertise combined with a commitment to excellence that sets us apart.</p>
+    
+    <p>We\'re not just another service company – we\'re your neighbors. We take pride in serving ' . esc_html($location_title) . ' and the surrounding areas with honesty, integrity, and exceptional workmanship. Every project, large or small, receives our full attention and dedication.</p>
+    
+    <h3>Local Expertise You Can Trust</h3>
+    <p>Our deep roots in the ' . esc_html($location_title) . ' area mean we understand local regulations, weather patterns, and community standards. This local knowledge, combined with our technical expertise, ensures that every job is done right the first time.</p>';
 }
 
 // Debug: Log location description
