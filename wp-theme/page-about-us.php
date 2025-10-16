@@ -170,73 +170,75 @@ function bsg_about_page_styles() {
         transition: all 0.3s ease;
     }
 
-    /* Why Work With Us (About Page Specific) */
+    /* Why Work With Us (About Page Specific) - Compact Layout */
     .why-section {
-        padding: 80px 20px;
+        padding: 60px 20px;
         background: <?php echo esc_attr($settings['about_page_why_bg'] ?? '#1e3a8a'); ?>;
     }
     .why-section h2 {
         color: <?php echo esc_attr($settings['about_page_why_heading_color'] ?? '#ffffff'); ?>;
-        font-size: 2.75rem;
-        font-weight: 800;
+        font-size: 2.25rem;
+        font-weight: 700;
         text-align: center;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
     }
     .why-section .subtitle {
         color: <?php echo esc_attr($settings['about_page_why_subtitle_color'] ?? '#ffffff'); ?>;
-        font-size: 1.15rem;
+        font-size: 1rem;
         text-align: center;
-        margin-bottom: 4rem;
+        margin-bottom: 2.5rem;
         font-weight: 400;
+        opacity: 0.9;
     }
     .benefits-container {
-        max-width: 1200px;
+        max-width: 1100px;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4rem;
+        gap: 2.5rem;
     }
     .benefits-row-top {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 4rem;
+        gap: 2.5rem;
         width: 100%;
         max-width: 900px;
     }
     .benefits-row-bottom {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 4rem;
+        gap: 2.5rem;
         width: 100%;
-        max-width: 600px;
+        max-width: 550px;
     }
     .benefit-item {
         text-align: center;
-        padding: 1rem;
+        padding: 0.5rem;
     }
     .benefit-item .icon {
-        width: 70px;
-        height: 70px;
-        background: <?php echo esc_attr($settings['about_page_why_icon_bg'] ?? '#1e3a8a'); ?>;
+        width: 60px;
+        height: 60px;
+        background: <?php echo esc_attr($settings['about_page_why_icon_bg'] ?? '#3b82f6'); ?>;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 1.5rem;
+        margin: 0 auto 1rem;
         border: none;
     }
     .benefit-item h3 {
         color: <?php echo esc_attr($settings['about_page_why_item_title'] ?? '#ffffff'); ?>;
-        font-size: 1.3rem;
-        font-weight: 700;
-        margin-bottom: 0.75rem;
+        font-size: 1.15rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
     }
     .benefit-item p {
         color: <?php echo esc_attr($settings['about_page_why_item_desc'] ?? '#ffffff'); ?>;
-        line-height: 1.6;
+        line-height: 1.5;
         margin: 0;
-        font-size: 0.95rem;
+        font-size: 0.875rem;
+        opacity: 0.9;
     }
 
     /* Contact Section */
@@ -372,47 +374,12 @@ get_header();
                 
                 <div class="about-description-content">
                 <?php 
-                // Extract clean about description text from wizard
+                // Display full HTML content from wizard's about page description
                 $about_page_description = $settings['about_page_who_description'] ?? '';
                 
                 if (!empty($about_page_description)) {
-                    // Remove all HTML tags to get plain text
-                    $clean_text = strip_tags($about_page_description);
-                    
-                    // Extract the main "About Us" paragraph (between "WHO WE ARE" and various end markers)
-                    // Stop at: Our Mission, Years of Experience, Get Started, or numeric patterns like "10+", "15+"
-                    preg_match('/WHO WE ARE.*?About Us(.*?)(?:Our Mission|Years of Experience|\d+\+\s*Years|Get Started Today|Our Values|Our Team)/s', $clean_text, $matches);
-                    
-                    if (!empty($matches[1])) {
-                        $about_text = trim($matches[1]);
-                    } else {
-                        // Fallback: try to find any substantial paragraph
-                        $paragraphs = preg_split('/\n\n+/', $clean_text);
-                        $about_text = '';
-                        foreach ($paragraphs as $para) {
-                            $para = trim($para);
-                            // Stop if we hit numeric experience indicators
-                            if (preg_match('/^\d+\+/', $para)) {
-                                break;
-                            }
-                            if (strlen($para) > 100 && !preg_match('/(WHO WE ARE|ABOUT YOUR BUSINESS|Our Mission|Our Values|Our Team|Ready to Get Started)/i', $para)) {
-                                $about_text = $para;
-                                break;
-                            }
-                        }
-                    }
-                    
-                    // Clean up extra whitespace and remove any trailing numeric patterns
-                    $about_text = preg_replace('/\s+/', ' ', $about_text);
-                    $about_text = preg_replace('/\s*\d+\+\s*$/', '', $about_text); // Remove trailing "10+", "15+", etc.
-                    $about_text = trim($about_text);
-                    
-                    // Display the clean text
-                    if (!empty($about_text) && strlen($about_text) > 50) {
-                        echo '<p>' . esc_html($about_text) . '</p>';
-                    } else {
-                        echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
-                    }
+                    // Use wp_kses_post to allow safe HTML formatting
+                    echo wp_kses_post($about_page_description);
                 } else {
                     // Fallback content
                     echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
@@ -434,7 +401,11 @@ get_header();
     </section>
 
     <!-- Why Work With Us? (About Page Specific) -->
-    <?php if (!empty($settings['about_page_why_items'])): ?>
+    <?php 
+    // Check if about_page_why_items exist, if not use features as fallback
+    $why_items = !empty($settings['about_page_why_items']) ? $settings['about_page_why_items'] : (!empty($settings['features']) ? $settings['features'] : []);
+    if (!empty($why_items)): 
+    ?>
     <section class="why-section">
         <div class="container" style="max-width: 1200px; margin: 0 auto;">
             <h2><?php echo esc_html($settings['about_page_why_heading'] ?? 'Why Work With Us?'); ?></h2>
@@ -444,8 +415,8 @@ get_header();
                 <!-- Top Row: First 3 items -->
                 <div class="benefits-row-top">
                     <?php 
-                    $item_count = count($settings['about_page_why_items']);
-                    $top_items = array_slice($settings['about_page_why_items'], 0, 3);
+                    $item_count = count($why_items);
+                    $top_items = array_slice($why_items, 0, 3);
                     foreach ($top_items as $item): 
                     ?>
                     <div class="benefit-item">
@@ -463,7 +434,7 @@ get_header();
                 
                 <!-- Bottom Row: Remaining items (centered) -->
                 <?php if ($item_count > 3): 
-                    $bottom_items = array_slice($settings['about_page_why_items'], 3);
+                    $bottom_items = array_slice($why_items, 3);
                 ?>
                 <div class="benefits-row-bottom">
                     <?php foreach ($bottom_items as $item): ?>
