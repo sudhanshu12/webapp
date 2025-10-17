@@ -114,10 +114,11 @@ Create compelling, professional content that tells the company's story and build
 8. commitment_points: Generate 4 specific commitment points as HTML <li> items (each 12-18 words):
    - Focus on reliability, quality, communication, support
 9. final_cta_text: Compelling call-to-action text (80-120 words) that:
-   - Encourages contact
+   - Encourages contact and consultation
    - Mentions free consultation or estimate
-   - Includes phone number: ${businessData.phone}
-   - Creates urgency
+   - Creates urgency and excitement
+   - Does NOT include phone number (it will be added separately)
+   - Focuses on the value proposition and next steps
 10. cta_link: Call to action link (e.g., "#contact", "/contact", "tel:${businessData.phone}")
 11. cta_text: Call to action button text (e.g., "Get Free Estimate", "Call Now", "Contact Us")
 
@@ -128,7 +129,8 @@ WRITING GUIDELINES:
 - Focus on customer benefits and outcomes
 - Use active voice and compelling language
 - Avoid generic phrases - be specific to the business
-- Include the phone number ${businessData.phone} in the final CTA
+- For final_cta_text: Write compelling text that encourages action without including phone numbers
+- Keep the CTA text focused on benefits and next steps, not contact details
 
 Company Details: ${businessData.business_name}, Industry: ${businessData.business_type}, Location: ${businessData.location}, Phone: ${businessData.phone}
 
@@ -142,7 +144,7 @@ Return ONLY a JSON object like this:
   "team_description": "team description here...",
   "commitment_statement": "commitment statement here...",
   "commitment_points": "<li>point 1</li><li>point 2</li>...",
-  "final_cta_text": "CTA text with phone number here...",
+  "final_cta_text": "Compelling CTA text without phone number here...",
   "cta_link": "#contact",
   "cta_text": "Get Free Estimate"
 }`;
