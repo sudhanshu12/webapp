@@ -53,6 +53,15 @@ export default function Dashboard() {
       document.head.appendChild(metaKeywords);
     }
     metaKeywords.content = 'dashboard, website management, business websites, website builder dashboard';
+    
+    // Add noindex meta tag
+    let noindexMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement;
+    if (!noindexMeta) {
+      noindexMeta = document.createElement('meta') as HTMLMetaElement;
+      noindexMeta.name = 'robots';
+      document.head.appendChild(noindexMeta);
+    }
+    noindexMeta.content = 'noindex, nofollow';
   }, []);
 
   useEffect(() => {

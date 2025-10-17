@@ -1,9 +1,20 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function AdminLoginPage() {
+  // Set noindex meta tag
+  useEffect(() => {
+    // Add noindex meta tag
+    let noindexMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement;
+    if (!noindexMeta) {
+      noindexMeta = document.createElement('meta') as HTMLMetaElement;
+      noindexMeta.name = 'robots';
+      document.head.appendChild(noindexMeta);
+    }
+    noindexMeta.content = 'noindex, nofollow';
+  }, []);
   const [credentials, setCredentials] = useState({
     username: '',
     password: ''

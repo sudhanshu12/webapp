@@ -302,6 +302,18 @@ export default function BillingPage() {
     }
   }, [isLoaded, user]);
 
+  // Set noindex meta tag
+  useEffect(() => {
+    // Add noindex meta tag
+    let noindexMeta = document.querySelector('meta[name="robots"]') as HTMLMetaElement;
+    if (!noindexMeta) {
+      noindexMeta = document.createElement('meta') as HTMLMetaElement;
+      noindexMeta.name = 'robots';
+      document.head.appendChild(noindexMeta);
+    }
+    noindexMeta.content = 'noindex, nofollow';
+  }, []);
+
   if (loading) {
     return (
       <ConditionalLayout>
