@@ -13,12 +13,14 @@ $email = $settings['email'] ?? '';
 
 // Add meta tags to head
 add_action('wp_head', function() use ($settings, $business_name) {
-    $meta_title = 'About ' . $business_name . ' - Professional Services & Team';
-    $meta_description = 'Learn about ' . $business_name . ' - our professional team, services, and commitment to excellence. Discover why we\'re the trusted choice for quality work.';
+    // Get meta tags from wizard settings
+    $meta_title = $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Professional Services & Team';
+    $meta_description = $settings['about_page_meta_description'] ?? 'Learn about ' . $business_name . ' - our professional team, services, and commitment to excellence. Discover why we\'re the trusted choice for quality work.';
+    $meta_keywords = $settings['about_page_meta_keywords'] ?? 'about us, professional services, team, company, business, quality work';
     
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta name="keywords" content="about us, professional services, team, company, business, quality work">' . "\n";
+    echo '<meta name="keywords" content="' . esc_attr($meta_keywords) . '">' . "\n";
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
     echo '<meta property="og:type" content="website">' . "\n";

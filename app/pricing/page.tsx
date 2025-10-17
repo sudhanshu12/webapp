@@ -3,6 +3,23 @@
 import { useState, useEffect } from 'react';
 import ConditionalLayout from '../components/conditional-layout';
 import { useSession } from 'next-auth/react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Pricing - Affordable Website Builder Plans | Create A Website Click',
+  description: 'Choose the perfect plan for your business. Start free with 1 credit or upgrade to create multiple professional websites. Transparent pricing, no hidden fees.',
+  keywords: 'website builder pricing, business website plans, affordable website builder, website creation credits',
+  openGraph: {
+    title: 'Pricing - Affordable Website Builder Plans | Create A Website Click',
+    description: 'Choose the perfect plan for your business. Start free with 1 credit or upgrade to create multiple professional websites. Transparent pricing, no hidden fees.',
+    type: 'website',
+  },
+  twitter: {
+    title: 'Pricing - Affordable Website Builder Plans | Create A Website Click',
+    description: 'Choose the perfect plan for your business. Start free with 1 credit or upgrade to create multiple professional websites. Transparent pricing, no hidden fees.',
+    card: 'summary_large_image',
+  },
+};
 
 interface Plan {
   id: string;

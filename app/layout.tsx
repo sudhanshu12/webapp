@@ -7,8 +7,19 @@ import AuthSessionProvider from './components/session-provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Create A Website Click',
-  description: 'Launch AI‑written, SEO‑ready business sites in minutes.',
+  title: 'Create Professional Rank and Rent Websites in Minutes - Create A Website Click',
+  description: 'Build professional rank and rent business websites in minutes. Create stunning, SEO-optimized websites for your business with our easy-to-use platform.',
+  keywords: 'rank and rent, professional business website, website builder, SEO website, business website',
+  openGraph: {
+    title: 'Create Professional Rank and Rent Websites in Minutes - Create A Website Click',
+    description: 'Build professional rank and rent business websites in minutes. Create stunning, SEO-optimized websites for your business with our easy-to-use platform.',
+    type: 'website',
+  },
+  twitter: {
+    title: 'Create Professional Rank and Rent Websites in Minutes - Create A Website Click',
+    description: 'Build professional rank and rent business websites in minutes. Create stunning, SEO-optimized websites for your business with our easy-to-use platform.',
+    card: 'summary_large_image',
+  },
 }
 
 export default function RootLayout({
