@@ -44,7 +44,9 @@ export default function DynamicFavicon({ businessName }: DynamicFaviconProps) {
           if (!link) {
             link = document.createElement('link');
             link.rel = 'icon';
-            if (sizes) link.sizes = sizes;
+            if (sizes) {
+              link.setAttribute('sizes', sizes);
+            }
             document.head.appendChild(link);
           }
           link.href = href;
