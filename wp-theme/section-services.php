@@ -55,7 +55,20 @@ $all_pages = get_pages(['sort_column' => 'menu_order']); // Fetch all pages for 
                             </div>
                         </div>
                         <div style="padding: 0 1.2rem 1.2rem 1.2rem;">
-                            <a href="#" style="display:inline-block; background:none !important; color:<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>; font-weight:600; padding:0; text-decoration:none; border:none; box-shadow:none; transition:all 0.3s ease;" onmouseover="this.style.color='<?php echo esc_attr($settings['button_hover_color'] ?? '#22d3aa'); ?>';" onmouseout="this.style.color='<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>';">See More <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:4px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
+                            <?php
+                            // Try to find the service page
+                            $service_page_id = 0;
+                            $all_pages = get_pages(['sort_column' => 'menu_order']);
+                            $slug = sanitize_title($service['name'] ?? '');
+                            foreach ($all_pages as $page) {
+                                if (get_post_meta($page->ID, '_bsg_service', true) && sanitize_title($page->post_title) === $slug) {
+                                    $service_page_id = $page->ID;
+                                    break;
+                                }
+                            }
+                            $service_url = $service_page_id ? get_permalink($service_page_id) : home_url('/services/' . $slug . '/');
+                            ?>
+                            <a href="<?php echo esc_url($service_url); ?>" style="display:inline-block; background:none !important; color:<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>; font-weight:600; padding:0; text-decoration:none; border:none; box-shadow:none; transition:all 0.3s ease;" onmouseover="this.style.color='<?php echo esc_attr($settings['button_hover_color'] ?? '#22d3aa'); ?>';" onmouseout="this.style.color='<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>';">See More <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:4px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
                         </div>
                     </div>
                     <?php endforeach; ?>
