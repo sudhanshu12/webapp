@@ -52,9 +52,6 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
         <nav class="main-nav" id="main-nav" style="color: var(--text-color);">
             <ul class="nav-menu">
                 <li><a href="<?php echo home_url('/'); ?>">Home</a></li>
-                <?php if ($about_page): ?>
-                <li><a href="<?php echo esc_url(get_permalink($about_page->ID)); ?>">About</a></li>
-                <?php endif; ?>
                 <li class="has-dropdown">
                     <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="cursor: default; pointer-events: none;">Services <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></a>
                     <ul class="dropdown">
@@ -105,8 +102,11 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
                         ?>
                     </ul>
                 </li>
+                <?php if ($about_page): ?>
+                <li><a href="<?php echo esc_url(get_permalink($about_page->ID)); ?>">About</a></li>
+                <?php endif; ?>
                 <?php if ($contact_page): ?>
-                <li><a href="<?php echo esc_url(get_permalink($contact_page->ID)); ?>">Contact Us</a></li>
+                <li><a href="<?php echo esc_url(get_permalink($contact_page->ID)); ?>">Contact</a></li>
                 <?php endif; ?>
             </ul>
         </nav>
