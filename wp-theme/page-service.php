@@ -21,6 +21,22 @@ if (empty($settings)) {
 
 $service_title = get_the_title();
 
+// Add meta tags to head
+add_action('wp_head', function() use ($service_title, $business) {
+    $meta_title = $service_title . ' - Professional Services | ' . $business['name'];
+    $meta_description = 'Professional ' . strtolower($service_title) . ' services by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.';
+    
+    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
+    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="' . strtolower($service_title) . ', professional services, ' . $business['name'] . ', quality work">' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
+}, 1);
+
 // Derive request slug from URL as an extra-robust matcher
 $request_path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
 $request_slug = $request_path ? trim(basename($request_path), '/') : '';

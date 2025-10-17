@@ -24,6 +24,22 @@ error_log('Final settings loaded: ' . print_r($settings, true));
 
 $location_title = get_the_title();
 
+// Add meta tags to head
+add_action('wp_head', function() use ($location_title, $business) {
+    $meta_title = 'Service Areas - ' . $location_title . ' | ' . $business['name'];
+    $meta_description = 'Professional services in ' . $location_title . ' by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.';
+    
+    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
+    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="' . strtolower($location_title) . ', professional services, ' . $business['name'] . ', service areas, local business">' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
+}, 1);
+
 // Derive request slug from URL as an extra-robust matcher (in case WP returns parent context)
 $request_path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
 $request_slug = $request_path ? trim(basename($request_path), '/') : '';

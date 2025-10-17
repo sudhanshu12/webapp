@@ -17,15 +17,25 @@ add_action('wp_head', function() use ($settings) {
     remove_action('wp_head', '_wp_render_title_tag', 1);
     remove_action('wp_head', 'wp_generator');
     
-    // Output custom meta tags from wizard data
-    bsg_output_meta_tags('home');
+    // Custom homepage meta tags
+    $meta_title = 'Create Professional Rank and Rent Websites in Minutes - Create A Website Click';
+    $meta_description = 'Build professional rank and rent business websites in minutes. Create stunning, SEO-optimized websites for your business with our easy-to-use platform.';
+    
+    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
+    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="rank and rent, professional business website, website builder, SEO website, business website">' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    echo '<link rel="canonical" href="' . esc_url(home_url('/')) . '">' . "\n";
 }, 1);
 
 // Force custom document title
-add_filter('pre_get_document_title', function($title) use ($settings) {
-    $business = bsg_get_business_info();
-    $meta_title = $settings['homepage_meta_title'] ?? $business['name'] . ' - Professional Services in ' . $business['state'];
-    return $meta_title ?: $title;
+add_filter('pre_get_document_title', function($title) {
+    return 'Create Professional Rank and Rent Websites in Minutes - Create A Website Click';
 }, 99);
 
 // Performance optimized - minimal debug output

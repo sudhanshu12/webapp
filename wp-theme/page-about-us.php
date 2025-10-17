@@ -11,6 +11,22 @@ $business_name = $settings['business_name'] ?? 'Your Business';
 $phone = $settings['phone'] ?? '';
 $email = $settings['email'] ?? '';
 
+// Add meta tags to head
+add_action('wp_head', function() use ($settings, $business_name) {
+    $meta_title = 'About ' . $business_name . ' - Professional Services & Team';
+    $meta_description = 'Learn about ' . $business_name . ' - our professional team, services, and commitment to excellence. Discover why we\'re the trusted choice for quality work.';
+    
+    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
+    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="about us, professional services, team, company, business, quality work">' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
+}, 1);
+
 // Add custom styles
 function bsg_about_page_styles() {
     $settings = get_option('bsg_settings', array());
@@ -238,7 +254,7 @@ function bsg_about_page_styles() {
     }
 
     /* Responsive Design */
-    @media (max-width: 768px) {
+        @media (max-width: 768px) {
         .about-hero-section {
             min-height: 60vh;
             padding: 60px 0;
@@ -267,8 +283,8 @@ function bsg_about_page_styles() {
         }
         .why-section h2 {
             font-size: 2rem;
+            }
         }
-    }
     </style>
     <?php
 }
@@ -277,18 +293,18 @@ add_action('wp_head', 'bsg_about_page_styles', 20);
 get_header();
 ?>
 
-<main>
+    <main>
     <!-- Hero Section -->
     <section class="about-hero-section" style="<?php if (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? '#1f2937'); ?>;<?php endif; ?>">
         <div class="about-hero-content">
             <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#1f2937'); ?>;">
                 About <?php echo esc_html($business_name); ?>
-            </h1>
+                    </h1>
             <a href="tel:<?php echo esc_attr($phone); ?>" class="btn">
                 <i class="fa-solid fa-phone"></i> Call us Today
             </a>
-        </div>
-    </section>
+            </div>
+        </section>
 
     <!-- About Content Section - Side by Side Layout -->
     <section class="about-content-section">
@@ -297,32 +313,32 @@ get_header();
             <div class="about-image-wrapper">
                 <?php if (isset($settings['about_page_team_image']) && !empty($settings['about_page_team_image'])): ?>
                     <img src="<?php echo esc_url($settings['about_page_team_image']); ?>" alt="About <?php echo esc_attr($business_name); ?>" loading="lazy" decoding="async">
-                <?php else: ?>
-                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600;">
-                        Team Photo
+                        <?php else: ?>
+                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600;">
+                                Team Photo
+                            </div>
+                        <?php endif; ?>
                     </div>
-                <?php endif; ?>
-            </div>
-            
+                    
             <!-- Content on Right -->
             <div class="about-content-text">
                 <p class="tagline">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
                     WHO WE ARE
                 </p>
                 <h2>About <?php echo esc_html($business_name); ?></h2>
                 
                 <div class="about-description-content">
-                    <?php 
+                            <?php 
                     // Get the about page description - now AI generates clean content
                     $about_page_description = $settings['about_page_who_description'] ?? '';
                     
                     if (!empty($about_page_description)) {
                         // Display the clean HTML content directly
                         echo wp_kses_post($about_page_description);
-                    } else {
+                                    } else {
                         // Fallback content
                         echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
                     }
@@ -362,8 +378,8 @@ get_header();
                         <p><?php echo esc_html($item['description'] ?? ''); ?></p>
                     </div>
                     <?php endforeach; ?>
-                </div>
-                
+                            </div>
+                            
                 <!-- Bottom Row: Remaining items (centered) -->
                 <?php if ($item_count > 3): 
                     $bottom_items = array_slice($why_items, 3);
@@ -383,9 +399,9 @@ get_header();
                     <?php endforeach; ?>
                 </div>
                 <?php endif; ?>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
     <?php endif; ?>
 
     <!-- Reviews Section -->
@@ -441,7 +457,7 @@ get_header();
         <div class="container" style="max-width: 600px; margin: 0 auto; text-align: center;">
             <h2 style="color: #ffffff; font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">Get In Touch</h2>
             <p style="color: #ffffff; font-size: 1.1rem; margin-bottom: 2rem;">Ready to work with us? Contact <?php echo esc_html($business_name); ?> today.</p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <?php if (!empty($phone)): ?>
                 <a href="tel:<?php echo esc_attr($phone); ?>" style="background: #f59e0b; color: #ffffff; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
                     <i class="fa-solid fa-phone"></i> Call: <?php echo esc_html($phone); ?>
@@ -454,8 +470,8 @@ get_header();
                 </a>
                 <?php endif; ?>
             </div>
-        </div>
-    </section>
-</main>
+            </div>
+        </section>
+    </main>
 
 <?php get_footer(); ?>
