@@ -4607,27 +4607,22 @@ export default function WizardClient() {
                             <button 
                               type="button" 
                               onClick={() => removeService(service.id)} 
-                              disabled={services.length === 1}
                               style={{
-                                background: services.length === 1 ? '#6b7280' : '#dc2626',
+                                background: '#dc2626',
                                 color: 'white',
                                 border: 'none',
                                 padding: '8px 16px',
                                 borderRadius: '4px',
-                                cursor: services.length === 1 ? 'not-allowed' : 'pointer',
+                                cursor: 'pointer',
                                 fontSize: '14px',
                                 fontWeight: '500',
                                 transition: 'all 0.2s ease'
                               }}
                               onMouseEnter={(e) => {
-                                if (services.length > 1) {
-                                  e.currentTarget.style.background = '#b91c1c';
-                                }
+                                e.currentTarget.style.background = '#b91c1c';
                               }}
                               onMouseLeave={(e) => {
-                                if (services.length > 1) {
-                                  e.currentTarget.style.background = '#dc2626';
-                                }
+                                e.currentTarget.style.background = '#dc2626';
                               }}
                             >
                               🗑️ Remove Service
@@ -5166,27 +5161,22 @@ export default function WizardClient() {
                             <button 
                               type="button" 
                               onClick={() => removeLocation(location.id)} 
-                              disabled={locations.length === 1}
                               style={{
-                                background: locations.length === 1 ? '#6b7280' : '#dc2626',
+                                background: '#dc2626',
                                 color: 'white',
                                 border: 'none',
                                 padding: '8px 16px',
                                 borderRadius: '4px',
-                                cursor: locations.length === 1 ? 'not-allowed' : 'pointer',
+                                cursor: 'pointer',
                                 fontSize: '14px',
                                 fontWeight: '500',
                                 transition: 'all 0.2s ease'
                               }}
                               onMouseEnter={(e) => {
-                                if (locations.length > 1) {
-                                  e.currentTarget.style.background = '#b91c1c';
-                                }
+                                e.currentTarget.style.background = '#b91c1c';
                               }}
                               onMouseLeave={(e) => {
-                                if (locations.length > 1) {
-                                  e.currentTarget.style.background = '#dc2626';
-                                }
+                                e.currentTarget.style.background = '#dc2626';
                               }}
                             >
                               🗑️ Remove Location
@@ -5353,7 +5343,23 @@ export default function WizardClient() {
                               />
                             </div>
                             <div style={{alignSelf: 'center'}}>
-                              <button type="button" className="button" onClick={() => removeReview(review.id)} disabled={reviews.length === 1}>Remove</button>
+                              <button 
+                                type="button" 
+                                className="button" 
+                                onClick={() => removeReview(review.id)}
+                                style={{
+                                  background: '#dc2626',
+                                  color: 'white',
+                                  border: 'none',
+                                  padding: '6px 12px',
+                                  borderRadius: '4px',
+                                  cursor: 'pointer',
+                                  fontSize: '12px',
+                                  fontWeight: '500'
+                                }}
+                              >
+                                🗑️ Remove
+                              </button>
                             </div>
                           </div>
                           <div style={{marginTop: '0.75rem'}}>
