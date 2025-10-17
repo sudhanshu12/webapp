@@ -1,8 +1,31 @@
 "use client";
 
+import { useEffect } from 'react';
 import ConditionalLayout from '../components/conditional-layout';
 
 export default function AboutPage() {
+  // Set page metadata
+  useEffect(() => {
+    document.title = 'About Us - Create A Website Click | AI-Powered Website Builder';
+    
+    // Update meta description
+    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta') as HTMLMetaElement;
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = 'Learn about Create A Website Click - the AI-powered platform that builds professional business websites in 8 minutes. Empowering businesses with cutting-edge web technology.';
+    
+    // Update meta keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]') as HTMLMetaElement;
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta') as HTMLMetaElement;
+      metaKeywords.name = 'keywords';
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.content = 'about us, AI website builder, professional websites, business website platform, web technology';
+  }, []);
   return (
     <ConditionalLayout>
       <div className="bg-background text-text-primary overflow-x-hidden">
