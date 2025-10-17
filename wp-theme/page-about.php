@@ -71,6 +71,95 @@ $settings = bsg_get_settings();
                 justify-content: center !important;
             }
         }
+
+        /* Ready to Get Started Box - Big Centered Rectangle */
+        .ready-to-start-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 3rem;
+            margin: 4rem auto;
+            max-width: 1200px;
+            width: 90%;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            justify-content: center;
+            text-align: center;
+            min-height: 200px;
+        }
+        .ready-to-start-content {
+            flex: 1;
+        }
+        .ready-to-start-box h3 {
+            color: #1f2937;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 1.5rem 0;
+            text-align: center;
+        }
+        .ready-to-start-box p {
+            color: #374151;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .ready-to-start-box .contact-info {
+            font-size: 1.3rem;
+            color: #1f2937;
+            font-weight: 700;
+            text-align: center;
+        }
+        .ready-to-start-cta {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+        .ready-to-start-cta .cta-button {
+            display: inline-block;
+            background: #4f46e5;
+            color: white;
+            padding: 1.5rem 3rem;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+            min-width: 200px;
+        }
+        .ready-to-start-cta .cta-button:hover {
+            background: #4338ca;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5);
+        }
+        
+        /* Mobile responsive for horizontal layout */
+        @media (max-width: 768px) {
+            .ready-to-start-box {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+                padding: 2rem;
+                margin: 3rem auto;
+                width: 95%;
+            }
+            .ready-to-start-box h3 {
+                font-size: 1.8rem;
+            }
+            .ready-to-start-box p {
+                font-size: 1rem;
+            }
+            .ready-to-start-box .contact-info {
+                font-size: 1.1rem;
+            }
+            .ready-to-start-cta .cta-button {
+                padding: 1.2rem 2.5rem;
+                font-size: 1.1rem;
+                min-width: 180px;
+            }
+        }
     </style>
     <?php wp_head(); ?>
 </head>
@@ -165,6 +254,98 @@ $settings = bsg_get_settings();
                 </div>
             </div>
         </section>
+
+        <!-- AI Generated About Content Section -->
+        <?php if (!empty($settings['about_page_who_description'])): ?>
+        <section class="ai-about-content" style="background: #ffffff; color: #374151; padding: 5rem 0;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+                <?php
+                $wizard_about_content = $settings['about_page_who_description'] ?? '';
+                $phone = $settings['phone'] ?? '8755027281';
+                
+                // Only display wizard content if it exists and is substantial
+                if (!empty($wizard_about_content) && strlen(trim($wizard_about_content)) > 50) {
+                    // Display the full wizard content with proper layout
+                    ?>
+                    <div class="about-content" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+                        <!-- About Who We Are Section with Image -->
+                        <div class="about-who-we-are" style="display: flex; align-items: flex-start; gap: 3rem; margin-bottom: 3rem; max-width: 1000px; margin-left: auto; margin-right: auto;">
+                            <!-- Image -->
+                            <div class="about-image" style="flex: 0 0 350px; height: 450px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                                <?php
+                                // Get the about image from wizard settings
+                                $about_image = $settings['about_page_team_image'] ?? '';
+                                if (!empty($about_image)): ?>
+                                    <img src="<?php echo esc_url($about_image); ?>" alt="Our Team" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
+                                <?php else: ?>
+                                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600;">
+                                        Team Photo
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="about-content-text" style="flex: 1; padding-top: 1rem;">
+                                <div style="line-height: 1.7; color: #34495e; font-size: 1rem;">
+                                    <?php
+                                    // Display the wizard content with consistent paragraph styling
+                                    $paragraphs = preg_split('/\n\s*\n/', $wizard_about_content);
+                                    $is_cta_section = false;
+
+                                    foreach ($paragraphs as $index => $paragraph) {
+                                        $paragraph = trim($paragraph);
+                                        if (!empty($paragraph)) {
+                                            // Check if this is the "Ready to Get Started" section
+                                            if (stripos($paragraph, 'Ready to Get Started') !== false || stripos($paragraph, 'Ready to elevate') !== false) {
+                                                $is_cta_section = true;
+                                                // Extract the actual text content from the paragraph
+                                                $clean_text = strip_tags($paragraph);
+                                                $clean_text = preg_replace('/<[^>]*>/', '', $clean_text);
+                                                $clean_text = trim($clean_text);
+                                                
+                                                // Remove the "Ready to Get Started?" part from the text
+                                                $clean_text = preg_replace('/Ready to Get Started\?\s*/', '', $clean_text);
+                                                $clean_text = preg_replace('/Call us today at \d+ for a free consultation!\s*/', '', $clean_text);
+                                                $clean_text = trim($clean_text);
+                                                
+                                                echo '<div class="ready-to-start-box">';
+                                                echo '<div class="ready-to-start-content">';
+                                                echo '<h3>Ready to Get Started?</h3>';
+                                                echo '<p>' . esc_html($clean_text) . '</p>';
+                                                echo '<p class="contact-info">Call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
+                                                echo '</div>';
+                                                echo '<div class="ready-to-start-cta">';
+                                                echo '<a href="tel:' . esc_attr($phone) . '" class="cta-button">Get Free Estimate</a>';
+                                                echo '</div>';
+                                                echo '</div>';
+                                            } else {
+                                                $is_last = ($index === count($paragraphs) - 1);
+                                                $margin_bottom = $is_last ? '0' : '1.2rem';
+                                                echo '<p style="margin: 0 0 ' . $margin_bottom . ' 0;">' . wp_kses_post($paragraph) . '</p>';
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                } else {
+                    // Show message to generate content
+                    ?>
+                    <div class="about-content" style="max-width: 1200px; margin: 0 auto; padding: 2rem; text-align: center;">
+                        <div style="background: #f8f9fa; padding: 3rem; border-radius: 12px; border: 1px solid #e9ecef;">
+                            <h2 style="font-size: 2rem; font-weight: 600; color: #2c3e50; margin: 0 0 1rem 0;">Generate Your About Page Content</h2>
+                            <p style="margin: 0; line-height: 1.6; color: #34495e; font-size: 1.1rem;">Please use the wizard to generate your about page content. This will create professional, industry-specific content tailored to your business.</p>
+                        </div>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
+        </section>
+        <?php endif; ?>
 
         <section class="contact-section" style="padding: 80px 0; background-color: var(--surface-color); color: #ffffff;">
             <div class="container">
