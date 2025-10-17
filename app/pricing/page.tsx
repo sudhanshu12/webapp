@@ -3,23 +3,6 @@
 import { useState, useEffect } from 'react';
 import ConditionalLayout from '../components/conditional-layout';
 import { useSession } from 'next-auth/react';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Pricing - Affordable Website Builder Plans | Create A Website Click',
-  description: 'Choose the perfect plan for your business. Start free with 1 credit or upgrade to create multiple professional websites. Transparent pricing, no hidden fees.',
-  keywords: 'website builder pricing, business website plans, affordable website builder, website creation credits',
-  openGraph: {
-    title: 'Pricing - Affordable Website Builder Plans | Create A Website Click',
-    description: 'Choose the perfect plan for your business. Start free with 1 credit or upgrade to create multiple professional websites. Transparent pricing, no hidden fees.',
-    type: 'website',
-  },
-  twitter: {
-    title: 'Pricing - Affordable Website Builder Plans | Create A Website Click',
-    description: 'Choose the perfect plan for your business. Start free with 1 credit or upgrade to create multiple professional websites. Transparent pricing, no hidden fees.',
-    card: 'summary_large_image',
-  },
-};
 
 interface Plan {
   id: string;
@@ -72,6 +55,29 @@ export default function PricingPage() {
   const { data: session, status } = useSession();
   const [user, setUser] = useState<any>(null);
   const [purchasing, setPurchasing] = useState<string | null>(null);
+
+  // Set page metadata
+  useEffect(() => {
+    document.title = 'Pricing - Affordable Website Builder Plans | Create A Website Click';
+    
+    // Update meta description
+    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta') as HTMLMetaElement;
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = 'Choose the perfect plan for your business. Start free with 1 credit or upgrade to create multiple professional websites. Transparent pricing, no hidden fees.';
+    
+    // Update meta keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]') as HTMLMetaElement;
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta') as HTMLMetaElement;
+      metaKeywords.name = 'keywords';
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.content = 'website builder pricing, business website plans, affordable website builder, website creation credits';
+  }, []);
 
   useEffect(() => {
     // Load user from NextAuth session
