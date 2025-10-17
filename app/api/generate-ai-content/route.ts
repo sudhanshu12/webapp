@@ -83,41 +83,68 @@ Company: ${businessData.business_name}, Industry: ${businessData.business_type},
 				break;
 				
 			case 'about_page':
-				prompt = `Generate clean about page content for ${businessData.business_name}, a ${businessData.business_type} company in ${businessData.location}. 
+				prompt = `Generate comprehensive about page content for ${businessData.business_name}, a professional ${businessData.business_type} company serving ${businessData.location} and surrounding areas.
 
 IMPORTANT: Return ONLY a JSON object with these exact keys and content. Do NOT include any other text or formatting.
 
-Generate content for these sections:
+Create compelling, professional content that tells the company's story and builds trust. Focus on:
 
-1. who_we_are_tagline: Who we are section tagline (e.g., "WHO WE ARE")
-2. who_we_are_title: Who we are section title (e.g., "About Us")
-3. who_we_are_description: Who we are section description (100-150 words)
-4. mission_statement: Company mission statement (80-120 words)
-5. values_list: Generate 5 company values as HTML <li> items (each 10-15 words)
-6. team_description: Description of the team and expertise (80-120 words)
-7. commitment_statement: Statement about company commitment to customers (60-100 words)
-8. commitment_points: Generate 4 commitment points as HTML <li> items (each 10-15 words)
-9. final_cta_text: Final call to action text (60-100 words)
-10. cta_link: Call to action link
-11. cta_text: Call to action button text
+1. who_we_are_tagline: Section tagline (e.g., "WHO WE ARE", "ABOUT US", "OUR STORY")
+2. who_we_are_title: Main section title (e.g., "About ${businessData.business_name}", "Your Trusted ${businessData.business_type} Experts")
+3. who_we_are_description: Comprehensive company description (150-200 words) covering:
+   - Company background and experience
+   - What makes them unique in the ${businessData.business_type} industry
+   - Service area and local expertise
+   - Commitment to quality and customer satisfaction
+4. mission_statement: Clear mission statement (100-150 words) explaining:
+   - Company's purpose and goals
+   - How they serve their community
+   - What drives their daily operations
+5. values_list: Generate 5 core company values as HTML <li> items (each 12-18 words):
+   - Focus on integrity, quality, customer service, safety, community involvement
+   - Make them specific to ${businessData.business_type} industry
+6. team_description: Team expertise description (100-150 words) covering:
+   - Team qualifications and experience
+   - Training and certifications
+   - Commitment to continuous improvement
+7. commitment_statement: Customer commitment statement (80-120 words) explaining:
+   - What customers can expect
+   - Quality guarantees
+   - Service standards
+8. commitment_points: Generate 4 specific commitment points as HTML <li> items (each 12-18 words):
+   - Focus on reliability, quality, communication, support
+9. final_cta_text: Compelling call-to-action text (80-120 words) that:
+   - Encourages contact
+   - Mentions free consultation or estimate
+   - Includes phone number: ${businessData.phone}
+   - Creates urgency
+10. cta_link: Call to action link (e.g., "#contact", "/contact", "tel:${businessData.phone}")
+11. cta_text: Call to action button text (e.g., "Get Free Estimate", "Call Now", "Contact Us")
 
-Focus on ${businessData.business_type} industry expertise and serving ${businessData.location} area. Include the company phone number in the final CTA.
+WRITING GUIDELINES:
+- Use professional, trustworthy tone
+- Include specific details about ${businessData.business_type} industry
+- Mention ${businessData.location} area expertise
+- Focus on customer benefits and outcomes
+- Use active voice and compelling language
+- Avoid generic phrases - be specific to the business
+- Include the phone number ${businessData.phone} in the final CTA
 
-Company: ${businessData.business_name}, Industry: ${businessData.business_type}, Location: ${businessData.location}, Phone: ${businessData.phone}
+Company Details: ${businessData.business_name}, Industry: ${businessData.business_type}, Location: ${businessData.location}, Phone: ${businessData.phone}
 
 Return ONLY a JSON object like this:
 {
   "who_we_are_tagline": "WHO WE ARE",
-  "who_we_are_title": "About Us",
-  "who_we_are_description": "content here",
-  "mission_statement": "content here",
+  "who_we_are_title": "About ${businessData.business_name}",
+  "who_we_are_description": "detailed company description here...",
+  "mission_statement": "mission statement here...",
   "values_list": "<li>value 1</li><li>value 2</li>...",
-  "team_description": "content here",
-  "commitment_statement": "content here",
+  "team_description": "team description here...",
+  "commitment_statement": "commitment statement here...",
   "commitment_points": "<li>point 1</li><li>point 2</li>...",
-  "final_cta_text": "content here",
+  "final_cta_text": "CTA text with phone number here...",
   "cta_link": "#contact",
-  "cta_text": "Get Started Today"
+  "cta_text": "Get Free Estimate"
 }`;
 				break;
 

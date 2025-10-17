@@ -910,20 +910,11 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                 // Get the full about page content from wizard settings (about page, not homepage about section)
                 $wizard_about_content = $settings['about_page_description'] ?? $settings['about_page_who_description'] ?? '';
                 
-                // Check if wizard content is empty or contains test data
+                // Only display wizard content if it exists and is substantial
                 if (!empty($wizard_about_content) && strlen(trim($wizard_about_content)) > 50 && strpos($wizard_about_content, 'hi thi stess') === false) {
-                    // Display the full wizard content
-                    echo wp_kses_post($wizard_about_content);
-                } else {
-                    // Fallback: Display the full about content structure
+                    // Display the full wizard content with proper layout
                     ?>
                     <div class="about-content" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
-                        <div class="about-hero-section" style="text-align: center; margin-bottom: 3rem;">
-                            
-                            <h2 style="font-size: 2.5rem; font-weight: 700; color: #2c3e50; margin: 0.5rem 0;">Your Trusted Roofing Experts</h2>
-                            <p class="location" style="color: #7f8c8d; font-size: 1.1rem; margin: 0;">Serving Orlando and surrounding areas</p>
-                        </div>
-                        
                         <!-- About Who We Are Section with Image -->
                         <div class="about-who-we-are" style="display: flex; align-items: flex-start; gap: 3rem; margin-bottom: 3rem; max-width: 1000px; margin-left: auto; margin-right: auto;">
                             <!-- Image -->
@@ -942,95 +933,31 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                             
                             <!-- Content -->
                             <div class="about-content-text" style="flex: 1; padding-top: 1rem;">
-                                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="margin-right: 8px;">
-                                        <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#4ecdc4" stroke-width="2"/>
-                                        <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#4ecdc4" stroke-width="2"/>
-                                    </svg>
-                                    <p class="tagline" style="color: #4ecdc4; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin: 0;">WHO WE ARE</p>
-                                </div>
-                                
-                                <h2 style="font-size: 2.2rem; font-weight: 700; color: #2c3e50; margin: 0 0 1.5rem 0; line-height: 1.2;">About Roofing Pros</h2>
-                                
                                 <div style="line-height: 1.7; color: #34495e; font-size: 1rem;">
                                     <?php 
-                                    // Get the about description from wizard settings
-                                    $about_description = $settings['about_page_description'] ?? $settings['about_page_who_description'] ?? '';
-                                    
-                                    if (!empty($about_description) && strlen(trim($about_description)) > 50 && strpos($about_description, 'hi thi stess') === false) {
-                                        // Display the wizard content with consistent paragraph styling
-                                        $paragraphs = preg_split('/\n\s*\n/', $about_description);
-                                        foreach ($paragraphs as $index => $paragraph) {
-                                            $paragraph = trim($paragraph);
-                                            if (!empty($paragraph)) {
-                                                $is_last = ($index === count($paragraphs) - 1);
-                                                $margin_bottom = $is_last ? '0' : '1.2rem';
-                                                echo '<p style="margin: 0 0 ' . $margin_bottom . ' 0;">' . wp_kses_post($paragraph) . '</p>';
-                                            }
+                                    // Display the wizard content with consistent paragraph styling
+                                    $paragraphs = preg_split('/\n\s*\n/', $wizard_about_content);
+                                    foreach ($paragraphs as $index => $paragraph) {
+                                        $paragraph = trim($paragraph);
+                                        if (!empty($paragraph)) {
+                                            $is_last = ($index === count($paragraphs) - 1);
+                                            $margin_bottom = $is_last ? '0' : '1.2rem';
+                                            echo '<p style="margin: 0 0 ' . $margin_bottom . ' 0;">' . wp_kses_post($paragraph) . '</p>';
                                         }
-                                    } else {
-                                        // Fallback content with consistent styling
-                                        ?>
-                                        <p style="margin: 0 0 1.2rem 0;">With over 20 years of experience in the roofing industry, Roofing Pros brings unparalleled expertise and quality service to the residents of Orlando, FL. Our team is dedicated to transforming homes with durable roofing solutions that exceed your expectations.</p>
-                                        
-                                        <p style="margin: 0 0 1.2rem 0;">At Roofing Pros, we understand the common challenges faced by property owners in Orlando, FL when it comes to maintaining and protecting their homes. That's why we offer a comprehensive range of roofing services tailored to meet your specific needs, ensuring your satisfaction with every project.</p>
-                                        
-                                        <p style="margin: 0 0 1.2rem 0;">From roof repairs to complete replacements and everything in between, we take pride in our attention to detail, reliability, and commitment to delivering exceptional results. Trust Roofing Pros to enhance your home's protection and enjoy the benefits of a stunning roof that truly stands out.</p>
-                                        
-                                        <p style="margin: 0; font-weight: 600; color: #2c3e50;">We are committed to quality craftsmanship and exceptional customer experience.</p>
-                                        <?php
                                     }
                                     ?>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="about-mission-section" style="margin-bottom: 2.5rem;">
-                            <h3 style="font-size: 1.5rem; font-weight: 600; color: #2c3e50; margin: 0 0 1rem 0; border-left: 4px solid #4ecdc4; padding-left: 1rem;">Our Mission</h3>
-                            <p style="margin: 0; line-height: 1.6; color: #34495e;">Our mission at Roofing Pros is to provide the highest quality roofing services in Orlando while ensuring customer satisfaction through transparency, reliability, and exceptional craftsmanship. We aim to protect your home with durable roofing solutions that stand the test of time, enhancing both safety and aesthetic appeal.</p>
-                        </div>
-                        
-                        <div class="about-values-section" style="margin-bottom: 2.5rem;">
-                            <h3 style="font-size: 1.5rem; font-weight: 600; color: #2c3e50; margin: 0 0 1rem 0; border-left: 4px solid #4ecdc4; padding-left: 1rem;">Our Values</h3>
-                            <ul class="values-list" style="margin: 0; padding-left: 1.5rem;">
-                                <li>Integrity: We believe in honest and transparent communication with our clients.</li><li>Quality: Our work is backed by the highest standards in roofing craftsmanship.</li><li>Customer Focus: We prioritize our customers' needs and satisfaction above all.</li><li>Safety: We ensure a safe working environment for our team and clients.</li><li>Community: We are committed to serving and giving back to our Orlando community.</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="about-team-section" style="margin-bottom: 2.5rem;">
-                            <h3 style="font-size: 1.5rem; font-weight: 600; color: #2c3e50; margin: 0 0 1rem 0; border-left: 4px solid #4ecdc4; padding-left: 1rem;">Our Team</h3>
-                            <p style="margin: 0; line-height: 1.6; color: #34495e;">Our team at Roofing Pros consists of highly skilled and certified roofing professionals with years of experience in the industry. We are equipped with the latest tools and techniques to ensure that every project is completed to perfection. Our team is dedicated to continuous learning and staying updated with industry standards, ensuring that we deliver the best possible service to our clients.</p>
-                        </div>
-                        
-                        <div class="about-commitment-section" style="margin-bottom: 2.5rem;">
-                            <h3 style="font-size: 1.5rem; font-weight: 600; color: #2c3e50; margin: 0 0 1rem 0; border-left: 4px solid #4ecdc4; padding-left: 1rem;">Our Commitment</h3>
-                            <p style="margin: 0 0 1rem 0; line-height: 1.6; color: #34495e;">At Roofing Pros, we are committed to providing our customers with top-notch roofing services that exceed expectations. We understand that your home is your sanctuary, and we take every measure to protect it with our expert roofing solutions.</p>
-                            <ul class="commitment-points" style="margin: 0; padding-left: 1.5rem;">
-                                <li>Timely project completion to meet your deadlines.</li><li>Thorough inspections to ensure quality and safety.</li><li>Open communication throughout the project process.</li><li>Post-project support for any concerns or questions.</li>
-                            </ul>
-                        </div>
-                        
-                        <!-- Experience Badge and CTA Section -->
-                        <div class="about-cta-section" style="text-align: center; margin-bottom: 2.5rem;">
-                            <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap;">
-                                <?php 
-                                // Get experience data from wizard settings
-                                $experience_years = $settings['experience_years'] ?? '20+';
-                                $experience_term = $settings['experience_term'] ?? 'Years of Experience';
-                                ?>
-                                <div class="experience-badge" style="display: inline-block; background: #2c3e50; color: white; padding: 1.5rem 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                                    <h3 style="font-size: 2rem; font-weight: 800; margin: 0; text-align: center;"><?php echo esc_html($experience_years); ?></h3>
-                                    <p style="font-size: 0.9rem; margin: 0; text-align: center; opacity: 0.9;"><?php echo esc_html($experience_term); ?></p>
-                                </div>
-                                
-                                <a href="#contact" class="cta-button" style="display: inline-block; background: #4ecdc4; color: white; padding: 1rem 2rem; text-decoration: none; border-radius: 8px; font-weight: 600; transition: background 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">Get Started Today</a>
-                            </div>
-                        </div>
-                        
-                        <div class="about-cta-section" style="text-align: center; background: #f8f9fa; padding: 2rem; border-radius: 12px; border: 1px solid #e9ecef;">
-                            <h3 style="font-size: 1.5rem; font-weight: 600; color: #2c3e50; margin: 0 0 1rem 0;">Ready to Get Started?</h3>
-                            <p style="margin: 0 0 1.5rem 0; line-height: 1.6; color: #34495e;">Ready to elevate your home with a new roof? Contact Roofing Pros today for a consultation and let us help you protect your investment. Call us at 8755026291 and experience our exceptional service firsthand!</p>
-                            <p class="contact-info" style="margin: 0; font-size: 1.1rem; color: #7f8c8d;">Call us today at <strong style="color: #2c3e50;">8755026291</strong> for a free consultation!</p>
+                    </div>
+                    <?php
+                } else {
+                    // Show message to generate content
+                    ?>
+                    <div class="about-content" style="max-width: 1200px; margin: 0 auto; padding: 2rem; text-align: center;">
+                        <div style="background: #f8f9fa; padding: 3rem; border-radius: 12px; border: 1px solid #e9ecef;">
+                            <h2 style="font-size: 2rem; font-weight: 600; color: #2c3e50; margin: 0 0 1rem 0;">Generate Your About Page Content</h2>
+                            <p style="margin: 0; line-height: 1.6; color: #34495e; font-size: 1.1rem;">Please use the wizard to generate your about page content. This will create professional, industry-specific content tailored to your business.</p>
                         </div>
                     </div>
                     <?php
