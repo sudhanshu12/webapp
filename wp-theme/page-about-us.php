@@ -170,6 +170,8 @@ function bsg_about_page_styles() {
         display: flex;
         align-items: center;
         gap: 2rem;
+        justify-content: center;
+        text-align: center;
     }
     .ready-to-start-content {
         flex: 1;
@@ -179,19 +181,19 @@ function bsg_about_page_styles() {
         font-size: 1.5rem;
         font-weight: 600;
         margin: 0 0 1rem 0;
-        text-align: left;
+        text-align: center;
     }
     .ready-to-start-box p {
         color: #374151;
         margin-bottom: 1rem;
         line-height: 1.6;
-        text-align: left;
+        text-align: center;
     }
     .ready-to-start-box .contact-info {
         font-size: 1.1rem;
         color: #1f2937;
         font-weight: 600;
-        text-align: left;
+        text-align: center;
     }
     .ready-to-start-cta {
         flex: 0 0 auto;

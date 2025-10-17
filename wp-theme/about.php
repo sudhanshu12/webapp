@@ -952,9 +952,9 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                                                 
                                                 echo '<div class="ready-to-start-box">';
                                                 echo '<div class="ready-to-start-content">';
-                                                echo '<h3 style="color: #1f2937; font-size: 1.5rem; font-weight: 600; margin: 0 0 1rem 0; text-align: left;">Ready to Get Started?</h3>';
-                                                echo '<p style="color: #374151; margin-bottom: 1rem; line-height: 1.6; text-align: left;">' . esc_html($clean_text) . '</p>';
-                                                echo '<p class="contact-info" style="font-size: 1.1rem; color: #1f2937; font-weight: 600; text-align: left;">Call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
+                                                echo '<h3 style="color: #1f2937; font-size: 1.5rem; font-weight: 600; margin: 0 0 1rem 0; text-align: center;">Ready to Get Started?</h3>';
+                                                echo '<p style="color: #374151; margin-bottom: 1rem; line-height: 1.6; text-align: center;">' . esc_html($clean_text) . '</p>';
+                                                echo '<p class="contact-info" style="font-size: 1.1rem; color: #1f2937; font-weight: 600; text-align: center;">Call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
                                                 echo '</div>';
                                                 echo '<div class="ready-to-start-cta">';
                                                 echo '<a href="tel:' . esc_attr($phone) . '" class="cta-button">Get Free Estimate</a>';
