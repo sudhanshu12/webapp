@@ -313,12 +313,38 @@ get_header();
                 
                 <div class="about-description-content">
                     <?php 
-                    // Display the full HTML content from about page description
+                    // Get the about page description and clean it up
                     $about_page_description = $settings['about_page_who_description'] ?? '';
                     
                     if (!empty($about_page_description)) {
-                        // Use wp_kses_post to allow safe HTML formatting
-                        echo wp_kses_post($about_page_description);
+                        // Remove HTML tags to get clean text
+                        $clean_text = strip_tags($about_page_description);
+                        
+                        // Remove unwanted sections and elements
+                        $clean_text = preg_replace('/ABOUT YOUR BUSINESS.*?WHO WE ARE/s', '', $clean_text);
+                        $clean_text = preg_replace('/\d+\+.*?Years of Experience.*?Get Started Today/s', '', $clean_text);
+                        $clean_text = preg_replace('/Our Mission.*?Our Values.*?Our Team.*?Our Commitment.*?Ready to Get Started/s', '', $clean_text);
+                        
+                        // Extract just the main about description paragraph
+                        $paragraphs = preg_split('/\n\n+/', $clean_text);
+                        $main_description = '';
+                        
+                        foreach ($paragraphs as $para) {
+                            $para = trim($para);
+                            // Look for substantial paragraphs that are actual content
+                            if (strlen($para) > 100 && 
+                                !preg_match('/(ABOUT YOUR BUSINESS|WHO WE ARE|Our Mission|Our Values|Our Team|Our Commitment|Ready to Get Started|\d+\+.*?Years|Get Started Today)/i', $para)) {
+                                $main_description = $para;
+                                break;
+                            }
+                        }
+                        
+                        if (!empty($main_description)) {
+                            echo '<p>' . esc_html($main_description) . '</p>';
+                        } else {
+                            // Fallback: show a clean description
+                            echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
+                        }
                     } else {
                         // Fallback content
                         echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
