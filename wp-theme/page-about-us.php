@@ -74,6 +74,7 @@ function bsg_about_page_styles() {
         grid-template-columns: 1fr 1fr;
         gap: 60px;
         align-items: flex-start;
+        min-height: 500px;
     }
     .about-image-wrapper {
         width: 100%;
@@ -83,6 +84,8 @@ function bsg_about_page_styles() {
         box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         position: sticky;
         top: 20px;
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
     }
     .about-image-wrapper img {
         width: 100%;
