@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import AuthSessionProvider from './components/session-provider'
-import DynamicFavicon from './components/dynamic-favicon'
 // import { ClerkProvider } from '@clerk/nextjs'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -49,7 +48,6 @@ export default function RootLayout({
     </head>
         <body className={inter.className}>
           <AuthSessionProvider>
-            <DynamicFavicon businessName="Create A Website Click" />
             {children}
           </AuthSessionProvider>
         </body>
