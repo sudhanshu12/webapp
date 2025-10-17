@@ -962,7 +962,7 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                                                 echo '<p class="contact-info">Call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
                                                 echo '</div>';
                                                 echo '<div class="ready-to-start-cta">';
-                                                echo '<a href="tel:' . esc_attr($phone) . '" class="cta-button">Get Free Estimate</a>';
+                                                echo '<a href="tel:' . esc_attr($phone) . '" class="cta-button">Call Now</a>';
                                                 echo '</div>';
                                                 echo '</div>';
                                             } else {
