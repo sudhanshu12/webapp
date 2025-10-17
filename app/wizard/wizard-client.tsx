@@ -4603,23 +4603,34 @@ export default function WizardClient() {
                           </div>
 
                           {/* Remove Button */}
-                          <div style={{marginTop: '16px'}}>
+                          <div style={{marginTop: '16px', display: 'flex', justifyContent: 'flex-end'}}>
                             <button 
                               type="button" 
                               onClick={() => removeService(service.id)} 
                               disabled={services.length === 1}
                               style={{
-                                background: '#3b82f6',
+                                background: services.length === 1 ? '#6b7280' : '#dc2626',
                                 color: 'white',
                                 border: 'none',
                                 padding: '8px 16px',
                                 borderRadius: '4px',
                                 cursor: services.length === 1 ? 'not-allowed' : 'pointer',
                                 fontSize: '14px',
-                                fontWeight: '500'
+                                fontWeight: '500',
+                                transition: 'all 0.2s ease'
+                              }}
+                              onMouseEnter={(e) => {
+                                if (services.length > 1) {
+                                  e.currentTarget.style.background = '#b91c1c';
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                if (services.length > 1) {
+                                  e.currentTarget.style.background = '#dc2626';
+                                }
                               }}
                             >
-                              Remove
+                              🗑️ Remove Service
                             </button>
                           </div>
                         </div>
@@ -5151,23 +5162,34 @@ export default function WizardClient() {
                           </div>
 
                           {/* Remove Button */}
-                          <div style={{marginTop: '16px'}}>
+                          <div style={{marginTop: '16px', display: 'flex', justifyContent: 'flex-end'}}>
                             <button 
                               type="button" 
                               onClick={() => removeLocation(location.id)} 
                               disabled={locations.length === 1}
                               style={{
-                                background: '#3b82f6',
+                                background: locations.length === 1 ? '#6b7280' : '#dc2626',
                                 color: 'white',
                                 border: 'none',
                                 padding: '8px 16px',
                                 borderRadius: '4px',
                                 cursor: locations.length === 1 ? 'not-allowed' : 'pointer',
                                 fontSize: '14px',
-                                fontWeight: '500'
+                                fontWeight: '500',
+                                transition: 'all 0.2s ease'
+                              }}
+                              onMouseEnter={(e) => {
+                                if (locations.length > 1) {
+                                  e.currentTarget.style.background = '#b91c1c';
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                if (locations.length > 1) {
+                                  e.currentTarget.style.background = '#dc2626';
+                                }
                               }}
                             >
-                              Remove
+                              🗑️ Remove Location
                             </button>
                           </div>
                         </div>
