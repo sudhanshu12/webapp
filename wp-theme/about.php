@@ -23,6 +23,11 @@ add_action('wp_head', function() use ($meta_title, $meta_description) {
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    
+    // Add favicon links
+    echo '<link rel="icon" type="image/svg+xml" href="' . get_template_directory_uri() . '/favicon.svg">' . "\n";
+    echo '<link rel="icon" type="image/x-icon" href="' . get_template_directory_uri() . '/favicon.ico">' . "\n";
+    echo '<link rel="apple-touch-icon" href="' . get_template_directory_uri() . '/favicon.svg">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
 });

@@ -55,6 +55,11 @@ $contact_form_bg_color = 'transparent';
     <!-- Canonical URL -->
     <link rel="canonical" href="<?php echo esc_url(home_url('/contact-us/')); ?>">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.ico">
+    <link rel="apple-touch-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">
+    
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
 <?php
