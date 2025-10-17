@@ -62,13 +62,9 @@ $locations = $settings['locations'] ?? [];
                 <div style="color: #ccc; font-style: italic; margin-bottom: 2rem;">No locations added yet. Add locations in the admin panel.</div>
                 <?php endif; ?>
                 <?php if (count($locations) > 6): ?>
-                <button id="view-all-btn" class="btn" style="background:<?php echo esc_attr($settings['button_primary_color'] ?? '#f97316'); ?>;color:#ffffff;font-weight:600;border-radius:8px;padding:0.8rem 2rem;font-size:1.1rem;text-decoration:none;min-width:200px;text-align:center;display:inline-block;border:none;cursor:pointer;">
+                <button id="view-all-btn" class="btn" style="background:<?php echo esc_attr($settings['button_primary_color'] ?? '#f97316'); ?>;color:#ffffff;font-weight:600;border-radius:8px;padding:0.8rem 2rem;font-size:1.1rem;text-decoration:none;min-width:200px;text-align:center;display:inline-block;border:none;cursor:pointer;transition:all 0.3s ease;" onmouseover="this.style.background='<?php echo esc_attr($settings['button_hover_color'] ?? '#e55a00'); ?>';" onmouseout="this.style.background='<?php echo esc_attr($settings['button_primary_color'] ?? '#f97316'); ?>';">
                     View All Service Areas
                 </button>
-                <?php else: ?>
-                <a href="#" class="btn" style="background:<?php echo esc_attr($settings['button_primary_color'] ?? '#f97316'); ?>;color:#ffffff;font-weight:600;border-radius:8px;padding:0.8rem 2rem;font-size:1.1rem;text-decoration:none;min-width:200px;text-align:center;display:inline-block;">
-                    View All Service Areas
-                </a>
                 <?php endif; ?>
             </div>
             <div class="content-image" style="flex:1;min-width:320px;max-width:600px;display:flex;justify-content:center;align-items:center;">
@@ -101,18 +97,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const locationsGrid = document.getElementById('locations-grid');
     const allLocationsGrid = document.getElementById('all-locations-grid');
     
+    // Only initialize if we have more than 6 locations
     if (viewAllBtn && locationsGrid && allLocationsGrid) {
+        let isShowingAll = false;
+        
         viewAllBtn.addEventListener('click', function() {
-            if (allLocationsGrid.style.display === 'none' || allLocationsGrid.style.display === '') {
+            if (!isShowingAll) {
                 // Show all locations
                 locationsGrid.style.display = 'none';
                 allLocationsGrid.style.display = 'grid';
                 viewAllBtn.textContent = 'Show Less';
+                isShowingAll = true;
             } else {
                 // Show only first 6 locations
                 allLocationsGrid.style.display = 'none';
                 locationsGrid.style.display = 'grid';
                 viewAllBtn.textContent = 'View All Service Areas';
+                isShowingAll = false;
             }
         });
     }
