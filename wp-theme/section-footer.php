@@ -90,7 +90,7 @@ $first_five_services = array_slice($services, 0, 5);
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo esc_url(home_url('/service-locations/')); ?>" 
+                        <a href="#" 
                            style="color: <?php echo esc_attr($footer_links_color); ?>; text-decoration: none; transition: color 0.3s ease;"
                            onmouseover="this.style.color='<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>'"
                            onmouseout="this.style.color='<?php echo esc_attr($footer_links_color); ?>'">

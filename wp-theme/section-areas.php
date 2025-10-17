@@ -66,7 +66,7 @@ $locations = $settings['locations'] ?? [];
                     View All Service Areas
                 </button>
                 <?php else: ?>
-                <a href="<?php echo esc_url(home_url('/service-locations/')); ?>" class="btn" style="background:<?php echo esc_attr($settings['button_primary_color'] ?? '#f97316'); ?>;color:#ffffff;font-weight:600;border-radius:8px;padding:0.8rem 2rem;font-size:1.1rem;text-decoration:none;min-width:200px;text-align:center;display:inline-block;">
+                <a href="#" class="btn" style="background:<?php echo esc_attr($settings['button_primary_color'] ?? '#f97316'); ?>;color:#ffffff;font-weight:600;border-radius:8px;padding:0.8rem 2rem;font-size:1.1rem;text-decoration:none;min-width:200px;text-align:center;display:inline-block;">
                     View All Service Areas
                 </a>
                 <?php endif; ?>

@@ -316,28 +316,6 @@ footer a {
                             Contact Us
                         </a>
                     </li>
-                    <li>
-                        <a href="<?php echo esc_url(home_url('/services/')); ?>" 
-                           style="color: <?php echo esc_attr($footer_links_color); ?>; text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 8px;"
-                           onmouseover="this.style.color='#f97316'"
-                           onmouseout="this.style.color='<?php echo esc_attr($footer_links_color); ?>'">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="#f97316">
-                                <path d="M5 12h14m-7-7l7 7-7 7"/>
-                            </svg>
-                            Services
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo esc_url(home_url('/service-locations/')); ?>" 
-                           style="color: <?php echo esc_attr($footer_links_color); ?>; text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 8px;"
-                           onmouseover="this.style.color='#f97316'"
-                           onmouseout="this.style.color='<?php echo esc_attr($footer_links_color); ?>'">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="#f97316">
-                                <path d="M5 12h14m-7-7l7 7-7 7"/>
-                            </svg>
-                            Service Locations
-                        </a>
-                    </li>
                 </ul>
             </div>
             
