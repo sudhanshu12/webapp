@@ -55,6 +55,22 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
                 <?php if ($about_page): ?>
                 <li><a href="<?php echo esc_url(get_permalink($about_page->ID)); ?>">About</a></li>
                 <?php endif; ?>
+                <li class="has-dropdown">
+                    <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="cursor: default; pointer-events: none;">Services <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></a>
+                    <ul class="dropdown">
+                        <li><a href="#" style="cursor: default; pointer-events: none;">Service 1</a></li>
+                        <li><a href="#" style="cursor: default; pointer-events: none;">Service 2</a></li>
+                        <li><a href="#" style="cursor: default; pointer-events: none;">Service 3</a></li>
+                    </ul>
+                </li>
+                <li class="has-dropdown">
+                    <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="cursor: default; pointer-events: none;">Service Locations <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></a>
+                    <ul class="dropdown">
+                        <li><a href="#" style="cursor: default; pointer-events: none;">Location 1</a></li>
+                        <li><a href="#" style="cursor: default; pointer-events: none;">Location 2</a></li>
+                        <li><a href="#" style="cursor: default; pointer-events: none;">Location 3</a></li>
+                    </ul>
+                </li>
                 <?php if ($contact_page): ?>
                 <li><a href="<?php echo esc_url(get_permalink($contact_page->ID)); ?>">Contact Us</a></li>
                 <?php endif; ?>

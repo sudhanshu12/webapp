@@ -306,6 +306,24 @@ footer a {
                         </a>
                     </li>
                     <li>
+                        <a href="#" 
+                           style="color: <?php echo esc_attr($footer_links_color); ?>; text-decoration: none; cursor: default; pointer-events: none; display: flex; align-items: center; gap: 8px;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="#f97316">
+                                <path d="M5 12h14m-7-7l7 7-7 7"/>
+                            </svg>
+                            Services
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" 
+                           style="color: <?php echo esc_attr($footer_links_color); ?>; text-decoration: none; cursor: default; pointer-events: none; display: flex; align-items: center; gap: 8px;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="#f97316">
+                                <path d="M5 12h14m-7-7l7 7-7 7"/>
+                            </svg>
+                            Service Locations
+                        </a>
+                    </li>
+                    <li>
                         <a href="<?php echo esc_url(home_url('/contact-us/')); ?>" 
                            style="color: <?php echo esc_attr($footer_links_color); ?>; text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 8px;"
                            onmouseover="this.style.color='#f97316'"
