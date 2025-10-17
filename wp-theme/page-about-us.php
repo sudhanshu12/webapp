@@ -158,41 +158,44 @@ function bsg_about_page_styles() {
         color: #374151;
     }
 
-    /* Ready to Get Started Box - Horizontal Layout */
+    /* Ready to Get Started Box - Big Centered Rectangle */
     .ready-to-start-box {
         background: #f8f9fa;
         border: 1px solid #e9ecef;
         border-radius: 12px;
-        padding: 2rem;
-        margin: 3rem auto;
-        max-width: 1000px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 3rem;
+        margin: 4rem auto;
+        max-width: 1200px;
+        width: 90%;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
         display: flex;
         align-items: center;
-        gap: 2rem;
+        gap: 3rem;
         justify-content: center;
         text-align: center;
+        min-height: 200px;
     }
     .ready-to-start-content {
         flex: 1;
     }
     .ready-to-start-box h3 {
         color: #1f2937;
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin: 0 0 1rem 0;
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0 0 1.5rem 0;
         text-align: center;
     }
     .ready-to-start-box p {
         color: #374151;
-        margin-bottom: 1rem;
-        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        line-height: 1.7;
         text-align: center;
+        font-size: 1.1rem;
     }
     .ready-to-start-box .contact-info {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
         color: #1f2937;
-        font-weight: 600;
+        font-weight: 700;
         text-align: center;
     }
     .ready-to-start-cta {
@@ -203,16 +206,19 @@ function bsg_about_page_styles() {
         display: inline-block;
         background: #4f46e5;
         color: white;
-        padding: 1rem 2rem;
+        padding: 1.5rem 3rem;
         text-decoration: none;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: background 0.3s ease;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+        min-width: 200px;
     }
     .ready-to-start-cta .cta-button:hover {
         background: #4338ca;
-        transform: translateY(-2px);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.5);
     }
     
     /* Mobile responsive for horizontal layout */
@@ -220,12 +226,24 @@ function bsg_about_page_styles() {
         .ready-to-start-box {
             flex-direction: column;
             text-align: center;
-            gap: 1.5rem;
+            gap: 2rem;
+            padding: 2rem;
+            margin: 3rem auto;
+            width: 95%;
         }
-        .ready-to-start-box h3,
-        .ready-to-start-box p,
+        .ready-to-start-box h3 {
+            font-size: 1.8rem;
+        }
+        .ready-to-start-box p {
+            font-size: 1rem;
+        }
         .ready-to-start-box .contact-info {
-            text-align: center;
+            font-size: 1.1rem;
+        }
+        .ready-to-start-cta .cta-button {
+            padding: 1.2rem 2.5rem;
+            font-size: 1.1rem;
+            min-width: 180px;
         }
     }
 
