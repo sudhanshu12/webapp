@@ -58,17 +58,51 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
                 <li class="has-dropdown">
                     <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="cursor: default; pointer-events: none;">Services <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></a>
                     <ul class="dropdown">
-                        <li><a href="#" style="cursor: default; pointer-events: none;">Service 1</a></li>
-                        <li><a href="#" style="cursor: default; pointer-events: none;">Service 2</a></li>
-                        <li><a href="#" style="cursor: default; pointer-events: none;">Service 3</a></li>
+                        <?php
+                        // Get services from wizard settings
+                        $services = $settings['services'] ?? [];
+                        if (!empty($services)) {
+                            foreach ($services as $service) {
+                                if (!empty($service['name'])) {
+                                    echo '<li><a href="#" style="cursor: default; pointer-events: none;">' . esc_html($service['name']) . '</a></li>';
+                                }
+                            }
+                        } else {
+                            // Fallback: try to get service pages from database
+                            $services_parent = get_page_by_path('services');
+                            if ($services_parent) {
+                                $children = get_pages(['parent' => $services_parent->ID, 'sort_column' => 'menu_order']);
+                                foreach ($children as $child) {
+                                    echo '<li><a href="#" style="cursor: default; pointer-events: none;">' . esc_html($child->post_title) . '</a></li>';
+                                }
+                            }
+                        }
+                        ?>
                     </ul>
                 </li>
                 <li class="has-dropdown">
                     <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="cursor: default; pointer-events: none;">Service Locations <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></a>
                     <ul class="dropdown">
-                        <li><a href="#" style="cursor: default; pointer-events: none;">Location 1</a></li>
-                        <li><a href="#" style="cursor: default; pointer-events: none;">Location 2</a></li>
-                        <li><a href="#" style="cursor: default; pointer-events: none;">Location 3</a></li>
+                        <?php
+                        // Get locations from wizard settings
+                        $locations = $settings['locations'] ?? [];
+                        if (!empty($locations)) {
+                            foreach ($locations as $location) {
+                                if (!empty($location['name'])) {
+                                    echo '<li><a href="#" style="cursor: default; pointer-events: none;">' . esc_html($location['name']) . '</a></li>';
+                                }
+                            }
+                        } else {
+                            // Fallback: try to get location pages from database
+                            $locations_parent = get_page_by_path('service-locations');
+                            if ($locations_parent) {
+                                $children = get_pages(['parent' => $locations_parent->ID, 'sort_column' => 'menu_order']);
+                                foreach ($children as $child) {
+                                    echo '<li><a href="#" style="cursor: default; pointer-events: none;">' . esc_html($child->post_title) . '</a></li>';
+                                }
+                            }
+                        }
+                        ?>
                     </ul>
                 </li>
                 <?php if ($contact_page): ?>
