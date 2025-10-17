@@ -172,7 +172,13 @@ if ($reviews_visible):
                     $dbg_comment = isset($review['comment']) ? $review['comment'] : '';
                     $review_name = $review['name'] ?? 'Anonymous';
                     $review_initial = !empty($review_name) ? strtoupper(substr($review_name, 0, 1)) : 'A';
-                    echo "<!-- BSG REVIEW ITEM #" . ($idx+1) . ": name=" . $review_name . " textlen=" . strlen($dbg_text) . " commentlen=" . strlen($dbg_comment) . " -->\n"; 
+                    echo "<!-- BSG REVIEW ITEM #" . ($idx+1) . ": name=" . $review_name . " textlen=" . strlen($dbg_text) . " commentlen=" . strlen($dbg_comment) . " -->\n";
+                    // Debug: Show review name even if empty
+                    if (empty($review_name) || $review_name === 'Anonymous') {
+                        echo "<!-- DEBUG: Review name is empty or Anonymous, using fallback -->\n";
+                        $review_name = 'Customer ' . ($idx + 1);
+                        $review_initial = strtoupper(substr($review_name, 0, 1));
+                    } 
                 ?>
                 <div class="review-card" style="background:#fff;border-radius:18px;box-shadow:0 2px 12px rgba(0,0,0,0.07);padding:22px 22px 18px 22px;max-width:320px;min-width:260px;width:100%;margin:0 10px;display:flex;flex-direction:column;gap:0.7rem;">
                     <div style="display:flex;align-items:center;gap:0.8rem;">
@@ -180,7 +186,7 @@ if ($reviews_visible):
                             <?php echo esc_html($review_initial); ?>
                         </div>
                         <div style="display:flex;flex-direction:column;line-height:1.2;">
-                            <span style="font-weight:700;"><?php echo esc_html($review_name); ?></span>
+                            <span style="font-weight:700;color:#1f2937;"><?php echo esc_html($review_name); ?></span>
                             <span style="color:#6b7280;font-size:0.875rem;">Verified Customer</span>
                         </div>
                         <span style="margin-left:auto;color:#fbbf24;">
