@@ -414,19 +414,7 @@ function bsg_enqueue_admin_assets($hook) {
 }
 add_action('admin_enqueue_scripts', 'bsg_enqueue_admin_assets');
 
-// Add admin menu for BSG Settings
-function bsg_add_admin_menu() {
-    add_menu_page(
-        'BSG Settings', 
-        'BSG Settings', 
-        'manage_options', 
-        'bsg-settings', 
-        'bsg_settings_page', 
-        'dashicons-admin-generic', 
-        30
-    );
-}
-add_action('admin_menu', 'bsg_add_admin_menu');
+// BSG Settings menu removed - no longer needed
 
 // Temporary debug function - remove after testing
 function bsg_debug_settings() {
