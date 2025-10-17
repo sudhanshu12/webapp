@@ -26,7 +26,7 @@ $all_pages = get_pages(['sort_column' => 'menu_order']); // Fetch all pages for 
             <?php endif; ?>
         </div>
         <div class="bsg-carousel" style="margin-top:2.5rem;">
-            <button class="bsg-carousel-arrow left" style="background:<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>;color:<?php echo esc_attr($settings['button_text_color'] ?? '#ffffff'); ?>;">&#8592;</button>
+            <button class="bsg-carousel-arrow left" style="position:absolute;left:-25px;top:50%;transform:translateY(-50%);z-index:2;background:<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>;color:<?php echo esc_attr($settings['button_text_color'] ?? '#ffffff'); ?>;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;" onmouseover="this.style.background='<?php echo esc_attr($settings['button_hover_color'] ?? '#22d3aa'); ?>';" onmouseout="this.style.background='<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>';">&#8592;</button>
             <div class="bsg-carousel-container">
                 <?php if (!empty($services)): ?>
                     <?php foreach ($services as $service): ?>
@@ -40,7 +40,7 @@ $all_pages = get_pages(['sort_column' => 'menu_order']); // Fetch all pages for 
                         }
                     }
                     ?>
-                    <div class="bsg-card service-card" style="display:inline-block;vertical-align:top;width:320px;min-width:320px;margin-right:24px;background-color: <?php echo esc_attr($settings['services_card_color'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['services_text_color'] ?? '#ffffff'); ?>; border-radius: <?php echo esc_attr($settings['services_card_radius'] ?? '12'); ?>px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);padding:0;box-sizing:border-box;overflow:hidden;">
+                    <div class="bsg-card service-card" style="display:inline-block;vertical-align:top;width:300px;min-width:300px;margin-right:12px;background-color: <?php echo esc_attr($settings['services_card_color'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['services_text_color'] ?? '#ffffff'); ?>; border-radius: <?php echo esc_attr($settings['services_card_radius'] ?? '12'); ?>px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);padding:0;box-sizing:border-box;overflow:hidden;">
                         <div style="padding: 1.2rem 1.2rem 0.5rem 1.2rem;">
                             <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.7rem;">
                                 <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:<?php echo esc_attr($settings['services_icon_color'] ?? '#2ee6c5'); ?>;border-radius:6px;">
@@ -66,7 +66,7 @@ $all_pages = get_pages(['sort_column' => 'menu_order']); // Fetch all pages for 
                     </div>
                 <?php endif; ?>
             </div>
-            <button class="services-arrow right" style="position:absolute;right:-40px;top:50%;transform:translateY(-50%);z-index:2;background:<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>;color:<?php echo esc_attr($settings['button_text_color'] ?? '#ffffff'); ?>;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1.5rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;" onmouseover="this.style.background='<?php echo esc_attr($settings['button_hover_color'] ?? '#22d3aa'); ?>';" onmouseout="this.style.background='<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>';">&#8594;</button>
+            <button class="services-arrow right" style="position:absolute;right:-25px;top:50%;transform:translateY(-50%);z-index:2;background:<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>;color:<?php echo esc_attr($settings['button_text_color'] ?? '#ffffff'); ?>;border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;" onmouseover="this.style.background='<?php echo esc_attr($settings['button_hover_color'] ?? '#22d3aa'); ?>';" onmouseout="this.style.background='<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>';">&#8594;</button>
             <div class="services-progress-bar" style="height:6px;width:100%;background:rgba(255,255,255,0.2);border-radius:3px;margin-top:18px;overflow:hidden;">
                 <div id="services-progress" style="height:100%;width:0;background:<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>;transition:width 0.3s;"></div>
             </div>
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .service-card {
         width: 280px !important;
         min-width: 280px !important;
-        margin-right: 16px !important;
+        margin-right: 8px !important;
     }
     
     .service-card h3 {
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .service-card {
         width: 260px !important;
         min-width: 260px !important;
-        margin-right: 12px !important;
+        margin-right: 6px !important;
     }
     
     .service-card h3 {
@@ -199,11 +199,11 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 @media (max-width: 1100px) {
-    .service-card { width: 300px !important; min-width: 300px !important; }
+    .service-card { width: 300px !important; min-width: 300px !important; margin-right: 10px !important; }
 }
 
 @media (max-width: 800px) {
-    .service-card { width: 280px !important; min-width: 280px !important; }
+    .service-card { width: 280px !important; min-width: 280px !important; margin-right: 8px !important; }
 }
 </style>
 <?php endif; ?> 
