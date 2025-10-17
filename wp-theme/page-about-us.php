@@ -320,36 +320,20 @@ get_header();
                     $about_page_description = $settings['about_page_who_description'] ?? '';
                     
                     if (!empty($about_page_description)) {
-                        // Remove HTML tags to get clean text
-                        $clean_text = strip_tags($about_page_description);
+                        // Remove only the 3 specific unwanted elements
+                        $clean_text = $about_page_description;
                         
-                        // Remove unwanted sections and elements more aggressively
-                        $clean_text = preg_replace('/ABOUT YOUR BUSINESS.*?WHO WE ARE/s', '', $clean_text);
-                        $clean_text = preg_replace('/\d+\+.*?Years of Experience.*?Get Started Today/s', '', $clean_text);
-                        $clean_text = preg_replace('/Our Mission.*?Our Values.*?Our Team.*?Our Commitment.*?Ready to Get Started/s', '', $clean_text);
-                        $clean_text = preg_replace('/ABOUT YOUR BUSINESS.*?Your Trusted Landscaping Partner.*?Serving Orlando/s', '', $clean_text);
-                        $clean_text = preg_replace('/WHO WE ARE.*?About Us.*?Landscaping Lompoc/s', '', $clean_text);
+                        // Remove "ABOUT YOUR BUSINESS" section
+                        $clean_text = preg_replace('/<p class="tagline"[^>]*>ABOUT YOUR BUSINESS<\/p>.*?<p class="location"[^>]*>Serving Orlando and surrounding areas<\/p>/s', '', $clean_text);
                         
-                        // Extract just the main about description paragraph
-                        $paragraphs = preg_split('/\n\n+/', $clean_text);
-                        $main_description = '';
+                        // Remove "10+ Years of Experience" badge
+                        $clean_text = preg_replace('/<div class="experience-badge"[^>]*>.*?<\/div>/s', '', $clean_text);
                         
-                        foreach ($paragraphs as $para) {
-                            $para = trim($para);
-                            // Look for substantial paragraphs that are actual content
-                            if (strlen($para) > 100 && 
-                                !preg_match('/(ABOUT YOUR BUSINESS|WHO WE ARE|Our Mission|Our Values|Our Team|Our Commitment|Ready to Get Started|\d+\+.*?Years|Get Started Today|Your Trusted Landscaping Partner|Serving Orlando|Landscaping Lompoc is a premier)/i', $para)) {
-                                $main_description = $para;
-                                break;
-                            }
-                        }
+                        // Remove "Get Started Today" button
+                        $clean_text = preg_replace('/<div[^>]*>.*?<a[^>]*class="cta-button"[^>]*>Get Started Today<\/a>.*?<\/div>/s', '', $clean_text);
                         
-                        if (!empty($main_description)) {
-                            echo '<p>' . esc_html($main_description) . '</p>';
-                        } else {
-                            // Fallback: show a clean description
-                            echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
-                        }
+                        // Display the cleaned HTML content
+                        echo wp_kses_post($clean_text);
                     } else {
                         // Fallback content
                         echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';
