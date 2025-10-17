@@ -23,11 +23,6 @@ add_action('wp_head', function() use ($meta_title, $meta_description) {
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    
-    // Add favicon links
-    echo '<link rel="icon" type="image/svg+xml" href="' . get_template_directory_uri() . '/favicon.svg">' . "\n";
-    echo '<link rel="icon" type="image/x-icon" href="' . get_template_directory_uri() . '/favicon.ico">' . "\n";
-    echo '<link rel="apple-touch-icon" href="' . get_template_directory_uri() . '/favicon.svg">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
 });
@@ -100,6 +95,11 @@ $reviews_visible = $reviews_settings['visible'];
     <meta name="keywords" content="<?php echo esc_attr($settings['about_page_meta_keywords'] ?? $settings['about_meta_keywords'] ?? 'about ' . strtolower($business_name) . ', ' . ($settings['business_type'] ?? 'contractor') . ', professional ' . ($settings['business_type'] ?? 'services') . ', ' . $about_years . ' years experience, quality ' . ($settings['business_type'] ?? 'services')); ?>">
     <meta name="author" content="<?php echo esc_attr($business_name); ?>">
     <meta name="robots" content="index, follow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.ico">
+    <link rel="apple-touch-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="<?php echo esc_attr($settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? $business_name . ' - About Us | Professional ' . ($settings['business_type'] ?? 'Services')); ?>">
