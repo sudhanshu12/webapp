@@ -30,6 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en">
     <head>
+      <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232ee6c5'/%3E%3Cpath d='M8 12h16v2H8v-2zm0 4h16v2H8v-2zm0 4h12v2H8v-2z' fill='%23fff'/%3E%3C/svg%3E" />
+      <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAADdSURBVHgB7ZbRDYMwDEQvYgNGYANGYBRGYARGYQRGYARG6Aa0qKoiFZI4hD9I7ySUxE983xlC/wQAoCqllDvnrFLqSt9Ba33nnF+U0hPvHCGEDSFkQwjZ0M9ijDG01hfGGKX0xDtHCGFDCNkQQjZ0C6WUe0rpmVJ64p0jhLAhhGwIIRv6M0op95TSM6X0xDtHCGFDCNkQQjb0C6WUe0rpmVJ64p0jhLAhhGwIIRu6hlLKPaX0TCk98c4RQtgQQjaEkA1dQynlnlJ6ppSeeOcIIWwIIRtCyIYAgD9+AVZbPgFHm9UnAAAAAElFTkSuQmCC" />
+      <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232ee6c5'/%3E%3Cpath d='M8 12h16v2H8v-2zm0 4h16v2H8v-2zm0 4h12v2H8v-2z' fill='%23fff'/%3E%3C/svg%3E" />
       <style dangerouslySetInnerHTML={{
         __html: `
           * { box-sizing: border-box; }

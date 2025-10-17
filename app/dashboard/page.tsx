@@ -32,6 +32,29 @@ export default function Dashboard() {
   });
   const [loading, setLoading] = useState(true);
 
+  // Set page metadata
+  useEffect(() => {
+    document.title = 'Dashboard - Manage Your Websites | Create A Website Click';
+    
+    // Update meta description
+    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta') as HTMLMetaElement;
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = 'Manage your websites, view credits, and create new professional business websites. Your central hub for website management.';
+    
+    // Update meta keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]') as HTMLMetaElement;
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta') as HTMLMetaElement;
+      metaKeywords.name = 'keywords';
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.content = 'dashboard, website management, business websites, website builder dashboard';
+  }, []);
+
   useEffect(() => {
     // All users now use NextAuth session (stored in Supabase)
     if (status === 'authenticated' && session?.user) {

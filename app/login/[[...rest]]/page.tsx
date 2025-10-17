@@ -15,6 +15,29 @@ export default function LoginPage() {
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get('redirect') || '/dashboard';
 
+  // Set page metadata
+  useEffect(() => {
+    document.title = 'Login - Access Your Account | Create A Website Click';
+    
+    // Update meta description
+    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta') as HTMLMetaElement;
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = 'Login to your account and start building professional business websites. Access your dashboard and manage your websites.';
+    
+    // Update meta keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]') as HTMLMetaElement;
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta') as HTMLMetaElement;
+      metaKeywords.name = 'keywords';
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.content = 'login, account access, website builder login, business website login';
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);

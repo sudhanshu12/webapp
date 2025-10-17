@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
@@ -18,6 +18,29 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [emailSent, setEmailSent] = useState(false);
   const [verificationToken, setVerificationToken] = useState('');
+
+  // Set page metadata
+  useEffect(() => {
+    document.title = 'Register - Create Your Account | Create A Website Click';
+    
+    // Update meta description
+    let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement;
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta') as HTMLMetaElement;
+      metaDesc.name = 'description';
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.content = 'Create your free account and start building professional business websites in minutes. Join thousands of businesses using our AI-powered website builder.';
+    
+    // Update meta keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]') as HTMLMetaElement;
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta') as HTMLMetaElement;
+      metaKeywords.name = 'keywords';
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.content = 'register, create account, website builder signup, business website registration';
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
