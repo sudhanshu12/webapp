@@ -316,24 +316,12 @@ get_header();
                 
                 <div class="about-description-content">
                     <?php 
-                    // Get the about page description and clean it up
+                    // Get the about page description - now AI generates clean content
                     $about_page_description = $settings['about_page_who_description'] ?? '';
                     
                     if (!empty($about_page_description)) {
-                        // Remove only the 3 specific unwanted elements
-                        $clean_text = $about_page_description;
-                        
-                        // Remove "ABOUT YOUR BUSINESS" section
-                        $clean_text = preg_replace('/<p class="tagline"[^>]*>ABOUT YOUR BUSINESS<\/p>.*?<p class="location"[^>]*>Serving Orlando and surrounding areas<\/p>/s', '', $clean_text);
-                        
-                        // Remove "10+ Years of Experience" badge
-                        $clean_text = preg_replace('/<div class="experience-badge"[^>]*>.*?<\/div>/s', '', $clean_text);
-                        
-                        // Remove "Get Started Today" button
-                        $clean_text = preg_replace('/<div[^>]*>.*?<a[^>]*class="cta-button"[^>]*>Get Started Today<\/a>.*?<\/div>/s', '', $clean_text);
-                        
-                        // Display the cleaned HTML content
-                        echo wp_kses_post($clean_text);
+                        // Display the clean HTML content directly
+                        echo wp_kses_post($about_page_description);
                     } else {
                         // Fallback content
                         echo '<p>We are a premier company dedicated to transforming your space with professional expertise and exceptional service. Our team brings years of experience and a commitment to quality that sets us apart.</p>';

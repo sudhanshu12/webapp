@@ -83,28 +83,23 @@ Company: ${businessData.business_name}, Industry: ${businessData.business_type},
 				break;
 				
 			case 'about_page':
-				prompt = `Generate structured about page content for ${businessData.business_name}, a ${businessData.business_type} company in ${businessData.location}. 
+				prompt = `Generate clean about page content for ${businessData.business_name}, a ${businessData.business_type} company in ${businessData.location}. 
 
 IMPORTANT: Return ONLY a JSON object with these exact keys and content. Do NOT include any other text or formatting.
 
 Generate content for these sections:
 
-1. hero_tagline: Hero section tagline (e.g., "ABOUT YOUR BUSINESS")
-2. hero_title: Hero section main title
-3. hero_location: Hero section location text
-4. who_we_are_tagline: Who we are section tagline
-5. who_we_are_title: Who we are section title
-6. who_we_are_description: Who we are section description (100-150 words)
-7. years_experience: Years of experience number
-8. experience_label: Experience label text
-9. mission_statement: Company mission statement (80-120 words)
-10. values_list: Generate 5 company values as HTML <li> items (each 10-15 words)
-11. team_description: Description of the team and expertise (80-120 words)
-12. commitment_statement: Statement about company commitment to customers (60-100 words)
-13. commitment_points: Generate 4 commitment points as HTML <li> items (each 10-15 words)
-14. final_cta_text: Final call to action text (60-100 words)
-15. cta_link: Call to action link
-16. cta_text: Call to action button text
+1. who_we_are_tagline: Who we are section tagline (e.g., "WHO WE ARE")
+2. who_we_are_title: Who we are section title (e.g., "About Us")
+3. who_we_are_description: Who we are section description (100-150 words)
+4. mission_statement: Company mission statement (80-120 words)
+5. values_list: Generate 5 company values as HTML <li> items (each 10-15 words)
+6. team_description: Description of the team and expertise (80-120 words)
+7. commitment_statement: Statement about company commitment to customers (60-100 words)
+8. commitment_points: Generate 4 commitment points as HTML <li> items (each 10-15 words)
+9. final_cta_text: Final call to action text (60-100 words)
+10. cta_link: Call to action link
+11. cta_text: Call to action button text
 
 Focus on ${businessData.business_type} industry expertise and serving ${businessData.location} area. Include the company phone number in the final CTA.
 
@@ -112,14 +107,9 @@ Company: ${businessData.business_name}, Industry: ${businessData.business_type},
 
 Return ONLY a JSON object like this:
 {
-  "hero_tagline": "ABOUT YOUR BUSINESS",
-  "hero_title": "Your Trusted Partner",
-  "hero_location": "Serving Boulder and surrounding areas",
   "who_we_are_tagline": "WHO WE ARE",
-  "who_we_are_title": "About",
+  "who_we_are_title": "About Us",
   "who_we_are_description": "content here",
-  "years_experience": "15+",
-  "experience_label": "Years of Experience",
   "mission_statement": "content here",
   "values_list": "<li>value 1</li><li>value 2</li>...",
   "team_description": "content here",
@@ -355,23 +345,10 @@ Focus on ${businessData.business_type} services and ${businessData.location} are
 				const contentParts = JSON.parse(generatedContent);
 				const template = `
 <div class="about-content" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
-    <div class="about-hero-section" style="text-align: center; margin-bottom: 3rem;">
-        <p class="tagline" style="color: #4ecdc4; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">${contentParts.hero_tagline || ''}</p>
-        <h1 style="font-size: 2.5rem; font-weight: 700; color: #2c3e50; margin: 0.5rem 0;">${contentParts.hero_title || ''}</h1>
-        <p class="location" style="color: #7f8c8d; font-size: 1.1rem; margin: 0;">${contentParts.hero_location || ''}</p>
-    </div>
-    
     <div class="about-who-we-are" style="margin-bottom: 3rem;">
         <p class="tagline" style="color: #4ecdc4; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">${contentParts.who_we_are_tagline || ''}</p>
         <h2 style="font-size: 2rem; font-weight: 600; color: #2c3e50; margin: 0.5rem 0 1rem 0;">${contentParts.who_we_are_title || ''}</h2>
         <div style="margin-bottom: 1.5rem;">${contentParts.who_we_are_description || ''}</div>
-        <div class="experience-badge" style="display: inline-block; background: #2c3e50; color: white; padding: 1rem 2rem; border-radius: 8px; margin: 1rem 0;">
-            <h3 style="font-size: 1.5rem; font-weight: 700; margin: 0; text-align: center;">${contentParts.years_experience || ''}</h3>
-            <p style="font-size: 0.9rem; margin: 0; text-align: center; opacity: 0.9;">${contentParts.experience_label || ''}</p>
-        </div>
-        <div style="margin-top: 1.5rem;">
-            <a href="${contentParts.cta_link || '#contact'}" class="cta-button" style="display: inline-block; background: #4ecdc4; color: white; padding: 0.75rem 2rem; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background 0.3s ease;">${contentParts.cta_text || 'Get Started Today'}</a>
-        </div>
     </div>
     
     <div class="about-mission-section" style="margin-bottom: 2.5rem;">
