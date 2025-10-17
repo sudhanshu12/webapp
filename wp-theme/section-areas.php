@@ -3,17 +3,17 @@
 $settings = function_exists('bsg_get_settings') ? bsg_get_settings() : (get_option('bsg_settings', []) ?: []);
 $locations = $settings['locations'] ?? [];
 ?>
-<section class="section locations-section animate-on-scroll-section" style="background-color: <?php echo esc_attr($settings['service_areas_bg_color'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['service_areas_text_color'] ?? '#ffffff'); ?>; padding: 60px 0; margin-top: 0;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 60px;">
-        <div class="two-col-layout" style="display:flex;align-items:flex-start;gap:3rem;">
-            <div class="text-content" style="flex:1;min-width:320px;">
-                <div class="icon-heading" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:10px;">
+<section class="bsg-section locations-section animate-on-scroll-section" style="background-color: <?php echo esc_attr($settings['service_areas_bg_color'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['service_areas_text_color'] ?? '#ffffff'); ?>; padding: 60px 0; margin-top: 0;">
+    <div class="container">
+        <div class="bsg-two-col-layout" style="display:flex;align-items:flex-start;gap:3rem;">
+            <div class="bsg-text-content" style="flex:1;min-width:320px;">
+                <div class="bsg-icon-heading" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:10px;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2ee6c5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                    <span style="background:<?php echo esc_attr($settings['service_areas_bg_color'] ?? '#232834'); ?>;color:<?php echo esc_attr($settings['service_areas_text_color'] ?? '#fff'); ?>;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;">
+                    <span class="bsg-section-header tagline" style="background:<?php echo esc_attr($settings['service_areas_bg_color'] ?? '#232834'); ?>;color:<?php echo esc_attr($settings['service_areas_text_color'] ?? '#fff'); ?>;">
                         <?php echo esc_html($settings['locations_label'] ?? 'OUR SERVICE AREA'); ?>
                     </span>
                 </div>
-                <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 1.5rem 0;line-height:1.1;letter-spacing:-1px;color:<?php echo esc_attr($settings['service_areas_heading_color'] ?? '#ffffff'); ?>;">
+                <h2 style="color:<?php echo esc_attr($settings['service_areas_heading_color'] ?? '#ffffff'); ?>;">
                     <?php echo esc_html($settings['locations_title'] ?? 'Proudly Serving ' . ($settings['state'] ?? 'Boulder') . ' And The Surrounding Areas'); ?>
                 </h2>
                 <p style="margin-bottom:2rem; color: <?php echo esc_attr($settings['service_areas_text_color'] ?? '#ffffff'); ?>;">

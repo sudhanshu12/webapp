@@ -8,26 +8,26 @@ $services = $settings['services'] ?? [];
 $all_pages = get_pages(['sort_column' => 'menu_order']); // Fetch all pages for service linking
 ?>
 <?php if ($services_visible): ?>
-<section class="section services-section animate-on-scroll-section" style="background-color: <?php echo esc_attr($settings['services_bg_color'] ?? '#313746'); ?>; color: <?php echo esc_attr($settings['services_text_color'] ?? '#ffffff'); ?>; padding: <?php echo esc_attr($settings['services_padding'] ?? '60'); ?>px 0;">
-    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 60px;">
-        <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;gap:2rem;">
+<section class="bsg-section services-section animate-on-scroll-section" style="background-color: <?php echo esc_attr($settings['services_bg_color'] ?? '#313746'); ?>; color: <?php echo esc_attr($settings['services_text_color'] ?? '#ffffff'); ?>; padding: <?php echo esc_attr($settings['services_padding'] ?? '60'); ?>px 0;">
+    <div class="container">
+        <div class="bsg-section-header" style="display:flex;align-items:center;justify-content:space-between;gap:2rem;">
             <div>
-                <div class="tagline" style="background:#2ee6c5;color:#fff;display:inline-block;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;margin-bottom:8px;">
+                <div class="bsg-section-header tagline">
                     <?php echo esc_html($settings['services_label'] ?? 'TOP RATED SERVICES'); ?>
                 </div>
-                <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 0.5rem 0;line-height:1.1;letter-spacing:-1px;">
+                <h2>
                     <?php echo esc_html($settings['services_title'] ?? 'Our Services'); ?>
                 </h2>
             </div>
             <?php if (!empty($settings['services_cta_text'])): ?>
-            <a href="<?php echo esc_url($settings['services_cta_link'] ?? '#'); ?>" class="btn" style="background: <?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>; color: <?php echo esc_attr($settings['button_text_color'] ?? '#ffffff'); ?>;font-weight:600;border-radius:8px;padding:0.8rem 2rem;font-size:1.1rem;text-decoration:none;min-width:200px;text-align:center;display:inline-block;transition:all 0.3s ease;" onmouseover="this.style.background='<?php echo esc_attr($settings['button_hover_color'] ?? '#22d3aa'); ?>';this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(0,0,0,0.2)';" onmouseout="this.style.background='<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>';this.style.transform='translateY(0)';this.style.boxShadow='none';">
+            <a href="<?php echo esc_url($settings['services_cta_link'] ?? '#'); ?>" class="bsg-button" style="background: <?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>; color: <?php echo esc_attr($settings['button_text_color'] ?? '#ffffff'); ?>;">
                 <?php echo esc_html($settings['services_cta_text']); ?>
             </a>
             <?php endif; ?>
         </div>
-        <div style="position:relative;margin-top:2.5rem;">
-            <button class="services-arrow left" style="position:absolute;left:-40px;top:50%;transform:translateY(-50%);z-index:2;background:<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>;color:<?php echo esc_attr($settings['button_text_color'] ?? '#ffffff'); ?>;border:none;border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1.5rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s ease;" onmouseover="this.style.background='<?php echo esc_attr($settings['button_hover_color'] ?? '#22d3aa'); ?>';" onmouseout="this.style.background='<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>';">&#8592;</button>
-            <div class="services-carousel" style="overflow-x:auto;white-space:nowrap;scroll-behavior:smooth;padding-bottom:12px;">
+        <div class="bsg-carousel" style="margin-top:2.5rem;">
+            <button class="bsg-carousel-arrow left" style="background:<?php echo esc_attr($settings['button_primary_color'] ?? '#2ee6c5'); ?>;color:<?php echo esc_attr($settings['button_text_color'] ?? '#ffffff'); ?>;">&#8592;</button>
+            <div class="bsg-carousel-container">
                 <?php if (!empty($services)): ?>
                     <?php foreach ($services as $service): ?>
                     <?php $slug = isset($service['name']) ? sanitize_title($service['name']) : ''; ?>
@@ -40,7 +40,7 @@ $all_pages = get_pages(['sort_column' => 'menu_order']); // Fetch all pages for 
                         }
                     }
                     ?>
-                    <div class="service-card" style="display:inline-block;vertical-align:top;width:320px;min-width:320px;margin-right:24px;background-color: <?php echo esc_attr($settings['services_card_color'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['services_text_color'] ?? '#ffffff'); ?>; border-radius: <?php echo esc_attr($settings['services_card_radius'] ?? '12'); ?>px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);padding:0;box-sizing:border-box;overflow:hidden;">
+                    <div class="bsg-card service-card" style="display:inline-block;vertical-align:top;width:320px;min-width:320px;margin-right:24px;background-color: <?php echo esc_attr($settings['services_card_color'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['services_text_color'] ?? '#ffffff'); ?>; border-radius: <?php echo esc_attr($settings['services_card_radius'] ?? '12'); ?>px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);padding:0;box-sizing:border-box;overflow:hidden;">
                         <div style="padding: 1.2rem 1.2rem 0.5rem 1.2rem;">
                             <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.7rem;">
                                 <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:<?php echo esc_attr($settings['services_icon_color'] ?? '#2ee6c5'); ?>;border-radius:6px;">

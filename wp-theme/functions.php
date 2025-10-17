@@ -337,6 +337,9 @@ function bsg_enqueue_assets() {
 	// Public CSS for frontend
 	wp_enqueue_style('bsg-public-css', get_template_directory_uri() . '/assets/css/public.css', [], '1.0.0');
 	
+	// Consistent section styles
+	wp_enqueue_style('bsg-consistent-styles', get_template_directory_uri() . '/assets/css/bsg-consistent-styles.css', [], '1.0.0');
+	
 	// Font Awesome
 	wp_enqueue_style('bsg-fontawesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css', [], '6.5.0');
 	

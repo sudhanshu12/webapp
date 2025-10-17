@@ -129,9 +129,9 @@ if ($reviews_visible):
     .bsg-reviews .section-header h2 { font-size:2rem !important; } 
 }
 </style>
-<section class="section reviews-section bsg-reviews animate-on-scroll-section" style="background-color: <?php echo esc_attr(($settings['reviews_bg_color'] ?? '') ?: ($settings['surface_color'] ?? 'var(--surface-color)')); ?>; color: <?php echo esc_attr(($settings['reviews_text_color'] ?? '') ?: ($settings['text_color'] ?? 'var(--text-color)')); ?>; padding: <?php echo esc_attr($settings['reviews_padding'] ?? '60'); ?>px 0; min-height: 300px;">
+<section class="bsg-section reviews-section bsg-reviews animate-on-scroll-section" style="background-color: <?php echo esc_attr(($settings['reviews_bg_color'] ?? '') ?: ($settings['surface_color'] ?? 'var(--surface-color)')); ?>; color: <?php echo esc_attr(($settings['reviews_text_color'] ?? '') ?: ($settings['text_color'] ?? 'var(--text-color)')); ?>; padding: <?php echo esc_attr($settings['reviews_padding'] ?? '60'); ?>px 0; min-height: 300px;">
     <div class="container" style="background:<?php echo esc_attr($settings['reviews_card_bg_color'] ?? '#fff'); ?>;border-radius:0;padding:2.5rem 2rem;box-shadow:0 2px 16px rgba(0,0,0,0.10);max-width:<?php echo esc_attr($settings['reviews_max_width'] ?? '1200'); ?>px;margin-left:auto;margin-right:auto;">
-        <div class="section-header" style="text-align:left;margin-bottom:1.2rem;">
+        <div class="bsg-section-header" style="text-align:left;margin-bottom:1.2rem;">
             <div class="tagline" style="display:inline-flex;align-items:center;gap:0.7rem;margin-bottom:10px;margin-top:0;background:none;">
                 <span style="display:inline-flex;align-items:center;font-size:1rem;letter-spacing:2px;font-weight:700;text-transform:uppercase;background:rgba(46,230,197,0.08);border-radius:6px;padding:2px 14px 2px 8px;color:<?php echo esc_attr($settings['reviews_subtitle_color'] ?? '#6b7280'); ?> !important;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right:8px;vertical-align:middle;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#2ee6c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
