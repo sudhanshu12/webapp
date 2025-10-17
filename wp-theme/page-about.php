@@ -318,9 +318,7 @@ $settings = bsg_get_settings();
                                                 echo '<h3>Ready to Get Started?</h3>';
                                                 echo '<p>' . esc_html($clean_text) . '</p>';
                                                 echo '<p class="contact-info">Call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
-                                                echo '</div>';
-                                                echo '<div class="ready-to-start-cta">';
-                                                echo '<a href="tel:' . esc_attr($phone) . '" class="cta-button">Call Now</a>';
+
                                                 echo '</div>';
                                                 echo '</div>';
                                             } else {
