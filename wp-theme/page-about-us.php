@@ -158,32 +158,73 @@ function bsg_about_page_styles() {
         color: #374151;
     }
 
-    /* Ready to Get Started Box */
+    /* Ready to Get Started Box - Horizontal Layout */
     .ready-to-start-box {
         background: #f8f9fa;
         border: 1px solid #e9ecef;
         border-radius: 12px;
         padding: 2rem;
-        text-align: center;
         margin: 3rem auto;
-        max-width: 600px;
+        max-width: 1000px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    .ready-to-start-content {
+        flex: 1;
     }
     .ready-to-start-box h3 {
         color: #1f2937;
         font-size: 1.5rem;
         font-weight: 600;
         margin: 0 0 1rem 0;
+        text-align: left;
     }
     .ready-to-start-box p {
         color: #374151;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
         line-height: 1.6;
+        text-align: left;
     }
     .ready-to-start-box .contact-info {
         font-size: 1.1rem;
         color: #1f2937;
         font-weight: 600;
+        text-align: left;
+    }
+    .ready-to-start-cta {
+        flex: 0 0 auto;
+        text-align: center;
+    }
+    .ready-to-start-cta .cta-button {
+        display: inline-block;
+        background: #4f46e5;
+        color: white;
+        padding: 1rem 2rem;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background 0.3s ease;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    .ready-to-start-cta .cta-button:hover {
+        background: #4338ca;
+        transform: translateY(-2px);
+    }
+    
+    /* Mobile responsive for horizontal layout */
+    @media (max-width: 768px) {
+        .ready-to-start-box {
+            flex-direction: column;
+            text-align: center;
+            gap: 1.5rem;
+        }
+        .ready-to-start-box h3,
+        .ready-to-start-box p,
+        .ready-to-start-box .contact-info {
+            text-align: center;
+        }
     }
 
     /* Why Work With Us Section */

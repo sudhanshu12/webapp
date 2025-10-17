@@ -937,12 +937,29 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                                     <?php 
                                     // Display the wizard content with consistent paragraph styling
                                     $paragraphs = preg_split('/\n\s*\n/', $wizard_about_content);
+                                    $is_cta_section = false;
+                                    
                                     foreach ($paragraphs as $index => $paragraph) {
                                         $paragraph = trim($paragraph);
                                         if (!empty($paragraph)) {
-                                            $is_last = ($index === count($paragraphs) - 1);
-                                            $margin_bottom = $is_last ? '0' : '1.2rem';
-                                            echo '<p style="margin: 0 0 ' . $margin_bottom . ' 0;">' . wp_kses_post($paragraph) . '</p>';
+                                            // Check if this is the "Ready to Get Started" section
+                                            if (stripos($paragraph, 'Ready to Get Started') !== false || stripos($paragraph, 'Ready to elevate') !== false) {
+                                                $is_cta_section = true;
+                                                echo '<div class="ready-to-start-box">';
+                                                echo '<div class="ready-to-start-content">';
+                                                echo '<h3 style="color: #1f2937; font-size: 1.5rem; font-weight: 600; margin: 0 0 1rem 0; text-align: left;">Ready to Get Started?</h3>';
+                                                echo '<p style="color: #374151; margin-bottom: 1rem; line-height: 1.6; text-align: left;">' . wp_kses_post($paragraph) . '</p>';
+                                                echo '<p class="contact-info" style="font-size: 1.1rem; color: #1f2937; font-weight: 600; text-align: left;">Call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
+                                                echo '</div>';
+                                                echo '<div class="ready-to-start-cta">';
+                                                echo '<a href="tel:' . esc_attr($phone) . '" class="cta-button">Get Free Estimate</a>';
+                                                echo '</div>';
+                                                echo '</div>';
+                                            } else {
+                                                $is_last = ($index === count($paragraphs) - 1);
+                                                $margin_bottom = $is_last ? '0' : '1.2rem';
+                                                echo '<p style="margin: 0 0 ' . $margin_bottom . ' 0;">' . wp_kses_post($paragraph) . '</p>';
+                                            }
                                         }
                                     }
                                     ?>
