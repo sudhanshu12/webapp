@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import ConditionalLayout from './components/conditional-layout';
 
 export default function Home() {
-  // Force deployment update - Vercel redeploy
+  // Force deployment update - Vercel redeploy - MAJOR UPDATE
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [metaData, setMetaData] = useState({
     title: 'Create A Website Click',
@@ -172,7 +172,7 @@ export default function Home() {
             </h1>
 
             <p className="text-lg md:text-2xl mb-8 max-w-3xl mx-auto opacity-90 leading-relaxed text-center">
-              Create stunning, professional websites with AI in under 10 minutes. No coding, no design skills, no expensive developers required.
+              Create stunning, professional websites with AI in under 10 minutes. No coding, no design skills, no expensive developers required. Updated for deployment.
             </p>
 
             {/* Trust Bar */}
