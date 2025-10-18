@@ -59,7 +59,7 @@ const nextConfig = {
   
   // Force deployment trigger
   env: {
-    DEPLOYMENT_TRIGGER: '2025-01-13-currency-fix'
+    DEPLOYMENT_TRIGGER: '2025-01-13-branding-update-v2'
   },
   
   // Optimize bundle
