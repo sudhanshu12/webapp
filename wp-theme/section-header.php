@@ -53,7 +53,7 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
             <ul class="nav-menu">
                 <li><a href="<?php echo home_url('/'); ?>">Home</a></li>
                 <li class="has-dropdown">
-                    <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="cursor: default; pointer-events: none;">Services <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></a>
+                    <a href="<?php echo home_url('/#services'); ?>" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Services <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></a>
                     <ul class="dropdown">
                         <?php
                         // Get services from wizard settings
@@ -61,7 +61,9 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
                         if (!empty($services)) {
                             foreach ($services as $service) {
                                 if (!empty($service['name'])) {
-                                    echo '<li><a href="#" style="cursor: default; pointer-events: none;">' . esc_html($service['name']) . '</a></li>';
+                                    $service_slug = sanitize_title($service['name']);
+                                    $service_url = home_url('/services/' . $service_slug . '/');
+                                    echo '<li><a href="' . esc_url($service_url) . '">' . esc_html($service['name']) . '</a></li>';
                                 }
                             }
                         } else {
@@ -70,7 +72,7 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
                             if ($services_parent) {
                                 $children = get_pages(['parent' => $services_parent->ID, 'sort_column' => 'menu_order']);
                                 foreach ($children as $child) {
-                                    echo '<li><a href="#" style="cursor: default; pointer-events: none;">' . esc_html($child->post_title) . '</a></li>';
+                                    echo '<li><a href="' . esc_url(get_permalink($child->ID)) . '">' . esc_html($child->post_title) . '</a></li>';
                                 }
                             }
                         }
@@ -78,7 +80,7 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
                     </ul>
                 </li>
                 <li class="has-dropdown">
-                    <a href="#" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false" style="cursor: default; pointer-events: none;">Service Locations <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></a>
+                    <a href="<?php echo home_url('/#locations'); ?>" class="dropdown-toggle" aria-haspopup="true" aria-expanded="false">Service Locations <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></a>
                     <ul class="dropdown">
                         <?php
                         // Get locations from wizard settings
@@ -86,7 +88,9 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
                         if (!empty($locations)) {
                             foreach ($locations as $location) {
                                 if (!empty($location['name'])) {
-                                    echo '<li><a href="#" style="cursor: default; pointer-events: none;">' . esc_html($location['name']) . '</a></li>';
+                                    $location_slug = sanitize_title($location['name']);
+                                    $location_url = home_url('/service-locations/' . $location_slug . '/');
+                                    echo '<li><a href="' . esc_url($location_url) . '">' . esc_html($location['name']) . '</a></li>';
                                 }
                             }
                         } else {
@@ -95,7 +99,7 @@ $nav_text = $settings['navigation_text_color'] ?? $settings['nav_text_color'] ??
                             if ($locations_parent) {
                                 $children = get_pages(['parent' => $locations_parent->ID, 'sort_column' => 'menu_order']);
                                 foreach ($children as $child) {
-                                    echo '<li><a href="#" style="cursor: default; pointer-events: none;">' . esc_html($child->post_title) . '</a></li>';
+                                    echo '<li><a href="' . esc_url(get_permalink($child->ID)) . '">' . esc_html($child->post_title) . '</a></li>';
                                 }
                             }
                         }
