@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import ConditionalLayout from './components/conditional-layout';
 
 export default function Home() {
-  // Force deployment update - Vercel redeploy - FINAL DEPLOYMENT
+  // Test auto-deployment from GitHub - should trigger new main deployment
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const [metaData, setMetaData] = useState({
     title: 'Create A Website Click',
