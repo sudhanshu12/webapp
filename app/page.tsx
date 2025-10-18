@@ -503,16 +503,6 @@ export default function Home() {
                 {
                   icon: (
                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
-                    </svg>
-                  ),
-                  title: 'Drag-Drop Customization',
-                  description: 'Intuitive visual editor lets you customize every element without code. See changes instantly as you edit.',
-                  metric: 'Live Preview'
-                },
-                {
-                  icon: (
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                     </svg>
                   ),
@@ -540,16 +530,6 @@ export default function Home() {
                   description: 'Every website automatically adapts to all devices. Perfect mobile experience without extra work.',
                   metric: '100% Mobile Optimized'
                 },
-                {
-                  icon: (
-                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd"/>
-                    </svg>
-                  ),
-                  title: 'Business Tools Integration',
-                  description: 'Connect with 20+ business tools including payment processors, email marketing, and booking systems.',
-                  metric: '20+ Integrations'
-                }
               ].map((feature, index) => (
                 <div key={index} className="card border border-secondary/20 text-left">
                   <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-accent-500 mb-5">
