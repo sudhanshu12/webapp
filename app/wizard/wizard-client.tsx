@@ -380,6 +380,7 @@ export default function WizardClient() {
     zip: '',
     about_years: 15,
     openai_api_key: '',
+    openrouter_api_key: '',
     color_theme: 'amber',
     admin_theme: 'dark',
     use_dynamic_template: true,
