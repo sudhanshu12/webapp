@@ -11,6 +11,7 @@ export default function Home() {
     title: 'Create A Website Click',
     description: 'Launch AI‑written, SEO‑ready business sites in minutes.'
   });
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
   const [statsVisible, setStatsVisible] = useState(false);
   const [counters, setCounters] = useState({ websites: 0, rating: 0, time: 0, uptime: 0 });
 
@@ -145,6 +146,31 @@ export default function Home() {
     return () => observer.disconnect();
   }, []); // Empty dependency array - only run once on mount
 
+  // Scroll-triggered animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = entry.target.getAttribute('data-section');
+          if (sectionId) {
+            setVisibleSections(prev => new Set(Array.from(prev).concat(sectionId)));
+          }
+        }
+      });
+    }, observerOptions);
+
+    // Observe all sections with data-section attribute
+    const sections = document.querySelectorAll('[data-section]');
+    sections.forEach(section => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <ConditionalLayout>
       <style jsx>{`
@@ -165,16 +191,77 @@ export default function Home() {
           background-size: 200% 100%;
           animation: shimmer 3s infinite;
         }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        .animate-fade-in-up {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+        .animate-fade-in-left {
+          animation: fadeInLeft 0.8s ease-out forwards;
+        }
+        .animate-fade-in-right {
+          animation: fadeInRight 0.8s ease-out forwards;
+        }
+        .animate-fade-in-scale {
+          animation: fadeInScale 0.8s ease-out forwards;
+        }
+        .scroll-animate {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.8s ease-out;
+        }
+        .scroll-animate.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
       `}</style>
       <div className="bg-background text-text-primary overflow-x-hidden">
         {/* Hero Section */}
-        <section className="gradient-bg text-white py-20 px-4 text-center min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
+        <section className="gradient-bg text-white py-20 px-4 text-center min-h-screen flex flex-col justify-center items-center relative overflow-hidden" data-section="hero">
           <div className="absolute inset-0 opacity-50" style={{
             background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\' fill-opacity=\'0.05\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'2\'%3E%3C/g%3E%3C/svg%3E")'
           }}></div>
           
           <div className="max-w-4xl mx-auto w-full relative z-10">
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight mx-auto text-center">
+            <h1 className={`text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight mx-auto text-center scroll-animate ${visibleSections.has('hero') ? 'visible' : ''}`}>
               Build Professional<br />
               <span style={{
                 background: 'linear-gradient(90deg, #06b6d4 0%, #10b981 50%, #22d3ee 100%)',
@@ -190,7 +277,7 @@ export default function Home() {
               in Minutes, Not Months
             </h1>
 
-            <p className="text-lg md:text-2xl mb-8 max-w-3xl mx-auto opacity-90 leading-relaxed text-center">
+            <p className={`text-lg md:text-2xl mb-8 max-w-3xl mx-auto opacity-90 leading-relaxed text-center scroll-animate ${visibleSections.has('hero') ? 'visible' : ''}`} style={{ transitionDelay: '0.2s' }}>
               Create stunning, professional websites with AI in under 10 minutes. No coding, no design skills, no expensive developers required. Updated for deployment.
             </p>
 
@@ -496,7 +583,7 @@ export default function Home() {
         </section>
 
         {/* Everything You Need Section */}
-        <section className="py-20 px-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-text-primary relative overflow-hidden">
+        <section className="py-20 px-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-text-primary relative overflow-hidden" data-section="features">
           {/* Enhanced futuristic background effects */}
           <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-transparent to-purple-500/8"></div>
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl animate-pulse"></div>
@@ -514,10 +601,10 @@ export default function Home() {
           
           <div className="max-w-4xl mx-auto relative z-10">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-100 to-purple-100 bg-clip-text text-transparent">
+              <h2 className={`text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-100 to-purple-100 bg-clip-text text-transparent scroll-animate ${visibleSections.has('features') ? 'visible' : ''}`}>
                 Everything You Need to <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Succeed Online</span>
               </h2>
-              <p className="text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto">
+              <p className={`text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto scroll-animate ${visibleSections.has('features') ? 'visible' : ''}`} style={{ transitionDelay: '0.2s' }}>
                 Professional features that would cost thousands with traditional development, included in every plan.
               </p>
             </div>
@@ -565,7 +652,7 @@ export default function Home() {
                   metric: '100% Mobile Optimized'
                 },
               ].map((feature, index) => (
-                <div key={index} className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 backdrop-blur-xl border border-slate-600/30 hover:border-cyan-400/60 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-500/25 p-8 cursor-pointer">
+                <div key={index} className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 backdrop-blur-xl border border-slate-600/30 hover:border-cyan-400/60 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-500/25 p-8 cursor-pointer scroll-animate ${visibleSections.has('features') ? 'visible' : ''}`} style={{ transitionDelay: `${0.3 + (index * 0.1)}s` }}>
                   {/* Animated mesh gradient background */}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-transparent to-purple-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                   
@@ -858,13 +945,13 @@ export default function Home() {
         </section>
 
         {/* FAQ Section */}
-        <section className="py-16 px-8 bg-background text-text-primary">
+        <section className="py-16 px-8 bg-background text-text-primary" data-section="faq">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-bold mb-6">
+              <h2 className={`text-4xl md:text-6xl font-bold mb-6 scroll-animate ${visibleSections.has('faq') ? 'visible' : ''}`}>
                 Frequently Asked <span className="text-gradient">Questions</span>
               </h2>
-              <p className="text-lg md:text-2xl text-text-secondary max-w-3xl mx-auto">
+              <p className={`text-lg md:text-2xl text-text-secondary max-w-3xl mx-auto scroll-animate ${visibleSections.has('faq') ? 'visible' : ''}`} style={{ transitionDelay: '0.2s' }}>
                 Everything you need to know about Create A Website Click and our website creation process.
               </p>
             </div>
@@ -917,12 +1004,12 @@ export default function Home() {
         </section>
 
         {/* Facebook Community Section */}
-        <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-indigo-100 text-center">
+        <section className="py-16 px-4 bg-gradient-to-br from-blue-50 to-indigo-100 text-center" data-section="community">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">
+            <h2 className={`text-4xl md:text-5xl font-bold mb-6 text-gray-800 scroll-animate ${visibleSections.has('community') ? 'visible' : ''}`}>
               Join Our <span className="text-blue-600">Facebook Community</span>
             </h2>
-            <p className="text-lg md:text-xl mb-8 text-gray-600 max-w-2xl mx-auto">
+            <p className={`text-lg md:text-xl mb-8 text-gray-600 max-w-2xl mx-auto scroll-animate ${visibleSections.has('community') ? 'visible' : ''}`} style={{ transitionDelay: '0.2s' }}>
               Connect with fellow entrepreneurs and get exclusive tips on website automation
             </p>
             
@@ -947,12 +1034,12 @@ export default function Home() {
         </section>
 
         {/* Final CTA Section */}
-        <section className="py-16 px-4 gradient-bg text-white text-center">
+        <section className="py-16 px-4 gradient-bg text-white text-center" data-section="cta">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6">
+            <h2 className={`text-4xl md:text-6xl font-bold mb-6 scroll-animate ${visibleSections.has('cta') ? 'visible' : ''}`}>
               Start Building Your Website in Minutes
             </h2>
-            <p className="text-lg md:text-2xl mb-8 opacity-90">
+            <p className={`text-lg md:text-2xl mb-8 opacity-90 scroll-animate ${visibleSections.has('cta') ? 'visible' : ''}`} style={{ transitionDelay: '0.2s' }}>
               Join thousands of businesses that have transformed their online presence with Create A Website Click.
             </p>
             <a href="/register" className="btn-accent text-lg px-8 py-4 inline-flex items-center gap-2">
