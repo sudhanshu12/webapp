@@ -628,7 +628,7 @@ export default function Home() {
                     </svg>
                   ),
                   title: 'AI-Powered Templates',
-                  description: '50+ industry-specific templates that adapt to your business automatically with AI-generated content and images.',
+                  description: 'AI Powered templates that adapt to your business automatically with AI-generated content and images.',
                   metric: 'Quality Score: 98%'
                 },
                 {
@@ -638,8 +638,8 @@ export default function Home() {
                     </svg>
                   ),
                   title: 'Instant Publishing',
-                  description: 'One-click publishing to premium hosting with SSL, CDN, and 99.9% uptime guarantee. Your site goes live instantly.',
-                  metric: '99.9% Uptime'
+                  description: 'One-click publishing to wordpress webistes. Websites will be Fast Loading and goes live instantly.',
+                  metric: 'Fast-Loading Websites'
                 },
                 {
                   icon: (
@@ -647,9 +647,9 @@ export default function Home() {
                       <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"/>
                     </svg>
                   ),
-                  title: 'SEO Analytics Built-in',
-                  description: 'Advanced SEO optimization and analytics dashboard to track visitors, conversions, and search rankings.',
-                  metric: 'Google Analytics Integration'
+                  title: 'SEO Optimized Websites',
+                  description: 'Advanced On page optimization and Schema markupfor Better Ranking. .',
+                  metric: 'Pre-built SEO Templates'
                 },
                 {
                   icon: (
