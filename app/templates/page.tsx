@@ -11,7 +11,7 @@ export default function TemplatesPage() {
         <h1 style={{fontSize: 36, fontWeight: 800, marginBottom: 8}}>Choose Your Template</h1>
         <p style={{color: '#94a3b8', marginBottom: 28}}>Select a template to get started</p>
 
-        <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: 24, maxWidth: '1200px', margin: '0 auto'}}>
+        <div style={{display: 'flex', justifyContent: 'center', gap: 24, maxWidth: '1200px', margin: '0 auto'}}>
           {/* Template Card using provided image */}
           <div style={{background: '#1e293b', border: '1px solid #334155', borderRadius: 12, overflow: 'hidden', width: '100%', maxWidth: '420px', margin: '0 auto'}}>
             <div style={{padding: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -47,26 +47,6 @@ export default function TemplatesPage() {
             </div>
           </div>
 
-          {/* Second Template Card */}
-          <div style={{background: '#1e293b', border: '1px solid #334155', borderRadius: 12, overflow: 'hidden', width: '100%', maxWidth: '420px', margin: '0 auto'}}>
-            <div style={{padding: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-              <span style={{background: '#334155', color: 'white', padding: '4px 10px', borderRadius: 999, fontSize: 12}}>Preview</span>
-            </div>
-            <div style={{borderTop: '1px solid #334155', borderBottom: '1px solid #334155', width: '100%', height: '320px', background: '#0b1220', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#94a3b8'}}>
-                <div style={{fontSize: '48px', marginBottom: '16px'}}>🏢</div>
-                <div style={{fontSize: '18px', fontWeight: '600'}}>Business Template</div>
-                <div style={{fontSize: '14px', marginTop: '8px'}}>Professional Business Website</div>
-              </div>
-            </div>
-            <div style={{padding: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-              <div>
-                <div style={{fontWeight: 700, marginBottom: 4}}>Business Professional</div>
-                <div style={{color: '#94a3b8', fontSize: 14}}>About Page · Contact Page · Services</div>
-              </div>
-              <Link href="/wizard" style={{background: '#8b5cf6', color: 'white', padding: '8px 14px', borderRadius: 8, textDecoration: 'none', fontWeight: 600}}>Use</Link>
-            </div>
-          </div>
         </div>
         </div>
       </div>
