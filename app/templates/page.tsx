@@ -26,7 +26,10 @@ export default function TemplatesPage() {
                 decoding="async"
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling.style.display = 'flex';
+                  const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (nextElement) {
+                    nextElement.style.display = 'flex';
+                  }
                 }}
               />
               <div style={{display: 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#94a3b8'}}>
