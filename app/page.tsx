@@ -147,6 +147,25 @@ export default function Home() {
 
   return (
     <ConditionalLayout>
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.3); }
+          50% { box-shadow: 0 0 40px rgba(6, 182, 212, 0.6), 0 0 60px rgba(147, 51, 234, 0.3); }
+        }
+        @keyframes shimmer {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        .shimmer-effect {
+          background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.4), transparent);
+          background-size: 200% 100%;
+          animation: shimmer 3s infinite;
+        }
+      `}</style>
       <div className="bg-background text-text-primary overflow-x-hidden">
         {/* Hero Section */}
         <section className="gradient-bg text-white py-20 px-4 text-center min-h-screen flex flex-col justify-center items-center relative overflow-hidden">
@@ -477,11 +496,21 @@ export default function Home() {
         </section>
 
         {/* Everything You Need Section */}
-        <section className="py-16 px-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-text-primary relative overflow-hidden">
-          {/* Futuristic background effects */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5"></div>
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <section className="py-20 px-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-text-primary relative overflow-hidden">
+          {/* Enhanced futuristic background effects */}
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-transparent to-purple-500/8"></div>
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/15 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-cyan-400/10 to-purple-400/10 rounded-full blur-2xl animate-ping delay-500"></div>
+          
+          {/* Animated grid pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `radial-gradient(circle at 25% 25%, cyan 1px, transparent 1px), radial-gradient(circle at 75% 75%, purple 1px, transparent 1px)`,
+              backgroundSize: '50px 50px',
+              animation: 'float 20s ease-in-out infinite'
+            }}></div>
+          </div>
           
           <div className="max-w-4xl mx-auto relative z-10">
             <div className="text-center mb-16">
@@ -536,39 +565,65 @@ export default function Home() {
                   metric: '100% Mobile Optimized'
                 },
               ].map((feature, index) => (
-                <div key={index} className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm border border-slate-700/50 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20 p-6">
-                  {/* Animated background gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div key={index} className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 backdrop-blur-xl border border-slate-600/30 hover:border-cyan-400/60 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-500/25 p-8 cursor-pointer">
+                  {/* Animated mesh gradient background */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-transparent to-purple-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                   
-                  {/* Glowing border effect */}
-                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
-                  
-                  {/* Icon with futuristic styling */}
-                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-cyan-400/25 group-hover:shadow-cyan-400/40 transition-all duration-300 group-hover:scale-110">
-                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 rounded-2xl blur-sm"></div>
-                    <div className="relative z-10 transform group-hover:rotate-12 transition-transform duration-300">
-                      {feature.icon}
-                    </div>
+                  {/* Floating particles effect */}
+                  <div className="absolute inset-0 overflow-hidden rounded-3xl">
+                    <div className="absolute top-4 right-4 w-2 h-2 bg-cyan-400/40 rounded-full animate-ping"></div>
+                    <div className="absolute top-8 right-8 w-1 h-1 bg-purple-400/60 rounded-full animate-pulse delay-300"></div>
+                    <div className="absolute bottom-6 left-6 w-1.5 h-1.5 bg-cyan-300/50 rounded-full animate-bounce delay-700"></div>
                   </div>
                   
-                  {/* Title with gradient text */}
-                  <h3 className="relative z-10 text-xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-100 to-purple-100 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-purple-300 transition-all duration-300">
+                  {/* Enhanced glowing border effect */}
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-cyan-400/30 via-purple-500/30 to-pink-500/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-lg"></div>
+                  <div className="absolute inset-[1px] rounded-3xl bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60"></div>
+                  
+                  {/* Premium icon with enhanced effects */}
+                  <div className="relative z-20 w-20 h-20 bg-gradient-to-br from-cyan-400 via-cyan-500 to-purple-600 rounded-3xl flex items-center justify-center text-white mb-8 shadow-2xl shadow-cyan-400/30 group-hover:shadow-cyan-400/50 transition-all duration-500 group-hover:scale-110 group-hover:-rotate-3">
+                    {/* Icon glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/30 to-purple-500/30 rounded-3xl blur-md group-hover:blur-lg transition-all duration-500"></div>
+                    {/* Icon inner glow */}
+                    <div className="absolute inset-2 bg-gradient-to-br from-cyan-300/20 to-purple-400/20 rounded-2xl blur-sm"></div>
+                    <div className="relative z-10 transform group-hover:rotate-12 transition-transform duration-500 scale-110">
+                      {feature.icon}
+                    </div>
+                    {/* Floating sparkle effect */}
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full opacity-0 group-hover:opacity-100 animate-ping delay-200"></div>
+                  </div>
+                  
+                  {/* Enhanced title with better typography */}
+                  <h3 className="relative z-20 text-2xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-50 to-purple-50 bg-clip-text text-transparent group-hover:from-cyan-200 group-hover:via-cyan-300 group-hover:to-purple-300 transition-all duration-500 leading-tight">
                     {feature.title}
                   </h3>
                   
-                  {/* Description */}
-                  <p className="relative z-10 text-slate-300 mb-6 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
+                  {/* Enhanced description with better spacing */}
+                  <p className="relative z-20 text-slate-300 mb-8 leading-relaxed text-base group-hover:text-slate-100 transition-colors duration-500 font-medium">
                     {feature.description}
                   </p>
                   
-                  {/* Metric with futuristic styling */}
-                  <div className="relative z-10 inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 text-cyan-300 font-semibold text-sm group-hover:border-cyan-400/50 group-hover:text-cyan-200 transition-all duration-300">
-                    <div className="w-2 h-2 bg-cyan-400 rounded-full mr-2 animate-pulse"></div>
-                    {feature.metric}
+                  {/* Premium metric badge with enhanced styling */}
+                  <div className="relative z-20 inline-flex items-center px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-500/15 via-purple-500/10 to-cyan-500/15 border border-cyan-400/40 text-cyan-200 font-bold text-sm group-hover:border-cyan-400/60 group-hover:text-cyan-100 group-hover:bg-gradient-to-r group-hover:from-cyan-500/20 group-hover:via-purple-500/15 group-hover:to-cyan-500/20 transition-all duration-500 shadow-lg shadow-cyan-400/10 group-hover:shadow-cyan-400/20">
+                    {/* Animated status indicator */}
+                    <div className="w-3 h-3 bg-gradient-to-r from-cyan-400 to-cyan-300 rounded-full mr-3 animate-pulse shadow-sm shadow-cyan-400/50"></div>
+                    <span className="tracking-wide">{feature.metric}</span>
+                    {/* Success checkmark on hover */}
+                    <div className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <svg className="w-4 h-4 text-cyan-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                      </svg>
+                    </div>
                   </div>
                   
-                  {/* Hover effect overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-transparent to-purple-500/0 group-hover:from-cyan-500/5 group-hover:to-purple-500/5 transition-all duration-500 rounded-2xl"></div>
+                  {/* Enhanced hover overlay with better gradients */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-transparent to-purple-500/0 group-hover:from-cyan-500/8 group-hover:via-cyan-400/5 group-hover:to-purple-500/8 transition-all duration-700 rounded-3xl"></div>
+                  
+                  {/* Corner accent lines */}
+                  <div className="absolute top-0 left-0 w-16 h-0.5 bg-gradient-to-r from-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute top-0 right-0 w-16 h-0.5 bg-gradient-to-l from-purple-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute bottom-0 left-0 w-16 h-0.5 bg-gradient-to-r from-cyan-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="absolute bottom-0 right-0 w-16 h-0.5 bg-gradient-to-l from-purple-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
               ))}
             </div>
