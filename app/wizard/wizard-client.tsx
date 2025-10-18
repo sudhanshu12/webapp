@@ -616,7 +616,10 @@ export default function WizardClient() {
 
   // Load data from localStorage after component mounts
   useEffect(() => {
-    let savedForm = loadLS<FormData>('bsg_form', form);
+    // Use user-specific localStorage key
+    const userEmail = session?.user?.email || 'anonymous';
+    const userKey = `bsg_form_${userEmail}`;
+    let savedForm = loadLS<FormData>(userKey, form);
     
     // If form has default color scheme enabled, apply the default colors
     if (savedForm && (savedForm.use_default_color_scheme ?? true)) {
@@ -672,10 +675,12 @@ export default function WizardClient() {
 
   // Save form data to localStorage whenever it changes
   useEffect(() => {
-    if (isLoaded) {
-      saveLS('bsg_form', form);
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_form_${userEmail}`;
+      saveLS(userKey, form);
     }
-  }, [form, isLoaded]);
+  }, [form, isLoaded, session]);
 
   // Dynamic content state
   const [services, setServices] = useState<Service[]>([
@@ -697,8 +702,10 @@ export default function WizardClient() {
   
   // Load services from localStorage after component mounts
   useEffect(() => {
-    if (isLoaded) {
-      const savedServices = loadLS<Service[]>('bsg_services', []);
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_services_${userEmail}`;
+      const savedServices = loadLS<Service[]>(userKey, []);
       console.log('Loading services from localStorage:', savedServices);
       // If no services in localStorage or empty array, use the default service
       if (!savedServices || savedServices.length === 0) {
@@ -736,10 +743,12 @@ export default function WizardClient() {
   }, [isLoaded]);
   
   useEffect(() => { 
-    if (isLoaded && services.length > 0) {
-      saveLS('bsg_services', services); 
+    if (isLoaded && services.length > 0 && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_services_${userEmail}`;
+      saveLS(userKey, services); 
     }
-  }, [services, isLoaded]);
+  }, [services, isLoaded, session]);
 
   const [locations, setLocations] = useState<Location[]>([
     {
@@ -758,8 +767,10 @@ export default function WizardClient() {
   
   // Load locations from localStorage after component mounts
   useEffect(() => {
-    if (isLoaded) {
-      const savedLocations = loadLS<Location[]>('bsg_locations', locations);
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_locations_${userEmail}`;
+      const savedLocations = loadLS<Location[]>(userKey, locations);
       console.log('Loading locations from localStorage:', savedLocations);
       // Generate slugs for locations that don't have them
       const locationsWithSlugs = savedLocations.map(location => {
@@ -776,10 +787,12 @@ export default function WizardClient() {
   }, [isLoaded]);
   
   useEffect(() => { 
-    if (isLoaded) {
-      saveLS('bsg_locations', locations); 
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_locations_${userEmail}`;
+      saveLS(userKey, locations); 
     }
-  }, [locations, isLoaded]);
+  }, [locations, isLoaded, session]);
 
   const [reviews, setReviews] = useState<Review[]>([
     {
@@ -793,17 +806,21 @@ export default function WizardClient() {
   
   // Load reviews from localStorage after component mounts
   useEffect(() => {
-    if (isLoaded) {
-      const savedReviews = loadLS<Review[]>('bsg_reviews', reviews);
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_reviews_${userEmail}`;
+      const savedReviews = loadLS<Review[]>(userKey, reviews);
       setReviews(savedReviews);
     }
-  }, [isLoaded]);
+  }, [isLoaded, session]);
   
   useEffect(() => { 
-    if (isLoaded) {
-      saveLS('bsg_reviews', reviews); 
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_reviews_${userEmail}`;
+      saveLS(userKey, reviews); 
     }
-  }, [reviews, isLoaded]);
+  }, [reviews, isLoaded, session]);
 
   const [features, setFeatures] = useState<Feature[]>([
     {
@@ -816,17 +833,21 @@ export default function WizardClient() {
   
   // Load features from localStorage after component mounts
   useEffect(() => {
-    if (isLoaded) {
-      const savedFeatures = loadLS<Feature[]>('bsg_features', features);
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_features_${userEmail}`;
+      const savedFeatures = loadLS<Feature[]>(userKey, features);
       setFeatures(savedFeatures);
     }
-  }, [isLoaded]);
+  }, [isLoaded, session]);
   
   useEffect(() => { 
-    if (isLoaded) {
-      saveLS('bsg_features', features); 
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_features_${userEmail}`;
+      saveLS(userKey, features); 
     }
-  }, [features, isLoaded]);
+  }, [features, isLoaded, session]);
 
   
 
@@ -841,17 +862,21 @@ export default function WizardClient() {
   
   // Load commitments from localStorage after component mounts
   useEffect(() => {
-    if (isLoaded) {
-      const savedCommitments = loadLS<Commitment[]>('bsg_commitments', commitments);
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_commitments_${userEmail}`;
+      const savedCommitments = loadLS<Commitment[]>(userKey, commitments);
       setCommitments(savedCommitments);
     }
-  }, [isLoaded]);
+  }, [isLoaded, session]);
   
   useEffect(() => { 
-    if (isLoaded) {
-      saveLS('bsg_commitments', commitments); 
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_commitments_${userEmail}`;
+      saveLS(userKey, commitments); 
     }
-  }, [commitments, isLoaded]);
+  }, [commitments, isLoaded, session]);
 
   const [faqs, setFaqs] = useState<FAQ[]>([
     {
@@ -863,17 +888,21 @@ export default function WizardClient() {
   
   // Load FAQs from localStorage after component mounts
   useEffect(() => {
-    if (isLoaded) {
-      const savedFaqs = loadLS<FAQ[]>('bsg_faqs', faqs);
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_faqs_${userEmail}`;
+      const savedFaqs = loadLS<FAQ[]>(userKey, faqs);
       setFaqs(savedFaqs);
     }
-  }, [isLoaded]);
+  }, [isLoaded, session]);
   
   useEffect(() => {
-    if (isLoaded) {
-      saveLS('bsg_faqs', faqs); 
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_faqs_${userEmail}`;
+      saveLS(userKey, faqs); 
     }
-  }, [faqs, isLoaded]);
+  }, [faqs, isLoaded, session]);
 
   // Handle NextAuth session
   useEffect(() => {
@@ -1786,7 +1815,11 @@ export default function WizardClient() {
         { id: '2', name: 'Roof Repair', description: 'Expert roof repair and maintenance', slug: 'roof-repair', icon: '🛠️', image: '', content: '' }
       ];
       setServices(sampleServices);
-      saveLS('bsg_services', sampleServices);
+      if (session?.user?.email) {
+        const userEmail = session.user.email;
+        const userKey = `bsg_services_${userEmail}`;
+        saveLS(userKey, sampleServices);
+      }
     }
     
     if (locations.length === 0) {
@@ -1795,7 +1828,11 @@ export default function WizardClient() {
         { id: '2', name: 'Orlando', state: 'Florida', zip: '32801', description: 'Serving Orlando, Florida', slug: 'orlando-32801' }
       ];
       setLocations(sampleLocations);
-      saveLS('bsg_locations', sampleLocations);
+      if (session?.user?.email) {
+        const userEmail = session.user.email;
+        const userKey = `bsg_locations_${userEmail}`;
+        saveLS(userKey, sampleLocations);
+      }
     }
   };
 
@@ -1806,8 +1843,11 @@ export default function WizardClient() {
     console.log('Current form state:', form);
     
     // Ensure data is properly synchronized with localStorage
-    const currentServices = loadLS<Service[]>('bsg_services', []);
-    const currentLocations = loadLS<Location[]>('bsg_locations', []);
+    const userEmail = session?.user?.email || 'anonymous';
+    const servicesKey = `bsg_services_${userEmail}`;
+    const locationsKey = `bsg_locations_${userEmail}`;
+    const currentServices = loadLS<Service[]>(servicesKey, []);
+    const currentLocations = loadLS<Location[]>(locationsKey, []);
     
     console.log('Current localStorage services:', currentServices);
     console.log('Current localStorage locations:', currentLocations);
