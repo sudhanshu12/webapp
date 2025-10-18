@@ -1243,8 +1243,8 @@ export default function WizardClient() {
   };
 
   const generateServiceAI = async (id: string) => {
-    if (!form.openai_api_key) {
-      setSuccess('❌ Please add your OpenAI API key in the General tab');
+    if (!form.openai_api_key && !form.openrouter_api_key) {
+      setSuccess('❌ Please add your OpenAI API key or OpenRouter API key in the General tab');
       return;
     }
     
@@ -1262,6 +1262,7 @@ export default function WizardClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           apiKey: form.openai_api_key,
+          openrouterApiKey: form.openrouter_api_key,
           type: 'service',
           content: { name: service.name },
           businessData: {
@@ -1382,8 +1383,8 @@ export default function WizardClient() {
   };
 
   const generateLocationAI = async (id: string) => {
-    if (!form.openai_api_key) {
-      setSuccess('❌ Please add your OpenAI API key in the General tab');
+    if (!form.openai_api_key && !form.openrouter_api_key) {
+      setSuccess('❌ Please add your OpenAI API key or OpenRouter API key in the General tab');
       return;
     }
     
@@ -1401,6 +1402,7 @@ export default function WizardClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           apiKey: form.openai_api_key,
+          openrouterApiKey: form.openrouter_api_key,
           type: 'location',
           content: { name: location.name },
           businessData: {
@@ -1457,8 +1459,8 @@ export default function WizardClient() {
 
   // About AI generation functions
   const generateAboutAI = async () => {
-    if (!form.openai_api_key) {
-      setSuccess('❌ Please add your OpenAI API key in the General tab');
+    if (!form.openai_api_key && !form.openrouter_api_key) {
+      setSuccess('❌ Please add your OpenAI API key or OpenRouter API key in the General tab');
       return;
     }
     
@@ -1477,6 +1479,7 @@ export default function WizardClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           apiKey: form.openai_api_key,
+          openrouterApiKey: form.openrouter_api_key,
           type: 'about_home',
           content: { 
             business_name: form.business_name,
@@ -1512,8 +1515,8 @@ export default function WizardClient() {
   };
 
   const generateAboutPageAI = async () => {
-    if (!form.openai_api_key) {
-      setSuccess('❌ Please add your OpenAI API key in the General tab');
+    if (!form.openai_api_key && !form.openrouter_api_key) {
+      setSuccess('❌ Please add your OpenAI API key or OpenRouter API key in the General tab');
       return;
     }
     
@@ -1532,6 +1535,7 @@ export default function WizardClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           apiKey: form.openai_api_key,
+          openrouterApiKey: form.openrouter_api_key,
           type: 'about_page',
           content: { 
             business_name: form.business_name,
@@ -1568,8 +1572,8 @@ export default function WizardClient() {
 
   // Features AI generation function
   const generateFeaturesAI = async () => {
-    if (!form.openai_api_key) {
-      setSuccess('❌ Please add your OpenAI API key in the General tab');
+    if (!form.openai_api_key && !form.openrouter_api_key) {
+      setSuccess('❌ Please add your OpenAI API key or OpenRouter API key in the General tab');
       return;
     }
     
@@ -1580,6 +1584,7 @@ export default function WizardClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           apiKey: form.openai_api_key,
+          openrouterApiKey: form.openrouter_api_key,
           type: 'features',
           content: {},
           businessData: {
@@ -1615,8 +1620,8 @@ export default function WizardClient() {
 
   // Reviews AI generation function
   const generateReviewsAI = async () => {
-    if (!form.openai_api_key) {
-      setSuccess('❌ Please add your OpenAI API key in the General tab');
+    if (!form.openai_api_key && !form.openrouter_api_key) {
+      setSuccess('❌ Please add your OpenAI API key or OpenRouter API key in the General tab');
       return;
     }
     
@@ -1627,6 +1632,7 @@ export default function WizardClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           apiKey: form.openai_api_key,
+          openrouterApiKey: form.openrouter_api_key,
           type: 'reviews',
           content: {},
           businessData: {
@@ -1663,8 +1669,8 @@ export default function WizardClient() {
 
   // FAQ AI generation function
   const generateFAQAI = async () => {
-    if (!form.openai_api_key) {
-      setSuccess('❌ Please add your OpenAI API key in the General tab');
+    if (!form.openai_api_key && !form.openrouter_api_key) {
+      setSuccess('❌ Please add your OpenAI API key or OpenRouter API key in the General tab');
       return;
     }
     
@@ -1675,6 +1681,7 @@ export default function WizardClient() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           apiKey: form.openai_api_key,
+          openrouterApiKey: form.openrouter_api_key,
           type: 'faq',
           content: {},
           businessData: {
