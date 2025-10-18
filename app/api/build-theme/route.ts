@@ -956,6 +956,7 @@ export async function POST(req: NextRequest) {
       
       // API and theme settings
       openai_api_key: data.openai_api_key || '',
+      openrouter_api_key: data.openrouter_api_key || '',
       color_theme: data.color_theme || 'amber',
       admin_theme: data.admin_theme || 'dark',
       use_dynamic_template: data.use_dynamic_template !== undefined ? data.use_dynamic_template : true,

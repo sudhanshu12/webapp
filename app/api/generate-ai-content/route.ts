@@ -3,11 +3,16 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
 	try {
 		const data = await req.json();
-		const { type, content, businessData, apiKey } = data;
+		const { type, content, businessData, apiKey, openrouterApiKey } = data;
 
-		if (!apiKey) {
-			return NextResponse.json({ error: 'OpenAI API key is required' }, { status: 400 });
+		// Check if either API key is provided
+		if (!apiKey && !openrouterApiKey) {
+			return NextResponse.json({ error: 'Either OpenAI API key or OpenRouter API key is required' }, { status: 400 });
 		}
+
+		// Determine which API to use (prefer OpenAI if both are provided)
+		const useOpenRouter = !apiKey && openrouterApiKey;
+		const selectedApiKey = apiKey || openrouterApiKey;
 
 		let prompt = '';
 		
@@ -282,14 +287,20 @@ Focus on ${businessData.business_type} services and ${businessData.location} are
 				return NextResponse.json({ error: 'Invalid content type' }, { status: 400 });
 		}
 
-		const response = await fetch('https://api.openai.com/v1/chat/completions', {
+		// Choose API endpoint based on which service to use
+		const apiUrl = useOpenRouter 
+			? 'https://openrouter.ai/api/v1/chat/completions'
+			: 'https://api.openai.com/v1/chat/completions';
+
+		const response = await fetch(apiUrl, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${apiKey}`
+				'Authorization': `Bearer ${selectedApiKey}`,
+				...(useOpenRouter && { 'HTTP-Referer': 'https://createawebsite.click' })
 			},
 			body: JSON.stringify({
-				model: 'gpt-4o-mini',
+				model: useOpenRouter ? 'openai/gpt-4o-mini' : 'gpt-4o-mini',
 				messages: [{ role: 'user', content: prompt }],
 				max_tokens: 1000,
 				temperature: 0.7

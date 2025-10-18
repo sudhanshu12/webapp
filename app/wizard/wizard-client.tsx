@@ -79,6 +79,7 @@ interface FormData {
   zip: string;
   about_years: number;
   openai_api_key: string;
+  openrouter_api_key: string;
   color_theme: string;
   admin_theme: string;
   use_dynamic_template: boolean;
@@ -2333,6 +2334,19 @@ export default function WizardClient() {
                                 placeholder="sk-..."
                               />
                               <p className="description">Required for AI content generation. Get your API key from <a href="https://platform.openai.com/account/api-keys" target="_blank">OpenAI</a>.</p>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">OpenRouter API Key</th>
+                            <td>
+                              <input 
+                                type="password" 
+                                value={form.openrouter_api_key}
+                                onChange={(e) => updateForm('openrouter_api_key', e.target.value)}
+                                className="regular-text" 
+                                placeholder="sk-or-..."
+                              />
+                              <p className="description">Alternative to OpenAI for AI content generation. Get your API key from <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a>.</p>
                             </td>
                           </tr>
                         </tbody>
