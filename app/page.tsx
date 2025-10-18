@@ -168,7 +168,15 @@ export default function Home() {
     const sections = document.querySelectorAll('[data-section]');
     sections.forEach(section => observer.observe(section));
 
-    return () => observer.disconnect();
+    // Fallback: Make all sections visible after a short delay if animations fail
+    const fallbackTimer = setTimeout(() => {
+      setVisibleSections(new Set(['hero', 'problem', 'features', 'faq', 'community', 'cta']));
+    }, 1000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimer);
+    };
   }, []);
 
   return (
@@ -249,6 +257,11 @@ export default function Home() {
           transition: all 0.8s ease-out;
         }
         .scroll-animate.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        /* Ensure sections are visible by default if no animation is applied */
+        .section-content {
           opacity: 1;
           transform: translateY(0);
         }
@@ -338,13 +351,13 @@ export default function Home() {
         </section>
 
         {/* Problem Statement Section */}
-        <section className="py-16 px-8 bg-surface text-text-primary">
+        <section className="py-16 px-8 bg-surface text-text-primary" data-section="problem">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-bold mb-6">
+              <h2 className={`text-4xl md:text-6xl font-bold mb-6 scroll-animate ${visibleSections.has('problem') ? 'visible' : ''}`}>
                 Traditional Website Development is <span className="text-gradient">Outdated</span>
               </h2>
-              <p className="text-lg md:text-2xl text-text-secondary max-w-3xl mx-auto">
+              <p className={`text-lg md:text-2xl text-text-secondary max-w-3xl mx-auto scroll-animate ${visibleSections.has('problem') ? 'visible' : ''}`} style={{ transitionDelay: '0.2s' }}>
                 Small businesses waste months and thousands of dollars on websites that should take minutes to create.
               </p>
             </div>
