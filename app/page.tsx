@@ -149,8 +149,8 @@ export default function Home() {
   // Scroll-triggered animations
   useEffect(() => {
     const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+      threshold: 0.2,
+      rootMargin: '0px 0px -100px 0px'
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -164,18 +164,15 @@ export default function Home() {
       });
     }, observerOptions);
 
-    // Observe all sections with data-section attribute
-    const sections = document.querySelectorAll('[data-section]');
-    sections.forEach(section => observer.observe(section));
-
-    // Fallback: Make all sections visible after a short delay if animations fail
-    const fallbackTimer = setTimeout(() => {
-      setVisibleSections(new Set(['hero', 'problem', 'features', 'faq', 'community', 'cta']));
-    }, 1000);
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(() => {
+      const sections = document.querySelectorAll('[data-section]');
+      sections.forEach(section => observer.observe(section));
+    }, 100);
 
     return () => {
       observer.disconnect();
-      clearTimeout(fallbackTimer);
+      clearTimeout(timer);
     };
   }, []);
 
@@ -622,7 +619,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
               {[
                 {
                   icon: (
@@ -665,7 +662,7 @@ export default function Home() {
                   metric: '100% Mobile Optimized'
                 },
               ].map((feature, index) => (
-                <div key={index} className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 backdrop-blur-xl border border-slate-600/30 hover:border-cyan-400/60 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-500/25 p-8 cursor-pointer scroll-animate ${visibleSections.has('features') ? 'visible' : ''}`} style={{ transitionDelay: `${0.3 + (index * 0.1)}s` }}>
+                <div key={index} className={`group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 backdrop-blur-xl border border-slate-600/30 hover:border-cyan-400/60 transition-all duration-700 hover:scale-[1.02] hover:shadow-2xl hover:shadow-cyan-500/25 p-8 cursor-pointer scroll-animate flex flex-col h-full ${visibleSections.has('features') ? 'visible' : ''}`} style={{ transitionDelay: `${0.3 + (index * 0.1)}s` }}>
                   {/* Animated mesh gradient background */}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-transparent to-purple-500/8 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                   
@@ -699,12 +696,12 @@ export default function Home() {
                   </h3>
                   
                   {/* Enhanced description with better spacing */}
-                  <p className="relative z-20 text-slate-300 mb-8 leading-relaxed text-base group-hover:text-slate-100 transition-colors duration-500 font-medium">
+                  <p className="relative z-20 text-slate-300 mb-8 leading-relaxed text-base group-hover:text-slate-100 transition-colors duration-500 font-medium flex-grow">
                     {feature.description}
                   </p>
                   
                   {/* Premium metric badge with enhanced styling */}
-                  <div className="relative z-20 inline-flex items-center px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-500/15 via-purple-500/10 to-cyan-500/15 border border-cyan-400/40 text-cyan-200 font-bold text-sm group-hover:border-cyan-400/60 group-hover:text-cyan-100 group-hover:bg-gradient-to-r group-hover:from-cyan-500/20 group-hover:via-purple-500/15 group-hover:to-cyan-500/20 transition-all duration-500 shadow-lg shadow-cyan-400/10 group-hover:shadow-cyan-400/20">
+                  <div className="relative z-20 inline-flex items-center px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-500/15 via-purple-500/10 to-cyan-500/15 border border-cyan-400/40 text-cyan-200 font-bold text-sm group-hover:border-cyan-400/60 group-hover:text-cyan-100 group-hover:bg-gradient-to-r group-hover:from-cyan-500/20 group-hover:via-purple-500/15 group-hover:to-cyan-500/20 transition-all duration-500 shadow-lg shadow-cyan-400/10 group-hover:shadow-cyan-400/20 mt-auto">
                     {/* Animated status indicator */}
                     <div className="w-3 h-3 bg-gradient-to-r from-cyan-400 to-cyan-300 rounded-full mr-3 animate-pulse shadow-sm shadow-cyan-400/50"></div>
                     <span className="tracking-wide">{feature.metric}</span>
