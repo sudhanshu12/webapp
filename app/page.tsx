@@ -477,13 +477,18 @@ export default function Home() {
         </section>
 
         {/* Everything You Need Section */}
-        <section className="py-16 px-8 bg-surface text-text-primary">
-          <div className="max-w-4xl mx-auto">
+        <section className="py-16 px-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-text-primary relative overflow-hidden">
+          {/* Futuristic background effects */}
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5"></div>
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+          
+          <div className="max-w-4xl mx-auto relative z-10">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-6xl font-bold mb-6">
-                Everything You Need to <span className="text-gradient">Succeed Online</span>
+              <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-cyan-100 to-purple-100 bg-clip-text text-transparent">
+                Everything You Need to <span className="bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">Succeed Online</span>
               </h2>
-              <p className="text-lg md:text-2xl text-text-secondary max-w-3xl mx-auto">
+              <p className="text-lg md:text-2xl text-slate-300 max-w-3xl mx-auto">
                 Professional features that would cost thousands with traditional development, included in every plan.
               </p>
             </div>
@@ -531,19 +536,39 @@ export default function Home() {
                   metric: '100% Mobile Optimized'
                 },
               ].map((feature, index) => (
-                <div key={index} className="card border border-secondary/20 text-left">
-                  <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-accent-500 mb-5">
-                    {feature.icon}
+                <div key={index} className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm border border-slate-700/50 hover:border-cyan-400/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20 p-6">
+                  {/* Animated background gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  
+                  {/* Glowing border effect */}
+                  <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-400/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm"></div>
+                  
+                  {/* Icon with futuristic styling */}
+                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-cyan-400 to-purple-500 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-cyan-400/25 group-hover:shadow-cyan-400/40 transition-all duration-300 group-hover:scale-110">
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-purple-500/20 rounded-2xl blur-sm"></div>
+                    <div className="relative z-10 transform group-hover:rotate-12 transition-transform duration-300">
+                      {feature.icon}
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold mb-3 text-text-primary">
+                  
+                  {/* Title with gradient text */}
+                  <h3 className="relative z-10 text-xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-100 to-purple-100 bg-clip-text text-transparent group-hover:from-cyan-300 group-hover:to-purple-300 transition-all duration-300">
                     {feature.title}
                   </h3>
-                  <p className="text-text-secondary leading-relaxed mb-4">
+                  
+                  {/* Description */}
+                  <p className="relative z-10 text-slate-300 mb-6 leading-relaxed group-hover:text-slate-200 transition-colors duration-300">
                     {feature.description}
                   </p>
-                  <span className="text-accent text-sm font-medium">
+                  
+                  {/* Metric with futuristic styling */}
+                  <div className="relative z-10 inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-400/30 text-cyan-300 font-semibold text-sm group-hover:border-cyan-400/50 group-hover:text-cyan-200 transition-all duration-300">
+                    <div className="w-2 h-2 bg-cyan-400 rounded-full mr-2 animate-pulse"></div>
                     {feature.metric}
-                  </span>
+                  </div>
+                  
+                  {/* Hover effect overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-transparent to-purple-500/0 group-hover:from-cyan-500/5 group-hover:to-purple-500/5 transition-all duration-500 rounded-2xl"></div>
                 </div>
               ))}
             </div>
