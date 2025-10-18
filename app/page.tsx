@@ -285,7 +285,7 @@ export default function Home() {
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-semibold text-accent">The WebGen AI Way</h3>
+                  <h3 className="text-2xl font-semibold text-accent">The Create A Website Click Way</h3>
                 </div>
                 <ul className="space-y-4 flex-grow">
                   {[
@@ -400,7 +400,7 @@ export default function Home() {
                           <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"/>
                         </svg>
                       </div>
-                      <span className="text-white text-sm font-medium">WebGen AI Demo: Generate co...</span>
+                      <span className="text-white text-sm font-medium">Create A Website Click Demo: Generate co...</span>
                     </div>
                     <div className="flex items-center gap-4">
                       <div className="flex items-center gap-1">
@@ -425,7 +425,7 @@ export default function Home() {
                       <iframe 
                         className="w-full h-full"
                         src="https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE?autoplay=0&rel=0&modestbranding=1"
-                        title="WebGen AI Demo - Watch It In Action"
+                        title="Create A Website Click Demo - Watch It In Action"
                         frameBorder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
@@ -579,7 +579,7 @@ export default function Home() {
                 What Our Customers <span className="text-gradient">Say</span>
               </h2>
               <p className="text-lg md:text-2xl text-text-secondary max-w-3xl mx-auto">
-                Join thousands of businesses that have transformed their online presence with WebGen AI.
+                Join thousands of businesses that have transformed their online presence with Create A Website Click.
               </p>
             </div>
 
@@ -588,7 +588,7 @@ export default function Home() {
                 {
                   name: 'Sarah Johnson',
                   title: 'CEO, TechStart Inc.',
-                  quote: 'WebGen AI saved us months of development time. Our website went from idea to launch in just 8 minutes!',
+                  quote: 'Create A Website Click saved us months of development time. Our website went from idea to launch in just 8 minutes!',
                   rating: 5
                 },
                 {
@@ -805,7 +805,7 @@ export default function Home() {
                 Frequently Asked <span className="text-gradient">Questions</span>
               </h2>
               <p className="text-lg md:text-2xl text-text-secondary max-w-3xl mx-auto">
-                Everything you need to know about WebGen AI and our website creation process.
+                Everything you need to know about Create A Website Click and our website creation process.
               </p>
             </div>
             
@@ -817,7 +817,7 @@ export default function Home() {
                 },
                 {
                   question: 'Do I need any technical skills?',
-                  answer: 'Not at all! WebGen AI is designed for complete beginners. Our AI handles all the technical aspects while you focus on your business details.'
+                  answer: 'Not at all! Create A Website Click is designed for complete beginners. Our AI handles all the technical aspects while you focus on your business details.'
                 },
                 {
                   question: 'Can I customize my website after creation?',
@@ -825,7 +825,7 @@ export default function Home() {
                 },
                 {
                   question: 'Is my website mobile-responsive?',
-                  answer: 'Absolutely! All websites created with WebGen AI are automatically mobile-responsive and look perfect on all devices.'
+                  answer: 'Absolutely! All websites created with Create A Website Click are automatically mobile-responsive and look perfect on all devices.'
                 },
                 {
                   question: 'What about SEO and search engine optimization?',
@@ -868,7 +868,7 @@ export default function Home() {
             
             {/* Big Join Button */}
             <a 
-              href="https://facebook.com/groups/webgen-ai-community" 
+              href="https://facebook.com/groups/create-a-website-click-community" 
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
@@ -893,7 +893,7 @@ export default function Home() {
               Start Building Your Website in Minutes
             </h2>
             <p className="text-lg md:text-2xl mb-8 opacity-90">
-              Join thousands of businesses that have transformed their online presence with WebGen AI.
+              Join thousands of businesses that have transformed their online presence with Create A Website Click.
             </p>
             <a href="/register" className="btn-accent text-lg px-8 py-4 inline-flex items-center gap-2">
               Start Your Free Trial
