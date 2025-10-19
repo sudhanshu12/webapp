@@ -147,8 +147,7 @@ get_header();
 <meta name="twitter:title" content="<?php echo esc_attr($settings['homepage_meta_title'] ?? $business_name . ' - Professional Services in ' . ($settings['state'] ?? 'Your Area')); ?>">
 <meta name="twitter:description" content="<?php echo esc_attr($settings['homepage_meta_description'] ?? $business_name . ' provides professional services in ' . ($settings['state'] ?? 'your area') . '. Get free estimates, expert installation, and reliable service.'); ?>">
 
-<!-- Canonical URL -->
-<link rel="canonical" href="<?php echo esc_url(home_url('/')); ?>">
+<!-- Canonical URL is handled in wp_head action -->
 <meta property="og:url" content="<?php echo esc_url(home_url('/')); ?>">
 <meta property="og:site_name" content="<?php echo esc_attr($business_name); ?>">
 
