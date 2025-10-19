@@ -122,9 +122,7 @@ $button_color = $colors['button'];
 get_header();
 ?>
 <!-- Enhanced Meta Tags for Homepage -->
-<title><?php echo esc_html($settings['homepage_meta_title'] ?? $business_name . ' - Professional Services in ' . ($settings['state'] ?? 'Your Area')); ?></title>
-<meta name="description" content="<?php echo esc_attr($settings['homepage_meta_description'] ?? $business_name . ' provides professional services in ' . ($settings['state'] ?? 'your area') . '. Get free estimates, expert installation, and reliable service. Call ' . $phone . ' today!'); ?>">
-<meta name="keywords" content="<?php echo esc_attr($settings['homepage_meta_keywords'] ?? 'professional services, ' . strtolower($business_name) . ', ' . ($settings['state'] ?? 'your area') . ', installation, repair, contractor, free estimate'); ?>">
+<!-- Title and meta description are handled in wp_head action -->
 <meta name="author" content="<?php echo esc_attr($business_name); ?>">
 <meta name="robots" content="index, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">

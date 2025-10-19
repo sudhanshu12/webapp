@@ -90,8 +90,7 @@ $reviews_visible = $reviews_settings['visible'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo esc_html($settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? $business_name . ' - About Us | Professional ' . ($settings['business_type'] ?? 'Services')); ?></title>
-    <meta name="description" content="<?php echo esc_attr($settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ', a trusted ' . ($settings['business_type'] ?? 'contractor') . ' with ' . $about_years . ' years of experience. Professional ' . ($settings['business_type'] ?? 'services') . ', quality workmanship, and customer satisfaction in ' . ($settings['location'] ?? 'your area') . '.'); ?>">
+    <!-- Title and meta description are handled in wp_head action -->
     <meta name="keywords" content="<?php echo esc_attr($settings['about_page_meta_keywords'] ?? $settings['about_meta_keywords'] ?? 'about ' . strtolower($business_name) . ', ' . ($settings['business_type'] ?? 'contractor') . ', professional ' . ($settings['business_type'] ?? 'services') . ', ' . $about_years . ' years experience, quality ' . ($settings['business_type'] ?? 'services')); ?>">
     <meta name="author" content="<?php echo esc_attr($business_name); ?>">
     <meta name="robots" content="index, follow">
