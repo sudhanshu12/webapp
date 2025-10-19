@@ -117,11 +117,8 @@ interface FormData {
   hero_description_color: string;
   hero_reviews_text_color: string;
   hero_reviews_star_color: string;
-  hero_book_btn_bg: string;
-  hero_book_btn_text: string;
   hero_call_btn_bg: string;
   hero_call_btn_text: string;
-  hero_book_btn_link: string;
   hero_call_btn_link: string;
   hero_side_image?: string;
   services_visible: boolean;
@@ -417,11 +414,8 @@ export default function WizardClient() {
     hero_description_color: '#6b7280',
     hero_reviews_text_color: '#000000',
     hero_reviews_star_color: '#fbbf24',
-    hero_book_btn_bg: '#14b8a6',
-    hero_book_btn_text: '#ffffff',
-    hero_call_btn_bg: '#1f2937',
+    hero_call_btn_bg: '#22c55e',
     hero_call_btn_text: '#ffffff',
-    hero_book_btn_link: '#',
     hero_call_btn_link: 'tel:',
     hero_side_image: '',
     services_visible: true,
@@ -635,9 +629,7 @@ export default function WizardClient() {
         hero_description_color: '#6b7280',
         hero_reviews_text_color: '#000000',
         hero_reviews_star_color: '#fbbf24',
-        hero_book_btn_bg: '#14b8a6',
-        hero_book_btn_text: '#ffffff',
-        hero_call_btn_bg: '#1f2937',
+        hero_call_btn_bg: '#22c55e',
         hero_call_btn_text: '#ffffff',
         services_bg_color: '#313746',
         services_card_color: '#232834',
@@ -1041,9 +1033,7 @@ export default function WizardClient() {
         next.hero_description_color = '#6b7280';
         next.hero_reviews_text_color = '#000000';
         next.hero_reviews_star_color = '#fbbf24';
-        next.hero_book_btn_bg = '#14b8a6';
-        next.hero_book_btn_text = '#ffffff';
-        next.hero_call_btn_bg = '#1f2937';
+        next.hero_call_btn_bg = '#22c55e';
         next.hero_call_btn_text = '#ffffff';
         
         // Services section defaults
@@ -3104,31 +3094,11 @@ export default function WizardClient() {
                           </td>
                         </tr>
                         <tr>
-                          <th scope="row">Book Button Background</th>
-                          <td>
-                            <input 
-                              type="color" 
-                              value={form.hero_book_btn_bg || '#2ee6c5'}
-                              onChange={(e) => updateForm('hero_book_btn_bg', e.target.value)}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Book Button Text Color</th>
-                          <td>
-                            <input 
-                              type="color" 
-                              value={form.hero_book_btn_text || '#ffffff'}
-                              onChange={(e) => updateForm('hero_book_btn_text', e.target.value)}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
                           <th scope="row">Call Button Background</th>
                           <td>
                             <input 
                               type="color" 
-                              value={form.hero_call_btn_bg || '#232834'}
+                              value={form.hero_call_btn_bg || '#22c55e'}
                               onChange={(e) => updateForm('hero_call_btn_bg', e.target.value)}
                             />
                           </td>
@@ -3140,18 +3110,6 @@ export default function WizardClient() {
                               type="color" 
                               value={form.hero_call_btn_text || '#ffffff'}
                               onChange={(e) => updateForm('hero_call_btn_text', e.target.value)}
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">Book Button Link</th>
-                          <td>
-                            <input 
-                              type="text" 
-                              value={form.hero_book_btn_link || '#'}
-                              onChange={(e) => updateForm('hero_book_btn_link', e.target.value)}
-                              className="regular-text" 
-                              placeholder="e.g., # or /estimate"
                             />
                           </td>
                         </tr>
