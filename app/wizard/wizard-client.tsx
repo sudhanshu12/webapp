@@ -335,7 +335,7 @@ export default function WizardClient() {
       // Professional blue theme
       professional: { primary: '#1e40af', secondary: '#3b82f6', light: '#eff6ff', dark: '#1e3a8a', text: '#1f2937' },
       // Modern green theme
-      modern: { primary: '#16a34a', secondary: '#22c55e', light: '#f0fdf4', dark: '#166534', text: '#1f2937' }
+      modern: { primary: '#16a34a', secondary: '#14b8a6', light: '#f0fdf4', dark: '#166534', text: '#1f2937' }
     };
     return themes[theme as keyof typeof themes] || themes.landscaping;
   };
@@ -414,7 +414,7 @@ export default function WizardClient() {
     hero_description_color: '#6b7280',
     hero_reviews_text_color: '#000000',
     hero_reviews_star_color: '#fbbf24',
-    hero_call_btn_bg: '#22c55e',
+    hero_call_btn_bg: '#14b8a6',
     hero_call_btn_text: '#ffffff',
     hero_call_btn_link: 'tel:',
     hero_side_image: '',
@@ -629,7 +629,7 @@ export default function WizardClient() {
         hero_description_color: '#6b7280',
         hero_reviews_text_color: '#000000',
         hero_reviews_star_color: '#fbbf24',
-        hero_call_btn_bg: '#22c55e',
+        hero_call_btn_bg: '#14b8a6',
         hero_call_btn_text: '#ffffff',
         services_bg_color: '#313746',
         services_card_color: '#232834',
@@ -1033,7 +1033,7 @@ export default function WizardClient() {
         next.hero_description_color = '#6b7280';
         next.hero_reviews_text_color = '#000000';
         next.hero_reviews_star_color = '#fbbf24';
-        next.hero_call_btn_bg = '#22c55e';
+        next.hero_call_btn_bg = '#14b8a6';
         next.hero_call_btn_text = '#ffffff';
         
         // Services section defaults
@@ -2443,7 +2443,7 @@ export default function WizardClient() {
                         {[
                           { name: 'Landscaping', primary: '#059669', secondary: '#10b981', accent: '#16a34a' },
                           { name: 'Professional', primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' },
-                          { name: 'Modern', primary: '#16a34a', secondary: '#22c55e', accent: '#15803d' },
+                          { name: 'Modern', primary: '#16a34a', secondary: '#14b8a6', accent: '#15803d' },
                           { name: 'Ocean', primary: '#0ea5e9', secondary: '#0284c7', accent: '#0369a1' },
                           { name: 'Emerald', primary: '#10b981', secondary: '#059669', accent: '#047857' },
                           { name: 'Amber', primary: '#f59e0b', secondary: '#d97706', accent: '#b45309' },
@@ -3098,7 +3098,7 @@ export default function WizardClient() {
                           <td>
                             <input 
                               type="color" 
-                              value={form.hero_call_btn_bg || '#22c55e'}
+                              value={form.hero_call_btn_bg || '#14b8a6'}
                               onChange={(e) => updateForm('hero_call_btn_bg', e.target.value)}
                             />
                           </td>

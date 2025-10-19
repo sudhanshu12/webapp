@@ -682,13 +682,13 @@ echo wp_json_encode($faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
         
         /* Call Button styling */
         .hero-section a.btn.btn-dark {
-            background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#22c55e'); ?> !important;
+            background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#14b8a6'); ?> !important;
             color: <?php echo esc_attr($settings['hero_call_btn_text'] ?? '#ffffff'); ?> !important;
         }
         
         /* Override any external CSS that might be interfering */
         .hero-section .hero-actions a.btn-dark {
-            background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#22c55e'); ?> !important;
+            background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#14b8a6'); ?> !important;
             color: <?php echo esc_attr($settings['hero_call_btn_text'] ?? '#ffffff'); ?> !important;
         }
         
@@ -699,7 +699,7 @@ echo wp_json_encode($faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
         
         /* Override CSS variables that are being set by public.css */
         .hero-section {
-            --secondary-color: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#22c55e'); ?> !important;
+            --secondary-color: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#14b8a6'); ?> !important;
         }
         
         /* Maximum specificity for all hero elements */
@@ -713,7 +713,7 @@ echo wp_json_encode($faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
             color: <?php echo esc_attr($settings['hero_subheading_color'] ?? '#8f8f8f'); ?> !important;
         }
         .hero-section .hero-actions .btn-dark {
-            background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#22c55e'); ?> !important;
+            background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#14b8a6'); ?> !important;
             color: <?php echo esc_attr($settings['hero_call_btn_text'] ?? '#ffffff'); ?> !important;
         }
         .hero-section .google-rating span {
@@ -738,7 +738,7 @@ echo wp_json_encode($faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
                     </p>
                     <?php endif; ?>
                     <div class="hero-actions" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-                        <a href="<?php echo esc_url($settings['hero_call_btn_link'] ?? 'tel:' . ($phone ?? '')); ?>" class="btn btn-dark" style="background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#22c55e'); ?>; color: <?php echo esc_attr($settings['hero_call_btn_text'] ?? '#ffffff'); ?>; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+                        <a href="<?php echo esc_url($settings['hero_call_btn_link'] ?? 'tel:' . ($phone ?? '')); ?>" class="btn btn-dark" style="background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#14b8a6'); ?>; color: <?php echo esc_attr($settings['hero_call_btn_text'] ?? '#ffffff'); ?>; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem;">
                             <i class="fa-solid fa-phone"></i> Call <?php echo esc_html($phone); ?>
                         </a>
                     </div>
