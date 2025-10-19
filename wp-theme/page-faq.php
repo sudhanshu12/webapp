@@ -13,7 +13,7 @@ $settings = bsg_get_settings();
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Viewport is handled in header.php -->
     <link rel="profile" href="https://gmpg.org/xfn/11">
     
     <!-- Favicon -->
