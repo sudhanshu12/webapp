@@ -3,7 +3,13 @@ import { supabase } from '../../../lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('=== LOAD WIZARD DATA API DEBUG ===');
+    console.log('Supabase client:', supabase ? 'Available' : 'Not available');
+    console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set');
+    console.log('Supabase Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Not set');
+    
     const { user_email } = await request.json();
+    console.log('Loading data for user:', user_email);
     
     if (!user_email) {
       return NextResponse.json({ 
