@@ -635,7 +635,7 @@ export default function WizardClient() {
     console.log('Loading form from localStorage:', savedForm);
     
     // Check if this is a new user (no data exists for this specific user)
-    const hasExistingData = savedForm && Object.keys(savedForm).length > 0;
+    const hasExistingData = savedForm && Object.keys(savedForm).length > 0 && savedForm.business_name !== '';
     
     if (hasExistingData) {
       console.log('✅ Found existing data for user:', userEmail);
@@ -745,6 +745,18 @@ export default function WizardClient() {
     
     setIsLoaded(true);
   }, []);
+
+  // Fallback timeout to ensure loading doesn't get stuck
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!isLoaded) {
+        console.log('⚠️ Loading timeout reached, forcing load');
+        setIsLoaded(true);
+      }
+    }, 3000); // 3 second timeout
+
+    return () => clearTimeout(timeout);
+  }, [isLoaded]);
 
   // Save form data to localStorage whenever it changes
   useEffect(() => {
@@ -2190,7 +2202,7 @@ export default function WizardClient() {
           }}>
             <div>Loading your wizard data...</div>
             <div style={{ fontSize: '14px', color: '#666' }}>
-              User: {session?.user?.email || 'Not logged in'}
+              User: {session?.user?.email || 'Anonymous'}
             </div>
           </div>
         </div>
