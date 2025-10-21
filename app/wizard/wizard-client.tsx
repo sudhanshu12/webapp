@@ -365,62 +365,6 @@ export default function WizardClient() {
     try { if (typeof window !== 'undefined') localStorage.setItem(key, JSON.stringify(value)); } catch {}
   };
 
-  // Data recovery function - only for current user
-  const recoverData = () => {
-    console.log('=== DATA RECOVERY STARTED ===');
-    const userEmail = session?.user?.email || 'anonymous';
-    
-    if (userEmail === 'anonymous') {
-      alert('Please log in first to recover your data.');
-      return;
-    }
-    
-    // Only look for data specific to this user
-    const userKey = `bsg_form_${userEmail}`;
-    const recoveredForm = loadLS<FormData>(userKey, form);
-    
-    if (recoveredForm && Object.keys(recoveredForm).length > 0) {
-      console.log('Recovered form data for user:', userEmail);
-      setForm(recoveredForm);
-      alert(`Data recovered successfully for ${userEmail}!`);
-    } else {
-      console.log('No data found for user:', userEmail);
-      alert(`No saved data found for ${userEmail}. This appears to be a new account.`);
-    }
-    
-    console.log('=== DATA RECOVERY ENDED ===');
-  };
-
-  // Clear all data for current user (useful for testing)
-  const clearUserData = () => {
-    const userEmail = session?.user?.email || 'anonymous';
-    if (userEmail === 'anonymous') {
-      alert('Please log in first.');
-      return;
-    }
-    
-    if (confirm(`Are you sure you want to clear ALL data for ${userEmail}? This cannot be undone.`)) {
-      const keys = [
-        `bsg_form_${userEmail}`,
-        `bsg_services_${userEmail}`,
-        `bsg_locations_${userEmail}`,
-        `bsg_reviews_${userEmail}`,
-        `bsg_features_${userEmail}`,
-        `bsg_commitments_${userEmail}`,
-        `bsg_faqs_${userEmail}`
-      ];
-      
-      keys.forEach(key => {
-        localStorage.removeItem(key);
-      });
-      
-      // Reset form to default state
-      setForm(form);
-      
-      alert(`All data cleared for ${userEmail}. Page will reload.`);
-      window.location.reload();
-    }
-  };
 
   const [form, setForm] = useState<FormData>({
     business_name: '',
@@ -2164,41 +2108,8 @@ export default function WizardClient() {
             gap: '20px'
           }}>
             <div>Loading your wizard data...</div>
-            <div style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>
+            <div style={{ fontSize: '14px', color: '#666' }}>
               User: {session?.user?.email || 'Not logged in'}
-            </div>
-            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <button 
-                onClick={recoverData}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: '#f59e0b',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  fontSize: '14px'
-                }}
-              >
-                🔄 Recover Data
-              </button>
-              <button 
-                onClick={clearUserData}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: '#dc2626',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  fontSize: '14px'
-                }}
-              >
-                🗑️ Clear Data
-              </button>
-            </div>
-            <div style={{ fontSize: '12px', color: '#999', textAlign: 'center', maxWidth: '400px' }}>
-              Each user account has isolated data. Existing users see their saved data, new users get a fresh wizard.
             </div>
           </div>
         </div>
