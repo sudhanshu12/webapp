@@ -415,12 +415,7 @@ export default function WizardClient() {
       });
       
       // Reset form to default state
-      setForm({
-        business_name: '',
-        business_logo: '',
-        business_type: 'landscaping',
-        // ... all default values
-      });
+      setForm(form);
       
       alert(`All data cleared for ${userEmail}. Page will reload.`);
       window.location.reload();
