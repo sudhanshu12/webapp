@@ -21,10 +21,11 @@ if (empty($settings)) {
 
 $service_title = get_the_title();
 
-// Add meta tags to head
-add_action('wp_head', function() use ($service_title, $business) {
-    $meta_title = $service_title . ' - Professional Services | ' . $business['name'];
-    $meta_description = 'Professional ' . strtolower($service_title) . ' services by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.';
+// Add meta tags to head - use wizard service data
+add_action('wp_head', function() use ($service_title, $business, $current_service) {
+    // Use wizard service meta data if available, otherwise fallback to generic
+    $meta_title = $current_service['metaTitle'] ?? ($service_title . ' - Professional Services | ' . $business['name']);
+    $meta_description = $current_service['metaDescription'] ?? ('Professional ' . strtolower($service_title) . ' services by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.');
     
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";

@@ -24,10 +24,11 @@ error_log('Final settings loaded: ' . print_r($settings, true));
 
 $location_title = get_the_title();
 
-// Add meta tags to head
-add_action('wp_head', function() use ($location_title, $business) {
-    $meta_title = 'Service Areas - ' . $location_title . ' | ' . $business['name'];
-    $meta_description = 'Professional services in ' . $location_title . ' by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.';
+// Add meta tags to head - use wizard location data
+add_action('wp_head', function() use ($location_title, $business, $current_location) {
+    // Use wizard location meta data if available, otherwise fallback to generic
+    $meta_title = $current_location['metaTitle'] ?? ('Service Areas - ' . $location_title . ' | ' . $business['name']);
+    $meta_description = $current_location['metaDescription'] ?? ('Professional services in ' . $location_title . ' by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.');
     
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
