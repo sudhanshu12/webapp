@@ -351,29 +351,7 @@ export default function WizardClient() {
     return L > 0.6 ? '#111827' : '#ffffff';
   };
 
-  // Load/save form to localStorage to persist across clicks/reloads
-  const loadLS = <T,>(key: string, fallback: T): T => {
-    if (typeof window === 'undefined') return fallback;
-    try {
-      const v = localStorage.getItem(key);
-      console.log('🔍 Loading from localStorage - Key:', key, 'Value:', v);
-      return v ? (JSON.parse(v) as T) : fallback;
-    } catch (error) {
-      console.error('❌ Error loading from localStorage:', error);
-      return fallback;
-    }
-  };
-  const saveLS = (key: string, value: unknown) => {
-    try { 
-      if (typeof window !== 'undefined') {
-        const serialized = JSON.stringify(value);
-        localStorage.setItem(key, serialized);
-        console.log('💾 Saved to localStorage - Key:', key, 'Value length:', serialized.length);
-      }
-    } catch (error) {
-      console.error('❌ Error saving to localStorage:', error);
-    }
-  };
+  // Direct save to Supabase database (no localStorage needed)
 
 
   const [form, setForm] = useState<FormData>({
@@ -620,90 +598,19 @@ export default function WizardClient() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showDataRecovery, setShowDataRecovery] = useState(false);
 
-  // Load data from localStorage after component mounts
+  // Load data from Supabase database
   useEffect(() => {
-    // Use user-specific localStorage key
     const userEmail = session?.user?.email || 'anonymous';
-    const userKey = `bsg_form_${userEmail}`;
-    let savedForm = loadLS<FormData>(userKey, form);
     
     console.log('=== WIZARD DATA LOADING DEBUG ===');
     console.log('User email:', userEmail);
-    console.log('User key:', userKey);
     console.log('Session status:', status);
     console.log('Session user:', session?.user);
-    console.log('Loading form from localStorage:', savedForm);
     
-    // Check if this is a new user (no data exists for this specific user)
-    const hasExistingData = savedForm && Object.keys(savedForm).length > 0 && savedForm.business_name !== '';
-    
-    if (hasExistingData) {
-      console.log('✅ Found existing data for user:', userEmail);
-      console.log('User will see their saved data');
-    } else {
-      console.log('🆕 No existing data found for user:', userEmail);
-      console.log('User will get fresh/blank wizard');
-      // Use the default form state (fresh/blank)
-      savedForm = form;
-    }
-    
-    console.log('Final form data to use:', savedForm);
-    console.log('=== WIZARD DATA LOADING DEBUG END ===');
-    
-    // If form has default color scheme enabled, apply the default colors
-    if (savedForm && (savedForm.use_default_color_scheme ?? true)) {
-      savedForm = {
-        ...savedForm,
-        // Apply all default colors
-        hero_headline: savedForm.hero_headline || 'Find Best Roofers Near You',
-        hero_description: savedForm.hero_description || 'Check here for the description',
-        hero_bg_color: '#f5f5f5',
-        hero_company_color: '#f59e0b',
-        hero_heading_color: '#000000',
-        hero_subheading_color: '#6b7280',
-        hero_description_color: '#6b7280',
-        hero_reviews_text_color: '#000000',
-        hero_reviews_star_color: '#fbbf24',
-        hero_call_btn_bg: '#14b8a6',
-        hero_call_btn_text: '#ffffff',
-        services_bg_color: '#313746',
-        services_card_color: '#232834',
-        services_text_color: '#ffffff',
-        services_icon_color: '#2ee6c5',
-        features_bg_color: '#1e2834',
-        features_card_bg: '#1e2834',
-        features_text_color: '#ffffff',
-        about_bg_color: '#1f2937',
-        about_text_color: '#ffffff',
-        about_heading_color: '#ffffff',
-        reviews_bg_color: '#ffffff',
-        reviews_card_bg: '#f9fafb',
-        faq_bg_color: '#1f2732',
-        faq_text_color: '#ffffff',
-        faq_heading_color: '#ffffff',
-        footer_bg_color: '#0f172a',
-        footer_heading_color: '#ffffff',
-        footer_links_color: '#d1d5db',
-        nav_bg_color: '#fffbeb',
-        nav_text_color: '#78350f',
-        heading_color: '#78350f',
-        // Global color scheme palette (for Customize Colors section)
-        global_primary_color: '#f59e0b',
-        global_secondary_color: '#d97706',
-        button_primary_color: '#f59e0b',
-      };
-    }
-    
-    if (hasExistingData) {
-      console.log('✅ Using localStorage data for user:', userEmail);
-      console.log('LocalStorage data:', savedForm);
-      setForm(savedForm);
-    } else if (userEmail !== 'anonymous') {
-      // No localStorage data found, try to load from Supabase database
-      console.log('No localStorage data found, attempting to load from Supabase database...');
-      console.log('Making request to /api/load-wizard-data with user_email:', userEmail);
+    if (userEmail !== 'anonymous') {
+      // Load data from Supabase database for logged-in users
+      console.log('Loading data from Supabase database...');
       
-      // Load data from Supabase database
       fetch('/api/load-wizard-data', {
         method: 'POST',
         headers: {
@@ -721,30 +628,27 @@ export default function WizardClient() {
         if (result.success && result.data) {
           console.log('✅ Data loaded from Supabase database:', result.data);
           setForm(result.data);
-          // Also save to localStorage for faster future loads
-          saveLS(userKey, result.data);
-          console.log('✅ Saved loaded data to localStorage');
         } else {
           console.log('🆕 No data found in database for user:', userEmail);
           console.log('Using default form for new user');
-          // Use default form for new user
           setForm(form);
         }
       })
       .catch(error => {
         console.error('❌ Error loading from database:', error);
         console.log('Using default form due to error');
-        // Use default form on error
         setForm(form);
+      })
+      .finally(() => {
+        setIsLoaded(true);
       });
     } else {
       // Anonymous user, use default form
       console.log('Anonymous user, using default form');
       setForm(form);
+      setIsLoaded(true);
     }
-    
-    setIsLoaded(true);
-  }, []);
+  }, [session]);
 
   // Fallback timeout to ensure loading doesn't get stuck
   useEffect(() => {
@@ -758,33 +662,14 @@ export default function WizardClient() {
     return () => clearTimeout(timeout);
   }, [isLoaded]);
 
-  // Save form data to localStorage whenever it changes
-  useEffect(() => {
-    if (isLoaded) {
-      const userEmail = session?.user?.email || 'anonymous';
-      const userKey = `bsg_form_${userEmail}`;
-      
-      console.log('=== AUTO-SAVE DEBUG ===');
-      console.log('User email:', userEmail);
-      console.log('Form data to save:', form);
-      console.log('Form has data:', Object.keys(form).length > 0);
-      
-      // Always save to localStorage for immediate access (works for all users)
-      saveLS(userKey, form);
-      console.log('✅ Saved to localStorage with key:', userKey);
-    } else {
-      console.log('❌ Not saving - isLoaded:', isLoaded);
-    }
-  }, [form, isLoaded, session]);
-
-  // Separate effect for Supabase saving (less frequent)
+  // Save form data directly to Supabase database
   useEffect(() => {
     if (isLoaded && session?.user?.email) {
       const timeoutId = setTimeout(() => {
         console.log('💾 Auto-saving form data to Supabase...');
         console.log('Saving form data:', form);
         saveToWordPress(form);
-      }, 2000); // 2 second delay for database saves
+      }, 1000); // 1 second delay for database saves
       
       return () => clearTimeout(timeoutId);
     }
@@ -1293,17 +1178,14 @@ export default function WizardClient() {
   // Comprehensive save function
   const saveWizardData = () => {
     const userEmail = session?.user?.email || 'anonymous';
-    const userKey = `bsg_form_${userEmail}`;
     
     console.log('💾 Manual save triggered for user:', userEmail);
-    
-    // Always save to localStorage
-    saveLS(userKey, form);
-    console.log('✅ Saved to localStorage');
     
     // Save to database if logged in
     if (session?.user?.email) {
       saveToWordPress(form);
+    } else {
+      console.log('ℹ️ User not logged in, cannot save to database');
     }
   };
 
