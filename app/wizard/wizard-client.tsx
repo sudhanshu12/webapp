@@ -598,16 +598,27 @@ export default function WizardClient() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showDataRecovery, setShowDataRecovery] = useState(false);
 
-  // Load data from Supabase database
+  // Load data from Supabase database (logged-in users only)
   useEffect(() => {
-    const userEmail = session?.user?.email || 'anonymous';
+    if (status === 'loading') {
+      console.log('⏳ Session loading...');
+      return;
+    }
+    
+    if (!session?.user?.email) {
+      console.log('❌ No user session found - redirecting to login');
+      setIsLoaded(true);
+      return;
+    }
+    
+    const userEmail = session.user.email;
     
     console.log('=== WIZARD DATA LOADING DEBUG ===');
     console.log('User email:', userEmail);
     console.log('Session status:', status);
     console.log('Session user:', session?.user);
     
-    // Load data from Supabase database for all users
+    // Load data from Supabase database for logged-in users only
     console.log('Loading data from Supabase database...');
     
     fetch('/api/load-wizard-data', {
@@ -641,7 +652,7 @@ export default function WizardClient() {
     .finally(() => {
       setIsLoaded(true);
     });
-  }, [session]);
+  }, [session, status]);
 
   // Fallback timeout to ensure loading doesn't get stuck
   useEffect(() => {
@@ -655,9 +666,9 @@ export default function WizardClient() {
     return () => clearTimeout(timeout);
   }, [isLoaded]);
 
-  // Save form data directly to Supabase database (for all users)
+  // Save form data directly to Supabase database (logged-in users only)
   useEffect(() => {
-    if (isLoaded) {
+    if (isLoaded && session?.user?.email) {
       const timeoutId = setTimeout(() => {
         console.log('💾 Auto-saving form data to Supabase...');
         console.log('Saving form data:', form);
@@ -1168,13 +1179,17 @@ export default function WizardClient() {
     });
   };
 
-  // Comprehensive save function
+  // Comprehensive save function (logged-in users only)
   const saveWizardData = () => {
-    const userEmail = session?.user?.email || 'anonymous';
+    if (!session?.user?.email) {
+      console.log('❌ User not logged in, cannot save data');
+      return;
+    }
     
+    const userEmail = session.user.email;
     console.log('💾 Manual save triggered for user:', userEmail);
     
-    // Save to database for all users
+    // Save to database for logged-in users only
     saveToWordPress(form);
   };
 
@@ -2073,7 +2088,64 @@ export default function WizardClient() {
           }}>
             <div>Loading your wizard data...</div>
             <div style={{ fontSize: '14px', color: '#666' }}>
-              User: {session?.user?.email || 'Anonymous'}
+              User: {session?.user?.email || 'Checking authentication...'}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login requirement for non-authenticated users
+  if (!session?.user?.email) {
+    return (
+      <div className="bsg-admin">
+        <div className="wrap">
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '60vh',
+            fontSize: '18px',
+            color: '#666',
+            gap: '30px',
+            textAlign: 'center',
+            padding: '40px'
+          }}>
+            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#333' }}>
+              🔒 Login Required
+            </div>
+            <div style={{ fontSize: '16px', lineHeight: '1.6' }}>
+              You need to be logged in to access the website builder wizard.
+            </div>
+            <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
+              <a 
+                href="/login" 
+                style={{
+                  padding: '12px 24px',
+                  backgroundColor: '#14b8a6',
+                  color: 'white',
+                  textDecoration: 'none',
+                  borderRadius: '6px',
+                  fontWeight: '500'
+                }}
+              >
+                Login
+              </a>
+              <a 
+                href="/register" 
+                style={{
+                  padding: '12px 24px',
+                  backgroundColor: '#f59e0b',
+                  color: 'white',
+                  textDecoration: 'none',
+                  borderRadius: '6px',
+                  fontWeight: '500'
+                }}
+              >
+                Register
+              </a>
             </div>
           </div>
         </div>
