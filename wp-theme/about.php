@@ -925,7 +925,7 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                             <div class="about-image" style="flex: 0 0 350px; height: 450px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
                                 <?php 
                                 // Get the about image from wizard settings
-                                $about_image = $settings['about_image'] ?? '';
+                                $about_image = $settings['about_page_team_image'] ?? '';
                                 if (!empty($about_image)): ?>
                                     <img src="<?php echo esc_url($about_image); ?>" alt="Our Team" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
                                 <?php else: ?>
