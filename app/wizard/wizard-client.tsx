@@ -668,7 +668,14 @@ export default function WizardClient() {
 
   // Save form data directly to Supabase database (logged-in users only)
   useEffect(() => {
+    console.log('=== AUTO-SAVE DEBUG ===');
+    console.log('isLoaded:', isLoaded);
+    console.log('session:', session);
+    console.log('user email:', session?.user?.email);
+    console.log('form data:', form);
+    
     if (isLoaded && session?.user?.email) {
+      console.log('✅ Conditions met for auto-save');
       const timeoutId = setTimeout(() => {
         console.log('💾 Auto-saving form data to Supabase...');
         console.log('Saving form data:', form);
@@ -676,6 +683,10 @@ export default function WizardClient() {
       }, 1000); // 1 second delay for database saves
       
       return () => clearTimeout(timeoutId);
+    } else {
+      console.log('❌ Auto-save conditions not met');
+      if (!isLoaded) console.log('  - isLoaded is false');
+      if (!session?.user?.email) console.log('  - No user email in session');
     }
   }, [form, isLoaded, session]);
 
@@ -1054,6 +1065,12 @@ export default function WizardClient() {
 
   // Comprehensive save function (logged-in users only)
   const saveWizardData = () => {
+    console.log('=== MANUAL SAVE DEBUG ===');
+    console.log('🔍 saveWizardData function called');
+    console.log('Session:', session);
+    console.log('User email:', session?.user?.email);
+    console.log('Form data:', form);
+    
     if (!session?.user?.email) {
       console.log('❌ User not logged in, cannot save data');
       return;
@@ -1069,8 +1086,10 @@ export default function WizardClient() {
   const saveToWordPress = async (formData: FormData) => {
     try {
       console.log('=== SAVE TO WORDPRESS/SUPABASE DEBUG ===');
+      console.log('🔍 saveToWordPress function called');
       console.log('Form data being saved:', formData);
       console.log('User email:', session?.user?.email);
+      console.log('Session status:', status);
       
       // Add user email to the form data for database saving
       const dataToSave = {
