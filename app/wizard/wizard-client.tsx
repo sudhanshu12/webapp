@@ -767,7 +767,7 @@ export default function WizardClient() {
           console.log('💾 Auto-saving form data to Supabase...');
           console.log('Saving form data:', form);
           saveToWordPress(form);
-        }, 1000); // Reduced to 1 second delay for faster saves
+        }, 500); // Reduced to 0.5 second delay for immediate saves
         
         return () => clearTimeout(timeoutId);
       } else {
@@ -2186,31 +2186,8 @@ export default function WizardClient() {
         <div className="wrap">
           <div className="bsg-header">
           <div className="bsg-header-content">
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-              <div>
-                <h2 style={{color: form.heading_color || undefined}}>Create A Website Click</h2>
-                <p>Create and manage your professional business website with ease</p>
-              </div>
-              <button 
-                onClick={() => {
-                  console.log('💾 Manual save triggered');
-                  saveToWordPress(form);
-                  setSuccess('✅ Data saved successfully!');
-                }}
-                style={{
-                  padding: '8px 16px',
-                  backgroundColor: '#14b8a6',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  fontWeight: '500'
-                }}
-              >
-                💾 Save Data
-              </button>
-            </div>
+            <h2 style={{color: form.heading_color || undefined}}>Create A Website Click</h2>
+            <p>Create and manage your professional business website with ease - <span style={{color: '#14b8a6', fontSize: '12px'}}>💾 Auto-saving your data</span></p>
           </div>
         </div>
         
