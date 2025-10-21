@@ -19,10 +19,12 @@ export async function POST(request: NextRequest) {
     }
 
     if (!supabase) {
+      console.log('⚠️ Supabase not configured, returning no data');
       return NextResponse.json({ 
-        success: false, 
-        error: 'Database not configured' 
-      }, { status: 500 });
+        success: true, 
+        message: 'No saved data found (database not configured)',
+        data: null 
+      });
     }
 
     console.log('📖 Loading wizard data from Supabase for user:', user_email);
