@@ -5104,7 +5104,7 @@ export default function WizardClient() {
                               <label style={{fontWeight: '600', display: 'block', marginBottom: '6px', color: '#f1f5f9'}}>Slug preview</label>
                               <input
                                 type="text"
-                                value={`/service-locations/${location.name ? location.name.toLowerCase().replace(/\s+/g, '-') : 'city'}-zip`}
+                                value={`/service-locations/${location.name ? location.name.toLowerCase().replace(/\s+/g, '-') : 'city'}${location.zip ? '-' + location.zip : ''}`}
                                 readOnly
                                 style={{
                                   width: '100%',

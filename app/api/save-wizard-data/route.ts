@@ -119,7 +119,12 @@ export async function POST(request: NextRequest) {
       locations_icon_color: data.locations_icon_color || '#2ee6c5',
       locations_button_color: data.locations_button_color || '#f97316',
       locations_button_text_color: data.locations_button_text_color || '#ffffff',
-      locations: data.locations || [],
+      locations: (data.locations || []).map((location: any) => ({
+        ...location,
+        slug: location.name ? 
+          location.name.toLowerCase().replace(/\s+/g, '-') + (location.zip ? '-' + location.zip : '') : 
+          'location'
+      })),
       
       // Reviews section settings
       reviews_visible: data.reviews_visible !== undefined ? data.reviews_visible : true,
