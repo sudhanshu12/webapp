@@ -2213,20 +2213,6 @@ export default function WizardClient() {
           <div className="bsg-header-content">
             <h2 style={{color: form.heading_color || undefined}}>Create A Website Click</h2>
             <p>Create and manage your professional business website with ease</p>
-            <div style={{
-              marginTop: '10px',
-              padding: '8px 12px',
-              backgroundColor: '#f0f9ff',
-              border: '1px solid #0ea5e9',
-              borderRadius: '6px',
-              fontSize: '14px',
-              color: '#0369a1'
-            }}>
-              👤 Logged in as: <strong>{session?.user?.email || 'Not logged in'}</strong>
-              <span style={{ marginLeft: '10px', fontSize: '12px' }}>
-                {form.business_name ? '📝 Data saved' : '🆕 Fresh start'}
-              </span>
-            </div>
           </div>
         </div>
         
