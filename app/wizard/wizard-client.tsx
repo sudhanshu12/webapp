@@ -684,7 +684,8 @@ export default function WizardClient() {
       };
     }
     
-    if (savedForm) {
+    if (hasExistingData) {
+      console.log('✅ Using localStorage data for user:', userEmail);
       setForm(savedForm);
     } else if (userEmail !== 'anonymous') {
       // No localStorage data found, try to load from Supabase database
@@ -707,22 +708,40 @@ export default function WizardClient() {
           saveLS(userKey, result.data);
         } else {
           console.log('🆕 No data found in database for user:', userEmail);
+          // Use default form for new user
+          setForm(form);
         }
       })
       .catch(error => {
         console.error('❌ Error loading from database:', error);
+        // Use default form on error
+        setForm(form);
       });
+    } else {
+      // Anonymous user, use default form
+      console.log('Anonymous user, using default form');
+      setForm(form);
     }
     
     setIsLoaded(true);
   }, []);
 
-  // Save form data to localStorage whenever it changes
+  // Save form data to localStorage and Supabase whenever it changes
   useEffect(() => {
     if (isLoaded && session?.user?.email) {
       const userEmail = session.user.email;
       const userKey = `bsg_form_${userEmail}`;
+      
+      // Save to localStorage for immediate access
       saveLS(userKey, form);
+      
+      // Also save to Supabase database (debounced to avoid too many requests)
+      const timeoutId = setTimeout(() => {
+        console.log('💾 Auto-saving form data to Supabase...');
+        saveToWordPress(form);
+      }, 2000); // 2 second delay
+      
+      return () => clearTimeout(timeoutId);
     }
   }, [form, isLoaded, session]);
 
