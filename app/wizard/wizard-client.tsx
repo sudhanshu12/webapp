@@ -365,6 +365,42 @@ export default function WizardClient() {
     try { if (typeof window !== 'undefined') localStorage.setItem(key, JSON.stringify(value)); } catch {}
   };
 
+  // Data recovery function
+  const recoverData = () => {
+    console.log('=== DATA RECOVERY STARTED ===');
+    const userEmail = session?.user?.email || 'anonymous';
+    
+    // Check all localStorage keys for this user
+    const allKeys = Object.keys(localStorage);
+    const userKeys = allKeys.filter(key => key.includes(userEmail));
+    console.log('Found keys for user:', userKeys);
+    
+    // Try to recover form data
+    for (const key of userKeys) {
+      if (key.includes('bsg_form_')) {
+        const recoveredForm = loadLS<FormData>(key, {});
+        if (recoveredForm && Object.keys(recoveredForm).length > 0) {
+          console.log('Recovered form data from:', key);
+          setForm(recoveredForm);
+          alert('Form data recovered successfully!');
+          return;
+        }
+      }
+    }
+    
+    // Try to recover from old keys
+    const oldForm = loadLS<FormData>('bsg_form', {});
+    if (oldForm && Object.keys(oldForm).length > 0) {
+      console.log('Recovered form data from old key');
+      setForm(oldForm);
+      alert('Form data recovered from backup!');
+      return;
+    }
+    
+    alert('No data found to recover. Please check if you were logged in with the correct account.');
+    console.log('=== DATA RECOVERY ENDED ===');
+  };
+
   const [form, setForm] = useState<FormData>({
     business_name: '',
     business_logo: '',
@@ -607,6 +643,7 @@ export default function WizardClient() {
 
   // Add loading state to prevent hydration mismatches
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showDataRecovery, setShowDataRecovery] = useState(false);
 
   // Load data from localStorage after component mounts
   useEffect(() => {
@@ -614,6 +651,57 @@ export default function WizardClient() {
     const userEmail = session?.user?.email || 'anonymous';
     const userKey = `bsg_form_${userEmail}`;
     let savedForm = loadLS<FormData>(userKey, form);
+    
+    console.log('=== WIZARD DATA LOADING DEBUG ===');
+    console.log('User email:', userEmail);
+    console.log('User key:', userKey);
+    console.log('Session status:', status);
+    console.log('Session user:', session?.user);
+    console.log('Loading form from localStorage:', savedForm);
+    
+    // If no form data in localStorage, try to load from old key (for migration)
+    if (!savedForm || Object.keys(savedForm).length === 0) {
+      console.log('No form data found, trying old key...');
+      const oldKey = 'bsg_form';
+      const oldForm = loadLS<FormData>(oldKey, form);
+      if (oldForm && Object.keys(oldForm).length > 0) {
+        console.log('Found old form data, migrating...');
+        savedForm = oldForm;
+        // Save to new user-specific key
+        if (userEmail !== 'anonymous') {
+          saveLS(userKey, savedForm);
+        }
+      }
+    }
+    
+    // If still no data, try to load from any existing user keys
+    if ((!savedForm || Object.keys(savedForm).length === 0) && userEmail !== 'anonymous') {
+      console.log('Still no data, checking for existing user data...');
+      // Try to find any existing data for this user
+      const allKeys = Object.keys(localStorage);
+      const userKeys = allKeys.filter(key => key.includes(userEmail));
+      console.log('Found user keys:', userKeys);
+      
+      for (const key of userKeys) {
+        if (key.includes('bsg_form_')) {
+          const existingForm = loadLS<FormData>(key, {});
+          if (existingForm && Object.keys(existingForm).length > 0) {
+            console.log('Found existing form data in key:', key);
+            savedForm = existingForm;
+            break;
+          }
+        }
+      }
+    }
+    
+    console.log('Final form data to use:', savedForm);
+    console.log('=== WIZARD DATA LOADING DEBUG END ===');
+    
+    // If still no data and user is authenticated, try to load from server
+    if ((!savedForm || Object.keys(savedForm).length === 0) && userEmail !== 'anonymous') {
+      console.log('No localStorage data found, attempting to load from server...');
+      // This will be handled by the existing server data loading logic
+    }
     
     // If form has default color scheme enabled, apply the default colors
     if (savedForm && (savedForm.use_default_color_scheme ?? true)) {
@@ -2039,13 +2127,32 @@ export default function WizardClient() {
         <div className="wrap">
           <div style={{
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
             height: '50vh',
             fontSize: '18px',
-            color: '#666'
+            color: '#666',
+            gap: '20px'
           }}>
-            Loading your data...
+            <div>Loading your data...</div>
+            <button 
+              onClick={recoverData}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#f59e0b',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              🔄 Recover Lost Data
+            </button>
+            <div style={{ fontSize: '12px', color: '#999', textAlign: 'center', maxWidth: '300px' }}>
+              If your data is missing, click the button above to try recovering it from localStorage
+            </div>
           </div>
         </div>
       </div>
