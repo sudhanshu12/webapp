@@ -35,14 +35,14 @@ $contact_form_bg_color = 'transparent';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo esc_html($settings['contact_meta_title'] ?? $business_name . ' - Contact Us | Get Free Estimate'); ?></title>
-    <meta name="description" content="<?php echo esc_attr($settings['contact_meta_description'] ?? 'Contact ' . $business_name . ' for professional ' . ($settings['business_type'] ?? 'services') . '. Get free estimates, expert consultation, and reliable service. Call ' . $phone . ' or fill out our contact form today!'); ?>">
+    <!-- Meta description is handled in wp_head action -->
     <meta name="keywords" content="<?php echo esc_attr($settings['contact_meta_keywords'] ?? 'contact ' . strtolower($business_name) . ', ' . ($settings['business_type'] ?? 'services') . ' estimate, free consultation, ' . ($settings['business_type'] ?? 'contractor') . ' contact, ' . $phone); ?>">
     <meta name="author" content="<?php echo esc_attr($business_name); ?>">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="<?php echo esc_attr($settings['contact_meta_title'] ?? $business_name . ' - Contact Us | Get Free Estimate'); ?>">
-    <meta property="og:description" content="<?php echo esc_attr($settings['contact_meta_description'] ?? 'Contact ' . $business_name . ' for professional ' . ($settings['business_type'] ?? 'services') . '. Get free estimates, expert consultation, and reliable service.'); ?>">
+    <!-- Open Graph description is handled in wp_head action -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo esc_url(home_url('/contact-us/')); ?>">
     <meta property="og:site_name" content="<?php echo esc_attr($business_name); ?>">
@@ -50,10 +50,9 @@ $contact_form_bg_color = 'transparent';
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo esc_attr($settings['contact_meta_title'] ?? $business_name . ' - Contact Us | Get Free Estimate'); ?>">
-    <meta name="twitter:description" content="<?php echo esc_attr($settings['contact_meta_description'] ?? 'Contact ' . $business_name . ' for professional ' . ($settings['business_type'] ?? 'services') . '. Get free estimates, expert consultation, and reliable service.'); ?>">
+    <!-- Twitter description is handled in wp_head action -->
     
-    <!-- Canonical URL -->
-    <link rel="canonical" href="<?php echo esc_url(home_url('/contact-us/')); ?>">
+    <!-- Canonical URL is handled in wp_head action -->
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">

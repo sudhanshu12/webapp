@@ -135,7 +135,7 @@ get_header();
 
 <!-- Open Graph Meta Tags -->
 <meta property="og:title" content="<?php echo esc_attr($settings['homepage_meta_title'] ?? $business_name . ' - Professional Services in ' . ($settings['state'] ?? 'Your Area')); ?>">
-<meta property="og:description" content="<?php echo esc_attr($settings['homepage_meta_description'] ?? $business_name . ' provides professional services in ' . ($settings['state'] ?? 'your area') . '. Get free estimates, expert installation, and reliable service.'); ?>">
+<!-- Open Graph description is handled in wp_head action -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="<?php echo esc_url(home_url('/')); ?>">
 <meta property="og:site_name" content="<?php echo esc_attr($business_name); ?>">
@@ -143,7 +143,7 @@ get_header();
 <!-- Twitter Card Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="<?php echo esc_attr($settings['homepage_meta_title'] ?? $business_name . ' - Professional Services in ' . ($settings['state'] ?? 'Your Area')); ?>">
-<meta name="twitter:description" content="<?php echo esc_attr($settings['homepage_meta_description'] ?? $business_name . ' provides professional services in ' . ($settings['state'] ?? 'your area') . '. Get free estimates, expert installation, and reliable service.'); ?>">
+<!-- Twitter description is handled in wp_head action -->
 
 <!-- Canonical URL is handled in wp_head action -->
 <meta property="og:url" content="<?php echo esc_url(home_url('/')); ?>">
@@ -152,7 +152,7 @@ get_header();
 <!-- Twitter Card Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="<?php echo esc_attr($settings['homepage_meta_title'] ?? $business_name . ' - ' . ($tagline ?? 'Professional Services')); ?>">
-<meta name="twitter:description" content="<?php echo esc_attr($settings['homepage_meta_description'] ?? $business_name . ' provides professional services in ' . ($settings['location'] ?? 'your area') . '. Get free estimates, expert installation, and reliable service.'); ?>">
+<!-- Twitter description is handled in wp_head action -->
 
 <!-- Structured Data (JSON-LD) -->
 <script type="application/ld+json">

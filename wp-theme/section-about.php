@@ -158,7 +158,7 @@ $about_margin_right = $settings['about_margin_right'] ?? 60;
     <div class="homepage-about-flex" style="display: flex; align-items: center; gap: 3rem; max-width: 1200px; margin: 0 auto; padding: 3rem 120px; justify-content: center;">
         <div class="homepage-about-img" style="flex: 1; display: flex; align-items: center; justify-content: center;">
             <?php if (!empty($about_image)): ?>
-                <img src="<?php echo esc_url($about_image); ?>" alt="Our Team" style="max-width: 350px; width: 100%; border-radius: 8px; box-shadow: 0 2px 16px rgba(0,0,0,0.08);">
+                <img src="<?php echo esc_url($about_image); ?>" alt="Our Team" style="max-width: 350px; width: 100%; border-radius: 8px; box-shadow: 0 2px 16px rgba(0,0,0,0.08);" loading="lazy" decoding="async">
             <?php else: ?>
                 <div style="max-width: 350px; width: 100%; height: 400px; border-radius: 8px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600; box-shadow: 0 2px 16px rgba(0,0,0,0.08);">
                     <div style="text-align: center;">

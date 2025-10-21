@@ -102,7 +102,7 @@ $reviews_visible = $reviews_settings['visible'];
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="<?php echo esc_attr($settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? $business_name . ' - About Us | Professional ' . ($settings['business_type'] ?? 'Services')); ?>">
-    <meta property="og:description" content="<?php echo esc_attr($settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ', a trusted ' . ($settings['business_type'] ?? 'contractor') . ' with ' . $about_years . ' years of experience. Professional ' . ($settings['business_type'] ?? 'services') . ', quality workmanship, and customer satisfaction.'); ?>">
+    <!-- Meta description is handled in wp_head action -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo esc_url(home_url('/about-us/')); ?>">
     <meta property="og:site_name" content="<?php echo esc_attr($business_name); ?>">
@@ -110,10 +110,9 @@ $reviews_visible = $reviews_settings['visible'];
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo esc_attr($settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? $business_name . ' - About Us | Professional ' . ($settings['business_type'] ?? 'Services')); ?>">
-    <meta name="twitter:description" content="<?php echo esc_attr($settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ', a trusted ' . ($settings['business_type'] ?? 'contractor') . ' with ' . $about_years . ' years of experience. Professional ' . ($settings['business_type'] ?? 'services') . ', quality workmanship, and customer satisfaction.'); ?>">
+    <!-- Twitter description is handled in wp_head action -->
     
-    <!-- Canonical URL -->
-    <link rel="canonical" href="<?php echo esc_url(home_url('/about-us/')); ?>">
+    <!-- Canonical URL is handled in wp_head action -->
     
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">

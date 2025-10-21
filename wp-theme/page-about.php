@@ -193,7 +193,7 @@ $settings = bsg_get_settings();
                     <!-- Image -->
                     <div class="bsg-who-image" style="flex: 0 0 300px; height: 400px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
                         <?php if (!empty($settings['about_page_team_image'])): ?>
-                            <img src="<?php echo esc_url($settings['about_page_team_image']); ?>" alt="About <?php echo esc_attr($settings['business_name'] ?? 'Our Team'); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="<?php echo esc_url($settings['about_page_team_image']); ?>" alt="About <?php echo esc_attr($settings['business_name'] ?? 'Our Team'); ?>" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
                         <?php else: ?>
                             <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600;">
                                 Team Photo

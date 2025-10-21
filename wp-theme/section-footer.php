@@ -26,7 +26,7 @@ $first_five_services = array_slice($services, 0, 5);
             <div>
                 <?php if (!empty($business['logo'])): ?>
                     <div style="margin-bottom: 20px;">
-                        <img src="<?php echo esc_url($business['logo']); ?>" alt="<?php echo esc_attr($business['name']); ?>" style="max-height: 60px; width: auto;">
+                        <img src="<?php echo esc_url($business['logo']); ?>" alt="<?php echo esc_attr($business['name']); ?>" style="max-height: 60px; width: auto;" loading="lazy" decoding="async">
                     </div>
                 <?php else: ?>
                     <h3 style="color: <?php echo esc_attr($footer_heading_color); ?>; font-size: 1.5rem; font-weight: 700; margin-bottom: 20px;">

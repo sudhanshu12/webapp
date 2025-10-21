@@ -46,7 +46,7 @@ if (!empty($settings['faq_visible']) && !empty($settings['faqs']) && is_array($s
         <div class="faq-header" style="display: flex; align-items: center; gap: 3rem; margin-bottom: 3rem; flex-wrap: wrap;">
             <?php if (!empty($faq_image)): ?>
                 <div style="flex: 0 0 350px; max-width: 350px; width: 350px; height: 350px; display: flex; align-items: center; justify-content: center; background: #22242c; border-radius: 24px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
-                    <img src="<?php echo esc_url($faq_image); ?>" alt="FAQ" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="<?php echo esc_url($faq_image); ?>" alt="FAQ" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
                 </div>
             <?php else: ?>
                 <!-- Default landscaper image placeholder -->

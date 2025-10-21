@@ -241,7 +241,7 @@ footer a {
                 <!-- Logo and Business Name -->
                 <?php if (!empty($business['logo'])): ?>
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
-                        <img src="<?php echo esc_url($business['logo']); ?>" alt="<?php echo esc_attr($business['name']); ?>" style="max-height: 40px; width: auto;">
+                        <img src="<?php echo esc_url($business['logo']); ?>" alt="<?php echo esc_attr($business['name']); ?>" style="max-height: 40px; width: auto;" loading="lazy" decoding="async">
                         <h3 style="color: <?php echo esc_attr($footer_heading_color); ?>; font-size: 1.5rem; font-weight: 700; margin: 0; text-transform: uppercase;">
                             <?php echo esc_html($business['name']); ?>
                         </h3>
