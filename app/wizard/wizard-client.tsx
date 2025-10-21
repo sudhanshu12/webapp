@@ -365,40 +365,66 @@ export default function WizardClient() {
     try { if (typeof window !== 'undefined') localStorage.setItem(key, JSON.stringify(value)); } catch {}
   };
 
-  // Data recovery function
+  // Data recovery function - only for current user
   const recoverData = () => {
     console.log('=== DATA RECOVERY STARTED ===');
     const userEmail = session?.user?.email || 'anonymous';
     
-    // Check all localStorage keys for this user
-    const allKeys = Object.keys(localStorage);
-    const userKeys = allKeys.filter(key => key.includes(userEmail));
-    console.log('Found keys for user:', userKeys);
-    
-    // Try to recover form data
-    for (const key of userKeys) {
-      if (key.includes('bsg_form_')) {
-        const recoveredForm = loadLS<FormData>(key, {});
-        if (recoveredForm && Object.keys(recoveredForm).length > 0) {
-          console.log('Recovered form data from:', key);
-          setForm(recoveredForm);
-          alert('Form data recovered successfully!');
-          return;
-        }
-      }
-    }
-    
-    // Try to recover from old keys
-    const oldForm = loadLS<FormData>('bsg_form', {});
-    if (oldForm && Object.keys(oldForm).length > 0) {
-      console.log('Recovered form data from old key');
-      setForm(oldForm);
-      alert('Form data recovered from backup!');
+    if (userEmail === 'anonymous') {
+      alert('Please log in first to recover your data.');
       return;
     }
     
-    alert('No data found to recover. Please check if you were logged in with the correct account.');
+    // Only look for data specific to this user
+    const userKey = `bsg_form_${userEmail}`;
+    const recoveredForm = loadLS<FormData>(userKey, {});
+    
+    if (recoveredForm && Object.keys(recoveredForm).length > 0) {
+      console.log('Recovered form data for user:', userEmail);
+      setForm(recoveredForm);
+      alert(`Data recovered successfully for ${userEmail}!`);
+    } else {
+      console.log('No data found for user:', userEmail);
+      alert(`No saved data found for ${userEmail}. This appears to be a new account.`);
+    }
+    
     console.log('=== DATA RECOVERY ENDED ===');
+  };
+
+  // Clear all data for current user (useful for testing)
+  const clearUserData = () => {
+    const userEmail = session?.user?.email || 'anonymous';
+    if (userEmail === 'anonymous') {
+      alert('Please log in first.');
+      return;
+    }
+    
+    if (confirm(`Are you sure you want to clear ALL data for ${userEmail}? This cannot be undone.`)) {
+      const keys = [
+        `bsg_form_${userEmail}`,
+        `bsg_services_${userEmail}`,
+        `bsg_locations_${userEmail}`,
+        `bsg_reviews_${userEmail}`,
+        `bsg_features_${userEmail}`,
+        `bsg_commitments_${userEmail}`,
+        `bsg_faqs_${userEmail}`
+      ];
+      
+      keys.forEach(key => {
+        localStorage.removeItem(key);
+      });
+      
+      // Reset form to default state
+      setForm({
+        business_name: '',
+        business_logo: '',
+        business_type: 'landscaping',
+        // ... all default values
+      });
+      
+      alert(`All data cleared for ${userEmail}. Page will reload.`);
+      window.location.reload();
+    }
   };
 
   const [form, setForm] = useState<FormData>({
@@ -659,49 +685,21 @@ export default function WizardClient() {
     console.log('Session user:', session?.user);
     console.log('Loading form from localStorage:', savedForm);
     
-    // If no form data in localStorage, try to load from old key (for migration)
-    if (!savedForm || Object.keys(savedForm).length === 0) {
-      console.log('No form data found, trying old key...');
-      const oldKey = 'bsg_form';
-      const oldForm = loadLS<FormData>(oldKey, form);
-      if (oldForm && Object.keys(oldForm).length > 0) {
-        console.log('Found old form data, migrating...');
-        savedForm = oldForm;
-        // Save to new user-specific key
-        if (userEmail !== 'anonymous') {
-          saveLS(userKey, savedForm);
-        }
-      }
-    }
+    // Check if this is a new user (no data exists for this specific user)
+    const hasExistingData = savedForm && Object.keys(savedForm).length > 0;
     
-    // If still no data, try to load from any existing user keys
-    if ((!savedForm || Object.keys(savedForm).length === 0) && userEmail !== 'anonymous') {
-      console.log('Still no data, checking for existing user data...');
-      // Try to find any existing data for this user
-      const allKeys = Object.keys(localStorage);
-      const userKeys = allKeys.filter(key => key.includes(userEmail));
-      console.log('Found user keys:', userKeys);
-      
-      for (const key of userKeys) {
-        if (key.includes('bsg_form_')) {
-          const existingForm = loadLS<FormData>(key, {});
-          if (existingForm && Object.keys(existingForm).length > 0) {
-            console.log('Found existing form data in key:', key);
-            savedForm = existingForm;
-            break;
-          }
-        }
-      }
+    if (hasExistingData) {
+      console.log('✅ Found existing data for user:', userEmail);
+      console.log('User will see their saved data');
+    } else {
+      console.log('🆕 No existing data found for user:', userEmail);
+      console.log('User will get fresh/blank wizard');
+      // Use the default form state (fresh/blank)
+      savedForm = form;
     }
     
     console.log('Final form data to use:', savedForm);
     console.log('=== WIZARD DATA LOADING DEBUG END ===');
-    
-    // If still no data and user is authenticated, try to load from server
-    if ((!savedForm || Object.keys(savedForm).length === 0) && userEmail !== 'anonymous') {
-      console.log('No localStorage data found, attempting to load from server...');
-      // This will be handled by the existing server data loading logic
-    }
     
     // If form has default color scheme enabled, apply the default colors
     if (savedForm && (savedForm.use_default_color_scheme ?? true)) {
@@ -2135,23 +2133,42 @@ export default function WizardClient() {
             color: '#666',
             gap: '20px'
           }}>
-            <div>Loading your data...</div>
-            <button 
-              onClick={recoverData}
-              style={{
-                padding: '10px 20px',
-                backgroundColor: '#f59e0b',
-                color: 'white',
-                border: 'none',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}
-            >
-              🔄 Recover Lost Data
-            </button>
-            <div style={{ fontSize: '12px', color: '#999', textAlign: 'center', maxWidth: '300px' }}>
-              If your data is missing, click the button above to try recovering it from localStorage
+            <div>Loading your wizard data...</div>
+            <div style={{ fontSize: '14px', color: '#666', marginBottom: '10px' }}>
+              User: {session?.user?.email || 'Not logged in'}
+            </div>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <button 
+                onClick={recoverData}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#f59e0b',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                  fontSize: '14px'
+                }}
+              >
+                🔄 Recover Data
+              </button>
+              <button 
+                onClick={clearUserData}
+                style={{
+                  padding: '10px 20px',
+                  backgroundColor: '#dc2626',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '5px',
+                  cursor: 'pointer',
+                  fontSize: '14px'
+                }}
+              >
+                🗑️ Clear Data
+              </button>
+            </div>
+            <div style={{ fontSize: '12px', color: '#999', textAlign: 'center', maxWidth: '400px' }}>
+              Each user account has isolated data. Existing users see their saved data, new users get a fresh wizard.
             </div>
           </div>
         </div>
@@ -2166,6 +2183,20 @@ export default function WizardClient() {
           <div className="bsg-header-content">
             <h2 style={{color: form.heading_color || undefined}}>Create A Website Click</h2>
             <p>Create and manage your professional business website with ease</p>
+            <div style={{
+              marginTop: '10px',
+              padding: '8px 12px',
+              backgroundColor: '#f0f9ff',
+              border: '1px solid #0ea5e9',
+              borderRadius: '6px',
+              fontSize: '14px',
+              color: '#0369a1'
+            }}>
+              👤 Logged in as: <strong>{session?.user?.email || 'Not logged in'}</strong>
+              <span style={{ marginLeft: '10px', fontSize: '12px' }}>
+                {form.business_name ? '📝 Data saved' : '🆕 Fresh start'}
+              </span>
+            </div>
           </div>
         </div>
         
