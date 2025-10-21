@@ -17,6 +17,14 @@ $visibility = bsg_get_section_visibility();
 $meta_title = $settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? ('About ' . $business['name'] . ' - Professional Services in ' . $business['state']);
 $meta_description = $settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? ('Learn about ' . $business['name'] . ', a professional ' . $business['business_type'] . ' company serving ' . $business['state'] . '. ' . ($settings['about_years'] ?? 15) . '+ years of experience, quality service, and customer satisfaction.');
 
+// Debug: Log about page meta data
+error_log('=== ABOUT PAGE META DEBUG ===');
+error_log('About page meta title from wizard: ' . ($settings['about_page_meta_title'] ?? 'NOT SET'));
+error_log('About page meta description from wizard: ' . ($settings['about_page_meta_description'] ?? 'NOT SET'));
+error_log('Final meta title: ' . $meta_title);
+error_log('Final meta description: ' . $meta_description);
+error_log('=== ABOUT PAGE META DEBUG END ===');
+
 // Add meta tags to head
 add_action('wp_head', function() use ($meta_title, $meta_description) {
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";

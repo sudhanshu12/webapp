@@ -26,6 +26,17 @@ $location_title = get_the_title();
 
 // Add meta tags to head - use wizard location data
 add_action('wp_head', function() use ($location_title, $business, $current_location) {
+    // Debug: Log current location data
+    error_log('=== LOCATION META DEBUG ===');
+    error_log('Location title: ' . $location_title);
+    error_log('Current location found: ' . ($current_location ? 'YES' : 'NO'));
+    if ($current_location) {
+        error_log('Location name: ' . ($current_location['name'] ?? 'NOT SET'));
+        error_log('Location meta title: ' . ($current_location['metaTitle'] ?? 'NOT SET'));
+        error_log('Location meta description: ' . ($current_location['metaDescription'] ?? 'NOT SET'));
+    }
+    error_log('=== LOCATION META DEBUG END ===');
+    
     // Use wizard location meta data if available, otherwise fallback to generic
     $meta_title = $current_location['metaTitle'] ?? ('Service Areas - ' . $location_title . ' | ' . $business['name']);
     $meta_description = $current_location['metaDescription'] ?? ('Professional services in ' . $location_title . ' by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.');

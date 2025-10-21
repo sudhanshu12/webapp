@@ -23,6 +23,17 @@ $service_title = get_the_title();
 
 // Add meta tags to head - use wizard service data
 add_action('wp_head', function() use ($service_title, $business, $current_service) {
+    // Debug: Log current service data
+    error_log('=== SERVICE META DEBUG ===');
+    error_log('Service title: ' . $service_title);
+    error_log('Current service found: ' . ($current_service ? 'YES' : 'NO'));
+    if ($current_service) {
+        error_log('Service name: ' . ($current_service['name'] ?? 'NOT SET'));
+        error_log('Service meta title: ' . ($current_service['metaTitle'] ?? 'NOT SET'));
+        error_log('Service meta description: ' . ($current_service['metaDescription'] ?? 'NOT SET'));
+    }
+    error_log('=== SERVICE META DEBUG END ===');
+    
     // Use wizard service meta data if available, otherwise fallback to generic
     $meta_title = $current_service['metaTitle'] ?? ($service_title . ' - Professional Services | ' . $business['name']);
     $meta_description = $current_service['metaDescription'] ?? ('Professional ' . strtolower($service_title) . ' services by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.');

@@ -13,6 +13,14 @@ $colors = bsg_get_color_scheme();
 $meta_title = $settings['contact_meta_title'] ?? ('Contact ' . $business['name'] . ' - Get Free Estimate | Professional Services in ' . $business['state']);
 $meta_description = $settings['contact_meta_description'] ?? ('Contact ' . $business['name'] . ' for professional ' . $business['business_type'] . ' services. Get free estimates, expert consultation, and reliable service. Call ' . $business['phone'] . ' or fill out our contact form today!');
 
+// Debug: Log contact page meta data
+error_log('=== CONTACT PAGE META DEBUG ===');
+error_log('Contact meta title from wizard: ' . ($settings['contact_meta_title'] ?? 'NOT SET'));
+error_log('Contact meta description from wizard: ' . ($settings['contact_meta_description'] ?? 'NOT SET'));
+error_log('Final meta title: ' . $meta_title);
+error_log('Final meta description: ' . $meta_description);
+error_log('=== CONTACT PAGE META DEBUG END ===');
+
 // Use general section data for contact information
 $contact_description = $settings['contact_description'] ?? '';
 $contact_phone = $business['phone'];

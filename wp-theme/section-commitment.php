@@ -11,12 +11,12 @@ $commitment_visible = $settings['commitment_visible'] ?? 1;
 $commitment_title = $settings['commitment_title'] ?? 'Our Commitment to You';
 $commitment_subtitle = $settings['commitment_subtitle'] ?? 'We promise to deliver exceptional service';
 $commitment_text = $settings['commitment_text'] ?? '';
-$commitment_image = $settings['commitment_bg_image'] ?? '';
+$commitment_image = $settings['commitment_image'] ?? '';
 
 // Debug: Log commitment data
 error_log('=== COMMITMENT DEBUG ===');
 error_log('Commitment image URL: ' . ($commitment_image ?: 'EMPTY'));
-error_log('Commitment image from settings: ' . ($settings['commitment_bg_image'] ?? 'NOT SET'));
+error_log('Commitment image from settings: ' . ($settings['commitment_image'] ?? 'NOT SET'));
 error_log('Commitment heading color from settings: ' . ($settings['commitment_heading_color'] ?? 'NOT SET'));
 error_log('Commitment subtitle color from settings: ' . ($settings['commitment_subtitle_color'] ?? 'NOT SET'));
 error_log('=== COMMITMENT DEBUG END ===');
