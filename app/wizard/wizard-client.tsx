@@ -356,13 +356,23 @@ export default function WizardClient() {
     if (typeof window === 'undefined') return fallback;
     try {
       const v = localStorage.getItem(key);
+      console.log('🔍 Loading from localStorage - Key:', key, 'Value:', v);
       return v ? (JSON.parse(v) as T) : fallback;
-    } catch {
+    } catch (error) {
+      console.error('❌ Error loading from localStorage:', error);
       return fallback;
     }
   };
   const saveLS = (key: string, value: unknown) => {
-    try { if (typeof window !== 'undefined') localStorage.setItem(key, JSON.stringify(value)); } catch {}
+    try { 
+      if (typeof window !== 'undefined') {
+        const serialized = JSON.stringify(value);
+        localStorage.setItem(key, serialized);
+        console.log('💾 Saved to localStorage - Key:', key, 'Value length:', serialized.length);
+      }
+    } catch (error) {
+      console.error('❌ Error saving to localStorage:', error);
+    }
   };
 
 
@@ -686,10 +696,12 @@ export default function WizardClient() {
     
     if (hasExistingData) {
       console.log('✅ Using localStorage data for user:', userEmail);
+      console.log('LocalStorage data:', savedForm);
       setForm(savedForm);
     } else if (userEmail !== 'anonymous') {
       // No localStorage data found, try to load from Supabase database
       console.log('No localStorage data found, attempting to load from Supabase database...');
+      console.log('Making request to /api/load-wizard-data with user_email:', userEmail);
       
       // Load data from Supabase database
       fetch('/api/load-wizard-data', {
@@ -699,21 +711,29 @@ export default function WizardClient() {
         },
         body: JSON.stringify({ user_email: userEmail }),
       })
-      .then(response => response.json())
+      .then(response => {
+        console.log('Load response status:', response.status);
+        console.log('Load response ok:', response.ok);
+        return response.json();
+      })
       .then(result => {
+        console.log('Load result:', result);
         if (result.success && result.data) {
           console.log('✅ Data loaded from Supabase database:', result.data);
           setForm(result.data);
           // Also save to localStorage for faster future loads
           saveLS(userKey, result.data);
+          console.log('✅ Saved loaded data to localStorage');
         } else {
           console.log('🆕 No data found in database for user:', userEmail);
+          console.log('Using default form for new user');
           // Use default form for new user
           setForm(form);
         }
       })
       .catch(error => {
         console.error('❌ Error loading from database:', error);
+        console.log('Using default form due to error');
         // Use default form on error
         setForm(form);
       });
@@ -732,16 +752,25 @@ export default function WizardClient() {
       const userEmail = session.user.email;
       const userKey = `bsg_form_${userEmail}`;
       
+      console.log('=== AUTO-SAVE DEBUG ===');
+      console.log('User email:', userEmail);
+      console.log('Form data to save:', form);
+      console.log('Form has data:', Object.keys(form).length > 0);
+      
       // Save to localStorage for immediate access
       saveLS(userKey, form);
+      console.log('✅ Saved to localStorage with key:', userKey);
       
       // Also save to Supabase database (debounced to avoid too many requests)
       const timeoutId = setTimeout(() => {
         console.log('💾 Auto-saving form data to Supabase...');
+        console.log('Saving form data:', form);
         saveToWordPress(form);
       }, 2000); // 2 second delay
       
       return () => clearTimeout(timeoutId);
+    } else {
+      console.log('❌ Not saving - isLoaded:', isLoaded, 'session:', !!session?.user?.email);
     }
   }, [form, isLoaded, session]);
 
@@ -1247,11 +1276,17 @@ export default function WizardClient() {
 
   const saveToWordPress = async (formData: FormData) => {
     try {
+      console.log('=== SAVE TO WORDPRESS/SUPABASE DEBUG ===');
+      console.log('Form data being saved:', formData);
+      console.log('User email:', session?.user?.email);
+      
       // Add user email to the form data for database saving
       const dataToSave = {
         ...formData,
         user_email: session?.user?.email || 'anonymous'
       };
+
+      console.log('Data to save with user email:', dataToSave);
 
       const response = await fetch('/api/save-wizard-data', {
         method: 'POST',
@@ -1261,12 +1296,18 @@ export default function WizardClient() {
         body: JSON.stringify(dataToSave),
       });
 
+      console.log('Save response status:', response.status);
+      console.log('Save response ok:', response.ok);
+
       if (response.ok) {
         const result = await response.json();
         console.log('✅ Data saved successfully:', result.message);
         console.log('Saved to:', result.saved_to);
+        console.log('Full result:', result);
       } else {
-        console.error('❌ Failed to save data');
+        const errorText = await response.text();
+        console.error('❌ Failed to save data - Status:', response.status);
+        console.error('❌ Error response:', errorText);
       }
     } catch (error) {
       console.error('❌ Error saving data:', error);
