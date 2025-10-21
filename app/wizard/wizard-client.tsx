@@ -748,8 +748,8 @@ export default function WizardClient() {
 
   // Save form data to localStorage and Supabase whenever it changes
   useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
+    if (isLoaded) {
+      const userEmail = session?.user?.email || 'anonymous';
       const userKey = `bsg_form_${userEmail}`;
       
       console.log('=== AUTO-SAVE DEBUG ===');
@@ -757,20 +757,24 @@ export default function WizardClient() {
       console.log('Form data to save:', form);
       console.log('Form has data:', Object.keys(form).length > 0);
       
-      // Save to localStorage for immediate access
+      // Always save to localStorage for immediate access (works for all users)
       saveLS(userKey, form);
       console.log('✅ Saved to localStorage with key:', userKey);
       
-      // Also save to Supabase database (debounced to avoid too many requests)
-      const timeoutId = setTimeout(() => {
-        console.log('💾 Auto-saving form data to Supabase...');
-        console.log('Saving form data:', form);
-        saveToWordPress(form);
-      }, 2000); // 2 second delay
-      
-      return () => clearTimeout(timeoutId);
+      // Also save to Supabase database if user is logged in (debounced to avoid too many requests)
+      if (session?.user?.email) {
+        const timeoutId = setTimeout(() => {
+          console.log('💾 Auto-saving form data to Supabase...');
+          console.log('Saving form data:', form);
+          saveToWordPress(form);
+        }, 1000); // Reduced to 1 second delay for faster saves
+        
+        return () => clearTimeout(timeoutId);
+      } else {
+        console.log('ℹ️ User not logged in, only saving to localStorage');
+      }
     } else {
-      console.log('❌ Not saving - isLoaded:', isLoaded, 'session:', !!session?.user?.email);
+      console.log('❌ Not saving - isLoaded:', isLoaded);
     }
   }, [form, isLoaded, session]);
 
@@ -2182,8 +2186,31 @@ export default function WizardClient() {
         <div className="wrap">
           <div className="bsg-header">
           <div className="bsg-header-content">
-            <h2 style={{color: form.heading_color || undefined}}>Create A Website Click</h2>
-            <p>Create and manage your professional business website with ease</p>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+              <div>
+                <h2 style={{color: form.heading_color || undefined}}>Create A Website Click</h2>
+                <p>Create and manage your professional business website with ease</p>
+              </div>
+              <button 
+                onClick={() => {
+                  console.log('💾 Manual save triggered');
+                  saveToWordPress(form);
+                  setSuccess('✅ Data saved successfully!');
+                }}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#14b8a6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500'
+                }}
+              >
+                💾 Save Data
+              </button>
+            </div>
           </div>
         </div>
         
