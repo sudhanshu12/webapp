@@ -697,55 +697,9 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load services from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_services_${userEmail}`;
-      const savedServices = loadLS<Service[]>(userKey, []);
-      console.log('Loading services from localStorage:', savedServices);
-      // If no services in localStorage or empty array, use the default service
-      if (!savedServices || savedServices.length === 0) {
-        console.log('No services in localStorage, using default');
-        // Use the default service from state initialization
-        const defaultServices = [
-          {
-            id: '1',
-            name: 'Lawn Care',
-            description: 'Professional lawn care and maintenance services',
-            icon: '🌱',
-            image: '',
-            content: '',
-            slug: 'lawn-care',
-            metaTitle: '',
-            metaDescription: '',
-            featuresText: '',
-            useDefaultPrompt: true,
-            customPrompt: ''
-          }
-        ];
-        setServices(defaultServices);
-      } else {
-        console.log('Found services in localStorage:', savedServices.length);
-        // Generate slugs for services that don't have them
-        const servicesWithSlugs = savedServices.map(service => {
-          if (!service.slug && service.name.trim()) {
-            service.slug = service.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-          }
-          return service;
-        });
-        setServices(servicesWithSlugs);
-      }
-    }
-  }, [isLoaded]);
+  // Services are now managed directly in state (no localStorage needed)
   
-  useEffect(() => { 
-    if (isLoaded && services.length > 0 && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_services_${userEmail}`;
-      saveLS(userKey, services); 
-    }
-  }, [services, isLoaded, session]);
+  // Services auto-save to Supabase (no localStorage needed)
 
   const [locations, setLocations] = useState<Location[]>([
     {
@@ -762,34 +716,9 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load locations from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_locations_${userEmail}`;
-      const savedLocations = loadLS<Location[]>(userKey, locations);
-      console.log('Loading locations from localStorage:', savedLocations);
-      // Generate slugs for locations that don't have them
-      const locationsWithSlugs = savedLocations.map(location => {
-        if (!location.slug && location.name.trim()) {
-          const nameSlug = location.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-          const zipSlug = location.zip.trim();
-          location.slug = nameSlug + (zipSlug ? '-' + zipSlug : '');
-        }
-        return location;
-      });
-      console.log('Locations with slugs:', locationsWithSlugs);
-      setLocations(locationsWithSlugs);
-    }
-  }, [isLoaded]);
+  // Locations are now managed directly in state (no localStorage needed)
   
-  useEffect(() => { 
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_locations_${userEmail}`;
-      saveLS(userKey, locations); 
-    }
-  }, [locations, isLoaded, session]);
+  // Locations auto-save to Supabase (no localStorage needed)
 
   const [reviews, setReviews] = useState<Review[]>([
     {
@@ -801,23 +730,9 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load reviews from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_reviews_${userEmail}`;
-      const savedReviews = loadLS<Review[]>(userKey, reviews);
-      setReviews(savedReviews);
-    }
-  }, [isLoaded, session]);
+  // Reviews are now managed directly in state (no localStorage needed)
   
-  useEffect(() => { 
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_reviews_${userEmail}`;
-      saveLS(userKey, reviews); 
-    }
-  }, [reviews, isLoaded, session]);
+  // Reviews auto-save to Supabase (no localStorage needed)
 
   const [features, setFeatures] = useState<Feature[]>([
     {
@@ -828,23 +743,9 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load features from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_features_${userEmail}`;
-      const savedFeatures = loadLS<Feature[]>(userKey, features);
-      setFeatures(savedFeatures);
-    }
-  }, [isLoaded, session]);
+  // Features are now managed directly in state (no localStorage needed)
   
-  useEffect(() => { 
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_features_${userEmail}`;
-      saveLS(userKey, features); 
-    }
-  }, [features, isLoaded, session]);
+  // Features auto-save to Supabase (no localStorage needed)
 
   
 
@@ -857,23 +758,9 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load commitments from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_commitments_${userEmail}`;
-      const savedCommitments = loadLS<Commitment[]>(userKey, commitments);
-      setCommitments(savedCommitments);
-    }
-  }, [isLoaded, session]);
+  // Commitments are now managed directly in state (no localStorage needed)
   
-  useEffect(() => { 
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_commitments_${userEmail}`;
-      saveLS(userKey, commitments); 
-    }
-  }, [commitments, isLoaded, session]);
+  // Commitments auto-save to Supabase (no localStorage needed)
 
   const [faqs, setFaqs] = useState<FAQ[]>([
     {
@@ -883,23 +770,9 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load FAQs from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_faqs_${userEmail}`;
-      const savedFaqs = loadLS<FAQ[]>(userKey, faqs);
-      setFaqs(savedFaqs);
-    }
-  }, [isLoaded, session]);
+  // FAQs are now managed directly in state (no localStorage needed)
   
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_faqs_${userEmail}`;
-      saveLS(userKey, faqs); 
-    }
-  }, [faqs, isLoaded, session]);
+  // FAQs auto-save to Supabase (no localStorage needed)
 
   // Handle NextAuth session
   useEffect(() => {
@@ -1844,11 +1717,6 @@ export default function WizardClient() {
         { id: '2', name: 'Roof Repair', description: 'Expert roof repair and maintenance', slug: 'roof-repair', icon: '🛠️', image: '', content: '' }
       ];
       setServices(sampleServices);
-      if (session?.user?.email) {
-        const userEmail = session.user.email;
-        const userKey = `bsg_services_${userEmail}`;
-        saveLS(userKey, sampleServices);
-      }
     }
     
     if (locations.length === 0) {
@@ -1857,11 +1725,6 @@ export default function WizardClient() {
         { id: '2', name: 'Orlando', state: 'Florida', zip: '32801', description: 'Serving Orlando, Florida', slug: 'orlando-32801' }
       ];
       setLocations(sampleLocations);
-      if (session?.user?.email) {
-        const userEmail = session.user.email;
-        const userKey = `bsg_locations_${userEmail}`;
-        saveLS(userKey, sampleLocations);
-      }
     }
   };
 
@@ -1871,23 +1734,7 @@ export default function WizardClient() {
     console.log('Current locations state:', locations);
     console.log('Current form state:', form);
     
-    // Ensure data is properly synchronized with localStorage
-    const userEmail = session?.user?.email || 'anonymous';
-    const servicesKey = `bsg_services_${userEmail}`;
-    const locationsKey = `bsg_locations_${userEmail}`;
-    const currentServices = loadLS<Service[]>(servicesKey, []);
-    const currentLocations = loadLS<Location[]>(locationsKey, []);
-    
-    console.log('Current localStorage services:', currentServices);
-    console.log('Current localStorage locations:', currentLocations);
-    
-    // Use localStorage data if it's different from state
-    if (JSON.stringify(currentServices) !== JSON.stringify(services)) {
-      setServices(currentServices);
-    }
-    if (JSON.stringify(currentLocations) !== JSON.stringify(locations)) {
-      setLocations(currentLocations);
-    }
+    // Data is now managed directly in state (no localStorage synchronization needed)
     
     // Validate essential fields first
     if (!form.business_name || !form.business_type || !form.location) {
