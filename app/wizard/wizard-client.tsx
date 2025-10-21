@@ -607,47 +607,40 @@ export default function WizardClient() {
     console.log('Session status:', status);
     console.log('Session user:', session?.user);
     
-    if (userEmail !== 'anonymous') {
-      // Load data from Supabase database for logged-in users
-      console.log('Loading data from Supabase database...');
-      
-      fetch('/api/load-wizard-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ user_email: userEmail }),
-      })
-      .then(response => {
-        console.log('Load response status:', response.status);
-        console.log('Load response ok:', response.ok);
-        return response.json();
-      })
-      .then(result => {
-        console.log('Load result:', result);
-        if (result.success && result.data) {
-          console.log('✅ Data loaded from Supabase database:', result.data);
-          setForm(result.data);
-        } else {
-          console.log('🆕 No data found in database for user:', userEmail);
-          console.log('Using default form for new user');
-          setForm(form);
-        }
-      })
-      .catch(error => {
-        console.error('❌ Error loading from database:', error);
-        console.log('Using default form due to error');
+    // Load data from Supabase database for all users
+    console.log('Loading data from Supabase database...');
+    
+    fetch('/api/load-wizard-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ user_email: userEmail }),
+    })
+    .then(response => {
+      console.log('Load response status:', response.status);
+      console.log('Load response ok:', response.ok);
+      return response.json();
+    })
+    .then(result => {
+      console.log('Load result:', result);
+      if (result.success && result.data) {
+        console.log('✅ Data loaded from Supabase database:', result.data);
+        setForm(result.data);
+      } else {
+        console.log('🆕 No data found in database for user:', userEmail);
+        console.log('Using default form for new user');
         setForm(form);
-      })
-      .finally(() => {
-        setIsLoaded(true);
-      });
-    } else {
-      // Anonymous user, use default form
-      console.log('Anonymous user, using default form');
+      }
+    })
+    .catch(error => {
+      console.error('❌ Error loading from database:', error);
+      console.log('Using default form due to error');
       setForm(form);
+    })
+    .finally(() => {
       setIsLoaded(true);
-    }
+    });
   }, [session]);
 
   // Fallback timeout to ensure loading doesn't get stuck
@@ -662,9 +655,9 @@ export default function WizardClient() {
     return () => clearTimeout(timeout);
   }, [isLoaded]);
 
-  // Save form data directly to Supabase database
+  // Save form data directly to Supabase database (for all users)
   useEffect(() => {
-    if (isLoaded && session?.user?.email) {
+    if (isLoaded) {
       const timeoutId = setTimeout(() => {
         console.log('💾 Auto-saving form data to Supabase...');
         console.log('Saving form data:', form);
@@ -1181,12 +1174,8 @@ export default function WizardClient() {
     
     console.log('💾 Manual save triggered for user:', userEmail);
     
-    // Save to database if logged in
-    if (session?.user?.email) {
-      saveToWordPress(form);
-    } else {
-      console.log('ℹ️ User not logged in, cannot save to database');
-    }
+    // Save to database for all users
+    saveToWordPress(form);
   };
 
   const saveToWordPress = async (formData: FormData) => {
