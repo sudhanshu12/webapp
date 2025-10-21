@@ -746,7 +746,7 @@ export default function WizardClient() {
     setIsLoaded(true);
   }, []);
 
-  // Save form data to localStorage and Supabase whenever it changes
+  // Save form data to localStorage whenever it changes
   useEffect(() => {
     if (isLoaded) {
       const userEmail = session?.user?.email || 'anonymous';
@@ -760,21 +760,21 @@ export default function WizardClient() {
       // Always save to localStorage for immediate access (works for all users)
       saveLS(userKey, form);
       console.log('✅ Saved to localStorage with key:', userKey);
-      
-      // Also save to Supabase database if user is logged in (debounced to avoid too many requests)
-      if (session?.user?.email) {
-        const timeoutId = setTimeout(() => {
-          console.log('💾 Auto-saving form data to Supabase...');
-          console.log('Saving form data:', form);
-          saveToWordPress(form);
-        }, 500); // Reduced to 0.5 second delay for immediate saves
-        
-        return () => clearTimeout(timeoutId);
-      } else {
-        console.log('ℹ️ User not logged in, only saving to localStorage');
-      }
     } else {
       console.log('❌ Not saving - isLoaded:', isLoaded);
+    }
+  }, [form, isLoaded, session]);
+
+  // Separate effect for Supabase saving (less frequent)
+  useEffect(() => {
+    if (isLoaded && session?.user?.email) {
+      const timeoutId = setTimeout(() => {
+        console.log('💾 Auto-saving form data to Supabase...');
+        console.log('Saving form data:', form);
+        saveToWordPress(form);
+      }, 2000); // 2 second delay for database saves
+      
+      return () => clearTimeout(timeoutId);
     }
   }, [form, isLoaded, session]);
 
@@ -1276,6 +1276,23 @@ export default function WizardClient() {
       
       return next;
     });
+  };
+
+  // Comprehensive save function
+  const saveWizardData = () => {
+    const userEmail = session?.user?.email || 'anonymous';
+    const userKey = `bsg_form_${userEmail}`;
+    
+    console.log('💾 Manual save triggered for user:', userEmail);
+    
+    // Always save to localStorage
+    saveLS(userKey, form);
+    console.log('✅ Saved to localStorage');
+    
+    // Save to database if logged in
+    if (session?.user?.email) {
+      saveToWordPress(form);
+    }
   };
 
   const saveToWordPress = async (formData: FormData) => {
@@ -2187,7 +2204,7 @@ export default function WizardClient() {
           <div className="bsg-header">
           <div className="bsg-header-content">
             <h2 style={{color: form.heading_color || undefined}}>Create A Website Click</h2>
-            <p>Create and manage your professional business website with ease - <span style={{color: '#14b8a6', fontSize: '12px'}}>💾 Auto-saving your data</span></p>
+            <p>Create and manage your professional business website with ease</p>
           </div>
         </div>
         
@@ -2306,6 +2323,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.business_name}
                                 onChange={(e) => updateForm('business_name', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="Your Business Name"
                               />
