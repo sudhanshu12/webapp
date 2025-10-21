@@ -1748,9 +1748,9 @@ export default function WizardClient() {
       return;
     }
     
-    // Use the synchronized data from localStorage
-    const finalServices = currentServices;
-    const finalLocations = currentLocations;
+    // Use the current state data
+    const finalServices = services;
+    const finalLocations = locations;
     
     // Ensure all services and locations have proper slugs before sending
     const servicesWithSlugs = finalServices.map(service => {
