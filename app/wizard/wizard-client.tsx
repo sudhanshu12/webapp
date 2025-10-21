@@ -747,7 +747,34 @@ export default function WizardClient() {
     
     if (savedForm) {
       setForm(savedForm);
+    } else if (userEmail !== 'anonymous') {
+      // No localStorage data found, try to load from Supabase database
+      console.log('No localStorage data found, attempting to load from Supabase database...');
+      
+      // Load data from Supabase database
+      fetch('/api/load-wizard-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_email: userEmail }),
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.success && result.data) {
+          console.log('✅ Data loaded from Supabase database:', result.data);
+          setForm(result.data);
+          // Also save to localStorage for faster future loads
+          saveLS(userKey, result.data);
+        } else {
+          console.log('🆕 No data found in database for user:', userEmail);
+        }
+      })
+      .catch(error => {
+        console.error('❌ Error loading from database:', error);
+      });
     }
+    
     setIsLoaded(true);
   }, []);
 
@@ -1262,21 +1289,29 @@ export default function WizardClient() {
 
   const saveToWordPress = async (formData: FormData) => {
     try {
+      // Add user email to the form data for database saving
+      const dataToSave = {
+        ...formData,
+        user_email: session?.user?.email || 'anonymous'
+      };
+
       const response = await fetch('/api/save-wizard-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(dataToSave),
       });
 
       if (response.ok) {
-        console.log('✅ Data saved to WordPress successfully');
+        const result = await response.json();
+        console.log('✅ Data saved successfully:', result.message);
+        console.log('Saved to:', result.saved_to);
       } else {
-        console.error('❌ Failed to save data to WordPress');
+        console.error('❌ Failed to save data');
       }
     } catch (error) {
-      console.error('❌ Error saving to WordPress:', error);
+      console.error('❌ Error saving data:', error);
     }
   };
 

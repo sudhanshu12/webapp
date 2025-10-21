@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { supabase } from '../../../lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
@@ -203,48 +204,84 @@ export async function POST(request: NextRequest) {
       business_hours: data.business_hours || 'Mo-Fr 08:00-17:00',
     };
 
-    // Save to WordPress using REST API
+    // Save to Supabase database
+    let supabaseSuccess = false;
+    if (supabase) {
+      try {
+        console.log('💾 Saving wizard data to Supabase...');
+        
+        // Get user email from the request data
+        const userEmail = data.user_email || data.email || 'anonymous';
+        
+        // Save to Supabase - upsert (insert or update) based on user email
+        const { data: supabaseData, error: supabaseError } = await supabase
+          .from('wizard_data')
+          .upsert({
+            user_email: userEmail,
+            data: bsgSettings,
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'user_email'
+          });
+
+        if (supabaseError) {
+          console.error('❌ Supabase error:', supabaseError);
+        } else {
+          console.log('✅ Data saved to Supabase successfully');
+          supabaseSuccess = true;
+        }
+      } catch (error) {
+        console.error('❌ Error saving to Supabase:', error);
+      }
+    } else {
+      console.log('⚠️ Supabase not configured, skipping database save');
+    }
+
+    // Also save to WordPress if configured
+    let wordpressSuccess = false;
     try {
       // Prefer URL coming from the wizard payload, fallback to env
       const incomingWpUrl = (data.wordpress_url || data.wordpressUrl || '').toString().trim();
       const wordpressUrl = incomingWpUrl || process.env.WORDPRESS_URL || 'http://localhost/wordpress';
-      const response = await fetch(`${wordpressUrl.replace(/\/$/, '')}/wp-json/bsg/v1/save-wizard-data`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bsgSettings),
-      });
+      
+      if (wordpressUrl && wordpressUrl !== 'http://localhost/wordpress') {
+        const response = await fetch(`${wordpressUrl.replace(/\/$/, '')}/wp-json/bsg/v1/save-wizard-data`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(bsgSettings),
+        });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log('✅ Data saved to WordPress:', result);
-        
-        return NextResponse.json({ 
-          success: true, 
-          message: 'Wizard data saved to WordPress successfully',
-          settings: bsgSettings 
-        });
-      } else {
-        console.error('❌ Failed to save to WordPress:', response.status, response.statusText);
-        
-        // For now, just return success even if WordPress save fails
-        // In production, you might want to handle this differently
-        return NextResponse.json({ 
-          success: true, 
-          message: 'Wizard data processed (WordPress save may have failed)',
-          settings: bsgSettings 
-        });
+        if (response.ok) {
+          const result = await response.json();
+          console.log('✅ Data saved to WordPress:', result);
+          wordpressSuccess = true;
+        } else {
+          console.error('❌ Failed to save to WordPress:', response.status, response.statusText);
+        }
       }
     } catch (error) {
       console.error('❌ Error saving to WordPress:', error);
-      
-      // For now, just return success even if WordPress save fails
+    }
+
+    // Return success if either Supabase or WordPress save succeeded
+    if (supabaseSuccess || wordpressSuccess) {
       return NextResponse.json({ 
         success: true, 
-        message: 'Wizard data processed (WordPress connection failed)',
-        settings: bsgSettings 
+        message: `Wizard data saved successfully${supabaseSuccess ? ' to database' : ''}${wordpressSuccess ? ' to WordPress' : ''}`,
+        settings: bsgSettings,
+        saved_to: {
+          supabase: supabaseSuccess,
+          wordpress: wordpressSuccess
+        }
       });
+    } else {
+      return NextResponse.json({ 
+        success: false, 
+        message: 'Failed to save data to any storage system',
+        settings: bsgSettings 
+      }, { status: 500 });
     }
 
   } catch (error) {
