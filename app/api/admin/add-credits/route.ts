@@ -3,6 +3,10 @@ import { supabase } from '../../../../lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
+    if (!supabase) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 })
+    }
+
     const { userId, creditsToAdd = 5 } = await request.json()
 
     if (!userId) {
