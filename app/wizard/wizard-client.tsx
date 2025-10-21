@@ -377,7 +377,7 @@ export default function WizardClient() {
     
     // Only look for data specific to this user
     const userKey = `bsg_form_${userEmail}`;
-    const recoveredForm = loadLS<FormData>(userKey, {});
+    const recoveredForm = loadLS<FormData>(userKey, form);
     
     if (recoveredForm && Object.keys(recoveredForm).length > 0) {
       console.log('Recovered form data for user:', userEmail);
