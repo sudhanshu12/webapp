@@ -762,6 +762,17 @@ export default function WizardClient() {
     }
   }, [form.services_cta_link]);
 
+  // Auto-fix about button link to use relative path if it's a full URL
+  useEffect(() => {
+    if (form.about_button_link && (form.about_button_link.startsWith('http://') || form.about_button_link.startsWith('https://'))) {
+      // Extract the path from the full URL
+      const url = new URL(form.about_button_link);
+      const path = url.pathname.startsWith('/') ? url.pathname.substring(1) : url.pathname;
+      console.log('🔄 Converting about button link from full URL to relative path:', path);
+      updateForm('about_button_link', path || 'about-us');
+    }
+  }, [form.about_button_link]);
+
   const [locations, setLocations] = useState<Location[]>([
     {
       id: '1',
