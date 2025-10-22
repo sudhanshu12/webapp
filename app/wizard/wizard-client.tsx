@@ -543,7 +543,7 @@ export default function WizardClient() {
     commitment_title: 'Our Promise Of Reliability',
     commitment_text: '',
     commitment_button_label: 'Request An Estimate',
-    commitment_button_link: '#',
+    commitment_button_link: 'tel:+1234567890',
     commitment_bg_image: '',
     commitment_bg_color: '#232834',
     commitment_text_color: '#ffffff',
@@ -774,6 +774,14 @@ export default function WizardClient() {
       updateForm('about_button_link', path || 'about-us');
     }
   }, [form.about_button_link]);
+
+  // Auto-fix commitment button link to use tel: if it's set to "contact" or similar
+  useEffect(() => {
+    if (form.commitment_button_link === 'contact' || form.commitment_button_link === '#' || form.commitment_button_link === 'conta') {
+      console.log('🔄 Converting commitment button link from "contact" to tel: link');
+      updateForm('commitment_button_link', 'tel:+1234567890');
+    }
+  }, [form.commitment_button_link]);
 
   const [locations, setLocations] = useState<Location[]>([
     {
@@ -5708,20 +5716,13 @@ export default function WizardClient() {
                           <td style={{padding: '12px 0', textAlign: 'left'}}>
                             <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                               <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
-                                {(() => {
-                                  if (form.target_website_domain) {
-                                    const domain = form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
-                                    return domain + '/';
-                                  }
-                                  if (typeof window !== 'undefined') {
-                                    return window.location.origin + '/';
-                                  }
-                                  return 'https://yourdomain.com/';
-                                })()}
+                                {form.commitment_button_link?.startsWith('tel:') ? 'Phone:' : 
+                                 form.commitment_button_link?.startsWith('mailto:') ? 'Email:' :
+                                 form.commitment_button_link?.startsWith('http') ? 'URL:' : 'Page:'}
                               </span>
                               <input 
                                 type="text" 
-                                value={form.commitment_button_link || 'contact'}
+                                value={form.commitment_button_link || 'tel:+1234567890'}
                                 onChange={(e) => updateForm('commitment_button_link', e.target.value)}
                                 style={{
                                   background: '#0f172a',
@@ -5731,14 +5732,14 @@ export default function WizardClient() {
                                   color: '#f1f5f9',
                                   flex: 1
                                 }}
-                                placeholder="contact"
+                                placeholder="tel:+1234567890"
                               />
                             </div>
                             <p style={{color: '#6b7280', marginTop: '4px', fontSize: '12px'}}>
-                              Full URL: {(() => {
-                                const link = form.commitment_button_link || 'contact';
-                                if (link.startsWith('http://') || link.startsWith('https://')) {
-                                  return link;
+                              {(() => {
+                                const link = form.commitment_button_link || 'tel:+1234567890';
+                                if (link.startsWith('tel:') || link.startsWith('mailto:') || link.startsWith('http://') || link.startsWith('https://')) {
+                                  return `Link: ${link}`;
                                 }
                                 const cleanLink = link.startsWith('/') ? link.substring(1) : link;
                                 const origin = (() => {
@@ -5750,7 +5751,7 @@ export default function WizardClient() {
                                   }
                                   return 'https://yourdomain.com';
                                 })();
-                                return `${origin}/${cleanLink}`;
+                                return `Full URL: ${origin}/${cleanLink}`;
                               })()}
                             </p>
                           </td>

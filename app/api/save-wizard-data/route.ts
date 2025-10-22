@@ -259,7 +259,7 @@ export async function POST(request: NextRequest) {
       commitment_title: data.commitment_title || 'Our Promise Of Reliability',
       commitment_text: data.commitment_text || '',
       commitment_button_label: data.commitment_button_label || 'Request An Estimate',
-      commitment_button_link: data.commitment_button_link || 'contact',
+      commitment_button_link: data.commitment_button_link || 'tel:+1234567890',
       commitment_bg_color: data.commitment_bg_color || '#f8f9fa',
       commitment_text_color: data.commitment_text_color || '#232834',
       commitment_heading_color: data.commitment_heading_color || '#ffffff',
