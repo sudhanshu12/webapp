@@ -3627,7 +3627,12 @@ export default function WizardClient() {
                             <td>
                               <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                                 <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
-                                  {typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com'}/
+                                  {(() => {
+                                    if (typeof window !== 'undefined') {
+                                      return window.location.origin + '/';
+                                    }
+                                    return 'https://yourdomain.com/';
+                                  })()}
                                 </span>
                                 <input 
                                   type="text" 
@@ -3645,7 +3650,12 @@ export default function WizardClient() {
                                     return link;
                                   }
                                   const cleanLink = link.startsWith('/') ? link.substring(1) : link;
-                                  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com';
+                                  const origin = (() => {
+                                    if (typeof window !== 'undefined') {
+                                      return window.location.origin;
+                                    }
+                                    return 'https://yourdomain.com';
+                                  })();
                                   return `${origin}/${cleanLink}`;
                                 })()}
                               </p>
@@ -4370,7 +4380,12 @@ export default function WizardClient() {
                                   return `Link: ${link}`;
                                 }
                                 const cleanLink = link.startsWith('/') ? link.substring(1) : link;
-                                const origin = typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com';
+                                const origin = (() => {
+                                  if (typeof window !== 'undefined') {
+                                    return window.location.origin;
+                                  }
+                                  return 'https://yourdomain.com';
+                                })();
                                 return `Full URL: ${origin}/${cleanLink}`;
                               })()}
                             </p>
@@ -5665,7 +5680,12 @@ export default function WizardClient() {
                           <td style={{padding: '12px 0', textAlign: 'left'}}>
                             <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                               <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
-                                {typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com'}/
+                                {(() => {
+                                  if (typeof window !== 'undefined') {
+                                    return window.location.origin + '/';
+                                  }
+                                  return 'https://yourdomain.com/';
+                                })()}
                               </span>
                               <input 
                                 type="text" 
@@ -5689,7 +5709,12 @@ export default function WizardClient() {
                                   return link;
                                 }
                                 const cleanLink = link.startsWith('/') ? link.substring(1) : link;
-                                const origin = typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com';
+                                const origin = (() => {
+                                  if (typeof window !== 'undefined') {
+                                    return window.location.origin;
+                                  }
+                                  return 'https://yourdomain.com';
+                                })();
                                 return `${origin}/${cleanLink}`;
                               })()}
                             </p>
