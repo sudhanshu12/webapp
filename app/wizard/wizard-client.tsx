@@ -1179,13 +1179,14 @@ export default function WizardClient() {
     console.log('Session:', session);
     console.log('User email:', session?.user?.email);
     console.log('Form data:', form);
+    console.log('Current form state:', JSON.stringify(form, null, 2));
     
     if (!session?.user?.email) {
       console.log('❌ No user session - cannot save data');
       return;
     }
     
-    console.log('💾 Manual save triggered');
+    console.log('💾 Manual save triggered - calling saveToWordPress');
     
     // Save to database for logged-in users only
     saveToWordPress(form);
@@ -2913,7 +2914,10 @@ export default function WizardClient() {
                             <textarea 
                               value={form.hero_description}
                               onChange={(e) => updateForm('hero_description', e.target.value)}
-                              onBlur={saveWizardData}
+                              onBlur={() => {
+                                console.log('🔥 onBlur triggered for hero_description');
+                                saveWizardData();
+                              }}
                               className="large-text" 
                               rows={3} 
                               placeholder="Hero section description..."
