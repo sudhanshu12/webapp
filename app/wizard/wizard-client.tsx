@@ -6132,6 +6132,7 @@ export default function WizardClient() {
                               type="checkbox" 
                               checked={form.faq_visible || true}
                               onChange={(e) => updateForm('faq_visible', e.target.checked)}
+                              onBlur={saveWizardData}
                             />
                             <span style={{marginLeft: '8px'}}>Show this section</span>
                           </td>
@@ -6140,32 +6141,32 @@ export default function WizardClient() {
                         <tr>
                           <th scope="row">Section Background Color</th>
                           <td>
-                            <input type="color" value={form.faq_bg_color || '#1f2732'} onChange={(e) => updateForm('faq_bg_color', e.target.value)} />
+                            <input type="color" value={form.faq_bg_color || '#1f2732'} onChange={(e) => updateForm('faq_bg_color', e.target.value)} onBlur={saveWizardData} />
                             <span className="description" style={{marginLeft:8}}>Dark slate like the preview</span>
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Heading</th>
                           <td>
-                            <input type="text" className="regular-text" value={form.faq_heading || ''} onChange={(e)=>updateForm('faq_heading', e.target.value)} placeholder="Frequently Asked Questions" />
+                            <input type="text" className="regular-text" value={form.faq_heading || ''} onChange={(e)=>updateForm('faq_heading', e.target.value)} onBlur={saveWizardData} placeholder="Frequently Asked Questions" />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Description</th>
                           <td>
-                            <textarea className="regular-text" rows={3} value={form.faq_desc || ''} onChange={(e)=>updateForm('faq_desc', e.target.value)} placeholder="Find answers to common questions..." />
+                            <textarea className="regular-text" rows={3} value={form.faq_desc || ''} onChange={(e)=>updateForm('faq_desc', e.target.value)} onBlur={saveWizardData} placeholder="Find answers to common questions..." />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Heading Color</th>
                           <td>
-                            <input type="color" value={form.faq_heading_color || '#232834'} onChange={(e)=>updateForm('faq_heading_color', e.target.value)} />
+                            <input type="color" value={form.faq_heading_color || '#232834'} onChange={(e)=>updateForm('faq_heading_color', e.target.value)} onBlur={saveWizardData} />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Description Color</th>
                           <td>
-                            <input type="color" value={form.faq_description_color || '#6b7280'} onChange={(e)=>updateForm('faq_description_color', e.target.value)} />
+                            <input type="color" value={form.faq_description_color || '#6b7280'} onChange={(e)=>updateForm('faq_description_color', e.target.value)} onBlur={saveWizardData} />
                           </td>
                         </tr>
                         <tr>
@@ -6176,6 +6177,7 @@ export default function WizardClient() {
                               className="regular-text" 
                               value={form.faq_image || ''} 
                               onChange={(e)=>updateForm('faq_image', e.target.value)} 
+                              onBlur={saveWizardData}
                               placeholder="https://example.com/image.jpg"
                               style={{width: '250px', marginRight: '8px'}}
                             />
@@ -6204,25 +6206,25 @@ export default function WizardClient() {
                         <tr>
                           <th scope="row">Box Background</th>
                           <td>
-                            <input type="color" value={form.faq_box_color || '#374151'} onChange={(e)=>updateForm('faq_box_color', e.target.value)} />
+                            <input type="color" value={form.faq_box_color || '#374151'} onChange={(e)=>updateForm('faq_box_color', e.target.value)} onBlur={saveWizardData} />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Question Color</th>
                           <td>
-                            <input type="color" value={form.faq_question_color || '#ffffff'} onChange={(e)=>updateForm('faq_question_color', e.target.value)} />
+                            <input type="color" value={form.faq_question_color || '#ffffff'} onChange={(e)=>updateForm('faq_question_color', e.target.value)} onBlur={saveWizardData} />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Answer Color</th>
                           <td>
-                            <input type="color" value={form.faq_answer_color || '#b0b0b0'} onChange={(e)=>updateForm('faq_answer_color', e.target.value)} />
+                            <input type="color" value={form.faq_answer_color || '#b0b0b0'} onChange={(e)=>updateForm('faq_answer_color', e.target.value)} onBlur={saveWizardData} />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Toggle Accent</th>
                           <td>
-                            <input type="color" value={form.faq_toggle_color || '#2ee6c5'} onChange={(e)=>updateForm('faq_toggle_color', e.target.value)} />
+                            <input type="color" value={form.faq_toggle_color || '#2ee6c5'} onChange={(e)=>updateForm('faq_toggle_color', e.target.value)} onBlur={saveWizardData} />
                           </td>
                         </tr>
                         <tr>
@@ -6232,6 +6234,7 @@ export default function WizardClient() {
                               type="number" 
                               value={form.faq_padding || 80}
                               onChange={(e) => updateForm('faq_padding', parseInt(e.target.value))}
+                              onBlur={saveWizardData}
                               min="0" 
                               max="300"
                             />
