@@ -24,12 +24,11 @@
     <link rel="icon" type="image/x-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.ico">
     <link rel="apple-touch-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">
     <?php
-    // Output meta tags based on page type - only for pages that don't have their own meta tag handling
-    if (is_page_template('page-about-us.php') && !is_page_template('about.php')) {
-        bsg_output_meta_tags('about');
-    } elseif (is_page_template('page-contact.php') && !is_page_template('contact.php')) {
-        bsg_output_meta_tags('contact');
-    } elseif (!is_page_template('page-service.php') && !is_page_template('location.php') && !is_page_template('about.php') && !is_page_template('contact.php')) {
+    // Only output meta tags for pages that don't have their own meta tag handling
+    // Pages with their own meta tags: about.php, contact.php, page-service.php, location.php, home-dynamic.php
+    if (!is_page_template('about.php') && !is_page_template('contact.php') && 
+        !is_page_template('page-service.php') && !is_page_template('location.php') && 
+        !is_page_template('home-dynamic.php')) {
         bsg_output_meta_tags('home');
     }
     ?>

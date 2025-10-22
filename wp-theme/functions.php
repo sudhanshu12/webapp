@@ -544,21 +544,21 @@ function bsg_generate_meta_tags($page_type = 'home', $custom_title = '', $custom
     
     switch ($page_type) {
         case 'home':
-            $meta_data['title'] = $custom_title ?: ($settings['homepage_meta_title'] ?? $business['name'] . ' - Professional Services in ' . $business['state']);
-            $meta_data['description'] = $custom_description ?: ($settings['homepage_meta_description'] ?? $business['name'] . ' provides professional services in ' . $business['state'] . '. Get free estimates, expert installation, and reliable service. Call ' . $business['phone'] . ' today!');
-            $meta_data['keywords'] = $settings['homepage_meta_keywords'] ?? 'professional services, ' . strtolower($business['name']) . ', ' . $business['state'] . ', installation, repair, contractor, free estimate';
+            $meta_data['title'] = $custom_title ?: ($settings['homepage_meta_title'] ?: $business['name'] . ' - Professional Services in ' . $business['state']);
+            $meta_data['description'] = $custom_description ?: ($settings['homepage_meta_description'] ?: $business['name'] . ' provides professional services in ' . $business['state'] . '. Get free estimates, expert installation, and reliable service. Call ' . $business['phone'] . ' today!');
+            $meta_data['keywords'] = $settings['homepage_meta_keywords'] ?: 'professional services, ' . strtolower($business['name']) . ', ' . $business['state'] . ', installation, repair, contractor, free estimate';
             break;
             
         case 'about':
-            $meta_data['title'] = $custom_title ?: ($settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? $business['name'] . ' - About Us | Professional ' . $business['business_type']);
-            $meta_data['description'] = $custom_description ?: ($settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business['name'] . ', a trusted ' . $business['business_type'] . ' with ' . ($settings['about_years'] ?? '15+') . ' years of experience. Professional ' . $business['business_type'] . ', quality workmanship, and customer satisfaction in ' . $business['location'] . '.');
-            $meta_data['keywords'] = $settings['about_page_meta_keywords'] ?? $settings['about_meta_keywords'] ?? 'about ' . strtolower($business['name']) . ', ' . $business['business_type'] . ', professional ' . $business['business_type'] . ', ' . ($settings['about_years'] ?? '15+') . ' years experience, quality ' . $business['business_type'];
+            $meta_data['title'] = $custom_title ?: ($settings['about_page_meta_title'] ?: $settings['about_meta_title'] ?: $business['name'] . ' - About Us | Professional ' . $business['business_type']);
+            $meta_data['description'] = $custom_description ?: ($settings['about_page_meta_description'] ?: $settings['about_meta_description'] ?: 'Learn about ' . $business['name'] . ', a trusted ' . $business['business_type'] . ' with ' . ($settings['about_years'] ?? '15+') . ' years of experience. Professional ' . $business['business_type'] . ', quality workmanship, and customer satisfaction in ' . $business['location'] . '.');
+            $meta_data['keywords'] = $settings['about_page_meta_keywords'] ?: $settings['about_meta_keywords'] ?: 'about ' . strtolower($business['name']) . ', ' . $business['business_type'] . ', professional ' . $business['business_type'] . ', ' . ($settings['about_years'] ?? '15+') . ' years experience, quality ' . $business['business_type'];
             break;
             
         case 'contact':
-            $meta_data['title'] = $custom_title ?: ($settings['contact_meta_title'] ?? $business['name'] . ' - Contact Us | Get Free Estimate');
-            $meta_data['description'] = $custom_description ?: ($settings['contact_meta_description'] ?? 'Contact ' . $business['name'] . ' for professional ' . $business['business_type'] . '. Get free estimates, expert consultation, and reliable service. Call ' . $business['phone'] . ' or fill out our contact form today!');
-            $meta_data['keywords'] = $settings['contact_meta_keywords'] ?? 'contact ' . strtolower($business['name']) . ', ' . $business['business_type'] . ' estimate, free consultation, ' . $business['business_type'] . ' contact, ' . $business['phone'];
+            $meta_data['title'] = $custom_title ?: ($settings['contact_meta_title'] ?: $business['name'] . ' - Contact Us | Get Free Estimate');
+            $meta_data['description'] = $custom_description ?: ($settings['contact_meta_description'] ?: 'Contact ' . $business['name'] . ' for professional ' . $business['business_type'] . '. Get free estimates, expert consultation, and reliable service. Call ' . $business['phone'] . ' or fill out our contact form today!');
+            $meta_data['keywords'] = $settings['contact_meta_keywords'] ?: 'contact ' . strtolower($business['name']) . ', ' . $business['business_type'] . ' estimate, free consultation, ' . $business['business_type'] . ' contact, ' . $business['phone'];
             break;
             
         case 'service':

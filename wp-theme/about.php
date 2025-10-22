@@ -50,6 +50,9 @@ add_action('wp_head', function() use ($meta_title, $meta_description, $business,
     
     // Canonical URL
     echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
+    
+    // Canonical URL
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
 // About page specific settings from admin
