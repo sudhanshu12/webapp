@@ -25,15 +25,32 @@ error_log('Final meta title: ' . $meta_title);
 error_log('Final meta description: ' . $meta_description);
 error_log('=== ABOUT PAGE META DEBUG END ===');
 
-// Add meta tags to head
-add_action('wp_head', function() use ($meta_title, $meta_description) {
+// Remove WordPress default title generation to prevent duplicates
+remove_action('wp_head', '_wp_render_title_tag', 1);
+
+// Add single meta tags to head - use wizard about page data
+add_action('wp_head', function() use ($meta_title, $meta_description, $business, $settings) {
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="about ' . strtolower($business['name']) . ', ' . $business['business_type'] . ', professional ' . $business['business_type'] . ', ' . ($settings['about_years'] ?? '15+') . ' years experience, quality ' . $business['business_type'] . '">' . "\n";
+    echo '<meta name="author" content="' . esc_attr($business['name']) . '">' . "\n";
+    echo '<meta name="robots" content="index, follow">' . "\n";
+    
+    // Open Graph Meta Tags
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr($business['name']) . '">' . "\n";
+    
+    // Twitter Card Meta Tags
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
-});
+    
+    // Canonical URL
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
+}, 1);
 
 // About page specific settings from admin
 $about_hero_tagline = $settings['about_hero_tagline'] ?? 'ABOUT ' . $business['name'];
@@ -919,7 +936,7 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
                 <?php 
                 // Get the full about page content from wizard settings (about page, not homepage about section)
-                $wizard_about_content = $settings['about_page_description'] ?? $settings['about_page_who_description'] ?? '';
+                $wizard_about_content = $settings['about_page_who_description'] ?? $settings['about_page_description'] ?? '';
                 
                 // Only display wizard content if it exists and is substantial
                 if (!empty($wizard_about_content) && strlen(trim($wizard_about_content)) > 50 && strpos($wizard_about_content, 'hi thi stess') === false) {

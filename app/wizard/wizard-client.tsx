@@ -606,7 +606,7 @@ export default function WizardClient() {
     }
     
     if (!session?.user?.email) {
-      console.log('❌ No user session found - redirecting to login');
+      console.log('❌ No user session found - user must be logged in');
       setIsLoaded(true);
       return;
     }
@@ -661,10 +661,20 @@ export default function WizardClient() {
         console.log('⚠️ Loading timeout reached, forcing load');
         setIsLoaded(true);
       }
-    }, 3000); // 3 second timeout
+    }, 2000); // 2 second timeout
 
     return () => clearTimeout(timeout);
   }, [isLoaded]);
+
+  // Force load after 5 seconds regardless of any conditions
+  useEffect(() => {
+    const forceTimeout = setTimeout(() => {
+      console.log('🚨 Force loading wizard after 5 seconds');
+      setIsLoaded(true);
+    }, 5000);
+
+    return () => clearTimeout(forceTimeout);
+  }, []);
 
   // Save form data directly to Supabase database (logged-in users only)
   useEffect(() => {
@@ -686,7 +696,7 @@ export default function WizardClient() {
     } else {
       console.log('❌ Auto-save conditions not met');
       if (!isLoaded) console.log('  - isLoaded is false');
-      if (!session?.user?.email) console.log('  - No user email in session');
+      if (!session?.user?.email) console.log('  - No user session');
     }
   }, [form, isLoaded, session]);
 
@@ -907,8 +917,12 @@ export default function WizardClient() {
   };
 
   const updateForm = (field: keyof FormData, value: any) => {
+    console.log('=== UPDATE FORM DEBUG ===');
+    console.log('Field:', field);
+    console.log('Value:', value);
     setForm(prev => {
       const next = { ...prev, [field]: value } as FormData;
+      console.log('Updated form state:', next);
       
       // Apply default professional dark theme colors when checkbox is checked
       if (field === 'use_default_color_scheme' && value === true) {
@@ -1063,7 +1077,7 @@ export default function WizardClient() {
     });
   };
 
-  // Comprehensive save function (logged-in users only)
+  // Comprehensive save function (works for logged-in users only)
   const saveWizardData = () => {
     console.log('=== MANUAL SAVE DEBUG ===');
     console.log('🔍 saveWizardData function called');
@@ -1072,12 +1086,11 @@ export default function WizardClient() {
     console.log('Form data:', form);
     
     if (!session?.user?.email) {
-      console.log('❌ User not logged in, cannot save data');
+      console.log('❌ No user session - cannot save data');
       return;
     }
     
-    const userEmail = session.user.email;
-    console.log('💾 Manual save triggered for user:', userEmail);
+    console.log('💾 Manual save triggered');
     
     // Save to database for logged-in users only
     saveToWordPress(form);
@@ -1088,6 +1101,10 @@ export default function WizardClient() {
       console.log('=== SAVE TO WORDPRESS/SUPABASE DEBUG ===');
       console.log('🔍 saveToWordPress function called');
       console.log('Form data being saved:', formData);
+      console.log('Hero description value:', formData.hero_description);
+      console.log('About page who headline:', formData.about_page_who_headline);
+      console.log('About page who description:', formData.about_page_who_description);
+      console.log('About page team image:', formData.about_page_team_image);
       console.log('User email:', session?.user?.email);
       console.log('Session status:', status);
       
@@ -1549,14 +1566,22 @@ export default function WizardClient() {
       const data = await response.json();
 
       if (response.ok && data.content && Array.isArray(data.content)) {
-        // Replace all features with generated ones
-        setFeatures(data.content.map((feature: any, index: number) => ({
-          id: (index + 1).toString(),
+        // Generate exactly 3 features (or use existing if more than 3)
+        const generatedFeatures = data.content.slice(0, 3).map((feature: any, index: number) => ({
+          id: (Date.now() + index).toString(),
           title: feature.title || '',
           icon: feature.icon || '✨',
           description: feature.description || ''
-        })));
-        setSuccess('✅ Features generated successfully!');
+        }));
+        
+        // If no existing features, replace all. If existing features, add to them
+        if (features.length === 0) {
+          setFeatures(generatedFeatures);
+          setSuccess('✅ 3 features generated successfully!');
+        } else {
+          setFeatures([...features, ...generatedFeatures]);
+          setSuccess('✅ Additional features generated successfully!');
+        }
       } else {
         setSuccess(`❌ Failed to generate features: ${data.error || 'Unknown error'}`);
       }
@@ -1937,6 +1962,73 @@ export default function WizardClient() {
     Vermont:'VT', Virginia:'VA', Washington:'WA', 'West Virginia':'WV', Wisconsin:'WI', Wyoming:'WY'
   };
 
+  // Show login requirement for non-authenticated users
+  if (!session?.user?.email) {
+    return (
+      <div className="bsg-admin">
+        <div className="wrap">
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '60vh',
+            fontSize: '18px',
+            color: '#666',
+            gap: '20px',
+            textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937' }}>
+              🔐 Login Required
+            </div>
+            <div style={{ fontSize: '16px', color: '#6b7280', maxWidth: '500px' }}>
+              You must be registered and logged in to access the website builder wizard.
+            </div>
+            <div style={{ 
+              background: '#fef3c7', 
+              border: '1px solid #f59e0b', 
+              borderRadius: '8px', 
+              padding: '16px', 
+              marginTop: '20px',
+              color: '#92400e',
+              maxWidth: '400px'
+            }}>
+              ⚠️ Please register an account or login to continue
+            </div>
+            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
+              <a 
+                href="/login" 
+                style={{
+                  background: '#3b82f6',
+                  color: 'white',
+                  padding: '12px 24px',
+                  borderRadius: '6px',
+                  textDecoration: 'none',
+                  fontWeight: '500'
+                }}
+              >
+                Login
+              </a>
+              <a 
+                href="/register" 
+                style={{
+                  background: '#10b981',
+                  color: 'white',
+                  padding: '12px 24px',
+                  borderRadius: '6px',
+                  textDecoration: 'none',
+                  fontWeight: '500'
+                }}
+              >
+                Register
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Show loading screen while data is being loaded
   if (!isLoaded) {
     return (
@@ -1954,7 +2046,7 @@ export default function WizardClient() {
           }}>
             <div>Loading your wizard data...</div>
             <div style={{ fontSize: '14px', color: '#666' }}>
-              User: {session?.user?.email || 'Checking authentication...'}
+              User: {session?.user?.email}
             </div>
           </div>
         </div>
@@ -1962,62 +2054,6 @@ export default function WizardClient() {
     );
   }
 
-  // Show login requirement for non-authenticated users
-  if (!session?.user?.email) {
-    return (
-      <div className="bsg-admin">
-        <div className="wrap">
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '60vh',
-            fontSize: '18px',
-            color: '#666',
-            gap: '30px',
-            textAlign: 'center',
-            padding: '40px'
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#333' }}>
-              🔒 Login Required
-            </div>
-            <div style={{ fontSize: '16px', lineHeight: '1.6' }}>
-              You need to be logged in to access the website builder wizard.
-            </div>
-            <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
-              <a 
-                href="/login" 
-                style={{
-                  padding: '12px 24px',
-                  backgroundColor: '#14b8a6',
-                  color: 'white',
-                  textDecoration: 'none',
-                  borderRadius: '6px',
-                  fontWeight: '500'
-                }}
-              >
-                Login
-              </a>
-              <a 
-                href="/register" 
-                style={{
-                  padding: '12px 24px',
-                  backgroundColor: '#f59e0b',
-                  color: 'white',
-                  textDecoration: 'none',
-                  borderRadius: '6px',
-                  fontWeight: '500'
-                }}
-              >
-                Register
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
 	return (
     <div className="bsg-admin">
@@ -2759,6 +2795,7 @@ export default function WizardClient() {
                             <textarea 
                               value={form.hero_description}
                               onChange={(e) => updateForm('hero_description', e.target.value)}
+                              onBlur={saveWizardData}
                               className="large-text" 
                               rows={3} 
                               placeholder="Hero section description..."
@@ -3259,7 +3296,22 @@ export default function WizardClient() {
                     
                     <div style={{marginTop: 20, padding: '16px', background: '#1e293b', border: '1px solid #334155', borderRadius: '8px'}}>
                       <h4 style={{color: '#f1f5f9', margin: 0, marginBottom: 8}}>| Features List</h4>
-                      <p className="description" style={{color: '#94a3b8'}}>Add your business features here.</p>
+                      <p className="description" style={{color: '#94a3b8'}}>Add your business features here. We'll generate 3 features automatically for you.</p>
+                      
+                      {features.length === 0 && (
+                        <div style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '16px', marginBottom: '12px', textAlign: 'center'}}>
+                          <p style={{color: '#94a3b8', margin: '0 0 16px 0'}}>No features added yet. Click the button below to generate 3 features automatically.</p>
+                          <button 
+                            type="button" 
+                            className="button button-primary"
+                            onClick={generateFeaturesAI}
+                            disabled={loading}
+                            style={{marginRight: 10}}
+                          >
+                            {loading ? '🔄 Generating...' : '🚀 Generate 3 Features with AI'}
+                          </button>
+                        </div>
+                      )}
                       
                       {features.map((feature, index) => (
                         <div key={feature.id} style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '16px', marginBottom: '12px'}}>
@@ -3304,19 +3356,20 @@ export default function WizardClient() {
                         </div>
                       ))}
                       
-                      <button type="button" className="button button-primary" onClick={addFeature} style={{marginTop: '1rem', marginRight: 10}}>
-                        + Add Feature
-                      </button>
-                      
-                      <button 
-                        type="button" 
-                        className="button button-secondary"
-                        onClick={generateFeaturesAI}
-                        disabled={loading}
-                        style={{marginTop: '1rem'}}
-                      >
-                        {loading ? '🔄 Generating...' : '🔧 Generate Features with AI'}
-                      </button>
+                      <div style={{display: 'flex', gap: '10px', marginTop: '1rem', flexWrap: 'wrap'}}>
+                        <button type="button" className="button button-primary" onClick={addFeature}>
+                          + Add More Features
+                        </button>
+                        
+                        <button 
+                          type="button" 
+                          className="button button-secondary"
+                          onClick={generateFeaturesAI}
+                          disabled={loading}
+                        >
+                          {loading ? '🔄 Generating...' : '🔧 Generate More Features with AI'}
+                        </button>
+                      </div>
 						</div>
 					</div>
 				)}
@@ -3487,13 +3540,22 @@ export default function WizardClient() {
                           <tr>
                             <th scope="row">CTA Button Link</th>
                             <td>
-                              <input 
-                                type="text" 
-                                value={form.about_button_link || 'about-us'}
-                                onChange={(e) => updateForm('about_button_link', e.target.value)}
-                                className="regular-text" 
-                                placeholder="e.g., about-us"
-                              />
+                              <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                                <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
+                                  {typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com'}/
+                                </span>
+                                <input 
+                                  type="text" 
+                                  value={form.about_button_link || 'about-us'}
+                                  onChange={(e) => updateForm('about_button_link', e.target.value)}
+                                  className="regular-text" 
+                                  placeholder="about-us"
+                                  style={{flex: 1}}
+                                />
+                              </div>
+                              <p className="description" style={{color: '#6b7280', marginTop: '4px'}}>
+                                Full URL: {typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com'}/{form.about_button_link || 'about-us'}
+                              </p>
                             </td>
                           </tr>
                           <tr>
@@ -3690,6 +3752,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.about_page_who_headline || 'About'}
                                 onChange={(e) => updateForm('about_page_who_headline', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="e.g., About"
                               />
@@ -3701,6 +3764,7 @@ export default function WizardClient() {
                               <textarea 
                                 value={form.about_page_who_description}
                                 onChange={(e) => updateForm('about_page_who_description', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="large-text" 
                                 rows={4} 
                                 placeholder="Description for Who We Are section..."
@@ -3714,6 +3778,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.about_page_team_image || ''}
                                 onChange={(e) => updateForm('about_page_team_image', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="Team image URL..."
                               />

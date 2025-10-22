@@ -21,33 +21,8 @@ if (empty($settings)) {
 
 $service_title = get_the_title();
 
-// Add meta tags to head - use wizard service data
-add_action('wp_head', function() use ($service_title, $business, $current_service) {
-    // Debug: Log current service data
-    error_log('=== SERVICE META DEBUG ===');
-    error_log('Service title: ' . $service_title);
-    error_log('Current service found: ' . ($current_service ? 'YES' : 'NO'));
-    if ($current_service) {
-        error_log('Service name: ' . ($current_service['name'] ?? 'NOT SET'));
-        error_log('Service meta title: ' . ($current_service['metaTitle'] ?? 'NOT SET'));
-        error_log('Service meta description: ' . ($current_service['metaDescription'] ?? 'NOT SET'));
-    }
-    error_log('=== SERVICE META DEBUG END ===');
-    
-    // Use wizard service meta data if available, otherwise fallback to generic
-    $meta_title = $current_service['metaTitle'] ?? ($service_title . ' - Professional Services | ' . $business['name']);
-    $meta_description = $current_service['metaDescription'] ?? ('Professional ' . strtolower($service_title) . ' services by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.');
-    
-    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
-    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta name="keywords" content="' . strtolower($service_title) . ', professional services, ' . $business['name'] . ', quality work">' . "\n";
-    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
-    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta property="og:type" content="website">' . "\n";
-    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
-    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
-}, 1);
+// Remove WordPress default title generation to prevent duplicates
+remove_action('wp_head', '_wp_render_title_tag', 1);
 
 // Derive request slug from URL as an extra-robust matcher
 $request_path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
@@ -173,14 +148,28 @@ if (empty($service_description) || strlen($service_description) < 100 || strip_t
     <p>Quality is at the heart of everything we do. We don\'t cut corners or compromise on standards. Every member of our team is trained, experienced, and committed to delivering workmanship that stands the test of time. We back our work with comprehensive warranties for your peace of mind.</p>';
 }
 
-// Add meta tags to head
-add_action('wp_head', function() use ($meta_title, $meta_description) {
+// Add single meta tags to head - use wizard service data
+add_action('wp_head', function() use ($meta_title, $meta_description, $business) {
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="' . strtolower($service_title) . ', professional services, ' . $business['name'] . ', quality work">' . "\n";
+    echo '<meta name="author" content="' . esc_attr($business['name']) . '">' . "\n";
+    echo '<meta name="robots" content="index, follow">' . "\n";
+    
+    // Open Graph Meta Tags
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr($business['name']) . '">' . "\n";
+    
+    // Twitter Card Meta Tags
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    
+    // Canonical URL
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
 // Force document title

@@ -44,6 +44,11 @@ export async function POST(request: NextRequest) {
       text_color: data.text_color || '',
       surface_color: data.surface_color || '',
       
+      // Homepage meta fields
+      homepage_meta_title: data.homepage_meta_title || '',
+      homepage_meta_description: data.homepage_meta_description || '',
+      homepage_meta_keywords: data.homepage_meta_keywords || '',
+      
       // Hero section settings
       hero_visible: data.hero_visible !== undefined ? data.hero_visible : true,
       hero_headline: data.hero_headline || 'Find Best Roofers Near You',
@@ -61,6 +66,15 @@ export async function POST(request: NextRequest) {
       hero_reviews_star_color: data.hero_reviews_star_color || '',
       hero_reviews_text_color: data.hero_reviews_text_color || '',
       hero_padding: data.hero_padding || 80,
+      hero_description: data.hero_description || '',
+      hero_description_color: data.hero_description_color || '',
+      hero_cta_link: data.hero_cta_link || '',
+      hero_rating: data.hero_rating || '',
+      use_global_hero_image: data.use_global_hero_image !== undefined ? data.use_global_hero_image : true,
+      service_page_hero_bg_image: data.service_page_hero_bg_image || '',
+      location_page_hero_bg_image: data.location_page_hero_bg_image || '',
+      hero_call_btn_link: data.hero_call_btn_link || '',
+      hero_side_image: data.hero_side_image || '',
       
       // Features section settings
       features_visible: data.features_visible !== undefined ? data.features_visible : true,
@@ -92,9 +106,89 @@ export async function POST(request: NextRequest) {
       about_experience_bg: data.about_experience_bg || '#374151',
       about_experience_text_color: data.about_experience_text_color || '#4ecdc4',
       about_button_text: data.about_button_text || 'About Us',
-      about_button_link: data.about_button_link || '/about-us',
+      about_button_link: (() => {
+        const link = data.about_button_link || 'about-us';
+        // If it's already a full URL, use it as is
+        if (link.startsWith('http://') || link.startsWith('https://')) {
+          return link;
+        }
+        // If it starts with /, remove it and add the domain
+        const cleanLink = link.startsWith('/') ? link.substring(1) : link;
+        // Get the domain from the request headers or use environment variable
+        const host = request.headers.get('host') || process.env.NEXT_PUBLIC_SITE_URL || 'yourdomain.com';
+        const protocol = request.headers.get('x-forwarded-proto') || 'https';
+        const origin = `${protocol}://${host}`;
+        return `${origin}/${cleanLink}`;
+      })(),
       about_button_color: data.about_button_color || '#2563eb',
       about_button_text_color: data.about_button_text_color || '#ffffff',
+      about_padding: data.about_padding || 80,
+      about_projects: data.about_projects || '',
+      about_customers: data.about_customers || '',
+      about_team: data.about_team || '',
+      about_tagline: data.about_tagline || '',
+      about_tagline_color: data.about_tagline_color || '',
+      about_heading: data.about_heading || '',
+      about_use_default_prompts: data.about_use_default_prompts !== undefined ? data.about_use_default_prompts : true,
+      
+      // About page specific settings
+      about_page_meta_title: data.about_page_meta_title || '',
+      about_page_meta_description: data.about_page_meta_description || '',
+      about_page_meta_keywords: data.about_page_meta_keywords || '',
+      about_page_who_tagline: data.about_page_who_tagline || '',
+      about_page_who_tagline_color: data.about_page_who_tagline_color || '',
+      about_page_who_headline: data.about_page_who_headline || '',
+      about_page_who_description: data.about_page_who_description || '',
+      about_page_description: data.about_page_description || '',
+      about_page_team_image: data.about_page_team_image || '',
+      about_page_years: data.about_page_years || '',
+      about_page_experience_label: data.about_page_experience_label || '',
+      about_page_experience_bg: data.about_page_experience_bg || '',
+      about_page_experience_text_color: data.about_page_experience_text_color || '',
+      about_page_cta_text: data.about_page_cta_text || '',
+      about_page_cta_link: (() => {
+        const link = data.about_page_cta_link || '';
+        if (!link || link === '#') return '#';
+        if (link.startsWith('http://') || link.startsWith('https://')) return link;
+        const cleanLink = link.startsWith('/') ? link.substring(1) : link;
+        const host = request.headers.get('host') || process.env.NEXT_PUBLIC_SITE_URL || 'yourdomain.com';
+        const protocol = request.headers.get('x-forwarded-proto') || 'https';
+        const origin = `${protocol}://${host}`;
+        return `${origin}/${cleanLink}`;
+      })(),
+      about_page_cta_bg: data.about_page_cta_bg || '',
+      about_page_cta_text_color: data.about_page_cta_text_color || '',
+      about_page_who_bg: data.about_page_who_bg || '',
+      about_page_who_text: data.about_page_who_text || '',
+      about_page_who_desc_color: data.about_page_who_desc_color || '',
+      about_page_hero_description: data.about_page_hero_description || '',
+      about_page_hero_title: data.about_page_hero_title || '',
+      about_page_hero_subtitle: data.about_page_hero_subtitle || '',
+      about_page_hero_bg_image: data.about_page_hero_bg_image || '',
+      about_page_content: data.about_page_content || '',
+      about_page_team_title: data.about_page_team_title || '',
+      about_page_team_description: data.about_page_team_description || '',
+      about_page_values_title: data.about_page_values_title || '',
+      about_page_values_description: data.about_page_values_description || '',
+      about_page_hero_tagline: data.about_page_hero_tagline || '',
+      about_page_hero_tagline_color: data.about_page_hero_tagline_color || '',
+      about_page_hero_heading_color: data.about_page_hero_heading_color || '',
+      about_page_hero_bg_color: data.about_page_hero_bg_color || '',
+      about_page_experience_text: data.about_page_experience_text || '',
+      about_page_button_bg: data.about_page_button_bg || '',
+      about_page_button_text: data.about_page_button_text || '',
+      about_page_why_heading: data.about_page_why_heading || '',
+      about_page_why_subheading: data.about_page_why_subheading || '',
+      about_page_why_bg: data.about_page_why_bg || '',
+      about_page_why_heading_color: data.about_page_why_heading_color || '',
+      about_page_why_subtitle_color: data.about_page_why_subtitle_color || '',
+      about_page_why_item_title: data.about_page_why_item_title || '',
+      about_page_why_item_desc: data.about_page_why_item_desc || '',
+      about_page_why_icon_bg: data.about_page_why_icon_bg || '',
+      about_page_why_icon: data.about_page_why_icon || '',
+      about_page_why_section_bg: data.about_page_why_section_bg || '',
+      about_page_why_section_text: data.about_page_why_section_text || '',
+      about_page_use_default_prompts: data.about_page_use_default_prompts !== undefined ? data.about_page_use_default_prompts : true,
       
       // Services section settings
       services_visible: data.services_visible !== undefined ? data.services_visible : true,
@@ -108,9 +202,24 @@ export async function POST(request: NextRequest) {
       services_button_text: data.services_button_text || '#2ee6c5',
       services_padding: data.services_padding || 40,
       services_cta_text: data.services_cta_text || '',
-      services_cta_link: data.services_cta_link || '',
+      services_cta_link: (() => {
+        const link = data.services_cta_link || '';
+        if (!link || link === '#') return '#';
+        if (link.startsWith('http://') || link.startsWith('https://')) return link;
+        const cleanLink = link.startsWith('/') ? link.substring(1) : link;
+        const host = request.headers.get('host') || process.env.NEXT_PUBLIC_SITE_URL || 'yourdomain.com';
+        const protocol = request.headers.get('x-forwarded-proto') || 'https';
+        const origin = `${protocol}://${host}`;
+        return `${origin}/${cleanLink}`;
+      })(),
       services_cta_bg: data.services_cta_bg || '',
       services_cta_text_color: data.services_cta_text_color || '',
+      services_card_radius: data.services_card_radius || 12,
+      services_progress_color: data.services_progress_color || '#2ee6c5',
+      service_hero_heading_color: data.service_hero_heading_color || '#ffffff',
+      service_hero_description_color: data.service_hero_description_color || '#cfd8dc',
+      service_content_bg_color: data.service_content_bg_color || '#232834',
+      service_content_padding: data.service_content_padding || 80,
       services: data.services || [],
       
       // Service areas section settings
@@ -132,6 +241,27 @@ export async function POST(request: NextRequest) {
           'location'
       })),
       
+      // Service areas section additional fields
+      service_areas_bg_color: data.service_areas_bg_color || '#1f2937',
+      service_areas_text_color: data.service_areas_text_color || '#ffffff',
+      service_areas_heading_color: data.service_areas_heading_color || '#ffffff',
+      service_areas_card_bg: data.service_areas_card_bg || 'rgba(255,255,255,0.08)',
+      
+      // Location page additional fields
+      location_hero_heading_color: data.location_hero_heading_color || '#ffffff',
+      location_hero_description_color: data.location_hero_description_color || '#cfd8dc',
+      location_contact_title: data.location_contact_title || 'GET A QUOTE',
+      location_contact_description: data.location_contact_description || '',
+      location_content_padding: data.location_content_padding || 80,
+      location_description_bg: data.location_description_bg || '#ffffff',
+      location_description_heading_color: data.location_description_heading_color || '#232834',
+      location_description_text_color: data.location_description_text_color || '#374151',
+      location_quote_box_bg: data.location_quote_box_bg || '#1a1f28',
+      location_quote_box_text: data.location_quote_box_text || '#ffffff',
+      location_quote_box_heading_color: data.location_quote_box_heading_color || '#ffffff',
+      location_quote_box_button_bg: data.location_quote_box_button_bg || '#2ee6c5',
+      location_quote_box_button_text: data.location_quote_box_button_text || '#ffffff',
+      
       // Reviews section settings
       reviews_visible: data.reviews_visible !== undefined ? data.reviews_visible : true,
       reviews_label: data.reviews_label || 'CUSTOMER REVIEWS',
@@ -150,12 +280,22 @@ export async function POST(request: NextRequest) {
       commitment_title: data.commitment_title || 'Our Promise Of Reliability',
       commitment_text: data.commitment_text || '',
       commitment_button_label: data.commitment_button_label || 'Request An Estimate',
-      commitment_button_link: data.commitment_button_link || '#',
+      commitment_button_link: (() => {
+        const link = data.commitment_button_link || '';
+        if (!link || link === '#') return '#';
+        if (link.startsWith('http://') || link.startsWith('https://')) return link;
+        const cleanLink = link.startsWith('/') ? link.substring(1) : link;
+        const host = request.headers.get('host') || process.env.NEXT_PUBLIC_SITE_URL || 'yourdomain.com';
+        const protocol = request.headers.get('x-forwarded-proto') || 'https';
+        const origin = `${protocol}://${host}`;
+        return `${origin}/${cleanLink}`;
+      })(),
       commitment_bg_color: data.commitment_bg_color || '#f8f9fa',
       commitment_text_color: data.commitment_text_color || '#232834',
       commitment_heading_color: data.commitment_heading_color || '#ffffff',
       commitment_subtitle_color: data.commitment_subtitle_color || '#cfd8dc',
       commitment_padding: data.commitment_padding || 40,
+      commitment_bg_image: data.commitment_bg_image || '',
       
       // FAQ section settings
       faq_visible: data.faq_visible !== undefined ? data.faq_visible : true,
@@ -166,7 +306,31 @@ export async function POST(request: NextRequest) {
       faq_heading_color: data.faq_heading_color || '#1f2937',
       faq_subtitle_color: data.faq_subtitle_color || '#6b7280',
       faq_padding: data.faq_padding || 80,
+      faq_label: data.faq_label || 'FREQUENTLY ASKED QUESTIONS',
+      faq_description_color: data.faq_description_color || '#6b7280',
+      faq_box_color: data.faq_box_color || '#374151',
+      faq_question_color: data.faq_question_color || '#ffffff',
+      faq_answer_color: data.faq_answer_color || '#b0b0b0',
+      faq_toggle_color: data.faq_toggle_color || '#2ee6c5',
+      faq_image: data.faq_image || '',
+      faq_heading: data.faq_heading || 'Frequently Asked Questions',
+      faq_desc: data.faq_desc || 'Find answers to common questions about our services, pricing, scheduling, and project timelines.',
       faqs: data.faqs || [],
+      
+      // Contact section settings
+      contact_visible: data.contact_visible !== undefined ? data.contact_visible : true,
+      contact_heading: data.contact_heading || 'Get In Touch',
+      contact_description: data.contact_description || 'Ready to get started? Contact us for a free consultation and estimate.',
+      contact_section_bg_color: data.contact_section_bg_color || '#232a36',
+      contact_left_side_color: data.contact_left_side_color || '#2ee6c5',
+      contact_right_side_color: data.contact_right_side_color || '#ffffff',
+      contact_text_color: data.contact_text_color || '#ffffff',
+      contact_headline_color: data.contact_headline_color || '#ffffff',
+      contact_description_color: data.contact_description_color || 'rgba(255,255,255,0.9)',
+      contact_padding: data.contact_padding || 80,
+      contact_meta_title: data.contact_meta_title || '',
+      contact_meta_description: data.contact_meta_description || '',
+      contact_meta_keywords: data.contact_meta_keywords || '',
       
       // Footer settings
       footer_business_name: data.footer_business_name || data.business_name || 'Your Business',
@@ -208,6 +372,10 @@ export async function POST(request: NextRequest) {
       footer_copyright_text: data.footer_copyright_text || '©2025, Your Business Name. All Rights Reserved.',
       footer_disclaimer_text: data.footer_disclaimer_text || 'This website and its content are for informational purposes only. Results may vary based on individual circumstances.',
       footer_padding: data.footer_padding || 60,
+      footer_visible: data.footer_visible !== undefined ? data.footer_visible : true,
+      footer_text_color: data.footer_text_color || '#ffffff',
+      footer_link_color: data.footer_link_color || '#2ee6c5',
+      footer_copyright: data.footer_copyright || '',
       
       // Additional settings
       latitude: data.latitude || '',

@@ -11,7 +11,7 @@ $commitment_visible = $settings['commitment_visible'] ?? 1;
 $commitment_title = $settings['commitment_title'] ?? 'Our Commitment to You';
 $commitment_subtitle = $settings['commitment_subtitle'] ?? 'We promise to deliver exceptional service';
 $commitment_text = $settings['commitment_text'] ?? '';
-$commitment_image = $settings['commitment_image'] ?? '';
+$commitment_image = $settings['commitment_bg_image'] ?? '';
 
 // Debug: Log commitment data
 error_log('=== COMMITMENT DEBUG ===');

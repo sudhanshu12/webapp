@@ -37,30 +37,34 @@ $contact_headline_color = $settings['contact_headline_color'] ?? '#ffffff';
 $contact_description_color = $settings['contact_description_color'] ?? 'rgba(255,255,255,0.9)';
 $contact_form_bg_color = 'transparent';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo esc_html($settings['contact_meta_title'] ?? $business_name . ' - Contact Us | Get Free Estimate'); ?></title>
-    <!-- Meta description is handled in wp_head action -->
-    <meta name="keywords" content="<?php echo esc_attr($settings['contact_meta_keywords'] ?? 'contact ' . strtolower($business_name) . ', ' . ($settings['business_type'] ?? 'services') . ' estimate, free consultation, ' . ($settings['business_type'] ?? 'contractor') . ' contact, ' . $phone); ?>">
-    <meta name="author" content="<?php echo esc_attr($business_name); ?>">
-    <meta name="robots" content="index, follow">
+// Remove WordPress default title generation to prevent duplicates
+remove_action('wp_head', '_wp_render_title_tag', 1);
+
+// Add single meta tags to head - use wizard contact page data
+add_action('wp_head', function() use ($meta_title, $meta_description, $business, $settings) {
+    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
+    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="contact ' . strtolower($business['name']) . ', ' . $business['business_type'] . ' estimate, free consultation, ' . $business['business_type'] . ' contact, ' . $business['phone'] . '">' . "\n";
+    echo '<meta name="author" content="' . esc_attr($business['name']) . '">' . "\n";
+    echo '<meta name="robots" content="index, follow">' . "\n";
     
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="<?php echo esc_attr($settings['contact_meta_title'] ?? $business_name . ' - Contact Us | Get Free Estimate'); ?>">
-    <!-- Open Graph description is handled in wp_head action -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="<?php echo esc_url(home_url('/contact-us/')); ?>">
-    <meta property="og:site_name" content="<?php echo esc_attr($business_name); ?>">
+    // Open Graph Meta Tags
+    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr($business['name']) . '">' . "\n";
     
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="<?php echo esc_attr($settings['contact_meta_title'] ?? $business_name . ' - Contact Us | Get Free Estimate'); ?>">
-    <!-- Twitter description is handled in wp_head action -->
+    // Twitter Card Meta Tags
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
     
-    <!-- Canonical URL is handled in wp_head action -->
+    // Canonical URL
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
+}, 1);
+
+get_header();
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">

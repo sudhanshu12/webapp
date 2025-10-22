@@ -24,33 +24,8 @@ error_log('Final settings loaded: ' . print_r($settings, true));
 
 $location_title = get_the_title();
 
-// Add meta tags to head - use wizard location data
-add_action('wp_head', function() use ($location_title, $business, $current_location) {
-    // Debug: Log current location data
-    error_log('=== LOCATION META DEBUG ===');
-    error_log('Location title: ' . $location_title);
-    error_log('Current location found: ' . ($current_location ? 'YES' : 'NO'));
-    if ($current_location) {
-        error_log('Location name: ' . ($current_location['name'] ?? 'NOT SET'));
-        error_log('Location meta title: ' . ($current_location['metaTitle'] ?? 'NOT SET'));
-        error_log('Location meta description: ' . ($current_location['metaDescription'] ?? 'NOT SET'));
-    }
-    error_log('=== LOCATION META DEBUG END ===');
-    
-    // Use wizard location meta data if available, otherwise fallback to generic
-    $meta_title = $current_location['metaTitle'] ?? ('Service Areas - ' . $location_title . ' | ' . $business['name']);
-    $meta_description = $current_location['metaDescription'] ?? ('Professional services in ' . $location_title . ' by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.');
-    
-    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
-    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta name="keywords" content="' . strtolower($location_title) . ', professional services, ' . $business['name'] . ', service areas, local business">' . "\n";
-    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
-    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta property="og:type" content="website">' . "\n";
-    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
-    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
-}, 1);
+// Remove WordPress default title generation to prevent duplicates
+remove_action('wp_head', '_wp_render_title_tag', 1);
 
 // Derive request slug from URL as an extra-robust matcher (in case WP returns parent context)
 $request_path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
@@ -215,14 +190,28 @@ if (empty($location_description) || strlen($location_description) < 100 || strip
 error_log('Location description length: ' . strlen($location_description));
 error_log('Location description preview: ' . substr($location_description, 0, 200));
 
-// Add meta tags to head - Use higher priority to ensure they override default
-add_action('wp_head', function() use ($meta_title, $meta_description) {
+// Add single meta tags to head - use wizard location data
+add_action('wp_head', function() use ($meta_title, $meta_description, $business, $location_title) {
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="' . strtolower($location_title) . ', professional services, ' . $business['name'] . ', service areas, local business">' . "\n";
+    echo '<meta name="author" content="' . esc_attr($business['name']) . '">' . "\n";
+    echo '<meta name="robots" content="index, follow">' . "\n";
+    
+    // Open Graph Meta Tags
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr($business['name']) . '">' . "\n";
+    
+    // Twitter Card Meta Tags
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    
+    // Canonical URL
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
 // Also force document title for themes/plugins that override <title>
