@@ -5628,6 +5628,7 @@ export default function WizardClient() {
                               type="checkbox" 
                               checked={form.commitment_visible || true}
                               onChange={(e) => updateForm('commitment_visible', e.target.checked)}
+                              onBlur={saveWizardData}
                               style={{marginRight: '8px'}}
                             />
                             <span style={{color: '#f1f5f9'}}>Show this section</span>
@@ -5641,6 +5642,7 @@ export default function WizardClient() {
                               type="text" 
                               value={form.commitment_label || 'COMMITTED TO QUALITY'}
                               onChange={(e) => updateForm('commitment_label', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{
                                 background: '#0f172a',
                                 border: '1px solid #334155',
@@ -5660,6 +5662,7 @@ export default function WizardClient() {
                               type="text" 
                               value={form.commitment_title || 'Our Promise Of Reliability'}
                               onChange={(e) => updateForm('commitment_title', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{
                                 background: '#0f172a',
                                 border: '1px solid #334155',
@@ -5678,6 +5681,7 @@ export default function WizardClient() {
                             <textarea 
                               value={form.commitment_text ?? ''}
                               onChange={(e) => updateForm('commitment_text', e.target.value)}
+                              onBlur={saveWizardData}
                               rows={4}
                               style={{
                                 background: '#0f172a',
@@ -5699,6 +5703,7 @@ export default function WizardClient() {
                               type="text" 
                               value={form.commitment_button_label || 'Request An Estimate'}
                               onChange={(e) => updateForm('commitment_button_label', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{
                                 background: '#0f172a',
                                 border: '1px solid #334155',
@@ -5724,6 +5729,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.commitment_button_link || 'tel:+1234567890'}
                                 onChange={(e) => updateForm('commitment_button_link', e.target.value)}
+                                onBlur={saveWizardData}
                                 style={{
                                   background: '#0f172a',
                                   border: '1px solid #334155',
@@ -5764,6 +5770,7 @@ export default function WizardClient() {
                               type="text" 
                               value={form.commitment_bg_image || ''}
                               onChange={(e) => updateForm('commitment_bg_image', e.target.value)}
+                              onBlur={saveWizardData}
                               placeholder="https://example.com/image.jpg"
                               style={{
                                 background: '#0f172a',
@@ -5805,6 +5812,7 @@ export default function WizardClient() {
                               type="color" 
                               value={form.commitment_bg_color || '#232834'}
                               onChange={(e) => updateForm('commitment_bg_color', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: '40px', height: '40px', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '8px'}}
                             />
                             <input 
@@ -5830,6 +5838,7 @@ export default function WizardClient() {
                               type="color" 
                               value={form.commitment_text_color || '#ffffff'}
                               onChange={(e) => updateForm('commitment_text_color', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: '40px', height: '40px', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '8px'}}
                             />
                             <input 
@@ -5855,6 +5864,7 @@ export default function WizardClient() {
                               type="color" 
                               value={form.commitment_heading_color || '#ffffff'}
                               onChange={(e) => updateForm('commitment_heading_color', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: '40px', height: '40px', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '8px'}}
                             />
                             <input 
@@ -5880,6 +5890,7 @@ export default function WizardClient() {
                               type="color" 
                               value={form.commitment_subtitle_color || '#cfd8dc'}
                               onChange={(e) => updateForm('commitment_subtitle_color', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: '40px', height: '40px', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '8px'}}
                             />
                             <input 
@@ -5905,6 +5916,7 @@ export default function WizardClient() {
                               type="number" 
                               value={form.commitment_padding || 60}
                               onChange={(e) => updateForm('commitment_padding', parseInt(e.target.value))}
+                              onBlur={saveWizardData}
                               min="0" 
                               max="300"
                               style={{
