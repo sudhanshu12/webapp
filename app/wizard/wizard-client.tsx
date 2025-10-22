@@ -638,6 +638,32 @@ export default function WizardClient() {
       if (result.success && result.data) {
         console.log('✅ Data loaded from Supabase database:', result.data);
         setForm(result.data);
+        
+        // Also load the arrays from the saved data
+        if (result.data.services) {
+          console.log('🔄 Loading services from saved data:', result.data.services);
+          setServices(result.data.services);
+        }
+        if (result.data.locations) {
+          console.log('🔄 Loading locations from saved data:', result.data.locations);
+          setLocations(result.data.locations);
+        }
+        if (result.data.reviews) {
+          console.log('🔄 Loading reviews from saved data:', result.data.reviews);
+          setReviews(result.data.reviews);
+        }
+        if (result.data.features) {
+          console.log('🔄 Loading features from saved data:', result.data.features);
+          setFeatures(result.data.features);
+        }
+        if (result.data.commitments) {
+          console.log('🔄 Loading commitments from saved data:', result.data.commitments);
+          setCommitments(result.data.commitments);
+        }
+        if (result.data.faqs) {
+          console.log('🔄 Loading FAQs from saved data:', result.data.faqs);
+          setFaqs(result.data.faqs);
+        }
       } else {
         console.log('🆕 No data found in database for user:', userEmail);
         console.log('Using default form for new user');
