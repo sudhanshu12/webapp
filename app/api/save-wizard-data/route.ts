@@ -106,20 +106,7 @@ export async function POST(request: NextRequest) {
       about_experience_bg: data.about_experience_bg || '#374151',
       about_experience_text_color: data.about_experience_text_color || '#4ecdc4',
       about_button_text: data.about_button_text || 'About Us',
-      about_button_link: (() => {
-        const link = data.about_button_link || 'about-us';
-        // If it's already a full URL, use it as is
-        if (link.startsWith('http://') || link.startsWith('https://')) {
-          return link;
-        }
-        // If it starts with /, remove it and add the domain
-        const cleanLink = link.startsWith('/') ? link.substring(1) : link;
-        // Get the domain from the request headers or use environment variable
-        const host = request.headers.get('host') || process.env.NEXT_PUBLIC_SITE_URL || 'yourdomain.com';
-        const protocol = request.headers.get('x-forwarded-proto') || 'https';
-        const origin = `${protocol}://${host}`;
-        return `${origin}/${cleanLink}`;
-      })(),
+      about_button_link: data.about_button_link || 'about-us',
       about_button_color: data.about_button_color || '#2563eb',
       about_button_text_color: data.about_button_text_color || '#ffffff',
       about_padding: data.about_padding || 80,
@@ -202,16 +189,7 @@ export async function POST(request: NextRequest) {
       services_button_text: data.services_button_text || '#2ee6c5',
       services_padding: data.services_padding || 40,
       services_cta_text: data.services_cta_text || '',
-      services_cta_link: (() => {
-        const link = data.services_cta_link || '';
-        if (!link || link === '#') return '#';
-        if (link.startsWith('http://') || link.startsWith('https://')) return link;
-        const cleanLink = link.startsWith('/') ? link.substring(1) : link;
-        const host = request.headers.get('host') || process.env.NEXT_PUBLIC_SITE_URL || 'yourdomain.com';
-        const protocol = request.headers.get('x-forwarded-proto') || 'https';
-        const origin = `${protocol}://${host}`;
-        return `${origin}/${cleanLink}`;
-      })(),
+      services_cta_link: data.services_cta_link || 'contact',
       services_cta_bg: data.services_cta_bg || '',
       services_cta_text_color: data.services_cta_text_color || '',
       services_card_radius: data.services_card_radius || 12,
@@ -280,16 +258,7 @@ export async function POST(request: NextRequest) {
       commitment_title: data.commitment_title || 'Our Promise Of Reliability',
       commitment_text: data.commitment_text || '',
       commitment_button_label: data.commitment_button_label || 'Request An Estimate',
-      commitment_button_link: (() => {
-        const link = data.commitment_button_link || '';
-        if (!link || link === '#') return '#';
-        if (link.startsWith('http://') || link.startsWith('https://')) return link;
-        const cleanLink = link.startsWith('/') ? link.substring(1) : link;
-        const host = request.headers.get('host') || process.env.NEXT_PUBLIC_SITE_URL || 'yourdomain.com';
-        const protocol = request.headers.get('x-forwarded-proto') || 'https';
-        const origin = `${protocol}://${host}`;
-        return `${origin}/${cleanLink}`;
-      })(),
+      commitment_button_link: data.commitment_button_link || 'contact',
       commitment_bg_color: data.commitment_bg_color || '#f8f9fa',
       commitment_text_color: data.commitment_text_color || '#232834',
       commitment_heading_color: data.commitment_heading_color || '#ffffff',
