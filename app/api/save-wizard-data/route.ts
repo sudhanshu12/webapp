@@ -344,11 +344,6 @@ export async function POST(request: NextRequest) {
       footer_services: data.footer_services || [],
       footer_social: data.footer_social || [],
       
-      // Meta settings
-      homepage_meta_title: data.homepage_meta_title || '',
-      homepage_meta_description: data.homepage_meta_description || '',
-      homepage_meta_keywords: data.homepage_meta_keywords || '',
-      
       // Contact section settings
       contact_visible: data.contact_visible !== undefined ? data.contact_visible : true,
       contact_heading: data.contact_heading || 'Get In Touch',
