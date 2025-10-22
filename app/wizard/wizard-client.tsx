@@ -710,29 +710,30 @@ export default function WizardClient() {
     return () => clearTimeout(forceTimeout);
   }, []);
 
-  // Save form data directly to Supabase database (logged-in users only)
-  useEffect(() => {
-    console.log('=== AUTO-SAVE DEBUG ===');
-    console.log('isLoaded:', isLoaded);
-    console.log('session:', session);
-    console.log('user email:', session?.user?.email);
-    console.log('form data:', form);
-    
-    if (isLoaded && session?.user?.email) {
-      console.log('✅ Conditions met for auto-save');
-      const timeoutId = setTimeout(() => {
-        console.log('💾 Auto-saving form data to Supabase...');
-        console.log('Saving form data:', form);
-        saveToWordPress(form);
-      }, 1000); // 1 second delay for database saves
-      
-      return () => clearTimeout(timeoutId);
-    } else {
-      console.log('❌ Auto-save conditions not met');
-      if (!isLoaded) console.log('  - isLoaded is false');
-      if (!session?.user?.email) console.log('  - No user session');
-    }
-  }, [form, isLoaded, session]);
+  // DISABLED: Auto-save useEffect to prevent conflicts with manual onBlur saves
+  // The manual onBlur saves provide better control and prevent data overwriting
+  // useEffect(() => {
+  //   console.log('=== AUTO-SAVE DEBUG ===');
+  //   console.log('isLoaded:', isLoaded);
+  //   console.log('session:', session);
+  //   console.log('user email:', session?.user?.email);
+  //   console.log('form data:', form);
+  //   
+  //   if (isLoaded && session?.user?.email) {
+  //     console.log('✅ Conditions met for auto-save');
+  //     const timeoutId = setTimeout(() => {
+  //       console.log('💾 Auto-saving form data to Supabase...');
+  //       console.log('Saving form data:', form);
+  //       saveToWordPress(form);
+  //     }, 1000); // 1 second delay for database saves
+  //     
+  //     return () => clearTimeout(timeoutId);
+  //   } else {
+  //     console.log('❌ Auto-save conditions not met');
+  //     if (!isLoaded) console.log('  - isLoaded is false');
+  //     if (!session?.user?.email) console.log('  - No user session');
+  //   }
+  // }, [form, isLoaded, session]);
 
   // Dynamic content state
   const [services, setServices] = useState<Service[]>([
@@ -754,13 +755,14 @@ export default function WizardClient() {
   
   // Services are now managed directly in state (no localStorage needed)
   
-  // Services auto-save to Supabase (no localStorage needed)
-  useEffect(() => {
-    if (session?.user?.email && services.length > 0) {
-      console.log('🔄 Services array changed, triggering auto-save...');
-      saveToWordPress(form);
-    }
-  }, [services, session?.user?.email]);
+  // DISABLED: Services auto-save to prevent excessive saves
+  // Services will be saved when user manually triggers save via onBlur
+  // useEffect(() => {
+  //   if (session?.user?.email && services.length > 0) {
+  //     console.log('🔄 Services array changed, triggering auto-save...');
+  //     saveToWordPress(form);
+  //   }
+  // }, [services, session?.user?.email]);
 
   // Auto-fix services CTA link to use tel: if it's set to "contact"
   useEffect(() => {
@@ -806,13 +808,14 @@ export default function WizardClient() {
   
   // Locations are now managed directly in state (no localStorage needed)
   
-  // Locations auto-save to Supabase (no localStorage needed)
-  useEffect(() => {
-    if (session?.user?.email && locations.length > 0) {
-      console.log('🔄 Locations array changed, triggering auto-save...');
-      saveToWordPress(form);
-    }
-  }, [locations, session?.user?.email]);
+  // DISABLED: Locations auto-save to prevent excessive saves
+  // Locations will be saved when user manually triggers save via onBlur
+  // useEffect(() => {
+  //   if (session?.user?.email && locations.length > 0) {
+  //     console.log('🔄 Locations array changed, triggering auto-save...');
+  //     saveToWordPress(form);
+  //   }
+  // }, [locations, session?.user?.email]);
 
   const [reviews, setReviews] = useState<Review[]>([
     {
@@ -826,13 +829,14 @@ export default function WizardClient() {
   
   // Reviews are now managed directly in state (no localStorage needed)
   
-  // Reviews auto-save to Supabase (no localStorage needed)
-  useEffect(() => {
-    if (session?.user?.email && reviews.length > 0) {
-      console.log('🔄 Reviews array changed, triggering auto-save...');
-      saveToWordPress(form);
-    }
-  }, [reviews, session?.user?.email]);
+  // DISABLED: Reviews auto-save to prevent excessive saves
+  // Reviews will be saved when user manually triggers save via onBlur
+  // useEffect(() => {
+  //   if (session?.user?.email && reviews.length > 0) {
+  //     console.log('🔄 Reviews array changed, triggering auto-save...');
+  //     saveToWordPress(form);
+  //   }
+  // }, [reviews, session?.user?.email]);
 
   const [features, setFeatures] = useState<Feature[]>([
     {
@@ -845,13 +849,14 @@ export default function WizardClient() {
   
   // Features are now managed directly in state (no localStorage needed)
   
-  // Features auto-save to Supabase (no localStorage needed)
-  useEffect(() => {
-    if (session?.user?.email && features.length > 0) {
-      console.log('🔄 Features array changed, triggering auto-save...');
-      saveToWordPress(form);
-    }
-  }, [features, session?.user?.email]);
+  // DISABLED: Features auto-save to prevent excessive saves
+  // Features will be saved when user manually triggers save via onBlur
+  // useEffect(() => {
+  //   if (session?.user?.email && features.length > 0) {
+  //     console.log('🔄 Features array changed, triggering auto-save...');
+  //     saveToWordPress(form);
+  //   }
+  // }, [features, session?.user?.email]);
 
   const [commitments, setCommitments] = useState<Commitment[]>([
     {
@@ -864,13 +869,14 @@ export default function WizardClient() {
   
   // Commitments are now managed directly in state (no localStorage needed)
   
-  // Commitments auto-save to Supabase (no localStorage needed)
-  useEffect(() => {
-    if (session?.user?.email && commitments.length > 0) {
-      console.log('🔄 Commitments array changed, triggering auto-save...');
-      saveToWordPress(form);
-    }
-  }, [commitments, session?.user?.email]);
+  // DISABLED: Commitments auto-save to prevent excessive saves
+  // Commitments will be saved when user manually triggers save via onBlur
+  // useEffect(() => {
+  //   if (session?.user?.email && commitments.length > 0) {
+  //     console.log('🔄 Commitments array changed, triggering auto-save...');
+  //     saveToWordPress(form);
+  //   }
+  // }, [commitments, session?.user?.email]);
 
   const [faqs, setFaqs] = useState<FAQ[]>([
     {
@@ -882,13 +888,14 @@ export default function WizardClient() {
   
   // FAQs are now managed directly in state (no localStorage needed)
   
-  // FAQs auto-save to Supabase (no localStorage needed)
-  useEffect(() => {
-    if (session?.user?.email && faqs.length > 0) {
-      console.log('🔄 FAQs array changed, triggering auto-save...');
-      saveToWordPress(form);
-    }
-  }, [faqs, session?.user?.email]);
+  // DISABLED: FAQs auto-save to prevent excessive saves
+  // FAQs will be saved when user manually triggers save via onBlur
+  // useEffect(() => {
+  //   if (session?.user?.email && faqs.length > 0) {
+  //     console.log('🔄 FAQs array changed, triggering auto-save...');
+  //     saveToWordPress(form);
+  //   }
+  // }, [faqs, session?.user?.email]);
 
   // Handle NextAuth session
   useEffect(() => {
@@ -1172,6 +1179,9 @@ export default function WizardClient() {
     });
   };
 
+  // Debounced save function to prevent rapid-fire saves
+  const [saveTimeout, setSaveTimeout] = useState<NodeJS.Timeout | null>(null);
+
   // Comprehensive save function (works for logged-in users only)
   const saveWizardData = () => {
     console.log('=== MANUAL SAVE DEBUG ===');
@@ -1179,17 +1189,24 @@ export default function WizardClient() {
     console.log('Session:', session);
     console.log('User email:', session?.user?.email);
     console.log('Form data:', form);
-    console.log('Current form state:', JSON.stringify(form, null, 2));
     
     if (!session?.user?.email) {
       console.log('❌ No user session - cannot save data');
       return;
     }
     
-    console.log('💾 Manual save triggered - calling saveToWordPress');
+    // Clear any existing timeout to debounce saves
+    if (saveTimeout) {
+      clearTimeout(saveTimeout);
+    }
     
-    // Save to database for logged-in users only
-    saveToWordPress(form);
+    // Set a new timeout for debounced save
+    const newTimeout = setTimeout(() => {
+      console.log('💾 Debounced save triggered - calling saveToWordPress');
+      saveToWordPress(form);
+    }, 500); // 500ms debounce delay
+    
+    setSaveTimeout(newTimeout);
   };
 
   const saveToWordPress = async (formData: FormData) => {
