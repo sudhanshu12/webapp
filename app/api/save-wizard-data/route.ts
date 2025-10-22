@@ -352,8 +352,7 @@ export async function POST(request: NextRequest) {
       footer_disclaimer_text: data.footer_disclaimer_text || 'This website and its content are for informational purposes only. Results may vary based on individual circumstances.',
       footer_padding: data.footer_padding || 60,
       footer_text_color: data.footer_text_color || '#ffffff',
-      footer_link_color: data.footer_link_color || '#2ee6c5',
-      footer_copyright: data.footer_copyright || '',
+      footer_link_color: data.footer_link_color || '#2ee6c5'
       
       // Additional settings
       latitude: data.latitude || '',
