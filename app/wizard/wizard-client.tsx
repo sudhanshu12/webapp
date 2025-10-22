@@ -3554,7 +3554,15 @@ export default function WizardClient() {
                                 />
                               </div>
                               <p className="description" style={{color: '#6b7280', marginTop: '4px'}}>
-                                Full URL: {typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com'}/{form.about_button_link || 'about-us'}
+                                Full URL: {(() => {
+                                  const link = form.about_button_link || 'about-us';
+                                  if (link.startsWith('http://') || link.startsWith('https://')) {
+                                    return link;
+                                  }
+                                  const cleanLink = link.startsWith('/') ? link.substring(1) : link;
+                                  const origin = typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com';
+                                  return `${origin}/${cleanLink}`;
+                                })()}
                               </p>
                             </td>
                           </tr>
@@ -4255,13 +4263,30 @@ export default function WizardClient() {
                         <tr>
                           <th scope="row">CTA Button Link</th>
                           <td>
-                            <input 
-                              type="text" 
-                              value={form.services_cta_link || '#'}
-                              onChange={(e) => updateForm('services_cta_link', e.target.value)}
-                              className="regular-text" 
-                              placeholder="e.g., #contact or tel:1234567890"
-                            />
+                            <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                              <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
+                                {typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com'}/
+                              </span>
+                              <input 
+                                type="text" 
+                                value={form.services_cta_link || 'contact'}
+                                onChange={(e) => updateForm('services_cta_link', e.target.value)}
+                                className="regular-text" 
+                                placeholder="contact"
+                                style={{flex: 1}}
+                              />
+                            </div>
+                            <p className="description" style={{color: '#6b7280', marginTop: '4px'}}>
+                              Full URL: {(() => {
+                                const link = form.services_cta_link || 'contact';
+                                if (link.startsWith('http://') || link.startsWith('https://')) {
+                                  return link;
+                                }
+                                const cleanLink = link.startsWith('/') ? link.substring(1) : link;
+                                const origin = typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com';
+                                return `${origin}/${cleanLink}`;
+                              })()}
+                            </p>
                           </td>
                         </tr>
                         <tr>
@@ -5551,19 +5576,36 @@ export default function WizardClient() {
                         <tr style={{borderBottom: '1px solid #f1f5f9'}}>
                           <td style={{padding: '12px 0', color: '#f1f5f9', fontWeight: '500'}}>Button Link</td>
                           <td style={{padding: '12px 0', textAlign: 'left'}}>
-                            <input 
-                              type="text" 
-                              value={form.commitment_button_link || '#'}
-                              onChange={(e) => updateForm('commitment_button_link', e.target.value)}
-                              style={{
-                                background: '#0f172a',
-                                border: '1px solid #334155',
-                                borderRadius: '4px',
-                                padding: '8px 12px',
-                                color: '#f1f5f9',
-                                width: '300px'
-                              }}
-                            />
+                            <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+                              <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
+                                {typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com'}/
+                              </span>
+                              <input 
+                                type="text" 
+                                value={form.commitment_button_link || 'contact'}
+                                onChange={(e) => updateForm('commitment_button_link', e.target.value)}
+                                style={{
+                                  background: '#0f172a',
+                                  border: '1px solid #334155',
+                                  borderRadius: '4px',
+                                  padding: '8px 12px',
+                                  color: '#f1f5f9',
+                                  flex: 1
+                                }}
+                                placeholder="contact"
+                              />
+                            </div>
+                            <p style={{color: '#6b7280', marginTop: '4px', fontSize: '12px'}}>
+                              Full URL: {(() => {
+                                const link = form.commitment_button_link || 'contact';
+                                if (link.startsWith('http://') || link.startsWith('https://')) {
+                                  return link;
+                                }
+                                const cleanLink = link.startsWith('/') ? link.substring(1) : link;
+                                const origin = typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com';
+                                return `${origin}/${cleanLink}`;
+                              })()}
+                            </p>
                           </td>
                         </tr>
                         
