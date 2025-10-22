@@ -342,23 +342,7 @@ export async function POST(request: NextRequest) {
       footer_copyright: data.footer_copyright || '',
       footer_nav: data.footer_nav || [],
       footer_services: data.footer_services || [],
-      footer_social: data.footer_social || [],
-      
-      // Contact section settings
-      contact_visible: data.contact_visible !== undefined ? data.contact_visible : true,
-      contact_heading: data.contact_heading || 'Get In Touch',
-      contact_description: data.contact_description || 'Ready to get started? Contact us for a free consultation and estimate.',
-      contact_section_bg_color: data.contact_section_bg_color || '#232a36',
-      contact_left_side_color: data.contact_left_side_color || '#2ee6c5',
-      contact_right_side_color: data.contact_right_side_color || '#ffffff',
-      contact_text_color: data.contact_text_color || '#ffffff',
-      contact_headline_color: data.contact_headline_color || '#ffffff',
-      contact_description_color: data.contact_description_color || 'rgba(255,255,255,0.9)',
-      contact_padding: data.contact_padding || 80,
-      contact_meta_title: data.contact_meta_title || '',
-      contact_meta_description: data.contact_meta_description || '',
-      contact_meta_keywords: data.contact_meta_keywords || '',
-      
+      footer_social: data.footer_social || [],      
       // Footer settings
       footer_visible: data.footer_visible !== undefined ? data.footer_visible : true,
       footer_bg_color: data.footer_bg_color || '#1e3a8a',
@@ -367,7 +351,6 @@ export async function POST(request: NextRequest) {
       footer_copyright_text: data.footer_copyright_text || '©2025, Your Business Name. All Rights Reserved.',
       footer_disclaimer_text: data.footer_disclaimer_text || 'This website and its content are for informational purposes only. Results may vary based on individual circumstances.',
       footer_padding: data.footer_padding || 60,
-      footer_visible: data.footer_visible !== undefined ? data.footer_visible : true,
       footer_text_color: data.footer_text_color || '#ffffff',
       footer_link_color: data.footer_link_color || '#2ee6c5',
       footer_copyright: data.footer_copyright || '',
