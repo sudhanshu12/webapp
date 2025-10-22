@@ -71,6 +71,7 @@ interface FormData {
   business_name: string;
   business_logo: string;
   business_type: string;
+  target_website_domain: string;
   phone: string;
   email: string;
   address: string;
@@ -358,6 +359,7 @@ export default function WizardClient() {
     business_name: '',
     business_logo: '',
     business_type: 'landscaping',
+    target_website_domain: '',
     phone: '',
     email: '',
     address: '',
@@ -2272,6 +2274,22 @@ export default function WizardClient() {
                             </td>
                           </tr>
                           <tr>
+                            <th scope="row">Target Website Domain</th>
+                            <td>
+                              <input 
+                                type="text" 
+                                value={form.target_website_domain}
+                                onChange={(e) => updateForm('target_website_domain', e.target.value)}
+                                onBlur={saveWizardData}
+                                className="regular-text" 
+                                placeholder="yoursite.com (for CTA button links)"
+                              />
+                              <p className="description" style={{color: '#6b7280', marginTop: '4px'}}>
+                                Enter your website domain to make CTA button links work correctly (e.g., yoursite.com)
+                              </p>
+                            </td>
+                          </tr>
+                          <tr>
                             <th scope="row">Business Logo</th>
                             <td>
                               <div style={{display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '8px'}}>
@@ -3628,6 +3646,10 @@ export default function WizardClient() {
                               <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                                 <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
                                   {(() => {
+                                    if (form.target_website_domain) {
+                                      const domain = form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
+                                      return domain + '/';
+                                    }
                                     if (typeof window !== 'undefined') {
                                       return window.location.origin + '/';
                                     }
@@ -3651,6 +3673,9 @@ export default function WizardClient() {
                                   }
                                   const cleanLink = link.startsWith('/') ? link.substring(1) : link;
                                   const origin = (() => {
+                                    if (form.target_website_domain) {
+                                      return form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
+                                    }
                                     if (typeof window !== 'undefined') {
                                       return window.location.origin;
                                     }
@@ -4381,6 +4406,9 @@ export default function WizardClient() {
                                 }
                                 const cleanLink = link.startsWith('/') ? link.substring(1) : link;
                                 const origin = (() => {
+                                  if (form.target_website_domain) {
+                                    return form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
+                                  }
                                   if (typeof window !== 'undefined') {
                                     return window.location.origin;
                                   }
@@ -5681,6 +5709,10 @@ export default function WizardClient() {
                             <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                               <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
                                 {(() => {
+                                  if (form.target_website_domain) {
+                                    const domain = form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
+                                    return domain + '/';
+                                  }
                                   if (typeof window !== 'undefined') {
                                     return window.location.origin + '/';
                                   }
@@ -5710,6 +5742,9 @@ export default function WizardClient() {
                                 }
                                 const cleanLink = link.startsWith('/') ? link.substring(1) : link;
                                 const origin = (() => {
+                                  if (form.target_website_domain) {
+                                    return form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
+                                  }
                                   if (typeof window !== 'undefined') {
                                     return window.location.origin;
                                   }

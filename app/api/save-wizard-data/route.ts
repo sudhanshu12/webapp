@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
       business_name: data.business_name || data.company || 'Your Business',
       business_logo: data.business_logo || '',
       business_type: data.business_type || data.industry || 'service',
+      target_website_domain: data.target_website_domain || '',
       phone: data.phone || '',
       email: data.email || '',
       address: data.address || '',
