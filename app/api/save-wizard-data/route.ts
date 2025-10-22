@@ -3,7 +3,7 @@ import { supabase } from '../../../lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('=== SAVE WIZARD DATA API DEBUG ===');
+    console.log('=== SAVE WIZARD DATA API DEBUG - CACHE CLEARED ===');
     console.log('Supabase client:', supabase ? 'Available' : 'Not available');
     console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Set' : 'Not set');
     console.log('Supabase Key:', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Not set');
