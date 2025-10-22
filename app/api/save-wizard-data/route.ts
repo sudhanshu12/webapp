@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
       about_title: data.about_title || 'Your Trusted Roofing Partner',
       about_description: data.about_description || '',
       about_image: data.about_image || '',
-      about_home_image: data.about_image || '',
+      about_home_image: data.about_home_image || '',
       about_bg_color: data.about_bg_color || '#f8f9fa',
       about_text_color: data.about_text_color || '#23282d',
       about_heading_color: data.about_heading_color || '#000000',
