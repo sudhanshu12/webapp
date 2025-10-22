@@ -189,7 +189,7 @@ export async function POST(request: NextRequest) {
       services_button_text: data.services_button_text || '#2ee6c5',
       services_padding: data.services_padding || 40,
       services_cta_text: data.services_cta_text || '',
-      services_cta_link: data.services_cta_link || 'contact',
+      services_cta_link: data.services_cta_link || 'tel:+1234567890',
       services_cta_bg: data.services_cta_bg || '',
       services_cta_text_color: data.services_cta_text_color || '',
       services_card_radius: data.services_card_radius || 12,

@@ -411,7 +411,7 @@ export default function WizardClient() {
     services_label: 'TOP RATED SERVICES',
     services_title: 'Our Services',
     services_cta_text: 'Get A Free Estimate',
-    services_cta_link: '#',
+    services_cta_link: 'tel:+1234567890',
     services_cta_bg: '#2ee6c5',
     services_cta_text_color: '#232834',
     services_bg_color: '#313746',
@@ -4331,26 +4331,28 @@ export default function WizardClient() {
                           <td>
                             <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
                               <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
-                                {typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com'}/
+                                {form.services_cta_link?.startsWith('tel:') ? 'Phone:' : 
+                                 form.services_cta_link?.startsWith('mailto:') ? 'Email:' :
+                                 form.services_cta_link?.startsWith('http') ? 'URL:' : 'Page:'}
                               </span>
                               <input 
                                 type="text" 
-                                value={form.services_cta_link || 'contact'}
+                                value={form.services_cta_link || 'tel:+1234567890'}
                                 onChange={(e) => updateForm('services_cta_link', e.target.value)}
                                 className="regular-text" 
-                                placeholder="contact"
+                                placeholder="tel:+1234567890 or contact or https://example.com"
                                 style={{flex: 1}}
                               />
                             </div>
                             <p className="description" style={{color: '#6b7280', marginTop: '4px'}}>
-                              Full URL: {(() => {
-                                const link = form.services_cta_link || 'contact';
-                                if (link.startsWith('http://') || link.startsWith('https://')) {
-                                  return link;
+                              {(() => {
+                                const link = form.services_cta_link || 'tel:+1234567890';
+                                if (link.startsWith('tel:') || link.startsWith('mailto:') || link.startsWith('http://') || link.startsWith('https://')) {
+                                  return `Link: ${link}`;
                                 }
                                 const cleanLink = link.startsWith('/') ? link.substring(1) : link;
                                 const origin = typeof window !== 'undefined' ? window.location.origin : 'https://yourdomain.com';
-                                return `${origin}/${cleanLink}`;
+                                return `Full URL: ${origin}/${cleanLink}`;
                               })()}
                             </p>
                           </td>
