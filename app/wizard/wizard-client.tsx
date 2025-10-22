@@ -721,6 +721,12 @@ export default function WizardClient() {
   // Services are now managed directly in state (no localStorage needed)
   
   // Services auto-save to Supabase (no localStorage needed)
+  useEffect(() => {
+    if (session?.user?.email && services.length > 0) {
+      console.log('🔄 Services array changed, triggering auto-save...');
+      saveToWordPress(form);
+    }
+  }, [services, session?.user?.email]);
 
   const [locations, setLocations] = useState<Location[]>([
     {
@@ -740,6 +746,12 @@ export default function WizardClient() {
   // Locations are now managed directly in state (no localStorage needed)
   
   // Locations auto-save to Supabase (no localStorage needed)
+  useEffect(() => {
+    if (session?.user?.email && locations.length > 0) {
+      console.log('🔄 Locations array changed, triggering auto-save...');
+      saveToWordPress(form);
+    }
+  }, [locations, session?.user?.email]);
 
   const [reviews, setReviews] = useState<Review[]>([
     {
@@ -754,6 +766,12 @@ export default function WizardClient() {
   // Reviews are now managed directly in state (no localStorage needed)
   
   // Reviews auto-save to Supabase (no localStorage needed)
+  useEffect(() => {
+    if (session?.user?.email && reviews.length > 0) {
+      console.log('🔄 Reviews array changed, triggering auto-save...');
+      saveToWordPress(form);
+    }
+  }, [reviews, session?.user?.email]);
 
   const [features, setFeatures] = useState<Feature[]>([
     {
@@ -767,8 +785,12 @@ export default function WizardClient() {
   // Features are now managed directly in state (no localStorage needed)
   
   // Features auto-save to Supabase (no localStorage needed)
-
-  
+  useEffect(() => {
+    if (session?.user?.email && features.length > 0) {
+      console.log('🔄 Features array changed, triggering auto-save...');
+      saveToWordPress(form);
+    }
+  }, [features, session?.user?.email]);
 
   const [commitments, setCommitments] = useState<Commitment[]>([
     {
@@ -782,6 +804,12 @@ export default function WizardClient() {
   // Commitments are now managed directly in state (no localStorage needed)
   
   // Commitments auto-save to Supabase (no localStorage needed)
+  useEffect(() => {
+    if (session?.user?.email && commitments.length > 0) {
+      console.log('🔄 Commitments array changed, triggering auto-save...');
+      saveToWordPress(form);
+    }
+  }, [commitments, session?.user?.email]);
 
   const [faqs, setFaqs] = useState<FAQ[]>([
     {
@@ -794,6 +822,12 @@ export default function WizardClient() {
   // FAQs are now managed directly in state (no localStorage needed)
   
   // FAQs auto-save to Supabase (no localStorage needed)
+  useEffect(() => {
+    if (session?.user?.email && faqs.length > 0) {
+      console.log('🔄 FAQs array changed, triggering auto-save...');
+      saveToWordPress(form);
+    }
+  }, [faqs, session?.user?.email]);
 
   // Handle NextAuth session
   useEffect(() => {
@@ -1111,6 +1145,12 @@ export default function WizardClient() {
       // Add user email to the form data for database saving
       const dataToSave = {
         ...formData,
+        services: services,
+        locations: locations,
+        reviews: reviews,
+        features: features,
+        commitments: commitments,
+        faqs: faqs,
         user_email: session?.user?.email || 'anonymous'
       };
 
