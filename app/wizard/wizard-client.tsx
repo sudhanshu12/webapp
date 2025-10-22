@@ -754,6 +754,14 @@ export default function WizardClient() {
     }
   }, [services, session?.user?.email]);
 
+  // Auto-fix services CTA link to use tel: if it's set to "contact"
+  useEffect(() => {
+    if (form.services_cta_link === 'contact' || form.services_cta_link === '#') {
+      console.log('🔄 Converting services CTA link from "contact" to tel: link');
+      updateForm('services_cta_link', 'tel:+1234567890');
+    }
+  }, [form.services_cta_link]);
+
   const [locations, setLocations] = useState<Location[]>([
     {
       id: '1',
@@ -4340,7 +4348,7 @@ export default function WizardClient() {
                                 value={form.services_cta_link || 'tel:+1234567890'}
                                 onChange={(e) => updateForm('services_cta_link', e.target.value)}
                                 className="regular-text" 
-                                placeholder="tel:+1234567890 or contact or https://example.com"
+                                placeholder="tel:+1234567890"
                                 style={{flex: 1}}
                               />
                             </div>
