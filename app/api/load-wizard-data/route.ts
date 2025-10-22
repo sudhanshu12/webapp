@@ -34,6 +34,10 @@ export async function POST(request: NextRequest) {
       .eq('user_email', user_email)
       .single();
 
+    console.log('🔍 Supabase query result:', { wizardData, error });
+    console.log('🔍 Error code:', error?.code);
+    console.log('🔍 Error message:', error?.message);
+
     if (error) {
       if (error.code === 'PGRST116') {
         // No data found for this user
@@ -45,6 +49,7 @@ export async function POST(request: NextRequest) {
         });
       } else {
         console.error('❌ Supabase error:', error);
+        console.error('❌ Error details:', JSON.stringify(error, null, 2));
         return NextResponse.json({ 
           success: false, 
           error: 'Failed to load data from database' 

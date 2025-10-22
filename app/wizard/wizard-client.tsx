@@ -666,7 +666,7 @@ export default function WizardClient() {
     return () => clearTimeout(timeout);
   }, [isLoaded]);
 
-  // Save form data to Supabase database and localStorage (logged-in users only)
+  // Save form data directly to Supabase database (logged-in users only)
   useEffect(() => {
     console.log('=== AUTO-SAVE DEBUG ===');
     console.log('isLoaded:', isLoaded);
@@ -677,15 +677,8 @@ export default function WizardClient() {
     if (isLoaded && session?.user?.email) {
       console.log('✅ Conditions met for auto-save');
       const timeoutId = setTimeout(() => {
-        console.log('💾 Auto-saving form data...');
+        console.log('💾 Auto-saving form data to Supabase...');
         console.log('Saving form data:', form);
-        
-        // Always save to localStorage as immediate backup
-        const userEmail = session.user.email;
-        localStorage.setItem(`bsg_wizard_${userEmail}`, JSON.stringify(form));
-        console.log('✅ Data saved to localStorage');
-        
-        // Also try to save to Supabase
         saveToWordPress(form);
       }, 1000); // 1 second delay for database saves
       

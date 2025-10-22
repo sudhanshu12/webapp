@@ -223,6 +223,8 @@ export async function POST(request: NextRequest) {
         
         // Get user email from the request data
         const userEmail = data.user_email || data.email || 'anonymous';
+        console.log('🔍 User email for save:', userEmail);
+        console.log('🔍 Data to save:', JSON.stringify(bsgSettings, null, 2));
         
         // Save to Supabase - upsert (insert or update) based on user email
         const { data: supabaseData, error: supabaseError } = await supabase
@@ -235,14 +237,20 @@ export async function POST(request: NextRequest) {
             onConflict: 'user_email'
           });
 
+        console.log('🔍 Supabase response data:', supabaseData);
+        console.log('🔍 Supabase error:', supabaseError);
+
         if (supabaseError) {
           console.error('❌ Supabase error:', supabaseError);
+          console.error('❌ Error details:', JSON.stringify(supabaseError, null, 2));
         } else {
           console.log('✅ Data saved to Supabase successfully');
+          console.log('✅ Saved data:', supabaseData);
           supabaseSuccess = true;
         }
       } catch (error) {
         console.error('❌ Error saving to Supabase:', error);
+        console.error('❌ Error stack:', error.stack);
       }
     } else {
       console.log('⚠️ Supabase not configured, skipping database save');
