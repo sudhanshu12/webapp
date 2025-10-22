@@ -607,13 +607,15 @@ export default function WizardClient() {
       return;
     }
     
-    if (!session?.user?.email) {
+    if (!session?.user?.email || !userEmail) {
       console.log('❌ No user session found - user must be logged in');
+      console.log('Session user email:', session?.user?.email);
+      console.log('UserEmail state:', userEmail);
       setIsLoaded(true);
       return;
     }
     
-    const userEmail = session.user.email;
+    console.log('✅ User email from state:', userEmail);
     
     console.log('=== WIZARD DATA LOADING DEBUG ===');
     console.log('User email:', userEmail);
@@ -680,7 +682,7 @@ export default function WizardClient() {
     .finally(() => {
       setIsLoaded(true);
     });
-  }, [session, status]);
+  }, [session, status, userEmail]);
 
   // Fallback timeout to ensure loading doesn't get stuck
   useEffect(() => {
