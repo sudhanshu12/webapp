@@ -641,6 +641,7 @@ export default function WizardClient() {
       console.log('Load result:', result);
       if (result.success && result.data) {
         console.log('✅ Data loaded from Supabase database:', result.data);
+        console.log('🔍 Setting form with loaded data...');
         setForm(result.data);
         
         // Also load the arrays from the saved data
@@ -670,7 +671,10 @@ export default function WizardClient() {
         }
       } else {
         console.log('🆕 No data found in database for user:', userEmail);
+        console.log('Result success:', result.success);
+        console.log('Result data:', result.data);
         console.log('Using default form for new user');
+        console.log('🔍 Setting form with default data...');
         setForm(form);
       }
     })
@@ -1213,6 +1217,7 @@ export default function WizardClient() {
 
       console.log('Data to save with user email:', dataToSave);
 
+      console.log('📤 Sending data to save-wizard-data API...');
       const response = await fetch('/api/save-wizard-data', {
         method: 'POST',
         headers: {
@@ -1220,9 +1225,9 @@ export default function WizardClient() {
         },
         body: JSON.stringify(dataToSave),
       });
-
-      console.log('Save response status:', response.status);
-      console.log('Save response ok:', response.ok);
+      
+      console.log('📥 Save response status:', response.status);
+      console.log('📥 Save response ok:', response.ok);
 
       if (response.ok) {
         const result = await response.json();
