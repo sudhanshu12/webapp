@@ -414,7 +414,24 @@ get_header();
     <?php 
     // Check if about_page_why_items exist, if not use features as fallback
     $why_items = !empty($settings['about_page_why_items']) ? $settings['about_page_why_items'] : (!empty($settings['features']) ? $settings['features'] : []);
-    if (!empty($why_items)): 
+    
+    // If no items, provide default roofing benefits
+    if (empty($why_items)) {
+        $why_items = [
+            [
+                'title' => 'Expert Team',
+                'description' => 'Our skilled roofing specialists possess extensive industry knowledge, ensuring that every installation and repair is executed to the highest standards of quality and safety.'
+            ],
+            [
+                'title' => 'Quality Materials',
+                'description' => 'We source premium roofing materials designed to withstand Florida\'s climate, ensuring durability and longevity for every project we undertake.'
+            ],
+            [
+                'title' => 'Local Expertise',
+                'description' => 'Our deep understanding of Orlando\'s unique roofing needs and local building codes ensures compliance and optimal performance for your roof.'
+            ]
+        ];
+    }
     ?>
     <section class="why-section">
         <div class="container" style="max-width: 1200px; margin: 0 auto;">
@@ -461,10 +478,9 @@ get_header();
                     <?php endforeach; ?>
                 </div>
                 <?php endif; ?>
-                </div>
             </div>
-        </section>
-    <?php endif; ?>
+        </div>
+    </section>
 
     <!-- Reviews Section -->
     <?php 
