@@ -10,7 +10,7 @@ $business = bsg_get_business_info();
 $footer_bg_color = $settings['footer_bg_color'] ?? '#1a1a1a';
 $footer_heading_color = $settings['footer_heading_color'] ?? '#ffffff';
 $footer_links_color = $settings['footer_links_color'] ?? '#cccccc';
-$footer_copyright_text = $settings['footer_copyright_text'] ?? '©2025, ' . $business['name'] . '. All Rights Reserved.';
+$footer_copyright_text = $settings['footer_copyright_text'] ?? '©2025, ' . ($business['name'] ?? 'Roofing Pros') . '. All Rights Reserved.';
 $footer_disclaimer_text = $settings['footer_disclaimer_text'] ?? '';
 
 // Get first 5 services

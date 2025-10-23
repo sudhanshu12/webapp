@@ -42,7 +42,7 @@ add_filter('pre_get_document_title', function($title) use ($settings) {
 
 // Performance optimized - minimal debug output
 
-$business_name = $settings['business_name'] ?? 'Your Business';
+$business_name = $settings['business_name'] ?? 'Roofing Pros';
 $tagline = $settings['tagline'] ?? 'Professional Services You Can Trust';
 $phone = $settings['phone'] ?? '';
 $email = $settings['email'] ?? '';

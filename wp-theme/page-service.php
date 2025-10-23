@@ -183,7 +183,7 @@ get_header(); ?>
     <?php
     // Get theme settings
     $settings = get_option('bsg_settings', []);
-    $business_name = !empty($settings['business_name']) ? $settings['business_name'] : 'Your Business';
+    $business_name = !empty($settings['business_name']) ? $settings['business_name'] : 'Roofing Pros';
     $phone = $settings['phone'] ?? '(555) 123-4567';
     $email = $settings['email'] ?? 'info@business.com';
     $address = $settings['address'] ?? '123 Main Street';

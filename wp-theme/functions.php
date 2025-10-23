@@ -535,7 +535,7 @@ add_action('rest_api_init', function () {
 function bsg_get_business_info() {
     $settings = bsg_get_settings();
     return [
-        'name' => $settings['business_name'] ?? 'Your Business',
+        'name' => $settings['business_name'] ?? 'Roofing Pros',
         'logo' => $settings['business_logo'] ?? '',
         'phone' => $settings['phone'] ?? '(555) 123-4567',
         'email' => $settings['email'] ?? 'info@yourbusiness.com',

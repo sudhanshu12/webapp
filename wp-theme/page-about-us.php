@@ -7,7 +7,7 @@
 
 // Get settings
 $settings = get_option('bsg_settings', array());
-$business_name = $settings['business_name'] ?? 'Your Business';
+$business_name = $settings['business_name'] ?? 'Roofing Pros';
 $phone = $settings['phone'] ?? '';
 $email = $settings['email'] ?? '';
 
@@ -381,13 +381,13 @@ get_header();
         <div class="about-grid">
             <!-- Image on Left -->
             <div class="about-image-wrapper">
-                <?php if (isset($settings['about_page_team_image']) && !empty($settings['about_page_team_image'])): ?>
-                    <img src="<?php echo esc_url($settings['about_page_team_image']); ?>" alt="About <?php echo esc_attr($business_name); ?>" loading="lazy" decoding="async">
-                        <?php else: ?>
-                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600;">
-                                Team Photo
-                            </div>
-                        <?php endif; ?>
+                <?php 
+                // Use team image from wizard, or fallback to a professional roofing image
+                $team_image = !empty($settings['about_page_team_image']) ? $settings['about_page_team_image'] : 
+                              (!empty($settings['about_image']) ? $settings['about_image'] : 
+                              'https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
+                ?>
+                <img src="<?php echo esc_url($team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" loading="lazy" decoding="async">
                     </div>
                     
             <!-- Content on Right -->

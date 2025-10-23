@@ -1,6 +1,6 @@
 <?php
 $settings = bsg_get_settings();
-$business_name = !empty($settings['business_name']) ? $settings['business_name'] : 'Your Business';
+$business_name = !empty($settings['business_name']) ? $settings['business_name'] : 'Roofing Pros';
 $phone = $settings['phone'] ?? '(555) 123-4567';
 $about_page = get_page_by_path('about-us') ?: get_page_by_path('about');
 $contact_page = get_page_by_path('contact-us') ?: get_page_by_path('contact');
