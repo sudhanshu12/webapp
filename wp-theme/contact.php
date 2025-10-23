@@ -36,7 +36,7 @@ $contact_text_color = $settings['contact_text_color'] ?? '#ffffff';
 $contact_headline_color = $settings['contact_headline_color'] ?? '#ffffff';
 $contact_description_color = $settings['contact_description_color'] ?? 'rgba(255,255,255,0.9)';
 $contact_form_bg_color = 'transparent';
-?>
+
 // Remove WordPress default title generation to prevent duplicates
 remove_action('wp_head', '_wp_render_title_tag', 1);
 
@@ -64,12 +64,40 @@ add_action('wp_head', function() use ($meta_title, $meta_description, $business,
     echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
-get_header();
+// Force document title
+add_filter('pre_get_document_title', function($title) use ($meta_title) {
+    return $meta_title ?: $title;
+}, 99);
+
+get_header(); ?>
+
+<main id="main" class="site-main">
+    <?php
+    // Get theme settings
+    $settings = get_option('bsg_settings', []);
+    $business_name = !empty($settings['business_name']) ? $settings['business_name'] : 'Your Business';
+    $phone = $settings['phone'] ?? '(555) 123-4567';
+    $email = $settings['email'] ?? 'info@business.com';
+    $address = $settings['address'] ?? '123 Main Street';
+    $state = $settings['state'] ?? 'Your State';
+    $zip = $settings['zip'] ?? '12345';
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">
-    <link rel="icon" type="image/x-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.ico">
-    <link rel="apple-touch-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">
+    // Use general section data for contact information
+    $contact_description = $settings['contact_description'] ?? '';
+    $contact_phone = $business['phone'];
+    $contact_email = $business['email'];
+    $contact_address = $business['address'];
+    $contact_heading = $settings['contact_heading'] ?? 'Get In Touch';
+    $contact_business_name = $business['name'];
+    // Use new simplified contact field names
+    $contact_section_bg_color = $settings['contact_section_bg_color'] ?? '#232a36';
+    $contact_left_bg_color = $settings['contact_left_side_color'] ?? '#2ee6c5';
+    $contact_right_bg_color = $settings['contact_right_side_color'] ?? '#ffffff';
+    $contact_text_color = $settings['contact_text_color'] ?? '#ffffff';
+    $contact_headline_color = $settings['contact_headline_color'] ?? '#ffffff';
+    $contact_description_color = $settings['contact_description_color'] ?? 'rgba(255,255,255,0.9)';
+    $contact_form_bg_color = 'transparent';
+    ?>
     
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">

@@ -52,6 +52,11 @@ add_action('wp_head', function() use ($meta_title, $meta_description, $business,
     echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
+// Force document title
+add_filter('pre_get_document_title', function($title) use ($meta_title) {
+    return $meta_title ?: $title;
+}, 99);
+
 // About page specific settings from admin
 $about_hero_tagline = $settings['about_hero_tagline'] ?? 'ABOUT ' . $business['name'];
 $about_hero_title = $settings['about_hero_title'] ?? 'Professional Services You Can Count On';
