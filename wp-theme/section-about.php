@@ -35,10 +35,10 @@ if (!empty($domain_name)) {
     // Fallback to current domain
     $about_cta_link = home_url('/' . ($settings['about_button_link'] ?? 'about-us'));
 }
-// Use about_home_image first, fallback to about_image, then default placeholder
+// Use about_home_image first, fallback to about_image, then default roofing placeholder
 $about_image = !empty($settings['about_home_image']) ? $settings['about_home_image'] : 
                (!empty($settings['about_image']) ? $settings['about_image'] : 
-               'https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
+               'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
 $about_bg_color = $settings['about_bg_color'] ?? '#232834';
 $about_text_color = $settings['about_text_color'] ?? '#fff';
 $about_margin_left = $settings['about_margin_left'] ?? 60;

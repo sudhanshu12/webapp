@@ -57,14 +57,9 @@ if (!empty($settings['faq_visible']) && !empty($settings['faqs']) && is_array($s
                     <img src="<?php echo esc_url($faq_image); ?>" alt="FAQ" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
                 </div>
             <?php else: ?>
-                <!-- Default landscaper image placeholder -->
+                <!-- Default roofing FAQ image placeholder -->
                 <div style="flex: 0 0 350px; max-width: 350px; width: 350px; height: 350px; display: flex; align-items: center; justify-content: center; background: #22242c; border-radius: 24px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
-                    <div style="text-align: center; color: #666; padding: 20px;">
-                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                        </svg>
-                        <p style="margin: 10px 0 0 0; font-size: 14px;">Upload FAQ Image</p>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="FAQ" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
                 </div>
             <?php endif; ?>
             
