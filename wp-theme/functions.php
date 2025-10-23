@@ -30,10 +30,10 @@ function bsg_auto_template_selection($template) {
         }
     }
     
-    // Check if this is a location page
+    // Check if this is a location page (but not the main service-locations page)
     if (strpos($page_slug, 'boulder') !== false || 
         strpos($page_slug, 'location') !== false ||
-        strpos($page_slug, 'service-locations') !== false) {
+        (strpos($page_slug, 'service-locations') !== false && $page_slug !== 'service-locations')) {
         
         // Use location template
         $location_template = get_template_directory() . '/location.php';
@@ -97,8 +97,15 @@ function bsg_force_template_assignment() {
             }
         }
         
+        // Auto-assign service-locations template for main service-locations page
+        if ($page_slug === 'service-locations') {
+            if ($current_template !== 'page-service-locations.php') {
+                update_post_meta($page->ID, '_wp_page_template', 'page-service-locations.php');
+            }
+        }
+        
         if (strpos($page_slug, 'boulder') !== false || 
-            strpos($page_slug, 'service-locations') !== false) {
+            (strpos($page_slug, 'service-locations') !== false && $page_slug !== 'service-locations')) {
             
             if ($current_template !== 'location.php') {
                 update_post_meta($page->ID, '_wp_page_template', 'location.php');
@@ -157,10 +164,17 @@ function bsg_auto_assign_template_on_save($post_id, $post) {
         }
     }
     
-    // Auto-assign location template
+    // Auto-assign service-locations template for main service-locations page
+    if ($page_slug === 'service-locations') {
+        if ($current_template !== 'page-service-locations.php') {
+            update_post_meta($post_id, '_wp_page_template', 'page-service-locations.php');
+        }
+    }
+    
+    // Auto-assign location template (but not for main service-locations page)
     if (strpos($page_slug, 'boulder') !== false || 
         strpos($page_slug, 'location') !== false ||
-        strpos($page_slug, 'service-locations') !== false) {
+        (strpos($page_slug, 'service-locations') !== false && $page_slug !== 'service-locations')) {
         
         if ($current_template !== 'location.php') {
             update_post_meta($post_id, '_wp_page_template', 'location.php');

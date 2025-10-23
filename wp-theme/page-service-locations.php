@@ -20,7 +20,22 @@ $settings = bsg_get_settings();
     <link rel="icon" type="image/svg+xml" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">
     <link rel="icon" type="image/x-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.ico">
     <link rel="apple-touch-icon" href="<?php echo get_template_directory_uri(); ?>/favicon.svg">
-    <?php bsg_output_meta_tags('service-locations', 'Roofing Pros  Service Locations', 'Professional roofing services in multiple locations by Roofing Pros '); ?>
+    <?php 
+    // Get wizard settings for service locations meta tags
+    $settings = bsg_get_settings();
+    $business = $settings['business'] ?? [];
+    $business_name = $business['name'] ?? 'Roofing Pros';
+    
+    // Use wizard meta fields for service locations page
+    $meta_title = !empty($settings['service_locations_meta_title']) 
+        ? $settings['service_locations_meta_title'] 
+        : ($business_name . ' Service Locations');
+    $meta_description = !empty($settings['service_locations_meta_description']) 
+        ? $settings['service_locations_meta_description'] 
+        : ('Professional roofing services in multiple locations by ' . $business_name);
+    
+    bsg_output_meta_tags('service-locations', $meta_title, $meta_description);
+    ?>
     <?php wp_head(); ?>
 </head>
 
