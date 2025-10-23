@@ -2508,6 +2508,7 @@ export default function WizardClient() {
                                 type="password" 
                                 value={form.openai_api_key}
                                 onChange={(e) => updateForm('openai_api_key', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="sk-..."
                               />
@@ -2521,6 +2522,7 @@ export default function WizardClient() {
                                 type="password" 
                                 value={form.openrouter_api_key}
                                 onChange={(e) => updateForm('openrouter_api_key', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="sk-or-..."
                               />
