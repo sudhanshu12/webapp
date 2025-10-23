@@ -1321,7 +1321,7 @@ export default function WizardClient() {
         console.log('✅ Data saved to Supabase successfully:', result);
         
         // Also save to WordPress if WordPress site URL is provided
-        if (form.target_website_domain && form.target_website_domain.trim() !== '') {
+        if (form.domain_name && form.domain_name.trim() !== '') {
           await saveToWordPress(form);
         }
         
@@ -1339,7 +1339,7 @@ export default function WizardClient() {
 
   const saveToWordPress = async (formData: any) => {
     try {
-      const wordpressUrl = formData.target_website_domain?.trim();
+      const wordpressUrl = formData.domain_name?.trim();
       if (!wordpressUrl) {
         console.log('⚠️ No WordPress URL provided, skipping WordPress save');
         return false;
