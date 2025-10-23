@@ -58,7 +58,7 @@ function bsg_auto_template_selection($template) {
         strpos($page_slug, 'contact-us') !== false) {
         
         // Use contact template
-        $contact_template = get_template_directory() . '/page-contact-us.php';
+        $contact_template = get_template_directory() . '/contact.php';
         if (file_exists($contact_template)) {
             return $contact_template;
         }
@@ -123,8 +123,8 @@ function bsg_force_template_assignment() {
         if (strpos($page_slug, 'contact') !== false || 
             strpos($page_slug, 'contact-us') !== false) {
             
-            if ($current_template !== 'page-contact-us.php') {
-                update_post_meta($page->ID, '_wp_page_template', 'page-contact-us.php');
+            if ($current_template !== 'contact.php') {
+                update_post_meta($page->ID, '_wp_page_template', 'contact.php');
             }
         }
     }
@@ -194,8 +194,8 @@ function bsg_auto_assign_template_on_save($post_id, $post) {
     if (strpos($page_slug, 'contact') !== false || 
         strpos($page_slug, 'contact-us') !== false) {
         
-        if ($current_template !== 'page-contact-us.php') {
-            update_post_meta($post_id, '_wp_page_template', 'page-contact-us.php');
+        if ($current_template !== 'contact.php') {
+            update_post_meta($post_id, '_wp_page_template', 'contact.php');
         }
     }
 }
