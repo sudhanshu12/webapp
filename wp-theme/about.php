@@ -17,45 +17,15 @@ $visibility = bsg_get_section_visibility();
 $meta_title = $settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? ('About ' . $business['name'] . ' - Professional Services in ' . $business['state']);
 $meta_description = $settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? ('Learn about ' . $business['name'] . ', a professional ' . $business['business_type'] . ' company serving ' . $business['state'] . '. ' . ($settings['about_years'] ?? 15) . '+ years of experience, quality service, and customer satisfaction.');
 
-// Debug: Log about page meta data
-error_log('=== ABOUT PAGE META DEBUG ===');
-error_log('About page meta title from wizard: ' . ($settings['about_page_meta_title'] ?? 'NOT SET'));
-error_log('About page meta description from wizard: ' . ($settings['about_page_meta_description'] ?? 'NOT SET'));
-error_log('Final meta title: ' . $meta_title);
-error_log('Final meta description: ' . $meta_description);
-error_log('=== ABOUT PAGE META DEBUG END ===');
-
-// Remove WordPress default title generation to prevent duplicates
-remove_action('wp_head', '_wp_render_title_tag', 1);
-
-// Add single meta tags to head - use wizard about page data
-add_action('wp_head', function() use ($meta_title, $meta_description, $business, $settings) {
+// Add meta tags to head
+add_action('wp_head', function() use ($meta_title, $meta_description) {
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta name="keywords" content="about ' . strtolower($business['name']) . ', ' . $business['business_type'] . ', professional ' . $business['business_type'] . ', ' . ($settings['about_years'] ?? '15+') . ' years experience, quality ' . $business['business_type'] . '">' . "\n";
-    echo '<meta name="author" content="' . esc_attr($business['name']) . '">' . "\n";
-    echo '<meta name="robots" content="index, follow">' . "\n";
-    
-    // Open Graph Meta Tags
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta property="og:type" content="website">' . "\n";
-    echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
-    echo '<meta property="og:site_name" content="' . esc_attr($business['name']) . '">' . "\n";
-    
-    // Twitter Card Meta Tags
-    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    
-    // Canonical URL
-    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
-}, 1);
-
-// Force document title
-add_filter('pre_get_document_title', function($title) use ($meta_title) {
-    return $meta_title ?: $title;
-}, 99);
+});
 
 // About page specific settings from admin
 $about_hero_tagline = $settings['about_hero_tagline'] ?? 'ABOUT ' . $business['name'];
@@ -120,7 +90,8 @@ $reviews_visible = $reviews_settings['visible'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Title and meta description are handled in wp_head action -->
+    <title><?php echo esc_html($settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? $business_name . ' - About Us | Professional ' . ($settings['business_type'] ?? 'Services')); ?></title>
+    <meta name="description" content="<?php echo esc_attr($settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ', a trusted ' . ($settings['business_type'] ?? 'contractor') . ' with ' . $about_years . ' years of experience. Professional ' . ($settings['business_type'] ?? 'services') . ', quality workmanship, and customer satisfaction in ' . ($settings['location'] ?? 'your area') . '.'); ?>">
     <meta name="keywords" content="<?php echo esc_attr($settings['about_page_meta_keywords'] ?? $settings['about_meta_keywords'] ?? 'about ' . strtolower($business_name) . ', ' . ($settings['business_type'] ?? 'contractor') . ', professional ' . ($settings['business_type'] ?? 'services') . ', ' . $about_years . ' years experience, quality ' . ($settings['business_type'] ?? 'services')); ?>">
     <meta name="author" content="<?php echo esc_attr($business_name); ?>">
     <meta name="robots" content="index, follow">
@@ -132,7 +103,7 @@ $reviews_visible = $reviews_settings['visible'];
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="<?php echo esc_attr($settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? $business_name . ' - About Us | Professional ' . ($settings['business_type'] ?? 'Services')); ?>">
-    <!-- Meta description is handled in wp_head action -->
+    <meta property="og:description" content="<?php echo esc_attr($settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ', a trusted ' . ($settings['business_type'] ?? 'contractor') . ' with ' . $about_years . ' years of experience. Professional ' . ($settings['business_type'] ?? 'services') . ', quality workmanship, and customer satisfaction.'); ?>">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo esc_url(home_url('/about-us/')); ?>">
     <meta property="og:site_name" content="<?php echo esc_attr($business_name); ?>">
@@ -140,9 +111,10 @@ $reviews_visible = $reviews_settings['visible'];
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo esc_attr($settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? $business_name . ' - About Us | Professional ' . ($settings['business_type'] ?? 'Services')); ?>">
-    <!-- Twitter description is handled in wp_head action -->
+    <meta name="twitter:description" content="<?php echo esc_attr($settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ', a trusted ' . ($settings['business_type'] ?? 'contractor') . ' with ' . $about_years . ' years of experience. Professional ' . ($settings['business_type'] ?? 'services') . ', quality workmanship, and customer satisfaction.'); ?>">
     
-    <!-- Canonical URL is handled in wp_head action -->
+    <!-- Canonical URL -->
+    <link rel="canonical" href="<?php echo esc_url(home_url('/about-us/')); ?>">
     
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
@@ -941,7 +913,7 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
             <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
                 <?php 
                 // Get the full about page content from wizard settings (about page, not homepage about section)
-                $wizard_about_content = $settings['about_page_who_description'] ?? $settings['about_page_description'] ?? '';
+                $wizard_about_content = $settings['about_page_description'] ?? $settings['about_page_who_description'] ?? '';
                 
                 // Only display wizard content if it exists and is substantial
                 if (!empty($wizard_about_content) && strlen(trim($wizard_about_content)) > 50 && strpos($wizard_about_content, 'hi thi stess') === false) {
@@ -954,7 +926,7 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
                             <div class="about-image" style="flex: 0 0 350px; height: 450px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
                                 <?php 
                                 // Get the about image from wizard settings
-                                $about_image = $settings['about_page_team_image'] ?? '';
+                                $about_image = $settings['about_image'] ?? '';
                                 if (!empty($about_image)): ?>
                                     <img src="<?php echo esc_url($about_image); ?>" alt="Our Team" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy" decoding="async">
                                 <?php else: ?>
