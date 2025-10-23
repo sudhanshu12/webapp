@@ -1321,8 +1321,8 @@ export default function WizardClient() {
         console.log('✅ Data saved to Supabase successfully:', result);
         
         // Also save to WordPress if WordPress site URL is provided
-        if (formData.target_website_domain && formData.target_website_domain.trim() !== '') {
-          await saveToWordPress(formData);
+        if (form.target_website_domain && form.target_website_domain.trim() !== '') {
+          await saveToWordPress(form);
         }
         
         setLastSaved(new Date().toLocaleTimeString());
@@ -1337,7 +1337,7 @@ export default function WizardClient() {
     }
   };
 
-  const saveToWordPress = async (formData: FormData) => {
+  const saveToWordPress = async (formData: any) => {
     try {
       const wordpressUrl = formData.target_website_domain?.trim();
       if (!wordpressUrl) {
