@@ -1643,11 +1643,17 @@ export default function WizardClient() {
 
   // Review functions
   const addReview = () => {
+    const randomTemplate = reviewTemplates[Math.floor(Math.random() * reviewTemplates.length)];
+    const businessName = form.business_name || 'this company';
+    
+    // Replace [COMPANY_NAME] with actual business name
+    const personalizedComment = randomTemplate.replace(/\[COMPANY_NAME\]/g, businessName);
+    
     const newReview: Review = {
       id: Date.now().toString(),
       name: generateRandomName(),
       rating: Math.floor(Math.random() * 2) + 4, // 4 or 5 stars
-      comment: reviewTemplates[Math.floor(Math.random() * reviewTemplates.length)],
+      comment: personalizedComment,
       date: generateRandomDate()
     };
     setReviews([...reviews, newReview]);
@@ -1675,7 +1681,7 @@ export default function WizardClient() {
       'Amazing service!',
       'Perfect results!',
       
-      // Medium reviews (2 lines)
+      // Medium reviews (2 lines) - Generic
       'Outstanding service! The team was professional and delivered exactly what they promised. Highly recommend!',
       'Exceptional work quality and customer service. They went above and beyond to ensure everything was perfect.',
       'Amazing experience from start to finish. Professional, reliable, and the results exceeded my expectations.',
@@ -1685,24 +1691,57 @@ export default function WizardClient() {
       'Great experience! Professional team, fair pricing, and excellent results. Would definitely recommend.',
       'Fantastic work! The team was professional, efficient, and the results exceeded my expectations.',
       
-      // Long reviews (3+ lines)
+      // Medium reviews (2 lines) - Company specific
+      'Outstanding service from [COMPANY_NAME]! The team was professional and delivered exactly what they promised. Highly recommend!',
+      'Exceptional work quality from [COMPANY_NAME]. They went above and beyond to ensure everything was perfect.',
+      'Amazing experience with [COMPANY_NAME] from start to finish. Professional, reliable, and the results exceeded my expectations.',
+      'Fantastic service from [COMPANY_NAME]! Quick response time, fair pricing, and excellent results. Couldn\'t be happier.',
+      'Top-notch work from [COMPANY_NAME]! The team was knowledgeable, courteous, and completed the job efficiently.',
+      'Excellent service and attention to detail from [COMPANY_NAME]. They were on time, clean, and professional throughout.',
+      'Great experience with [COMPANY_NAME]! Professional team, fair pricing, and excellent results. Would definitely recommend.',
+      'Fantastic work from [COMPANY_NAME]! The team was professional, efficient, and the results exceeded my expectations.',
+      
+      // Long reviews (3+ lines) - Generic
       'Outstanding service from start to finish! The team was professional, punctual, and delivered exactly what they promised. The quality of work exceeded my expectations and I couldn\'t be happier with the results. Highly recommend to anyone looking for reliable service!',
       'Exceptional work quality and customer service throughout the entire process. They went above and beyond to ensure everything was perfect, addressing all my concerns promptly. The team was knowledgeable, friendly, and professional. Will definitely use again and recommend to others!',
       'Amazing experience from start to finish! Professional, reliable, and the results exceeded my expectations. The team was on time, clean, and courteous throughout the entire process. They explained everything clearly and kept me informed at every step. Thank you for the excellent service!',
       'Fantastic service with outstanding results! Quick response time, fair pricing, and excellent quality work. The team was professional, efficient, and went above and beyond to ensure my complete satisfaction. I couldn\'t be happier with the outcome and would definitely recommend to others!',
       'Excellent service from start to finish! Professional, reliable, and the quality of work was outstanding. The team was knowledgeable, courteous, and completed the job efficiently. They addressed all my concerns and kept me informed throughout the process. Highly recommend!',
-      'Outstanding quality and customer service that exceeded my expectations! The team was friendly, professional, and delivered exactly what was promised. They were on time, clean, and professional throughout the entire process. I couldn\'t be happier with the results and will definitely use again!'
+      'Outstanding quality and customer service that exceeded my expectations! The team was friendly, professional, and delivered exactly what was promised. They were on time, clean, and professional throughout the entire process. I couldn\'t be happier with the results and will definitely use again!',
+      
+      // Long reviews (3+ lines) - Company specific
+      'Outstanding service from [COMPANY_NAME] from start to finish! The team was professional, punctual, and delivered exactly what they promised. The quality of work exceeded my expectations and I couldn\'t be happier with the results. Highly recommend [COMPANY_NAME] to anyone looking for reliable service!',
+      'Exceptional work quality and customer service from [COMPANY_NAME] throughout the entire process. They went above and beyond to ensure everything was perfect, addressing all my concerns promptly. The team at [COMPANY_NAME] was knowledgeable, friendly, and professional. Will definitely use [COMPANY_NAME] again and recommend to others!',
+      'Amazing experience with [COMPANY_NAME] from start to finish! Professional, reliable, and the results exceeded my expectations. The team at [COMPANY_NAME] was on time, clean, and courteous throughout the entire process. They explained everything clearly and kept me informed at every step. Thank you [COMPANY_NAME] for the excellent service!',
+      'Fantastic service with outstanding results from [COMPANY_NAME]! Quick response time, fair pricing, and excellent quality work. The team at [COMPANY_NAME] was professional, efficient, and went above and beyond to ensure my complete satisfaction. I couldn\'t be happier with the outcome and would definitely recommend [COMPANY_NAME] to others!',
+      'Excellent service from [COMPANY_NAME] from start to finish! Professional, reliable, and the quality of work was outstanding. The team at [COMPANY_NAME] was knowledgeable, courteous, and completed the job efficiently. They addressed all my concerns and kept me informed throughout the process. Highly recommend [COMPANY_NAME]!',
+      'Outstanding quality and customer service from [COMPANY_NAME] that exceeded my expectations! The team was friendly, professional, and delivered exactly what was promised. They were on time, clean, and professional throughout the entire process. I couldn\'t be happier with the results and will definitely use [COMPANY_NAME] again!',
+      
+      // Personal/Detailed reviews with company names
+      'I\'ve been using [COMPANY_NAME] for over 2 years now and they never disappoint. Their attention to detail and customer service is unmatched. The team always goes above and beyond to ensure everything is perfect. Highly recommend [COMPANY_NAME] to anyone looking for quality work!',
+      'After trying several other companies, I finally found [COMPANY_NAME] and I\'m so glad I did! Their professionalism and quality of work is outstanding. The team was punctual, clean, and kept me informed throughout the entire process. Will definitely use [COMPANY_NAME] again!',
+      'I was referred to [COMPANY_NAME] by a friend and I\'m so grateful for the recommendation! The team was professional, efficient, and delivered exactly what they promised. The quality of work exceeded my expectations and I couldn\'t be happier with the results. Thank you [COMPANY_NAME]!',
+      'I\'ve used [COMPANY_NAME] multiple times now and they consistently deliver excellent results. Their team is knowledgeable, friendly, and always goes the extra mile. The pricing is fair and the quality is outstanding. I highly recommend [COMPANY_NAME] to anyone looking for reliable service!',
+      'My experience with [COMPANY_NAME] has been nothing short of exceptional. From the initial consultation to the final cleanup, everything was handled professionally. The team was on time, clean, and kept me informed throughout the process. I couldn\'t be happier with the results and will definitely use [COMPANY_NAME] again!'
     ];
 
   // Generate random Google-like reviews
   const generateRandomReviews = () => {
-    const newReviews = Array.from({ length: 5 }, (_, index) => ({
-      id: (Date.now() + index).toString(),
-      name: generateRandomName(),
-      rating: Math.floor(Math.random() * 2) + 4, // 4 or 5 stars
-      comment: reviewTemplates[Math.floor(Math.random() * reviewTemplates.length)],
-      date: generateRandomDate()
-    }));
+    const newReviews = Array.from({ length: 5 }, (_, index) => {
+      const randomTemplate = reviewTemplates[Math.floor(Math.random() * reviewTemplates.length)];
+      const businessName = form.business_name || 'this company';
+      
+      // Replace [COMPANY_NAME] with actual business name
+      const personalizedComment = randomTemplate.replace(/\[COMPANY_NAME\]/g, businessName);
+      
+      return {
+        id: (Date.now() + index).toString(),
+        name: generateRandomName(),
+        rating: Math.floor(Math.random() * 2) + 4, // 4 or 5 stars
+        comment: personalizedComment,
+        date: generateRandomDate()
+      };
+    });
 
     setReviews(newReviews); // Replace all reviews with new random ones
     setSuccess('✅ Random Google-like reviews added successfully!');
