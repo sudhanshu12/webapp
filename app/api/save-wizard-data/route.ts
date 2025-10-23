@@ -1,6 +1,78 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '../../../lib/supabase';
 
+export async function GET(request: NextRequest) {
+  try {
+    console.log('=== LOAD WIZARD DATA API ===');
+    
+    // Get user email from query parameters
+    const url = new URL(request.url);
+    const userEmail = url.searchParams.get('user_email');
+    
+    if (!userEmail) {
+      return NextResponse.json({ 
+        success: false, 
+        message: 'User email is required' 
+      }, { status: 400 });
+    }
+
+    console.log('🔍 Loading data for user:', userEmail);
+
+    if (supabase) {
+      try {
+        const { data: supabaseData, error: supabaseError } = await supabase
+          .from('wizard_data')
+          .select('*')
+          .eq('user_email', userEmail)
+          .single();
+
+        if (supabaseError) {
+          console.error('❌ Supabase error:', supabaseError);
+          return NextResponse.json({ 
+            success: false, 
+            message: 'Failed to load data from database',
+            error: supabaseError.message 
+          }, { status: 500 });
+        }
+
+        if (supabaseData) {
+          console.log('✅ Data loaded from Supabase successfully');
+          return NextResponse.json({ 
+            success: true, 
+            data: supabaseData.data,
+            message: 'Data loaded successfully'
+          });
+        } else {
+          console.log('ℹ️ No data found for user');
+          return NextResponse.json({ 
+            success: true, 
+            data: null,
+            message: 'No data found for user'
+          });
+        }
+      } catch (error) {
+        console.error('❌ Error loading from Supabase:', error);
+        return NextResponse.json({ 
+          success: false, 
+          message: 'Failed to load data from database' 
+        }, { status: 500 });
+      }
+    } else {
+      console.log('⚠️ Supabase not configured');
+      return NextResponse.json({ 
+        success: false, 
+        message: 'Database not configured' 
+      }, { status: 500 });
+    }
+  } catch (error) {
+    console.error('Error loading wizard data:', error);
+    return NextResponse.json({ 
+      success: false, 
+      error: 'Failed to load wizard data' 
+    }, { status: 500 });
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     console.log('=== SAVE WIZARD DATA API DEBUG - CACHE CLEARED ===');

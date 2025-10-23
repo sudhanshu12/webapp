@@ -368,6 +368,53 @@ export default function WizardClient() {
     try { if (typeof window !== 'undefined') localStorage.setItem(key, JSON.stringify(value)); } catch {}
   };
 
+  // Debounced Supabase save to prevent too many API calls
+  const debouncedSupabaseSave = (() => {
+    let timeoutId: NodeJS.Timeout;
+    return (formData: FormData) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(async () => {
+        if (isLoaded && session?.user?.email) {
+          console.log('💾 Auto-saving to Supabase...');
+          await saveToSupabase(formData);
+        }
+      }, 2000); // Save to Supabase 2 seconds after last change
+    };
+  })();
+
+  // Load data from Supabase when component mounts
+  const loadFromSupabase = async () => {
+    if (!session?.user?.email) return;
+    
+    try {
+      console.log('📥 Loading data from Supabase...');
+      const response = await fetch(`/api/save-wizard-data?user_email=${encodeURIComponent(session.user.email)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.data) {
+          console.log('✅ Data loaded from Supabase:', data.data);
+          // Update form with loaded data
+          setForm(data.data);
+          // Update dynamic content if available
+          if (data.data.services) setServices(data.data.services);
+          if (data.data.locations) setLocations(data.data.locations);
+          if (data.data.reviews) setReviews(data.data.reviews);
+          if (data.data.features) setFeatures(data.data.features);
+          if (data.data.commitments) setCommitments(data.data.commitments);
+          if (data.data.faqs) setFaqs(data.data.faqs);
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error loading from Supabase:', error);
+    }
+  };
+
   const [form, setForm] = useState<FormData>({
     business_name: '',
     business_logo: '',
@@ -616,6 +663,9 @@ export default function WizardClient() {
 
   // Load data from localStorage after component mounts
   useEffect(() => {
+    // Wait for session to be available before loading data
+    if (status === 'loading') return;
+    
     // Use user-specific localStorage key
     const userEmail = session?.user?.email || 'anonymous';
     const userKey = `bsg_form_${userEmail}`;
@@ -670,8 +720,14 @@ export default function WizardClient() {
     if (savedForm) {
       setForm(savedForm);
     }
+    
+    // Also try to load from Supabase if user is authenticated
+    if (session?.user?.email) {
+      loadFromSupabase();
+    }
+    
     setIsLoaded(true);
-  }, []);
+  }, [status, session]);
 
   // Save form data to localStorage whenever it changes
   useEffect(() => {
@@ -945,6 +1001,7 @@ export default function WizardClient() {
   const [serviceLoading, setServiceLoading] = useState<{ [key: string]: boolean }>({});
   const [locationLoading, setLocationLoading] = useState<{ [key: string]: boolean }>({});
   const [showDownloadSection, setShowDownloadSection] = useState(false);
+  const [lastSaved, setLastSaved] = useState<string | null>(null);
   const [credits, setCredits] = useState({
     totalCredits: 1,
     usedCredits: 0,
@@ -1182,30 +1239,71 @@ export default function WizardClient() {
       
       return next;
     });
+    
+    // Auto-save to localStorage immediately when form changes
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_form_${userEmail}`;
+      // Use setTimeout to ensure the state has been updated
+      setTimeout(() => {
+        const currentForm = { ...form, [field]: value };
+        saveLS(userKey, currentForm);
+        console.log(`💾 Auto-saved ${field} to localStorage for user: ${userEmail}`);
+        
+        // Also save to Supabase with debouncing
+        debouncedSupabaseSave(currentForm);
+      }, 0);
+    }
   };
 
-  const saveToWordPress = async (formData: FormData) => {
+  const saveToSupabase = async (formData: FormData) => {
     try {
       const response = await fetch('/api/save-wizard-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          services,
+          locations,
+          reviews,
+          features,
+          commitments,
+          faqs,
+          user_email: session?.user?.email || 'anonymous',
+          email: session?.user?.email || formData.email || 'anonymous'
+        }),
       });
 
       if (response.ok) {
-        console.log('✅ Data saved to WordPress successfully');
+        const result = await response.json();
+        console.log('✅ Data saved to Supabase successfully:', result);
+        setLastSaved(new Date().toLocaleTimeString());
+        return true;
       } else {
-        console.error('❌ Failed to save data to WordPress');
+        console.error('❌ Failed to save data to Supabase');
+        return false;
       }
     } catch (error) {
-      console.error('❌ Error saving to WordPress:', error);
+      console.error('❌ Error saving to Supabase:', error);
+      return false;
     }
   };
 
-  const saveSectionChanges = (section: string) => {
+  const saveSectionChanges = async (section: string) => {
     setSuccess(`✅ ${section} section saved successfully!`);
+    
+    // Also save to Supabase immediately when user manually saves
+    if (isLoaded && session?.user?.email) {
+      console.log(`💾 Manual save to Supabase for ${section} section...`);
+      const success = await saveToSupabase(form);
+      if (success) {
+        setSuccess(`✅ ${section} section saved to database successfully!`);
+      } else {
+        setSuccess(`⚠️ ${section} section saved locally, but database save failed.`);
+      }
+    }
     
     // Show download section when contact section is saved and essential fields are filled
     if (section === 'Contact' && form.business_name && form.business_type && form.location) {
@@ -1250,11 +1348,25 @@ export default function WizardClient() {
       useDefaultPrompt: true,
       customPrompt: ''
     };
-    setServices([...services, newService]);
+    const updatedServices = [...services, newService];
+    setServices(updatedServices);
+    
+    // Auto-save to localStorage immediately
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_services_${userEmail}`;
+      setTimeout(() => {
+        saveLS(userKey, updatedServices);
+        console.log(`💾 Auto-saved new service to localStorage for user: ${userEmail}`);
+        
+        // Also save to Supabase with debouncing
+        debouncedSupabaseSave(form);
+      }, 0);
+    }
   };
 
   const updateService = (id: string, field: keyof Service, value: string) => {
-    setServices(services.map(service => {
+    const updatedServices = services.map(service => {
       if (service.id === id) {
         const updatedService = { ...service, [field]: value };
         // Auto-generate slug when name changes
@@ -1264,11 +1376,36 @@ export default function WizardClient() {
         return updatedService;
       }
       return service;
-    }));
+    });
+    setServices(updatedServices);
+    
+    // Auto-save to localStorage immediately
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_services_${userEmail}`;
+      setTimeout(() => {
+        saveLS(userKey, updatedServices);
+        console.log(`💾 Auto-saved service ${id} to localStorage for user: ${userEmail}`);
+        
+        // Also save to Supabase with debouncing
+        debouncedSupabaseSave(form);
+      }, 0);
+    }
   };
 
   const removeService = (id: string) => {
-    setServices(services.filter(service => service.id !== id));
+    const updatedServices = services.filter(service => service.id !== id);
+    setServices(updatedServices);
+    
+    // Auto-save to localStorage immediately
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_services_${userEmail}`;
+      setTimeout(() => {
+        saveLS(userKey, updatedServices);
+        console.log(`💾 Auto-saved service removal to localStorage for user: ${userEmail}`);
+      }, 0);
+    }
   };
 
   const generateServiceAI = async (id: string) => {
@@ -1962,7 +2099,17 @@ export default function WizardClient() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify((() => {
-          const payload: any = { ...form, services: servicesWithSlugs, locations: locationsWithSlugs, reviews, features, commitments, faqs };
+          const payload: any = { 
+            ...form, 
+            services: servicesWithSlugs, 
+            locations: locationsWithSlugs, 
+            reviews, 
+            features, 
+            commitments, 
+            faqs,
+            user_email: session?.user?.email || 'anonymous',
+            email: session?.user?.email || form.email || 'anonymous'
+          };
           return payload;
         })())
       });
@@ -6386,6 +6533,46 @@ export default function WizardClient() {
                       <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center' }}>
                         <button 
                           type="button" 
+                          className="button button-secondary"
+                          onClick={async () => {
+                            setLoading(true);
+                            try {
+                              const success = await saveToSupabase(form);
+                              if (success) {
+                                setSuccess('✅ All data saved to database successfully!');
+                              } else {
+                                setSuccess('❌ Failed to save data to database. Please try again.');
+                              }
+                            } catch (error) {
+                              setSuccess('❌ Error saving data. Please try again.');
+                              console.error('Save error:', error);
+                            } finally {
+                              setLoading(false);
+                              setTimeout(() => setSuccess(''), 3000);
+                            }
+                          }}
+                          disabled={loading}
+                          style={{
+                            fontSize: '16px',
+                            padding: '15px 30px',
+                            backgroundColor: '#28a745',
+                            borderColor: '#28a745',
+                            color: '#ffffff',
+                            borderRadius: '8px',
+                            border: 'none',
+                            cursor: loading ? 'not-allowed' : 'pointer',
+                            opacity: loading ? 0.7 : 1,
+                            transition: 'all 0.3s ease',
+                            fontWeight: '600',
+                            boxShadow: '0 4px 12px rgba(40, 167, 69, 0.3)',
+                            minWidth: '180px'
+                          }}
+                        >
+                          {loading ? '🔄 Saving...' : '💾 Save All Data'}
+                        </button>
+                        
+                        <button 
+                          type="button" 
                           className="button button-primary button-hero"
                           onClick={downloadTheme}
                           disabled={loading || !(form.business_name && form.business_type && form.phone && form.email && form.address) || credits.remainingCredits < 1}
@@ -6507,6 +6694,84 @@ export default function WizardClient() {
             </div>
           </form>
         </div>
+      </div>
+      
+      {/* Floating Save Button */}
+      <div style={{
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        zIndex: 1000,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        gap: '10px'
+      }}>
+        {/* Last Saved Indicator */}
+        {lastSaved && (
+          <div style={{
+            backgroundColor: 'rgba(40, 167, 69, 0.9)',
+            color: 'white',
+            padding: '8px 12px',
+            borderRadius: '20px',
+            fontSize: '12px',
+            fontWeight: '500',
+            boxShadow: '0 2px 10px rgba(40, 167, 69, 0.3)',
+            backdropFilter: 'blur(10px)'
+          }}>
+            ✅ Saved at {lastSaved}
+          </div>
+        )}
+        <button
+          onClick={async () => {
+            setLoading(true);
+            try {
+              const success = await saveToSupabase(form);
+              if (success) {
+                setSuccess('✅ All data saved to database successfully!');
+              } else {
+                setSuccess('❌ Failed to save data to database. Please try again.');
+              }
+            } catch (error) {
+              setSuccess('❌ Error saving data. Please try again.');
+              console.error('Save error:', error);
+            } finally {
+              setLoading(false);
+              setTimeout(() => setSuccess(''), 3000);
+            }
+          }}
+          disabled={loading}
+          style={{
+            backgroundColor: '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '50px',
+            padding: '15px 20px',
+            fontSize: '14px',
+            fontWeight: '600',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            opacity: loading ? 0.7 : 1,
+            boxShadow: '0 4px 20px rgba(40, 167, 69, 0.4)',
+            transition: 'all 0.3s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            minWidth: '140px',
+            justifyContent: 'center'
+          }}
+          onMouseEnter={(e) => {
+            if (!loading) {
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 6px 25px rgba(40, 167, 69, 0.6)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 20px rgba(40, 167, 69, 0.4)';
+          }}
+        >
+          {loading ? '🔄' : '💾'} {loading ? 'Saving...' : 'Save All'}
+        </button>
       </div>
 		</div>
 	);
