@@ -369,6 +369,39 @@ export default function WizardClient() {
     try { if (typeof window !== 'undefined') localStorage.setItem(key, JSON.stringify(value)); } catch {}
   };
 
+  // Generate random names for Google-like reviews
+  const generateRandomName = () => {
+    const firstNames = [
+      'Alex', 'Jordan', 'Taylor', 'Casey', 'Morgan', 'Riley', 'Avery', 'Quinn', 'Sage', 'River',
+      'Drew', 'Blake', 'Cameron', 'Dakota', 'Emery', 'Finley', 'Hayden', 'Jamie', 'Kendall', 'Logan',
+      'Parker', 'Reese', 'Sawyer', 'Skyler', 'Tatum', 'Aiden', 'Blake', 'Carson', 'Dylan', 'Ethan',
+      'Gabriel', 'Hunter', 'Isaac', 'Jackson', 'Kai', 'Liam', 'Mason', 'Noah', 'Owen', 'Parker',
+      'Quinn', 'Ryan', 'Sebastian', 'Tyler', 'Wyatt', 'Zachary', 'Amelia', 'Ava', 'Charlotte', 'Emma',
+      'Grace', 'Harper', 'Isabella', 'Lily', 'Mia', 'Nora', 'Olivia', 'Penelope', 'Riley', 'Sophia'
+    ];
+    const lastNames = [
+      'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez',
+      'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin',
+      'Lee', 'Perez', 'Thompson', 'White', 'Harris', 'Sanchez', 'Clark', 'Ramirez', 'Lewis', 'Robinson',
+      'Walker', 'Young', 'Allen', 'King', 'Wright', 'Scott', 'Torres', 'Nguyen', 'Hill', 'Flores',
+      'Green', 'Adams', 'Nelson', 'Baker', 'Hall', 'Rivera', 'Campbell', 'Mitchell', 'Carter', 'Roberts'
+    ];
+    
+    const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+    const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+    return `${firstName} ${lastName}`;
+  };
+
+  // Generate random date in current year
+  const generateRandomDate = () => {
+    const currentYear = new Date().getFullYear();
+    const startDate = new Date(currentYear, 0, 1); // January 1st of current year
+    const endDate = new Date(); // Today
+    const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
+    const randomDate = new Date(randomTime);
+    return randomDate.toISOString().split('T')[0];
+  };
+
   // Debounced Supabase save to prevent too many API calls
   const debouncedSupabaseSave = (() => {
     let timeoutId: NodeJS.Timeout;
@@ -855,10 +888,24 @@ export default function WizardClient() {
   const [reviews, setReviews] = useState<Review[]>([
     {
       id: '1',
-      name: 'John Smith',
+      name: 'Sarah Johnson',
       rating: 5,
-      comment: 'Excellent service and quality work!',
-      date: '2024-01-15'
+      comment: 'Outstanding service! The team was professional, punctual, and delivered exactly what they promised. Highly recommend!',
+      date: '2025-03-15'
+    },
+    {
+      id: '2',
+      name: 'Michael Chen',
+      rating: 5,
+      comment: 'Exceptional work quality and customer service. They went above and beyond to ensure everything was perfect. Will definitely use again!',
+      date: '2025-02-28'
+    },
+    {
+      id: '3',
+      name: 'Emily Rodriguez',
+      rating: 5,
+      comment: 'Amazing experience from start to finish. Professional, reliable, and the results exceeded my expectations. Thank you!',
+      date: '2025-01-20'
     }
   ]);
   
@@ -1607,10 +1654,10 @@ export default function WizardClient() {
   const addReview = () => {
     const newReview: Review = {
       id: Date.now().toString(),
-      name: '',
+      name: generateRandomName(),
       rating: 5,
-      comment: '',
-      date: new Date().toISOString().split('T')[0]
+      comment: 'Great service! Highly recommend.',
+      date: generateRandomDate()
     };
     setReviews([...reviews, newReview]);
   };
@@ -1623,6 +1670,34 @@ export default function WizardClient() {
 
   const removeReview = (id: string) => {
     setReviews(reviews.filter(review => review.id !== id));
+  };
+
+  // Generate random Google-like reviews
+  const generateRandomReviews = () => {
+    const reviewTemplates = [
+      'Outstanding service! The team was professional, punctual, and delivered exactly what they promised. Highly recommend!',
+      'Exceptional work quality and customer service. They went above and beyond to ensure everything was perfect. Will definitely use again!',
+      'Amazing experience from start to finish. Professional, reliable, and the results exceeded my expectations. Thank you!',
+      'Fantastic service! Quick response time, fair pricing, and excellent results. Couldn\'t be happier with the outcome.',
+      'Top-notch work! The team was knowledgeable, courteous, and completed the job efficiently. Highly satisfied!',
+      'Excellent service and attention to detail. They were on time, clean, and professional throughout the entire process.',
+      'Outstanding quality and customer service. The team was friendly, professional, and delivered exactly what was promised.',
+      'Great experience! Professional team, fair pricing, and excellent results. Would definitely recommend to others.',
+      'Fantastic work! The team was professional, efficient, and the results exceeded my expectations. Highly recommend!',
+      'Excellent service from start to finish. Professional, reliable, and the quality of work was outstanding. Thank you!'
+    ];
+
+    const newReviews = Array.from({ length: 5 }, (_, index) => ({
+      id: (Date.now() + index).toString(),
+      name: generateRandomName(),
+      rating: Math.floor(Math.random() * 2) + 4, // 4 or 5 stars
+      comment: reviewTemplates[Math.floor(Math.random() * reviewTemplates.length)],
+      date: generateRandomDate()
+    }));
+
+    setReviews([...reviews, ...newReviews]);
+    setSuccess('✅ Random Google-like reviews added successfully!');
+    setTimeout(() => setSuccess(''), 3000);
   };
 
   // About AI generation functions
@@ -1818,10 +1893,10 @@ export default function WizardClient() {
         // Replace all reviews with generated ones
         setReviews(data.content.map((review: any, index: number) => ({
           id: (index + 1).toString(),
-          name: review.name || '',
+          name: review.name || generateRandomName(),
           rating: review.rating || 5,
           comment: review.comment || '',
-          date: new Date().toISOString().split('T')[0]
+          date: generateRandomDate()
         })));
         setSuccess('✅ Reviews generated successfully!');
       } else {
@@ -5603,15 +5678,26 @@ export default function WizardClient() {
                         + Add Review
                       </button>
                       
-                      <button 
-                        type="button" 
-                        className="button button-secondary"
-                        onClick={generateReviewsAI}
-                        disabled={loading}
-                        style={{marginTop: '1rem'}}
-                      >
-                        {loading ? '🔄 Generating...' : '🔧 Generate Reviews with AI'}
-                      </button>
+                      <div style={{display: 'flex', gap: '10px', marginTop: '1rem'}}>
+                        <button 
+                          type="button" 
+                          className="button button-secondary"
+                          onClick={generateRandomReviews}
+                          style={{flex: 1}}
+                        >
+                          🎲 Generate Random Google Reviews
+                        </button>
+                        
+                        <button 
+                          type="button" 
+                          className="button button-secondary"
+                          onClick={generateReviewsAI}
+                          disabled={loading}
+                          style={{flex: 1}}
+                        >
+                          {loading ? '🔄 Generating...' : '🔧 Generate Reviews with AI'}
+                        </button>
+                      </div>
                     </div>
 					</div>
 				)}
