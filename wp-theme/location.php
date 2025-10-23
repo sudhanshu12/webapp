@@ -155,10 +155,10 @@ if ($current_location) {
 // Generate meta title and description (treat empty strings as missing)
 $meta_title = !empty(trim($current_location['metaTitle'] ?? ''))
     ? trim($current_location['metaTitle'])
-    : ('Professional Services in ' . $location_title . ', ' . $business['state'] . ' | ' . $business['name']);
+    : ($business['name'] . ' - ' . $location_title . ' Roofing Services | Professional Roofing in ' . $business['state']);
 $meta_description = !empty(trim($current_location['metaDescription'] ?? ''))
     ? trim($current_location['metaDescription'])
-    : ('Get professional services in ' . $location_title . ', ' . $business['state'] . '. Expert installation, repair, and maintenance services. Local expertise with quality workmanship. Call ' . $business['name'] . ' for a free estimate today.');
+    : ('Professional roofing services in ' . $location_title . ', ' . $business['state'] . '. Expert roof repairs, replacements, and inspections. Licensed & insured roofing contractor. Call ' . $business['name'] . ' for a free estimate today.');
 
 // Debug: Log the final meta title
 error_log('=== LOCATION FINAL RESULT DEBUG ===');
