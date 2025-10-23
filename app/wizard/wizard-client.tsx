@@ -898,29 +898,7 @@ export default function WizardClient() {
     }
   }, [locations, isLoaded, session]);
 
-  const [reviews, setReviews] = useState<Review[]>([
-    {
-      id: '1',
-      name: 'Sarah Johnson',
-      rating: 5,
-      comment: 'Excellent work!',
-      date: '2024-08-12'
-    },
-    {
-      id: '2',
-      name: 'Michael Chen',
-      rating: 5,
-      comment: 'Outstanding service from start to finish! The team was professional, punctual, and delivered exactly what they promised. The quality of work exceeded my expectations and I couldn\'t be happier with the results. Highly recommend to anyone looking for reliable service!',
-      date: '2023-11-25'
-    },
-    {
-      id: '3',
-      name: 'Emily Rodriguez',
-      rating: 5,
-      comment: 'Amazing experience from start to finish. Professional, reliable, and the results exceeded my expectations.',
-      date: '2025-01-20'
-    }
-  ]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   
   // Load reviews from localStorage after component mounts
   useEffect(() => {
@@ -1668,8 +1646,8 @@ export default function WizardClient() {
     const newReview: Review = {
       id: Date.now().toString(),
       name: generateRandomName(),
-      rating: 5,
-      comment: 'Great service! Highly recommend.',
+      rating: Math.floor(Math.random() * 2) + 4, // 4 or 5 stars
+      comment: reviewTemplates[Math.floor(Math.random() * reviewTemplates.length)],
       date: generateRandomDate()
     };
     setReviews([...reviews, newReview]);
@@ -1685,9 +1663,8 @@ export default function WizardClient() {
     setReviews(reviews.filter(review => review.id !== id));
   };
 
-  // Generate random Google-like reviews
-  const generateRandomReviews = () => {
-    const reviewTemplates = [
+  // Review templates for random generation
+  const reviewTemplates = [
       // Short reviews (1 line)
       'Great service!',
       'Highly recommend!',
@@ -1717,6 +1694,8 @@ export default function WizardClient() {
       'Outstanding quality and customer service that exceeded my expectations! The team was friendly, professional, and delivered exactly what was promised. They were on time, clean, and professional throughout the entire process. I couldn\'t be happier with the results and will definitely use again!'
     ];
 
+  // Generate random Google-like reviews
+  const generateRandomReviews = () => {
     const newReviews = Array.from({ length: 5 }, (_, index) => ({
       id: (Date.now() + index).toString(),
       name: generateRandomName(),
@@ -1725,7 +1704,7 @@ export default function WizardClient() {
       date: generateRandomDate()
     }));
 
-    setReviews([...reviews, ...newReviews]);
+    setReviews(newReviews); // Replace all reviews with new random ones
     setSuccess('✅ Random Google-like reviews added successfully!');
     setTimeout(() => setSuccess(''), 3000);
   };
