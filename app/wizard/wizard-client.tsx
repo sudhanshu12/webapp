@@ -2330,6 +2330,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.business_logo}
                                 onChange={(e) => updateForm('business_logo', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="Logo Image URL"
                                   style={{flex: 1}}
@@ -2395,6 +2396,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.business_type}
                                 onChange={(e) => updateForm('business_type', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text"
                                 placeholder="e.g., roofing, plumbing, landscaping"
                               />
@@ -2407,6 +2409,7 @@ export default function WizardClient() {
                                 type="tel" 
                                 value={form.phone}
                                 onChange={(e) => updateForm('phone', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="(555) 123-4567"
                               />
@@ -2419,6 +2422,7 @@ export default function WizardClient() {
                                 type="email" 
                                 value={form.email}
                                 onChange={(e) => updateForm('email', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="info@yourbusiness.com"
                               />
@@ -2430,6 +2434,7 @@ export default function WizardClient() {
                               <textarea 
                                 value={form.address}
                                 onChange={(e) => updateForm('address', e.target.value)}
+                                onBlur={saveWizardData}
                                 rows={2} 
                                 className="large-text" 
                                 placeholder="123 Main Street, City, State 12345"
@@ -2443,6 +2448,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.location}
                                 onChange={(e) => updateForm('location', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="e.g., Boulder, Denver"
                               />
@@ -2454,6 +2460,7 @@ export default function WizardClient() {
                               <select 
                                 value={form.state}
                                 onChange={(e) => updateForm('state', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text"
                               >
                                 <option value="">Select State</option>
@@ -2470,6 +2477,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.zip}
                                 onChange={(e) => updateForm('zip', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 pattern="[0-9]{5}(-[0-9]{4})?" 
                                 title="Enter a valid ZIP code (e.g., 12345 or 12345-6789)"
@@ -2484,6 +2492,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.about_years}
                                 onChange={(e) => updateForm('about_years', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="15+"
                               />
@@ -2809,6 +2818,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.homepage_meta_title}
                                 onChange={(e) => updateForm('homepage_meta_title', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="large-text" 
                                 placeholder={`${form.business_name || 'Your Business'} - Professional Roofing Services in ${form.location || 'Your Area'}`}
                               />
@@ -2824,6 +2834,7 @@ export default function WizardClient() {
                               <textarea 
                                 value={form.homepage_meta_description}
                                 onChange={(e) => updateForm('homepage_meta_description', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="large-text" 
                                 rows={3} 
                                 placeholder={`${form.business_name || 'Your Business'} provides professional roofing services in ${form.location || 'your area'}. Get free estimates, expert installation, and reliable repairs. Call ${form.phone || '(555) 123-4567'} today!`}
@@ -2841,6 +2852,7 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.homepage_meta_keywords}
                                 onChange={(e) => updateForm('homepage_meta_keywords', e.target.value)}
+                                onBlur={saveWizardData}
                                 className="large-text" 
                                 placeholder="roofing services, roof repair, roof installation, roofing contractor"
                               />
@@ -3621,6 +3633,7 @@ export default function WizardClient() {
                                 type="number" 
                                 value={form.about_years || 15}
                                 onChange={(e) => updateForm('about_years', parseInt(e.target.value))}
+                                onBlur={saveWizardData}
                                 min="0" 
                                 max="100"
                               />
