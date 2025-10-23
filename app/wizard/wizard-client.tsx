@@ -3393,6 +3393,7 @@ export default function WizardClient() {
                               type="checkbox" 
                               checked={form.features_visible || true}
                               onChange={(e) => updateForm('features_visible', e.target.checked)}
+                              onBlur={saveWizardData}
                             />
                             <span style={{marginLeft: '8px'}}>Show this section</span>
                           </td>
@@ -3405,6 +3406,7 @@ export default function WizardClient() {
                               type="color" 
                               value={form.features_bg_color || '#ffffff'}
                               onChange={(e) => updateForm('features_bg_color', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: 40, height: 40, border: 'none', borderRadius: 4, cursor: 'pointer'}}
                             />
                           </td>
@@ -3416,6 +3418,7 @@ export default function WizardClient() {
                               type="color" 
                               value={form.features_card_bg || '#f8f9fa'}
                               onChange={(e) => updateForm('features_card_bg', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: 40, height: 40, border: 'none', borderRadius: 4, cursor: 'pointer'}}
                             />
                           </td>
@@ -3427,6 +3430,7 @@ export default function WizardClient() {
                               type="color" 
                               value={form.features_text_color || '#23282d'}
                               onChange={(e) => updateForm('features_text_color', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: 40, height: 40, border: 'none', borderRadius: 4, cursor: 'pointer'}}
                             />
                           </td>
@@ -3438,6 +3442,7 @@ export default function WizardClient() {
                               type="color" 
                               value={form.features_icon_color || '#14b8a6'}
                               onChange={(e) => updateForm('features_icon_color', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: 40, height: 40, border: 'none', borderRadius: 4, cursor: 'pointer'}}
                             />
                             <span className="description" style={{marginLeft: 8, color: '#94a3b8'}}>Color for feature icons</span>
@@ -3450,6 +3455,7 @@ export default function WizardClient() {
                               type="number" 
                               value={form.features_padding || 80}
                               onChange={(e) => updateForm('features_padding', parseInt(e.target.value))}
+                              onBlur={saveWizardData}
                               min="0" 
                               max="300"
                               style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 4, padding: '8px 12px', color: '#f1f5f9', width: '100%'}}
@@ -3492,6 +3498,7 @@ export default function WizardClient() {
                                 className="regular-text"
                                 value={feature.icon}
                                 onChange={(e) => updateFeature(feature.id, 'icon', e.target.value)}
+                                onBlur={saveWizardData}
                                 placeholder="e.g., dashicons-awards or https://.../icon.svg"
                                 style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 4, padding: '8px 12px', color: '#f1f5f9'}}
                               />
@@ -3503,6 +3510,7 @@ export default function WizardClient() {
                                 className="regular-text"
                                 value={feature.title}
                                 onChange={(e) => updateFeature(feature.id, 'title', e.target.value)}
+                                onBlur={saveWizardData}
                                 placeholder="e.g., Thorough Site Inspection"
                                 style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 4, padding: '8px 12px', color: '#f1f5f9'}}
                               />
@@ -3515,6 +3523,7 @@ export default function WizardClient() {
                               style={{width: '100%', minHeight: 80, background: '#0f172a', border: '1px solid #334155', borderRadius: 4, padding: '8px 12px', color: '#f1f5f9'}}
                               value={feature.description}
                               onChange={(e) => updateFeature(feature.id, 'description', e.target.value)}
+                              onBlur={saveWizardData}
                               placeholder="e.g., Detailed assessment to ensure precise planning and care"
                             />
                           </div>
