@@ -47,7 +47,7 @@ function bsg_auto_template_selection($template) {
         strpos($page_slug, 'about-us') !== false) {
         
         // Use about template
-        $about_template = get_template_directory() . '/about.php';
+        $about_template = get_template_directory() . '/page-about-us.php';
         if (file_exists($about_template)) {
             return $about_template;
         }
@@ -115,8 +115,8 @@ function bsg_force_template_assignment() {
         if (strpos($page_slug, 'about') !== false || 
             strpos($page_slug, 'about-us') !== false) {
             
-            if ($current_template !== 'about.php') {
-                update_post_meta($page->ID, '_wp_page_template', 'about.php');
+            if ($current_template !== 'page-about-us.php') {
+                update_post_meta($page->ID, '_wp_page_template', 'page-about-us.php');
             }
         }
         
@@ -185,8 +185,8 @@ function bsg_auto_assign_template_on_save($post_id, $post) {
     if (strpos($page_slug, 'about') !== false || 
         strpos($page_slug, 'about-us') !== false) {
         
-        if ($current_template !== 'about.php') {
-            update_post_meta($post_id, '_wp_page_template', 'about.php');
+        if ($current_template !== 'page-about-us.php') {
+            update_post_meta($post_id, '_wp_page_template', 'page-about-us.php');
         }
     }
     
