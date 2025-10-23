@@ -5678,26 +5678,14 @@ export default function WizardClient() {
                         + Add Review
                       </button>
                       
-                      <div style={{display: 'flex', gap: '10px', marginTop: '1rem'}}>
-                        <button 
-                          type="button" 
-                          className="button button-secondary"
-                          onClick={generateRandomReviews}
-                          style={{flex: 1}}
-                        >
-                          🎲 Generate Random Google Reviews
-                        </button>
-                        
-                        <button 
-                          type="button" 
-                          className="button button-secondary"
-                          onClick={generateReviewsAI}
-                          disabled={loading}
-                          style={{flex: 1}}
-                        >
-                          {loading ? '🔄 Generating...' : '🔧 Generate Reviews with AI'}
-                        </button>
-                      </div>
+                      <button 
+                        type="button" 
+                        className="button button-secondary"
+                        onClick={generateRandomReviews}
+                        style={{marginTop: '1rem'}}
+                      >
+                        🎲 Generate Random Google Reviews
+                      </button>
                     </div>
 					</div>
 				)}
