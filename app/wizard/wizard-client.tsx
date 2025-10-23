@@ -2505,6 +2505,7 @@ export default function WizardClient() {
                                 type="checkbox" 
                                 checked={form.use_dynamic_template}
                                 onChange={(e) => updateForm('use_dynamic_template', e.target.checked)}
+                                onBlur={saveWizardData}
                               />
                               <span style={{marginLeft: '8px'}}>Enable dynamic content (recommended)</span>
                               <p className="description">When enabled, all content from the admin panel will be displayed on the homepage. When disabled, static content will be used.</p>
@@ -2676,6 +2677,7 @@ export default function WizardClient() {
                               type="color"
                               value={form.global_primary_color || getThemeColors(form.color_theme).primary}
                               onChange={(e) => updateForm('global_primary_color', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: '100%', height: '40px', border: '1px solid #d1d5db', borderRadius: '6px', cursor: 'pointer'}}
                             />
                           </div>
@@ -2685,6 +2687,7 @@ export default function WizardClient() {
                               type="color"
                               value={form.global_secondary_color || getThemeColors(form.color_theme).secondary}
                               onChange={(e) => updateForm('global_secondary_color', e.target.value)}
+                              onBlur={saveWizardData}
                               style={{width: '100%', height: '40px', border: '1px solid #d1d5db', borderRadius: '6px', cursor: 'pointer'}}
                             />
                           </div>
@@ -2998,6 +3001,7 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_bg_image}
                               onChange={(e) => updateForm('hero_bg_image', e.target.value)}
+                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="https://example.com/hero-bg.jpg"
                             />
@@ -3067,6 +3071,7 @@ export default function WizardClient() {
                                 type="checkbox"
                                 checked={form.use_global_hero_image ?? true}
                                 onChange={(e) => updateForm('use_global_hero_image', e.target.checked)}
+                                onBlur={saveWizardData}
                                 style={{margin: 0}}
                               />
                               <span style={{color: '#d1d5db', fontSize: '14px'}}>
@@ -3084,6 +3089,7 @@ export default function WizardClient() {
                                   type="text" 
                                   value={form.about_page_hero_bg_image}
                                   onChange={(e) => updateForm('about_page_hero_bg_image', e.target.value)}
+                                  onBlur={saveWizardData}
                                   className="regular-text" 
                                   placeholder="https://example.com/about-hero-bg.jpg"
                                 />
@@ -3114,6 +3120,7 @@ export default function WizardClient() {
                                   type="text" 
                                   value={form.service_page_hero_bg_image}
                                   onChange={(e) => updateForm('service_page_hero_bg_image', e.target.value)}
+                                  onBlur={saveWizardData}
                                   className="regular-text" 
                                   placeholder="https://example.com/services-hero-bg.jpg"
                                 />
@@ -3144,6 +3151,7 @@ export default function WizardClient() {
                                   type="text" 
                                   value={form.location_page_hero_bg_image}
                                   onChange={(e) => updateForm('location_page_hero_bg_image', e.target.value)}
+                                  onBlur={saveWizardData}
                                   className="regular-text" 
                                   placeholder="https://example.com/location-hero-bg.jpg"
                                 />
