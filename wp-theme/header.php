@@ -26,10 +26,14 @@
     <?php
     // Only output meta tags for pages that don't have their own meta tag handling
     // Pages with their own meta tags: about.php, contact.php, page-service.php, location.php, home-dynamic.php, page-about-us.php
+    $current_url = $_SERVER['REQUEST_URI'] ?? '';
+    $is_service_page = strpos($current_url, '/services/') !== false;
+    $is_location_page = strpos($current_url, '/service-locations/') !== false;
+    
     if (!is_page_template('about.php') && !is_page_template('contact.php') && 
         !is_page_template('page-service.php') && !is_page_template('location.php') && 
         !is_page_template('home-dynamic.php') && !is_page_template('page-about-us.php') &&
-        !is_page_template('page-contact-us.php')) {
+        !is_page_template('page-contact-us.php') && !$is_service_page && !$is_location_page) {
         bsg_output_meta_tags('home');
     }
     ?>
