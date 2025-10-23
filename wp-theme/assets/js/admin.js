@@ -974,7 +974,7 @@ jQuery(document).ready(function($) {
                     <tr>
                         <th scope="row">Cities (one per line)</th>
                         <td>
-                            <textarea name="service_areas[${index}][cities]" rows="4" class="large-text" placeholder="Boulder&#10;Longmont&#10;Louisville&#10;Lafayette">${area.cities}</textarea>
+                            <textarea name="service_areas[${index}][cities]" rows="4" class="large-text" placeholder="Orlando&#10;Miami&#10;Tampa&#10;Jacksonville">${area.cities}</textarea>
                         </td>
                     </tr>
                 </table>

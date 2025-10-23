@@ -14,9 +14,9 @@ $email = $settings['email'] ?? '';
 // Add meta tags to head
 add_action('wp_head', function() use ($settings, $business_name) {
     // Get meta tags from wizard settings
-    $meta_title = $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Professional Services & Team';
-    $meta_description = $settings['about_page_meta_description'] ?? 'Learn about ' . $business_name . ' - our professional team, services, and commitment to excellence. Discover why we\'re the trusted choice for quality work.';
-    $meta_keywords = $settings['about_page_meta_keywords'] ?? 'about us, professional services, team, company, business, quality work';
+    $meta_title = $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Expert Roofing Services in Orlando';
+    $meta_description = $settings['about_page_meta_description'] ?? 'Learn about ' . $business_name . ', Orlando\'s trusted roofing company. Professional team, quality workmanship, and exceptional service. Call ' . $phone . ' for a free estimate!';
+    $meta_keywords = $settings['about_page_meta_keywords'] ?? 'about roofing pros, orlando roofing company, professional roofing team, roofing contractors orlando, expert roofing services';
     
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
@@ -391,7 +391,6 @@ get_header();
                             </svg>
                     WHO WE ARE
                 </p>
-                <h2>About <?php echo esc_html($business_name); ?></h2>
                 
                 <div class="about-description-content">
                             <?php 

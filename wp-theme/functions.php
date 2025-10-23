@@ -4248,11 +4248,11 @@ function bsg_settings_page() {
                     </tr>
                     <tr>
                         <th scope="row">Locations Title</th>
-                        <td><input type="text" name="locations_title" value="<?php echo esc_attr($current_settings['locations_title'] ?? 'Proudly Serving Boulder And The Surrounding Areas'); ?>" class="regular-text" /></td>
+                        <td><input type="text" name="locations_title" value="<?php echo esc_attr($current_settings['locations_title'] ?? 'Proudly Serving Orlando And The Surrounding Areas'); ?>" class="regular-text" /></td>
                     </tr>
                     <tr>
                         <th scope="row">Locations Description</th>
-                        <td><textarea name="locations_description" rows="3" class="large-text"><?php echo esc_textarea($current_settings['locations_description'] ?? 'Proudly serving Boulder and the Front Range, including Longmont, Louisville, Lafayette, Erie, Superior, Broomfield, Westminster and nearby areas'); ?></textarea></td>
+                        <td><textarea name="locations_description" rows="3" class="large-text"><?php echo esc_textarea($current_settings['locations_description'] ?? 'Proudly serving Orlando and surrounding areas in Florida'); ?></textarea></td>
                     </tr>
                     <tr>
                         <th scope="row">Locations Background Color</th>
