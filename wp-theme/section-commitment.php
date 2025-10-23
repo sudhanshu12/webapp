@@ -7,6 +7,13 @@ if (!isset($settings) || empty($settings)) {
         $settings = get_option('bsg_settings', []);
     }
 }
+
+// Debug: Log commitment section settings
+error_log('=== COMMITMENT SECTION DEBUG ===');
+error_log('Commitment visible: ' . ($settings['commitment_visible'] ?? 'NOT SET'));
+error_log('Commitment image: ' . ($settings['commitment_image'] ?? 'NOT SET'));
+error_log('Settings count: ' . count($settings));
+error_log('=== COMMITMENT SECTION DEBUG END ===');
 $commitment_visible = $settings['commitment_visible'] ?? 1;
 $commitment_title = $settings['commitment_title'] ?? 'Our Commitment to You';
 $commitment_subtitle = $settings['commitment_subtitle'] ?? 'We promise to deliver exceptional service';

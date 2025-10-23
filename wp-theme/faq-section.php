@@ -9,6 +9,13 @@ if (!isset($settings) || empty($settings)) {
     }
 }
 
+// Debug: Log FAQ section settings
+error_log('=== FAQ SECTION DEBUG ===');
+error_log('FAQ visible: ' . ($settings['faq_visible'] ?? 'NOT SET'));
+error_log('FAQ image: ' . ($settings['faq_image'] ?? 'NOT SET'));
+error_log('Settings count: ' . count($settings));
+error_log('=== FAQ SECTION DEBUG END ===');
+
 // Debug: Check if settings are available
 if (current_user_can('manage_options')) {
     echo '<!-- FAQ Debug: faq_visible = ' . (isset($settings['faq_visible']) ? 'true' : 'false') . ' -->';

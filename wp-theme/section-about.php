@@ -2,6 +2,14 @@
 // Shared About section include
 $settings = function_exists('bsg_get_settings') ? bsg_get_settings() : (get_option('bsg_settings', []) ?: []);
 
+// Debug: Log about section settings
+error_log('=== ABOUT SECTION DEBUG ===');
+error_log('About visible: ' . ($settings['about_visible'] ?? 'NOT SET'));
+error_log('About home image: ' . ($settings['about_home_image'] ?? 'NOT SET'));
+error_log('About image: ' . ($settings['about_image'] ?? 'NOT SET'));
+error_log('Settings count: ' . count($settings));
+error_log('=== ABOUT SECTION DEBUG END ===');
+
 $about_visible = $settings['about_visible'] ?? 1;
 if (!$about_visible) { return; }
 
