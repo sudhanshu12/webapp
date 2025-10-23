@@ -1319,6 +1319,12 @@ export default function WizardClient() {
       if (response.ok) {
         const result = await response.json();
         console.log('✅ Data saved to Supabase successfully:', result);
+        
+        // Also save to WordPress if WordPress site URL is provided
+        if (formData.target_website_domain && formData.target_website_domain.trim() !== '') {
+          await saveToWordPress(formData);
+        }
+        
         setLastSaved(new Date().toLocaleTimeString());
         return true;
       } else {
@@ -1327,6 +1333,50 @@ export default function WizardClient() {
       }
     } catch (error) {
       console.error('❌ Error saving to Supabase:', error);
+      return false;
+    }
+  };
+
+  const saveToWordPress = async (formData: FormData) => {
+    try {
+      const wordpressUrl = formData.target_website_domain?.trim();
+      if (!wordpressUrl) {
+        console.log('⚠️ No WordPress URL provided, skipping WordPress save');
+        return false;
+      }
+
+      // Ensure the URL has the correct format
+      const wpUrl = wordpressUrl.startsWith('http') ? wordpressUrl : `https://${wordpressUrl}`;
+      const wpApiUrl = `${wpUrl}/wp-json/bsg/v1/save-wizard-data`;
+
+      const response = await fetch(wpApiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          services,
+          locations,
+          reviews,
+          features,
+          commitments,
+          faqs,
+          user_email: session?.user?.email || 'anonymous',
+          email: session?.user?.email || formData.email || 'anonymous'
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('✅ Data saved to WordPress successfully:', result);
+        return true;
+      } else {
+        console.error('❌ Failed to save data to WordPress:', response.status, response.statusText);
+        return false;
+      }
+    } catch (error) {
+      console.error('❌ Error saving to WordPress:', error);
       return false;
     }
   };
