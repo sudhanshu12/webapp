@@ -17,7 +17,16 @@ $about_experience_label = $settings['about_experience_text'] ?? 'Years of Experi
 $about_experience_color = $settings['about_experience_bg'] ?? '#232f38';
 $about_experience_text_color = $settings['about_experience_text_color'] ?? '#4ecdc4';
 $about_cta = $settings['about_button_text'] ?? 'About Us';
-$about_cta_link = $settings['about_button_link'] ?? 'https://insulationgrants.info/about-us/';
+// Get domain name from settings, fallback to current domain
+$domain_name = $settings['domain_name'] ?? '';
+if (!empty($domain_name)) {
+    // Ensure domain has protocol
+    $domain_name = (strpos($domain_name, 'http') === 0) ? $domain_name : 'https://' . $domain_name;
+    $about_cta_link = $domain_name . '/' . ($settings['about_button_link'] ?? 'about-us');
+} else {
+    // Fallback to current domain
+    $about_cta_link = home_url('/' . ($settings['about_button_link'] ?? 'about-us'));
+}
 // Use about_home_image first, fallback to about_image
 $about_image = !empty($settings['about_home_image']) ? $settings['about_home_image'] : ($settings['about_image'] ?? '');
 $about_bg_color = $settings['about_bg_color'] ?? '#232834';

@@ -295,7 +295,18 @@ footer a {
                         </a>
                     </li>
                     <li>
-                        <a href="<?php echo esc_url(home_url('/about-us/')); ?>" 
+                        <?php
+                        // Get domain name from settings for dynamic links
+                        $domain_name = $settings['domain_name'] ?? '';
+                        $about_link = '';
+                        if (!empty($domain_name)) {
+                            $domain_name = (strpos($domain_name, 'http') === 0) ? $domain_name : 'https://' . $domain_name;
+                            $about_link = $domain_name . '/' . ($settings['about_button_link'] ?? 'about-us');
+                        } else {
+                            $about_link = home_url('/' . ($settings['about_button_link'] ?? 'about-us'));
+                        }
+                        ?>
+                        <a href="<?php echo esc_url($about_link); ?>" 
                            style="color: <?php echo esc_attr($footer_links_color); ?>; text-decoration: none; transition: color 0.3s ease; display: flex; align-items: center; gap: 8px;"
                            onmouseover="this.style.color='#f97316'"
                            onmouseout="this.style.color='<?php echo esc_attr($footer_links_color); ?>'">

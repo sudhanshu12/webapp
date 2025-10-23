@@ -71,6 +71,7 @@ interface FormData {
   business_name: string;
   business_logo: string;
   business_type: string;
+  domain_name: string;
   phone: string;
   email: string;
   address: string;
@@ -419,6 +420,7 @@ export default function WizardClient() {
     business_name: '',
     business_logo: '',
     business_type: 'landscaping',
+    domain_name: '',
     phone: '',
     email: '',
     address: '',
@@ -2337,6 +2339,19 @@ export default function WizardClient() {
                                 className="regular-text" 
                                 placeholder="Your Business Name"
                               />
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Domain Name</th>
+                            <td>
+                              <input 
+                                type="text" 
+                                value={form.domain_name}
+                                onChange={(e) => updateForm('domain_name', e.target.value)}
+                                className="regular-text" 
+                                placeholder="yourdomain.com"
+                              />
+                              <p className="description">Enter your website domain (e.g., yourdomain.com) for About Us button links</p>
                             </td>
                           </tr>
                           <tr>
