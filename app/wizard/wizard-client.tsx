@@ -71,7 +71,6 @@ interface FormData {
   business_name: string;
   business_logo: string;
   business_type: string;
-  target_website_domain: string;
   phone: string;
   email: string;
   address: string;
@@ -118,8 +117,11 @@ interface FormData {
   hero_description_color: string;
   hero_reviews_text_color: string;
   hero_reviews_star_color: string;
+  hero_book_btn_bg: string;
+  hero_book_btn_text: string;
   hero_call_btn_bg: string;
   hero_call_btn_text: string;
+  hero_book_btn_link: string;
   hero_call_btn_link: string;
   hero_side_image?: string;
   services_visible: boolean;
@@ -336,7 +338,7 @@ export default function WizardClient() {
       // Professional blue theme
       professional: { primary: '#1e40af', secondary: '#3b82f6', light: '#eff6ff', dark: '#1e3a8a', text: '#1f2937' },
       // Modern green theme
-      modern: { primary: '#16a34a', secondary: '#14b8a6', light: '#f0fdf4', dark: '#166534', text: '#1f2937' }
+      modern: { primary: '#16a34a', secondary: '#22c55e', light: '#f0fdf4', dark: '#166534', text: '#1f2937' }
     };
     return themes[theme as keyof typeof themes] || themes.landscaping;
   };
@@ -352,14 +354,24 @@ export default function WizardClient() {
     return L > 0.6 ? '#111827' : '#ffffff';
   };
 
-  // Direct save to Supabase database (no localStorage needed)
-
+  // Load/save form to localStorage to persist across clicks/reloads
+  const loadLS = <T,>(key: string, fallback: T): T => {
+    if (typeof window === 'undefined') return fallback;
+    try {
+      const v = localStorage.getItem(key);
+      return v ? (JSON.parse(v) as T) : fallback;
+    } catch {
+      return fallback;
+    }
+  };
+  const saveLS = (key: string, value: unknown) => {
+    try { if (typeof window !== 'undefined') localStorage.setItem(key, JSON.stringify(value)); } catch {}
+  };
 
   const [form, setForm] = useState<FormData>({
     business_name: '',
     business_logo: '',
     business_type: 'landscaping',
-    target_website_domain: '',
     phone: '',
     email: '',
     address: '',
@@ -405,15 +417,18 @@ export default function WizardClient() {
     hero_description_color: '#6b7280',
     hero_reviews_text_color: '#000000',
     hero_reviews_star_color: '#fbbf24',
-    hero_call_btn_bg: '#14b8a6',
+    hero_book_btn_bg: '#14b8a6',
+    hero_book_btn_text: '#ffffff',
+    hero_call_btn_bg: '#1f2937',
     hero_call_btn_text: '#ffffff',
+    hero_book_btn_link: '#',
     hero_call_btn_link: 'tel:',
     hero_side_image: '',
     services_visible: true,
     services_label: 'TOP RATED SERVICES',
     services_title: 'Our Services',
     services_cta_text: 'Get A Free Estimate',
-    services_cta_link: 'tel:+1234567890',
+    services_cta_link: '#',
     services_cta_bg: '#2ee6c5',
     services_cta_text_color: '#232834',
     services_bg_color: '#313746',
@@ -543,7 +558,7 @@ export default function WizardClient() {
     commitment_title: 'Our Promise Of Reliability',
     commitment_text: '',
     commitment_button_label: 'Request An Estimate',
-    commitment_button_link: 'tel:+1234567890',
+    commitment_button_link: '#',
     commitment_bg_image: '',
     commitment_bg_color: '#232834',
     commitment_text_color: '#ffffff',
@@ -598,142 +613,74 @@ export default function WizardClient() {
 
   // Add loading state to prevent hydration mismatches
   const [isLoaded, setIsLoaded] = useState(false);
-  const [showDataRecovery, setShowDataRecovery] = useState(false);
 
-  // Load data from Supabase database (logged-in users only)
+  // Load data from localStorage after component mounts
   useEffect(() => {
-    if (status === 'loading') {
-      console.log('⏳ Session loading...');
-      return;
+    // Use user-specific localStorage key
+    const userEmail = session?.user?.email || 'anonymous';
+    const userKey = `bsg_form_${userEmail}`;
+    let savedForm = loadLS<FormData>(userKey, form);
+    
+    // If form has default color scheme enabled, apply the default colors
+    if (savedForm && (savedForm.use_default_color_scheme ?? true)) {
+      savedForm = {
+        ...savedForm,
+        // Apply all default colors
+        hero_headline: savedForm.hero_headline || 'Find Best Roofers Near You',
+        hero_description: savedForm.hero_description || 'Check here for the description',
+        hero_bg_color: '#f5f5f5',
+        hero_company_color: '#f59e0b',
+        hero_heading_color: '#000000',
+        hero_subheading_color: '#6b7280',
+        hero_description_color: '#6b7280',
+        hero_reviews_text_color: '#000000',
+        hero_reviews_star_color: '#fbbf24',
+        hero_book_btn_bg: '#14b8a6',
+        hero_book_btn_text: '#ffffff',
+        hero_call_btn_bg: '#1f2937',
+        hero_call_btn_text: '#ffffff',
+        services_bg_color: '#313746',
+        services_card_color: '#232834',
+        services_text_color: '#ffffff',
+        services_icon_color: '#2ee6c5',
+        features_bg_color: '#1e2834',
+        features_card_bg: '#1e2834',
+        features_text_color: '#ffffff',
+        about_bg_color: '#1f2937',
+        about_text_color: '#ffffff',
+        about_heading_color: '#ffffff',
+        reviews_bg_color: '#ffffff',
+        reviews_card_bg: '#f9fafb',
+        faq_bg_color: '#1f2732',
+        faq_text_color: '#ffffff',
+        faq_heading_color: '#ffffff',
+        footer_bg_color: '#0f172a',
+        footer_heading_color: '#ffffff',
+        footer_links_color: '#d1d5db',
+        nav_bg_color: '#fffbeb',
+        nav_text_color: '#78350f',
+        heading_color: '#78350f',
+        // Global color scheme palette (for Customize Colors section)
+        global_primary_color: '#f59e0b',
+        global_secondary_color: '#d97706',
+        button_primary_color: '#f59e0b',
+      };
     }
     
-    if (!session?.user?.email || !userEmail) {
-      console.log('❌ No user session found - user must be logged in');
-      console.log('Session user email:', session?.user?.email);
-      console.log('UserEmail state:', userEmail);
-      setIsLoaded(true);
-      return;
+    if (savedForm) {
+      setForm(savedForm);
     }
-    
-    console.log('✅ User email from state:', userEmail);
-    
-    console.log('=== WIZARD DATA LOADING DEBUG ===');
-    console.log('User email:', userEmail);
-    console.log('Session status:', status);
-    console.log('Session user:', session?.user);
-    
-    // Load data from Supabase database for logged-in users only
-    console.log('Loading data from Supabase database...');
-    
-    fetch('/api/load-wizard-data', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ user_email: userEmail }),
-    })
-    .then(response => {
-      console.log('Load response status:', response.status);
-      console.log('Load response ok:', response.ok);
-      return response.json();
-    })
-    .then(result => {
-      console.log('Load result:', result);
-      if (result.success && result.data) {
-        console.log('✅ Data loaded from Supabase database:', result.data);
-        console.log('🔍 Setting form with loaded data...');
-        setForm(result.data);
-        
-        // Also load the arrays from the saved data
-        if (result.data.services) {
-          console.log('🔄 Loading services from saved data:', result.data.services);
-          setServices(result.data.services);
-        }
-        if (result.data.locations) {
-          console.log('🔄 Loading locations from saved data:', result.data.locations);
-          setLocations(result.data.locations);
-        }
-        if (result.data.reviews) {
-          console.log('🔄 Loading reviews from saved data:', result.data.reviews);
-          setReviews(result.data.reviews);
-        }
-        if (result.data.features) {
-          console.log('🔄 Loading features from saved data:', result.data.features);
-          setFeatures(result.data.features);
-        }
-        if (result.data.commitments) {
-          console.log('🔄 Loading commitments from saved data:', result.data.commitments);
-          setCommitments(result.data.commitments);
-        }
-        if (result.data.faqs) {
-          console.log('🔄 Loading FAQs from saved data:', result.data.faqs);
-          setFaqs(result.data.faqs);
-        }
-      } else {
-        console.log('🆕 No data found in database for user:', userEmail);
-        console.log('Result success:', result.success);
-        console.log('Result data:', result.data);
-        console.log('Using default form for new user');
-        console.log('🔍 Setting form with default data...');
-        setForm(form);
-      }
-    })
-    .catch(error => {
-      console.error('❌ Error loading from database:', error);
-      console.log('Using default form due to error');
-      setForm(form);
-    })
-    .finally(() => {
-      setIsLoaded(true);
-    });
-  }, [session, status, userEmail]);
-
-  // Fallback timeout to ensure loading doesn't get stuck
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (!isLoaded) {
-        console.log('⚠️ Loading timeout reached, forcing load');
-        setIsLoaded(true);
-      }
-    }, 2000); // 2 second timeout
-
-    return () => clearTimeout(timeout);
-  }, [isLoaded]);
-
-  // Force load after 5 seconds regardless of any conditions
-  useEffect(() => {
-    const forceTimeout = setTimeout(() => {
-      console.log('🚨 Force loading wizard after 5 seconds');
-      setIsLoaded(true);
-    }, 5000);
-
-    return () => clearTimeout(forceTimeout);
+    setIsLoaded(true);
   }, []);
 
-  // DISABLED: Auto-save useEffect to prevent conflicts with manual onBlur saves
-  // The manual onBlur saves provide better control and prevent data overwriting
-  // useEffect(() => {
-  //   console.log('=== AUTO-SAVE DEBUG ===');
-  //   console.log('isLoaded:', isLoaded);
-  //   console.log('session:', session);
-  //   console.log('user email:', session?.user?.email);
-  //   console.log('form data:', form);
-  //   
-  //   if (isLoaded && session?.user?.email) {
-  //     console.log('✅ Conditions met for auto-save');
-  //     const timeoutId = setTimeout(() => {
-  //       console.log('💾 Auto-saving form data to Supabase...');
-  //       console.log('Saving form data:', form);
-  //       saveToWordPress(form);
-  //     }, 1000); // 1 second delay for database saves
-  //     
-  //     return () => clearTimeout(timeoutId);
-  //   } else {
-  //     console.log('❌ Auto-save conditions not met');
-  //     if (!isLoaded) console.log('  - isLoaded is false');
-  //     if (!session?.user?.email) console.log('  - No user session');
-  //   }
-  // }, [form, isLoaded, session]);
+  // Save form data to localStorage whenever it changes
+  useEffect(() => {
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_form_${userEmail}`;
+      saveLS(userKey, form);
+    }
+  }, [form, isLoaded, session]);
 
   // Dynamic content state
   const [services, setServices] = useState<Service[]>([
@@ -753,43 +700,55 @@ export default function WizardClient() {
     }
   ]);
   
-  // Services are now managed directly in state (no localStorage needed)
+  // Load services from localStorage after component mounts
+  useEffect(() => {
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_services_${userEmail}`;
+      const savedServices = loadLS<Service[]>(userKey, []);
+      console.log('Loading services from localStorage:', savedServices);
+      // If no services in localStorage or empty array, use the default service
+      if (!savedServices || savedServices.length === 0) {
+        console.log('No services in localStorage, using default');
+        // Use the default service from state initialization
+        const defaultServices = [
+          {
+            id: '1',
+            name: 'Lawn Care',
+            description: 'Professional lawn care and maintenance services',
+            icon: '🌱',
+            image: '',
+            content: '',
+            slug: 'lawn-care',
+            metaTitle: '',
+            metaDescription: '',
+            featuresText: '',
+            useDefaultPrompt: true,
+            customPrompt: ''
+          }
+        ];
+        setServices(defaultServices);
+      } else {
+        console.log('Found services in localStorage:', savedServices.length);
+        // Generate slugs for services that don't have them
+        const servicesWithSlugs = savedServices.map(service => {
+          if (!service.slug && service.name.trim()) {
+            service.slug = service.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          }
+          return service;
+        });
+        setServices(servicesWithSlugs);
+      }
+    }
+  }, [isLoaded]);
   
-  // DISABLED: Services auto-save to prevent excessive saves
-  // Services will be saved when user manually triggers save via onBlur
-  // useEffect(() => {
-  //   if (session?.user?.email && services.length > 0) {
-  //     console.log('🔄 Services array changed, triggering auto-save...');
-  //     saveToWordPress(form);
-  //   }
-  // }, [services, session?.user?.email]);
-
-  // Auto-fix services CTA link to use tel: if it's set to "contact"
-  useEffect(() => {
-    if (form.services_cta_link === 'contact' || form.services_cta_link === '#') {
-      console.log('🔄 Converting services CTA link from "contact" to tel: link');
-      updateForm('services_cta_link', 'tel:+1234567890');
+  useEffect(() => { 
+    if (isLoaded && services.length > 0 && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_services_${userEmail}`;
+      saveLS(userKey, services); 
     }
-  }, [form.services_cta_link]);
-
-  // Auto-fix about button link to use relative path if it's a full URL
-  useEffect(() => {
-    if (form.about_button_link && (form.about_button_link.startsWith('http://') || form.about_button_link.startsWith('https://'))) {
-      // Extract the path from the full URL
-      const url = new URL(form.about_button_link);
-      const path = url.pathname.startsWith('/') ? url.pathname.substring(1) : url.pathname;
-      console.log('🔄 Converting about button link from full URL to relative path:', path);
-      updateForm('about_button_link', path || 'about-us');
-    }
-  }, [form.about_button_link]);
-
-  // Auto-fix commitment button link to use tel: if it's set to "contact" or similar
-  useEffect(() => {
-    if (form.commitment_button_link === 'contact' || form.commitment_button_link === '#' || form.commitment_button_link === 'conta') {
-      console.log('🔄 Converting commitment button link from "contact" to tel: link');
-      updateForm('commitment_button_link', 'tel:+1234567890');
-    }
-  }, [form.commitment_button_link]);
+  }, [services, isLoaded, session]);
 
   const [locations, setLocations] = useState<Location[]>([
     {
@@ -806,16 +765,34 @@ export default function WizardClient() {
     }
   ]);
   
-  // Locations are now managed directly in state (no localStorage needed)
+  // Load locations from localStorage after component mounts
+  useEffect(() => {
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_locations_${userEmail}`;
+      const savedLocations = loadLS<Location[]>(userKey, locations);
+      console.log('Loading locations from localStorage:', savedLocations);
+      // Generate slugs for locations that don't have them
+      const locationsWithSlugs = savedLocations.map(location => {
+        if (!location.slug && location.name.trim()) {
+          const nameSlug = location.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          const zipSlug = location.zip.trim();
+          location.slug = nameSlug + (zipSlug ? '-' + zipSlug : '');
+        }
+        return location;
+      });
+      console.log('Locations with slugs:', locationsWithSlugs);
+      setLocations(locationsWithSlugs);
+    }
+  }, [isLoaded]);
   
-  // DISABLED: Locations auto-save to prevent excessive saves
-  // Locations will be saved when user manually triggers save via onBlur
-  // useEffect(() => {
-  //   if (session?.user?.email && locations.length > 0) {
-  //     console.log('🔄 Locations array changed, triggering auto-save...');
-  //     saveToWordPress(form);
-  //   }
-  // }, [locations, session?.user?.email]);
+  useEffect(() => { 
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_locations_${userEmail}`;
+      saveLS(userKey, locations); 
+    }
+  }, [locations, isLoaded, session]);
 
   const [reviews, setReviews] = useState<Review[]>([
     {
@@ -827,16 +804,23 @@ export default function WizardClient() {
     }
   ]);
   
-  // Reviews are now managed directly in state (no localStorage needed)
+  // Load reviews from localStorage after component mounts
+  useEffect(() => {
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_reviews_${userEmail}`;
+      const savedReviews = loadLS<Review[]>(userKey, reviews);
+      setReviews(savedReviews);
+    }
+  }, [isLoaded, session]);
   
-  // DISABLED: Reviews auto-save to prevent excessive saves
-  // Reviews will be saved when user manually triggers save via onBlur
-  // useEffect(() => {
-  //   if (session?.user?.email && reviews.length > 0) {
-  //     console.log('🔄 Reviews array changed, triggering auto-save...');
-  //     saveToWordPress(form);
-  //   }
-  // }, [reviews, session?.user?.email]);
+  useEffect(() => { 
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_reviews_${userEmail}`;
+      saveLS(userKey, reviews); 
+    }
+  }, [reviews, isLoaded, session]);
 
   const [features, setFeatures] = useState<Feature[]>([
     {
@@ -847,16 +831,25 @@ export default function WizardClient() {
     }
   ]);
   
-  // Features are now managed directly in state (no localStorage needed)
+  // Load features from localStorage after component mounts
+  useEffect(() => {
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_features_${userEmail}`;
+      const savedFeatures = loadLS<Feature[]>(userKey, features);
+      setFeatures(savedFeatures);
+    }
+  }, [isLoaded, session]);
   
-  // DISABLED: Features auto-save to prevent excessive saves
-  // Features will be saved when user manually triggers save via onBlur
-  // useEffect(() => {
-  //   if (session?.user?.email && features.length > 0) {
-  //     console.log('🔄 Features array changed, triggering auto-save...');
-  //     saveToWordPress(form);
-  //   }
-  // }, [features, session?.user?.email]);
+  useEffect(() => { 
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_features_${userEmail}`;
+      saveLS(userKey, features); 
+    }
+  }, [features, isLoaded, session]);
+
+  
 
   const [commitments, setCommitments] = useState<Commitment[]>([
     {
@@ -867,16 +860,23 @@ export default function WizardClient() {
     }
   ]);
   
-  // Commitments are now managed directly in state (no localStorage needed)
+  // Load commitments from localStorage after component mounts
+  useEffect(() => {
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_commitments_${userEmail}`;
+      const savedCommitments = loadLS<Commitment[]>(userKey, commitments);
+      setCommitments(savedCommitments);
+    }
+  }, [isLoaded, session]);
   
-  // DISABLED: Commitments auto-save to prevent excessive saves
-  // Commitments will be saved when user manually triggers save via onBlur
-  // useEffect(() => {
-  //   if (session?.user?.email && commitments.length > 0) {
-  //     console.log('🔄 Commitments array changed, triggering auto-save...');
-  //     saveToWordPress(form);
-  //   }
-  // }, [commitments, session?.user?.email]);
+  useEffect(() => { 
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_commitments_${userEmail}`;
+      saveLS(userKey, commitments); 
+    }
+  }, [commitments, isLoaded, session]);
 
   const [faqs, setFaqs] = useState<FAQ[]>([
     {
@@ -886,16 +886,23 @@ export default function WizardClient() {
     }
   ]);
   
-  // FAQs are now managed directly in state (no localStorage needed)
+  // Load FAQs from localStorage after component mounts
+  useEffect(() => {
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_faqs_${userEmail}`;
+      const savedFaqs = loadLS<FAQ[]>(userKey, faqs);
+      setFaqs(savedFaqs);
+    }
+  }, [isLoaded, session]);
   
-  // DISABLED: FAQs auto-save to prevent excessive saves
-  // FAQs will be saved when user manually triggers save via onBlur
-  // useEffect(() => {
-  //   if (session?.user?.email && faqs.length > 0) {
-  //     console.log('🔄 FAQs array changed, triggering auto-save...');
-  //     saveToWordPress(form);
-  //   }
-  // }, [faqs, session?.user?.email]);
+  useEffect(() => {
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_faqs_${userEmail}`;
+      saveLS(userKey, faqs); 
+    }
+  }, [faqs, isLoaded, session]);
 
   // Handle NextAuth session
   useEffect(() => {
@@ -1019,12 +1026,8 @@ export default function WizardClient() {
   };
 
   const updateForm = (field: keyof FormData, value: any) => {
-    console.log('=== UPDATE FORM DEBUG ===');
-    console.log('Field:', field);
-    console.log('Value:', value);
     setForm(prev => {
       const next = { ...prev, [field]: value } as FormData;
-      console.log('Updated form state:', next);
       
       // Apply default professional dark theme colors when checkbox is checked
       if (field === 'use_default_color_scheme' && value === true) {
@@ -1038,7 +1041,9 @@ export default function WizardClient() {
         next.hero_description_color = '#6b7280';
         next.hero_reviews_text_color = '#000000';
         next.hero_reviews_star_color = '#fbbf24';
-        next.hero_call_btn_bg = '#14b8a6';
+        next.hero_book_btn_bg = '#14b8a6';
+        next.hero_book_btn_text = '#ffffff';
+        next.hero_call_btn_bg = '#1f2937';
         next.hero_call_btn_text = '#ffffff';
         
         // Services section defaults
@@ -1179,86 +1184,23 @@ export default function WizardClient() {
     });
   };
 
-  // Debounced save function to prevent rapid-fire saves
-  const [saveTimeout, setSaveTimeout] = useState<NodeJS.Timeout | null>(null);
-
-  // Comprehensive save function (works for logged-in users only)
-  const saveWizardData = () => {
-    console.log('=== MANUAL SAVE DEBUG ===');
-    console.log('🔍 saveWizardData function called');
-    console.log('Session:', session);
-    console.log('User email:', session?.user?.email);
-    console.log('Form data:', form);
-    
-    if (!session?.user?.email) {
-      console.log('❌ No user session - cannot save data');
-      return;
-    }
-    
-    // Clear any existing timeout to debounce saves
-    if (saveTimeout) {
-      clearTimeout(saveTimeout);
-    }
-    
-    // Set a new timeout for debounced save
-    const newTimeout = setTimeout(() => {
-      console.log('💾 Debounced save triggered - calling saveToWordPress');
-      saveToWordPress(form);
-    }, 500); // 500ms debounce delay
-    
-    setSaveTimeout(newTimeout);
-  };
-
   const saveToWordPress = async (formData: FormData) => {
     try {
-      console.log('=== SAVE TO WORDPRESS/SUPABASE DEBUG ===');
-      console.log('🔍 saveToWordPress function called');
-      console.log('Form data being saved:', formData);
-      console.log('Hero description value:', formData.hero_description);
-      console.log('About page who headline:', formData.about_page_who_headline);
-      console.log('About page who description:', formData.about_page_who_description);
-      console.log('About page team image:', formData.about_page_team_image);
-      console.log('User email:', session?.user?.email);
-      console.log('Session status:', status);
-      
-      // Add user email to the form data for database saving
-      const dataToSave = {
-        ...formData,
-        services: services,
-        locations: locations,
-        reviews: reviews,
-        features: features,
-        commitments: commitments,
-        faqs: faqs,
-        user_email: session?.user?.email || 'anonymous'
-      };
-
-      console.log('Data to save with user email:', dataToSave);
-
-      console.log('📤 Sending data to save-wizard-data API...');
       const response = await fetch('/api/save-wizard-data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataToSave),
+        body: JSON.stringify(formData),
       });
-      
-      console.log('📥 Save response status:', response.status);
-      console.log('📥 Save response ok:', response.ok);
 
       if (response.ok) {
-        const result = await response.json();
-        console.log('✅ Data saved successfully:', result.message);
-        console.log('Saved to:', result.saved_to);
-        console.log('Full result:', result);
+        console.log('✅ Data saved to WordPress successfully');
       } else {
-        const errorText = await response.text();
-        console.error('❌ Failed to save data - Status:', response.status);
-        console.error('❌ Error response:', errorText);
+        console.error('❌ Failed to save data to WordPress');
       }
     } catch (error) {
-      console.error('❌ Error saving data:', error);
+      console.error('❌ Error saving to WordPress:', error);
     }
   };
 
@@ -1686,22 +1628,14 @@ export default function WizardClient() {
       const data = await response.json();
 
       if (response.ok && data.content && Array.isArray(data.content)) {
-        // Generate exactly 3 features (or use existing if more than 3)
-        const generatedFeatures = data.content.slice(0, 3).map((feature: any, index: number) => ({
-          id: (Date.now() + index).toString(),
+        // Replace all features with generated ones
+        setFeatures(data.content.map((feature: any, index: number) => ({
+          id: (index + 1).toString(),
           title: feature.title || '',
           icon: feature.icon || '✨',
           description: feature.description || ''
-        }));
-        
-        // If no existing features, replace all. If existing features, add to them
-        if (features.length === 0) {
-          setFeatures(generatedFeatures);
-          setSuccess('✅ 3 features generated successfully!');
-        } else {
-          setFeatures([...features, ...generatedFeatures]);
-          setSuccess('✅ Additional features generated successfully!');
-        }
+        })));
+        setSuccess('✅ Features generated successfully!');
       } else {
         setSuccess(`❌ Failed to generate features: ${data.error || 'Unknown error'}`);
       }
@@ -1881,6 +1815,11 @@ export default function WizardClient() {
         { id: '2', name: 'Roof Repair', description: 'Expert roof repair and maintenance', slug: 'roof-repair', icon: '🛠️', image: '', content: '' }
       ];
       setServices(sampleServices);
+      if (session?.user?.email) {
+        const userEmail = session.user.email;
+        const userKey = `bsg_services_${userEmail}`;
+        saveLS(userKey, sampleServices);
+      }
     }
     
     if (locations.length === 0) {
@@ -1889,6 +1828,11 @@ export default function WizardClient() {
         { id: '2', name: 'Orlando', state: 'Florida', zip: '32801', description: 'Serving Orlando, Florida', slug: 'orlando-32801' }
       ];
       setLocations(sampleLocations);
+      if (session?.user?.email) {
+        const userEmail = session.user.email;
+        const userKey = `bsg_locations_${userEmail}`;
+        saveLS(userKey, sampleLocations);
+      }
     }
   };
 
@@ -1898,7 +1842,23 @@ export default function WizardClient() {
     console.log('Current locations state:', locations);
     console.log('Current form state:', form);
     
-    // Data is now managed directly in state (no localStorage synchronization needed)
+    // Ensure data is properly synchronized with localStorage
+    const userEmail = session?.user?.email || 'anonymous';
+    const servicesKey = `bsg_services_${userEmail}`;
+    const locationsKey = `bsg_locations_${userEmail}`;
+    const currentServices = loadLS<Service[]>(servicesKey, []);
+    const currentLocations = loadLS<Location[]>(locationsKey, []);
+    
+    console.log('Current localStorage services:', currentServices);
+    console.log('Current localStorage locations:', currentLocations);
+    
+    // Use localStorage data if it's different from state
+    if (JSON.stringify(currentServices) !== JSON.stringify(services)) {
+      setServices(currentServices);
+    }
+    if (JSON.stringify(currentLocations) !== JSON.stringify(locations)) {
+      setLocations(currentLocations);
+    }
     
     // Validate essential fields first
     if (!form.business_name || !form.business_type || !form.location) {
@@ -1912,9 +1872,9 @@ export default function WizardClient() {
       return;
     }
     
-    // Use the current state data
-    const finalServices = services;
-    const finalLocations = locations;
+    // Use the synchronized data from localStorage
+    const finalServices = currentServices;
+    const finalLocations = currentLocations;
     
     // Ensure all services and locations have proper slugs before sending
     const servicesWithSlugs = finalServices.map(service => {
@@ -2082,73 +2042,6 @@ export default function WizardClient() {
     Vermont:'VT', Virginia:'VA', Washington:'WA', 'West Virginia':'WV', Wisconsin:'WI', Wyoming:'WY'
   };
 
-  // Show login requirement for non-authenticated users
-  if (!session?.user?.email) {
-    return (
-      <div className="bsg-admin">
-        <div className="wrap">
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '60vh',
-            fontSize: '18px',
-            color: '#666',
-            gap: '20px',
-            textAlign: 'center'
-          }}>
-            <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#1f2937' }}>
-              🔐 Login Required
-            </div>
-            <div style={{ fontSize: '16px', color: '#6b7280', maxWidth: '500px' }}>
-              You must be registered and logged in to access the website builder wizard.
-            </div>
-            <div style={{ 
-              background: '#fef3c7', 
-              border: '1px solid #f59e0b', 
-              borderRadius: '8px', 
-              padding: '16px', 
-              marginTop: '20px',
-              color: '#92400e',
-              maxWidth: '400px'
-            }}>
-              ⚠️ Please register an account or login to continue
-            </div>
-            <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-              <a 
-                href="/login" 
-                style={{
-                  background: '#3b82f6',
-                  color: 'white',
-                  padding: '12px 24px',
-                  borderRadius: '6px',
-                  textDecoration: 'none',
-                  fontWeight: '500'
-                }}
-              >
-                Login
-              </a>
-              <a 
-                href="/register" 
-                style={{
-                  background: '#10b981',
-                  color: 'white',
-                  padding: '12px 24px',
-                  borderRadius: '6px',
-                  textDecoration: 'none',
-                  fontWeight: '500'
-                }}
-              >
-                Register
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   // Show loading screen while data is being loaded
   if (!isLoaded) {
     return (
@@ -2156,24 +2049,18 @@ export default function WizardClient() {
         <div className="wrap">
           <div style={{
             display: 'flex',
-            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
             height: '50vh',
             fontSize: '18px',
-            color: '#666',
-            gap: '20px'
+            color: '#666'
           }}>
-            <div>Loading your wizard data...</div>
-            <div style={{ fontSize: '14px', color: '#666' }}>
-              User: {session?.user?.email}
-            </div>
+            Loading your data...
           </div>
         </div>
       </div>
     );
   }
-
 
 	return (
     <div className="bsg-admin">
@@ -2300,26 +2187,9 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.business_name}
                                 onChange={(e) => updateForm('business_name', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="Your Business Name"
                               />
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Target Website Domain</th>
-                            <td>
-                              <input 
-                                type="text" 
-                                value={form.target_website_domain}
-                                onChange={(e) => updateForm('target_website_domain', e.target.value)}
-                                onBlur={saveWizardData}
-                                className="regular-text" 
-                                placeholder="yoursite.com (for CTA button links)"
-                              />
-                              <p className="description" style={{color: '#6b7280', marginTop: '4px'}}>
-                                Enter your website domain to make CTA button links work correctly (e.g., yoursite.com)
-                              </p>
                             </td>
                           </tr>
                           <tr>
@@ -2330,7 +2200,6 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.business_logo}
                                 onChange={(e) => updateForm('business_logo', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="Logo Image URL"
                                   style={{flex: 1}}
@@ -2396,7 +2265,6 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.business_type}
                                 onChange={(e) => updateForm('business_type', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text"
                                 placeholder="e.g., roofing, plumbing, landscaping"
                               />
@@ -2409,7 +2277,6 @@ export default function WizardClient() {
                                 type="tel" 
                                 value={form.phone}
                                 onChange={(e) => updateForm('phone', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="(555) 123-4567"
                               />
@@ -2422,7 +2289,6 @@ export default function WizardClient() {
                                 type="email" 
                                 value={form.email}
                                 onChange={(e) => updateForm('email', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="info@yourbusiness.com"
                               />
@@ -2434,7 +2300,6 @@ export default function WizardClient() {
                               <textarea 
                                 value={form.address}
                                 onChange={(e) => updateForm('address', e.target.value)}
-                                onBlur={saveWizardData}
                                 rows={2} 
                                 className="large-text" 
                                 placeholder="123 Main Street, City, State 12345"
@@ -2448,7 +2313,6 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.location}
                                 onChange={(e) => updateForm('location', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="e.g., Boulder, Denver"
                               />
@@ -2460,7 +2324,6 @@ export default function WizardClient() {
                               <select 
                                 value={form.state}
                                 onChange={(e) => updateForm('state', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text"
                               >
                                 <option value="">Select State</option>
@@ -2477,7 +2340,6 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.zip}
                                 onChange={(e) => updateForm('zip', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 pattern="[0-9]{5}(-[0-9]{4})?" 
                                 title="Enter a valid ZIP code (e.g., 12345 or 12345-6789)"
@@ -2492,7 +2354,6 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.about_years}
                                 onChange={(e) => updateForm('about_years', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="15+"
                               />
@@ -2505,7 +2366,6 @@ export default function WizardClient() {
                                 type="checkbox" 
                                 checked={form.use_dynamic_template}
                                 onChange={(e) => updateForm('use_dynamic_template', e.target.checked)}
-                                onBlur={saveWizardData}
                               />
                               <span style={{marginLeft: '8px'}}>Enable dynamic content (recommended)</span>
                               <p className="description">When enabled, all content from the admin panel will be displayed on the homepage. When disabled, static content will be used.</p>
@@ -2518,7 +2378,6 @@ export default function WizardClient() {
                                 type="password" 
                                 value={form.openai_api_key}
                                 onChange={(e) => updateForm('openai_api_key', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="sk-..."
                               />
@@ -2532,7 +2391,6 @@ export default function WizardClient() {
                                 type="password" 
                                 value={form.openrouter_api_key}
                                 onChange={(e) => updateForm('openrouter_api_key', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="sk-or-..."
                               />
@@ -2595,7 +2453,7 @@ export default function WizardClient() {
                         {[
                           { name: 'Landscaping', primary: '#059669', secondary: '#10b981', accent: '#16a34a' },
                           { name: 'Professional', primary: '#1e40af', secondary: '#3b82f6', accent: '#2563eb' },
-                          { name: 'Modern', primary: '#16a34a', secondary: '#14b8a6', accent: '#15803d' },
+                          { name: 'Modern', primary: '#16a34a', secondary: '#22c55e', accent: '#15803d' },
                           { name: 'Ocean', primary: '#0ea5e9', secondary: '#0284c7', accent: '#0369a1' },
                           { name: 'Emerald', primary: '#10b981', secondary: '#059669', accent: '#047857' },
                           { name: 'Amber', primary: '#f59e0b', secondary: '#d97706', accent: '#b45309' },
@@ -2677,7 +2535,6 @@ export default function WizardClient() {
                               type="color"
                               value={form.global_primary_color || getThemeColors(form.color_theme).primary}
                               onChange={(e) => updateForm('global_primary_color', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: '100%', height: '40px', border: '1px solid #d1d5db', borderRadius: '6px', cursor: 'pointer'}}
                             />
                           </div>
@@ -2687,7 +2544,6 @@ export default function WizardClient() {
                               type="color"
                               value={form.global_secondary_color || getThemeColors(form.color_theme).secondary}
                               onChange={(e) => updateForm('global_secondary_color', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: '100%', height: '40px', border: '1px solid #d1d5db', borderRadius: '6px', cursor: 'pointer'}}
                             />
                           </div>
@@ -2821,7 +2677,6 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.homepage_meta_title}
                                 onChange={(e) => updateForm('homepage_meta_title', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="large-text" 
                                 placeholder={`${form.business_name || 'Your Business'} - Professional Roofing Services in ${form.location || 'Your Area'}`}
                               />
@@ -2837,7 +2692,6 @@ export default function WizardClient() {
                               <textarea 
                                 value={form.homepage_meta_description}
                                 onChange={(e) => updateForm('homepage_meta_description', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="large-text" 
                                 rows={3} 
                                 placeholder={`${form.business_name || 'Your Business'} provides professional roofing services in ${form.location || 'your area'}. Get free estimates, expert installation, and reliable repairs. Call ${form.phone || '(555) 123-4567'} today!`}
@@ -2855,7 +2709,6 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.homepage_meta_keywords}
                                 onChange={(e) => updateForm('homepage_meta_keywords', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="large-text" 
                                 placeholder="roofing services, roof repair, roof installation, roofing contractor"
                               />
@@ -2937,7 +2790,6 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_headline || 'Find Roofers Near You'}
                               onChange={(e) => updateForm('hero_headline', e.target.value)}
-                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="e.g., Find Roofers Near You"
                             />
@@ -2949,10 +2801,6 @@ export default function WizardClient() {
                             <textarea 
                               value={form.hero_description}
                               onChange={(e) => updateForm('hero_description', e.target.value)}
-                              onBlur={() => {
-                                console.log('🔥 onBlur triggered for hero_description');
-                                saveWizardData();
-                              }}
                               className="large-text" 
                               rows={3} 
                               placeholder="Hero section description..."
@@ -2966,7 +2814,6 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_cta || 'Rated 5 Stars On Google'}
                               onChange={(e) => updateForm('hero_cta', e.target.value)}
-                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="e.g., Rated 5 Stars On Google"
                             />
@@ -2979,7 +2826,6 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_cta_link || '#contact'}
                               onChange={(e) => updateForm('hero_cta_link', e.target.value)}
-                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="e.g., #contact or /estimate"
                             />
@@ -2992,7 +2838,6 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_rating || 'Rated 5 Stars On Google'}
                               onChange={(e) => updateForm('hero_rating', e.target.value)}
-                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="e.g., Rated 5 Stars On Google"
                             />
@@ -3005,7 +2850,6 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_bg_image}
                               onChange={(e) => updateForm('hero_bg_image', e.target.value)}
-                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="https://example.com/hero-bg.jpg"
                             />
@@ -3075,7 +2919,6 @@ export default function WizardClient() {
                                 type="checkbox"
                                 checked={form.use_global_hero_image ?? true}
                                 onChange={(e) => updateForm('use_global_hero_image', e.target.checked)}
-                                onBlur={saveWizardData}
                                 style={{margin: 0}}
                               />
                               <span style={{color: '#d1d5db', fontSize: '14px'}}>
@@ -3093,7 +2936,6 @@ export default function WizardClient() {
                                   type="text" 
                                   value={form.about_page_hero_bg_image}
                                   onChange={(e) => updateForm('about_page_hero_bg_image', e.target.value)}
-                                  onBlur={saveWizardData}
                                   className="regular-text" 
                                   placeholder="https://example.com/about-hero-bg.jpg"
                                 />
@@ -3124,7 +2966,6 @@ export default function WizardClient() {
                                   type="text" 
                                   value={form.service_page_hero_bg_image}
                                   onChange={(e) => updateForm('service_page_hero_bg_image', e.target.value)}
-                                  onBlur={saveWizardData}
                                   className="regular-text" 
                                   placeholder="https://example.com/services-hero-bg.jpg"
                                 />
@@ -3155,7 +2996,6 @@ export default function WizardClient() {
                                   type="text" 
                                   value={form.location_page_hero_bg_image}
                                   onChange={(e) => updateForm('location_page_hero_bg_image', e.target.value)}
-                                  onBlur={saveWizardData}
                                   className="regular-text" 
                                   placeholder="https://example.com/location-hero-bg.jpg"
                                 />
@@ -3264,11 +3104,31 @@ export default function WizardClient() {
                           </td>
                         </tr>
                         <tr>
+                          <th scope="row">Book Button Background</th>
+                          <td>
+                            <input 
+                              type="color" 
+                              value={form.hero_book_btn_bg || '#2ee6c5'}
+                              onChange={(e) => updateForm('hero_book_btn_bg', e.target.value)}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Book Button Text Color</th>
+                          <td>
+                            <input 
+                              type="color" 
+                              value={form.hero_book_btn_text || '#ffffff'}
+                              onChange={(e) => updateForm('hero_book_btn_text', e.target.value)}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
                           <th scope="row">Call Button Background</th>
                           <td>
                             <input 
                               type="color" 
-                              value={form.hero_call_btn_bg || '#14b8a6'}
+                              value={form.hero_call_btn_bg || '#232834'}
                               onChange={(e) => updateForm('hero_call_btn_bg', e.target.value)}
                             />
                           </td>
@@ -3280,6 +3140,18 @@ export default function WizardClient() {
                               type="color" 
                               value={form.hero_call_btn_text || '#ffffff'}
                               onChange={(e) => updateForm('hero_call_btn_text', e.target.value)}
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Book Button Link</th>
+                          <td>
+                            <input 
+                              type="text" 
+                              value={form.hero_book_btn_link || '#'}
+                              onChange={(e) => updateForm('hero_book_btn_link', e.target.value)}
+                              className="regular-text" 
+                              placeholder="e.g., # or /estimate"
                             />
                           </td>
                         </tr>
@@ -3393,7 +3265,6 @@ export default function WizardClient() {
                               type="checkbox" 
                               checked={form.features_visible || true}
                               onChange={(e) => updateForm('features_visible', e.target.checked)}
-                              onBlur={saveWizardData}
                             />
                             <span style={{marginLeft: '8px'}}>Show this section</span>
                           </td>
@@ -3406,7 +3277,6 @@ export default function WizardClient() {
                               type="color" 
                               value={form.features_bg_color || '#ffffff'}
                               onChange={(e) => updateForm('features_bg_color', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: 40, height: 40, border: 'none', borderRadius: 4, cursor: 'pointer'}}
                             />
                           </td>
@@ -3418,7 +3288,6 @@ export default function WizardClient() {
                               type="color" 
                               value={form.features_card_bg || '#f8f9fa'}
                               onChange={(e) => updateForm('features_card_bg', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: 40, height: 40, border: 'none', borderRadius: 4, cursor: 'pointer'}}
                             />
                           </td>
@@ -3430,7 +3299,6 @@ export default function WizardClient() {
                               type="color" 
                               value={form.features_text_color || '#23282d'}
                               onChange={(e) => updateForm('features_text_color', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: 40, height: 40, border: 'none', borderRadius: 4, cursor: 'pointer'}}
                             />
                           </td>
@@ -3442,7 +3310,6 @@ export default function WizardClient() {
                               type="color" 
                               value={form.features_icon_color || '#14b8a6'}
                               onChange={(e) => updateForm('features_icon_color', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: 40, height: 40, border: 'none', borderRadius: 4, cursor: 'pointer'}}
                             />
                             <span className="description" style={{marginLeft: 8, color: '#94a3b8'}}>Color for feature icons</span>
@@ -3455,7 +3322,6 @@ export default function WizardClient() {
                               type="number" 
                               value={form.features_padding || 80}
                               onChange={(e) => updateForm('features_padding', parseInt(e.target.value))}
-                              onBlur={saveWizardData}
                               min="0" 
                               max="300"
                               style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 4, padding: '8px 12px', color: '#f1f5f9', width: '100%'}}
@@ -3467,22 +3333,7 @@ export default function WizardClient() {
                     
                     <div style={{marginTop: 20, padding: '16px', background: '#1e293b', border: '1px solid #334155', borderRadius: '8px'}}>
                       <h4 style={{color: '#f1f5f9', margin: 0, marginBottom: 8}}>| Features List</h4>
-                      <p className="description" style={{color: '#94a3b8'}}>Add your business features here. We'll generate 3 features automatically for you.</p>
-                      
-                      {features.length === 0 && (
-                        <div style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '16px', marginBottom: '12px', textAlign: 'center'}}>
-                          <p style={{color: '#94a3b8', margin: '0 0 16px 0'}}>No features added yet. Click the button below to generate 3 features automatically.</p>
-                          <button 
-                            type="button" 
-                            className="button button-primary"
-                            onClick={generateFeaturesAI}
-                            disabled={loading}
-                            style={{marginRight: 10}}
-                          >
-                            {loading ? '🔄 Generating...' : '🚀 Generate 3 Features with AI'}
-                          </button>
-                        </div>
-                      )}
+                      <p className="description" style={{color: '#94a3b8'}}>Add your business features here.</p>
                       
                       {features.map((feature, index) => (
                         <div key={feature.id} style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 8, padding: '16px', marginBottom: '12px'}}>
@@ -3498,7 +3349,6 @@ export default function WizardClient() {
                                 className="regular-text"
                                 value={feature.icon}
                                 onChange={(e) => updateFeature(feature.id, 'icon', e.target.value)}
-                                onBlur={saveWizardData}
                                 placeholder="e.g., dashicons-awards or https://.../icon.svg"
                                 style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 4, padding: '8px 12px', color: '#f1f5f9'}}
                               />
@@ -3510,7 +3360,6 @@ export default function WizardClient() {
                                 className="regular-text"
                                 value={feature.title}
                                 onChange={(e) => updateFeature(feature.id, 'title', e.target.value)}
-                                onBlur={saveWizardData}
                                 placeholder="e.g., Thorough Site Inspection"
                                 style={{background: '#0f172a', border: '1px solid #334155', borderRadius: 4, padding: '8px 12px', color: '#f1f5f9'}}
                               />
@@ -3523,27 +3372,25 @@ export default function WizardClient() {
                               style={{width: '100%', minHeight: 80, background: '#0f172a', border: '1px solid #334155', borderRadius: 4, padding: '8px 12px', color: '#f1f5f9'}}
                               value={feature.description}
                               onChange={(e) => updateFeature(feature.id, 'description', e.target.value)}
-                              onBlur={saveWizardData}
                               placeholder="e.g., Detailed assessment to ensure precise planning and care"
                             />
                           </div>
                         </div>
                       ))}
                       
-                      <div style={{display: 'flex', gap: '10px', marginTop: '1rem', flexWrap: 'wrap'}}>
-                        <button type="button" className="button button-primary" onClick={addFeature}>
-                          + Add More Features
-                        </button>
-                        
-                        <button 
-                          type="button" 
-                          className="button button-secondary"
-                          onClick={generateFeaturesAI}
-                          disabled={loading}
-                        >
-                          {loading ? '🔄 Generating...' : '🔧 Generate More Features with AI'}
-                        </button>
-                      </div>
+                      <button type="button" className="button button-primary" onClick={addFeature} style={{marginTop: '1rem', marginRight: 10}}>
+                        + Add Feature
+                      </button>
+                      
+                      <button 
+                        type="button" 
+                        className="button button-secondary"
+                        onClick={generateFeaturesAI}
+                        disabled={loading}
+                        style={{marginTop: '1rem'}}
+                      >
+                        {loading ? '🔄 Generating...' : '🔧 Generate Features with AI'}
+                      </button>
 						</div>
 					</div>
 				)}
@@ -3654,7 +3501,6 @@ export default function WizardClient() {
                                 type="number" 
                                 value={form.about_years || 15}
                                 onChange={(e) => updateForm('about_years', parseInt(e.target.value))}
-                                onBlur={saveWizardData}
                                 min="0" 
                                 max="100"
                               />
@@ -3715,47 +3561,13 @@ export default function WizardClient() {
                           <tr>
                             <th scope="row">CTA Button Link</th>
                             <td>
-                              <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                                <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
-                                  {(() => {
-                                    if (form.target_website_domain) {
-                                      const domain = form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
-                                      return domain + '/';
-                                    }
-                                    if (typeof window !== 'undefined') {
-                                      return window.location.origin + '/';
-                                    }
-                                    return 'https://yourdomain.com/';
-                                  })()}
-                                </span>
-                                <input 
-                                  type="text" 
-                                  value={form.about_button_link || 'about-us'}
-                                  onChange={(e) => updateForm('about_button_link', e.target.value)}
-                                  className="regular-text" 
-                                  placeholder="about-us"
-                                  style={{flex: 1}}
-                                />
-                              </div>
-                              <p className="description" style={{color: '#6b7280', marginTop: '4px'}}>
-                                Full URL: {(() => {
-                                  const link = form.about_button_link || 'about-us';
-                                  if (link.startsWith('http://') || link.startsWith('https://')) {
-                                    return link;
-                                  }
-                                  const cleanLink = link.startsWith('/') ? link.substring(1) : link;
-                                  const origin = (() => {
-                                    if (form.target_website_domain) {
-                                      return form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
-                                    }
-                                    if (typeof window !== 'undefined') {
-                                      return window.location.origin;
-                                    }
-                                    return 'https://yourdomain.com';
-                                  })();
-                                  return `${origin}/${cleanLink}`;
-                                })()}
-                              </p>
+                              <input 
+                                type="text" 
+                                value={form.about_button_link || 'about-us'}
+                                onChange={(e) => updateForm('about_button_link', e.target.value)}
+                                className="regular-text" 
+                                placeholder="e.g., about-us"
+                              />
                             </td>
                           </tr>
                           <tr>
@@ -3952,7 +3764,6 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.about_page_who_headline || 'About'}
                                 onChange={(e) => updateForm('about_page_who_headline', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="e.g., About"
                               />
@@ -3964,7 +3775,6 @@ export default function WizardClient() {
                               <textarea 
                                 value={form.about_page_who_description}
                                 onChange={(e) => updateForm('about_page_who_description', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="large-text" 
                                 rows={4} 
                                 placeholder="Description for Who We Are section..."
@@ -3978,7 +3788,6 @@ export default function WizardClient() {
                                 type="text" 
                                 value={form.about_page_team_image || ''}
                                 onChange={(e) => updateForm('about_page_team_image', e.target.value)}
-                                onBlur={saveWizardData}
                                 className="regular-text" 
                                 placeholder="Team image URL..."
                               />
@@ -4455,40 +4264,13 @@ export default function WizardClient() {
                         <tr>
                           <th scope="row">CTA Button Link</th>
                           <td>
-                            <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                              <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
-                                {form.services_cta_link?.startsWith('tel:') ? 'Phone:' : 
-                                 form.services_cta_link?.startsWith('mailto:') ? 'Email:' :
-                                 form.services_cta_link?.startsWith('http') ? 'URL:' : 'Page:'}
-                              </span>
-                              <input 
-                                type="text" 
-                                value={form.services_cta_link || 'tel:+1234567890'}
-                                onChange={(e) => updateForm('services_cta_link', e.target.value)}
-                                className="regular-text" 
-                                placeholder="tel:+1234567890"
-                                style={{flex: 1}}
-                              />
-                            </div>
-                            <p className="description" style={{color: '#6b7280', marginTop: '4px'}}>
-                              {(() => {
-                                const link = form.services_cta_link || 'tel:+1234567890';
-                                if (link.startsWith('tel:') || link.startsWith('mailto:') || link.startsWith('http://') || link.startsWith('https://')) {
-                                  return `Link: ${link}`;
-                                }
-                                const cleanLink = link.startsWith('/') ? link.substring(1) : link;
-                                const origin = (() => {
-                                  if (form.target_website_domain) {
-                                    return form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
-                                  }
-                                  if (typeof window !== 'undefined') {
-                                    return window.location.origin;
-                                  }
-                                  return 'https://yourdomain.com';
-                                })();
-                                return `Full URL: ${origin}/${cleanLink}`;
-                              })()}
-                            </p>
+                            <input 
+                              type="text" 
+                              value={form.services_cta_link || '#'}
+                              onChange={(e) => updateForm('services_cta_link', e.target.value)}
+                              className="regular-text" 
+                              placeholder="e.g., #contact or tel:1234567890"
+                            />
                           </td>
                         </tr>
                         <tr>
@@ -5299,7 +5081,7 @@ export default function WizardClient() {
                               <label style={{fontWeight: '600', display: 'block', marginBottom: '6px', color: '#f1f5f9'}}>Slug preview</label>
                               <input
                                 type="text"
-                                value={`/service-locations/${location.name ? location.name.toLowerCase().replace(/\s+/g, '-') : 'city'}${location.zip ? '-' + location.zip : ''}`}
+                                value={`/service-locations/${location.name ? location.name.toLowerCase().replace(/\s+/g, '-') : 'city'}-zip`}
                                 readOnly
                                 style={{
                                   width: '100%',
@@ -5692,7 +5474,6 @@ export default function WizardClient() {
                               type="checkbox" 
                               checked={form.commitment_visible || true}
                               onChange={(e) => updateForm('commitment_visible', e.target.checked)}
-                              onBlur={saveWizardData}
                               style={{marginRight: '8px'}}
                             />
                             <span style={{color: '#f1f5f9'}}>Show this section</span>
@@ -5706,7 +5487,6 @@ export default function WizardClient() {
                               type="text" 
                               value={form.commitment_label || 'COMMITTED TO QUALITY'}
                               onChange={(e) => updateForm('commitment_label', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{
                                 background: '#0f172a',
                                 border: '1px solid #334155',
@@ -5726,7 +5506,6 @@ export default function WizardClient() {
                               type="text" 
                               value={form.commitment_title || 'Our Promise Of Reliability'}
                               onChange={(e) => updateForm('commitment_title', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{
                                 background: '#0f172a',
                                 border: '1px solid #334155',
@@ -5745,7 +5524,6 @@ export default function WizardClient() {
                             <textarea 
                               value={form.commitment_text ?? ''}
                               onChange={(e) => updateForm('commitment_text', e.target.value)}
-                              onBlur={saveWizardData}
                               rows={4}
                               style={{
                                 background: '#0f172a',
@@ -5767,7 +5545,6 @@ export default function WizardClient() {
                               type="text" 
                               value={form.commitment_button_label || 'Request An Estimate'}
                               onChange={(e) => updateForm('commitment_button_label', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{
                                 background: '#0f172a',
                                 border: '1px solid #334155',
@@ -5783,47 +5560,19 @@ export default function WizardClient() {
                         <tr style={{borderBottom: '1px solid #f1f5f9'}}>
                           <td style={{padding: '12px 0', color: '#f1f5f9', fontWeight: '500'}}>Button Link</td>
                           <td style={{padding: '12px 0', textAlign: 'left'}}>
-                            <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
-                              <span style={{color: '#6b7280', fontSize: '14px', whiteSpace: 'nowrap'}}>
-                                {form.commitment_button_link?.startsWith('tel:') ? 'Phone:' : 
-                                 form.commitment_button_link?.startsWith('mailto:') ? 'Email:' :
-                                 form.commitment_button_link?.startsWith('http') ? 'URL:' : 'Page:'}
-                              </span>
-                              <input 
-                                type="text" 
-                                value={form.commitment_button_link || 'tel:+1234567890'}
-                                onChange={(e) => updateForm('commitment_button_link', e.target.value)}
-                                onBlur={saveWizardData}
-                                style={{
-                                  background: '#0f172a',
-                                  border: '1px solid #334155',
-                                  borderRadius: '4px',
-                                  padding: '8px 12px',
-                                  color: '#f1f5f9',
-                                  flex: 1
-                                }}
-                                placeholder="tel:+1234567890"
-                              />
-                            </div>
-                            <p style={{color: '#6b7280', marginTop: '4px', fontSize: '12px'}}>
-                              {(() => {
-                                const link = form.commitment_button_link || 'tel:+1234567890';
-                                if (link.startsWith('tel:') || link.startsWith('mailto:') || link.startsWith('http://') || link.startsWith('https://')) {
-                                  return `Link: ${link}`;
-                                }
-                                const cleanLink = link.startsWith('/') ? link.substring(1) : link;
-                                const origin = (() => {
-                                  if (form.target_website_domain) {
-                                    return form.target_website_domain.startsWith('http') ? form.target_website_domain : `https://${form.target_website_domain}`;
-                                  }
-                                  if (typeof window !== 'undefined') {
-                                    return window.location.origin;
-                                  }
-                                  return 'https://yourdomain.com';
-                                })();
-                                return `Full URL: ${origin}/${cleanLink}`;
-                              })()}
-                            </p>
+                            <input 
+                              type="text" 
+                              value={form.commitment_button_link || '#'}
+                              onChange={(e) => updateForm('commitment_button_link', e.target.value)}
+                              style={{
+                                background: '#0f172a',
+                                border: '1px solid #334155',
+                                borderRadius: '4px',
+                                padding: '8px 12px',
+                                color: '#f1f5f9',
+                                width: '300px'
+                              }}
+                            />
                           </td>
                         </tr>
                         
@@ -5834,7 +5583,6 @@ export default function WizardClient() {
                               type="text" 
                               value={form.commitment_bg_image || ''}
                               onChange={(e) => updateForm('commitment_bg_image', e.target.value)}
-                              onBlur={saveWizardData}
                               placeholder="https://example.com/image.jpg"
                               style={{
                                 background: '#0f172a',
@@ -5876,7 +5624,6 @@ export default function WizardClient() {
                               type="color" 
                               value={form.commitment_bg_color || '#232834'}
                               onChange={(e) => updateForm('commitment_bg_color', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: '40px', height: '40px', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '8px'}}
                             />
                             <input 
@@ -5902,7 +5649,6 @@ export default function WizardClient() {
                               type="color" 
                               value={form.commitment_text_color || '#ffffff'}
                               onChange={(e) => updateForm('commitment_text_color', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: '40px', height: '40px', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '8px'}}
                             />
                             <input 
@@ -5928,7 +5674,6 @@ export default function WizardClient() {
                               type="color" 
                               value={form.commitment_heading_color || '#ffffff'}
                               onChange={(e) => updateForm('commitment_heading_color', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: '40px', height: '40px', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '8px'}}
                             />
                             <input 
@@ -5954,7 +5699,6 @@ export default function WizardClient() {
                               type="color" 
                               value={form.commitment_subtitle_color || '#cfd8dc'}
                               onChange={(e) => updateForm('commitment_subtitle_color', e.target.value)}
-                              onBlur={saveWizardData}
                               style={{width: '40px', height: '40px', border: 'none', borderRadius: '4px', cursor: 'pointer', marginRight: '8px'}}
                             />
                             <input 
@@ -5980,7 +5724,6 @@ export default function WizardClient() {
                               type="number" 
                               value={form.commitment_padding || 60}
                               onChange={(e) => updateForm('commitment_padding', parseInt(e.target.value))}
-                              onBlur={saveWizardData}
                               min="0" 
                               max="300"
                               style={{
@@ -6196,7 +5939,6 @@ export default function WizardClient() {
                               type="checkbox" 
                               checked={form.faq_visible || true}
                               onChange={(e) => updateForm('faq_visible', e.target.checked)}
-                              onBlur={saveWizardData}
                             />
                             <span style={{marginLeft: '8px'}}>Show this section</span>
                           </td>
@@ -6205,32 +5947,32 @@ export default function WizardClient() {
                         <tr>
                           <th scope="row">Section Background Color</th>
                           <td>
-                            <input type="color" value={form.faq_bg_color || '#1f2732'} onChange={(e) => updateForm('faq_bg_color', e.target.value)} onBlur={saveWizardData} />
+                            <input type="color" value={form.faq_bg_color || '#1f2732'} onChange={(e) => updateForm('faq_bg_color', e.target.value)} />
                             <span className="description" style={{marginLeft:8}}>Dark slate like the preview</span>
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Heading</th>
                           <td>
-                            <input type="text" className="regular-text" value={form.faq_heading || ''} onChange={(e)=>updateForm('faq_heading', e.target.value)} onBlur={saveWizardData} placeholder="Frequently Asked Questions" />
+                            <input type="text" className="regular-text" value={form.faq_heading || ''} onChange={(e)=>updateForm('faq_heading', e.target.value)} placeholder="Frequently Asked Questions" />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Description</th>
                           <td>
-                            <textarea className="regular-text" rows={3} value={form.faq_desc || ''} onChange={(e)=>updateForm('faq_desc', e.target.value)} onBlur={saveWizardData} placeholder="Find answers to common questions..." />
+                            <textarea className="regular-text" rows={3} value={form.faq_desc || ''} onChange={(e)=>updateForm('faq_desc', e.target.value)} placeholder="Find answers to common questions..." />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Heading Color</th>
                           <td>
-                            <input type="color" value={form.faq_heading_color || '#232834'} onChange={(e)=>updateForm('faq_heading_color', e.target.value)} onBlur={saveWizardData} />
+                            <input type="color" value={form.faq_heading_color || '#232834'} onChange={(e)=>updateForm('faq_heading_color', e.target.value)} />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Description Color</th>
                           <td>
-                            <input type="color" value={form.faq_description_color || '#6b7280'} onChange={(e)=>updateForm('faq_description_color', e.target.value)} onBlur={saveWizardData} />
+                            <input type="color" value={form.faq_description_color || '#6b7280'} onChange={(e)=>updateForm('faq_description_color', e.target.value)} />
                           </td>
                         </tr>
                         <tr>
@@ -6241,7 +5983,6 @@ export default function WizardClient() {
                               className="regular-text" 
                               value={form.faq_image || ''} 
                               onChange={(e)=>updateForm('faq_image', e.target.value)} 
-                              onBlur={saveWizardData}
                               placeholder="https://example.com/image.jpg"
                               style={{width: '250px', marginRight: '8px'}}
                             />
@@ -6270,25 +6011,25 @@ export default function WizardClient() {
                         <tr>
                           <th scope="row">Box Background</th>
                           <td>
-                            <input type="color" value={form.faq_box_color || '#374151'} onChange={(e)=>updateForm('faq_box_color', e.target.value)} onBlur={saveWizardData} />
+                            <input type="color" value={form.faq_box_color || '#374151'} onChange={(e)=>updateForm('faq_box_color', e.target.value)} />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Question Color</th>
                           <td>
-                            <input type="color" value={form.faq_question_color || '#ffffff'} onChange={(e)=>updateForm('faq_question_color', e.target.value)} onBlur={saveWizardData} />
+                            <input type="color" value={form.faq_question_color || '#ffffff'} onChange={(e)=>updateForm('faq_question_color', e.target.value)} />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Answer Color</th>
                           <td>
-                            <input type="color" value={form.faq_answer_color || '#b0b0b0'} onChange={(e)=>updateForm('faq_answer_color', e.target.value)} onBlur={saveWizardData} />
+                            <input type="color" value={form.faq_answer_color || '#b0b0b0'} onChange={(e)=>updateForm('faq_answer_color', e.target.value)} />
                           </td>
                         </tr>
                         <tr>
                           <th scope="row">Toggle Accent</th>
                           <td>
-                            <input type="color" value={form.faq_toggle_color || '#2ee6c5'} onChange={(e)=>updateForm('faq_toggle_color', e.target.value)} onBlur={saveWizardData} />
+                            <input type="color" value={form.faq_toggle_color || '#2ee6c5'} onChange={(e)=>updateForm('faq_toggle_color', e.target.value)} />
                           </td>
                         </tr>
                         <tr>
@@ -6298,7 +6039,6 @@ export default function WizardClient() {
                               type="number" 
                               value={form.faq_padding || 80}
                               onChange={(e) => updateForm('faq_padding', parseInt(e.target.value))}
-                              onBlur={saveWizardData}
                               min="0" 
                               max="300"
                             />
