@@ -4444,7 +4444,7 @@ export default function WizardClient() {
                             <td>
                               <input 
                                 type="text" 
-                                value={form.about_page_meta_title || 'Your Business - About Us | Professional Roofing Services'}
+                                value={form.about_page_meta_title || `${form.business_name || 'Roofing Pros'} - About Us | Expert Roofing Services in ${form.location || 'Orlando'}`}
                                 onChange={(e) => updateForm('about_page_meta_title', e.target.value)}
                                 className="regular-text" 
                                 placeholder="e.g., Your Business - About Us | Professional Roofing Services"
@@ -4458,7 +4458,7 @@ export default function WizardClient() {
                             <th scope="row">About Page Meta Description</th>
                             <td>
                               <textarea 
-                                value={form.about_page_meta_description || 'Learn about Your Business, a trusted roofing contractor with 15 years of experience. Professional services, quality workmanship, and customer satisfaction.'}
+                                value={form.about_page_meta_description || `Learn about ${form.business_name || 'Roofing Pros'}, a trusted roofing contractor with ${form.about_years || '15+'} years of experience in ${form.location || 'Orlando'}. Professional roofing services, quality workmanship, and customer satisfaction.`}
                                 onChange={(e) => updateForm('about_page_meta_description', e.target.value)}
                                 className="large-text" 
                                 rows={3} 
@@ -6585,7 +6585,7 @@ export default function WizardClient() {
                             <td style={{padding: '12px 0', textAlign: 'left'}}>
                               <input 
                                 type="text" 
-                                value={form.contact_meta_title || 'Matt Landscaping - Contact US | We Are Just 1 Call Av'}
+                                value={form.contact_meta_title || `${form.business_name || 'Roofing Pros'} - Contact Us | Get Free Estimate | Professional Roofing Services in ${form.location || 'Orlando'}`}
                                 onChange={(e) => updateForm('contact_meta_title', e.target.value)}
                                 style={{
                                   background: '#0f172a',
@@ -6604,7 +6604,7 @@ export default function WizardClient() {
                             <td style={{padding: '12px 0', color: '#f1f5f9', fontWeight: '500', verticalAlign: 'top'}}>Contact Page Meta Description</td>
                             <td style={{padding: '12px 0', textAlign: 'left'}}>
                               <textarea 
-                                value={form.contact_meta_description || 'Contact Matt\'s Landscaping in Lompoc, CA for professional landscaping services. Call (877) 398-8746 for lawn care, sod installation, plant design, and outdoor transformations.'}
+                                value={form.contact_meta_description || `Contact ${form.business_name || 'Roofing Pros'} for professional roofing services in ${form.location || 'Orlando'}. Get free estimates, expert consultation, and reliable service. Call ${form.phone || '(555) 123-4567'} or fill out our contact form today!`}
                                 onChange={(e) => updateForm('contact_meta_description', e.target.value)}
                                 rows={3}
                                 style={{
