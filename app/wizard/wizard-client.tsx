@@ -2937,6 +2937,7 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_headline || 'Find Roofers Near You'}
                               onChange={(e) => updateForm('hero_headline', e.target.value)}
+                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="e.g., Find Roofers Near You"
                             />
@@ -2965,6 +2966,7 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_cta || 'Rated 5 Stars On Google'}
                               onChange={(e) => updateForm('hero_cta', e.target.value)}
+                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="e.g., Rated 5 Stars On Google"
                             />
@@ -2977,6 +2979,7 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_cta_link || '#contact'}
                               onChange={(e) => updateForm('hero_cta_link', e.target.value)}
+                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="e.g., #contact or /estimate"
                             />
@@ -2989,6 +2992,7 @@ export default function WizardClient() {
                               type="text" 
                               value={form.hero_rating || 'Rated 5 Stars On Google'}
                               onChange={(e) => updateForm('hero_rating', e.target.value)}
+                              onBlur={saveWizardData}
                               className="regular-text" 
                               placeholder="e.g., Rated 5 Stars On Google"
                             />
