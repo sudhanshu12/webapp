@@ -392,14 +392,27 @@ export default function WizardClient() {
     return `${firstName} ${lastName}`;
   };
 
-  // Generate random date in current year
+  // Generate random date across multiple years (2022-2025)
   const generateRandomDate = () => {
     const currentYear = new Date().getFullYear();
-    const startDate = new Date(currentYear, 0, 1); // January 1st of current year
-    const endDate = new Date(); // Today
-    const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
-    const randomDate = new Date(randomTime);
-    return randomDate.toISOString().split('T')[0];
+    const startYear = currentYear - 3; // Go back 3 years
+    const endYear = currentYear;
+    
+    // Random year between startYear and endYear
+    const randomYear = Math.floor(Math.random() * (endYear - startYear + 1)) + startYear;
+    
+    // Random month (1-12)
+    const randomMonth = Math.floor(Math.random() * 12) + 1;
+    
+    // Random day (1-28 to avoid month/day issues)
+    const randomDay = Math.floor(Math.random() * 28) + 1;
+    
+    // Create date string
+    const year = randomYear.toString();
+    const month = randomMonth.toString().padStart(2, '0');
+    const day = randomDay.toString().padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
   };
 
   // Debounced Supabase save to prevent too many API calls
@@ -891,14 +904,14 @@ export default function WizardClient() {
       name: 'Sarah Johnson',
       rating: 5,
       comment: 'Outstanding service! The team was professional, punctual, and delivered exactly what they promised. Highly recommend!',
-      date: '2025-03-15'
+      date: '2024-08-12'
     },
     {
       id: '2',
       name: 'Michael Chen',
       rating: 5,
       comment: 'Exceptional work quality and customer service. They went above and beyond to ensure everything was perfect. Will definitely use again!',
-      date: '2025-02-28'
+      date: '2023-11-25'
     },
     {
       id: '3',
