@@ -903,21 +903,21 @@ export default function WizardClient() {
       id: '1',
       name: 'Sarah Johnson',
       rating: 5,
-      comment: 'Outstanding service! The team was professional, punctual, and delivered exactly what they promised. Highly recommend!',
+      comment: 'Excellent work!',
       date: '2024-08-12'
     },
     {
       id: '2',
       name: 'Michael Chen',
       rating: 5,
-      comment: 'Exceptional work quality and customer service. They went above and beyond to ensure everything was perfect. Will definitely use again!',
+      comment: 'Outstanding service from start to finish! The team was professional, punctual, and delivered exactly what they promised. The quality of work exceeded my expectations and I couldn\'t be happier with the results. Highly recommend to anyone looking for reliable service!',
       date: '2023-11-25'
     },
     {
       id: '3',
       name: 'Emily Rodriguez',
       rating: 5,
-      comment: 'Amazing experience from start to finish. Professional, reliable, and the results exceeded my expectations. Thank you!',
+      comment: 'Amazing experience from start to finish. Professional, reliable, and the results exceeded my expectations.',
       date: '2025-01-20'
     }
   ]);
@@ -1688,16 +1688,33 @@ export default function WizardClient() {
   // Generate random Google-like reviews
   const generateRandomReviews = () => {
     const reviewTemplates = [
-      'Outstanding service! The team was professional, punctual, and delivered exactly what they promised. Highly recommend!',
-      'Exceptional work quality and customer service. They went above and beyond to ensure everything was perfect. Will definitely use again!',
-      'Amazing experience from start to finish. Professional, reliable, and the results exceeded my expectations. Thank you!',
-      'Fantastic service! Quick response time, fair pricing, and excellent results. Couldn\'t be happier with the outcome.',
-      'Top-notch work! The team was knowledgeable, courteous, and completed the job efficiently. Highly satisfied!',
-      'Excellent service and attention to detail. They were on time, clean, and professional throughout the entire process.',
-      'Outstanding quality and customer service. The team was friendly, professional, and delivered exactly what was promised.',
-      'Great experience! Professional team, fair pricing, and excellent results. Would definitely recommend to others.',
-      'Fantastic work! The team was professional, efficient, and the results exceeded my expectations. Highly recommend!',
-      'Excellent service from start to finish. Professional, reliable, and the quality of work was outstanding. Thank you!'
+      // Short reviews (1 line)
+      'Great service!',
+      'Highly recommend!',
+      'Excellent work!',
+      'Very professional!',
+      'Outstanding quality!',
+      'Fantastic experience!',
+      'Amazing service!',
+      'Perfect results!',
+      
+      // Medium reviews (2 lines)
+      'Outstanding service! The team was professional and delivered exactly what they promised. Highly recommend!',
+      'Exceptional work quality and customer service. They went above and beyond to ensure everything was perfect.',
+      'Amazing experience from start to finish. Professional, reliable, and the results exceeded my expectations.',
+      'Fantastic service! Quick response time, fair pricing, and excellent results. Couldn\'t be happier.',
+      'Top-notch work! The team was knowledgeable, courteous, and completed the job efficiently.',
+      'Excellent service and attention to detail. They were on time, clean, and professional throughout.',
+      'Great experience! Professional team, fair pricing, and excellent results. Would definitely recommend.',
+      'Fantastic work! The team was professional, efficient, and the results exceeded my expectations.',
+      
+      // Long reviews (3+ lines)
+      'Outstanding service from start to finish! The team was professional, punctual, and delivered exactly what they promised. The quality of work exceeded my expectations and I couldn\'t be happier with the results. Highly recommend to anyone looking for reliable service!',
+      'Exceptional work quality and customer service throughout the entire process. They went above and beyond to ensure everything was perfect, addressing all my concerns promptly. The team was knowledgeable, friendly, and professional. Will definitely use again and recommend to others!',
+      'Amazing experience from start to finish! Professional, reliable, and the results exceeded my expectations. The team was on time, clean, and courteous throughout the entire process. They explained everything clearly and kept me informed at every step. Thank you for the excellent service!',
+      'Fantastic service with outstanding results! Quick response time, fair pricing, and excellent quality work. The team was professional, efficient, and went above and beyond to ensure my complete satisfaction. I couldn\'t be happier with the outcome and would definitely recommend to others!',
+      'Excellent service from start to finish! Professional, reliable, and the quality of work was outstanding. The team was knowledgeable, courteous, and completed the job efficiently. They addressed all my concerns and kept me informed throughout the process. Highly recommend!',
+      'Outstanding quality and customer service that exceeded my expectations! The team was friendly, professional, and delivered exactly what was promised. They were on time, clean, and professional throughout the entire process. I couldn\'t be happier with the results and will definitely use again!'
     ];
 
     const newReviews = Array.from({ length: 5 }, (_, index) => ({
