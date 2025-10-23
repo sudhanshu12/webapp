@@ -1196,6 +1196,9 @@ export async function POST(req: NextRequest) {
       contact_headline_color: data.contact_headline_color || '#ffffff',
       contact_description_color: data.contact_description_color || 'rgba(255,255,255,0.9)',
       contact_padding: data.contact_padding || 80,
+      contact_meta_title: data.contact_meta_title || '',
+      contact_meta_description: data.contact_meta_description || '',
+      contact_meta_keywords: data.contact_meta_keywords || '',
       
       // Footer settings
       footer_visible: data.footer_visible !== undefined ? data.footer_visible : true,
