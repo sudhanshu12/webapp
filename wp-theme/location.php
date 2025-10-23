@@ -24,8 +24,21 @@ error_log('Final settings loaded: ' . print_r($settings, true));
 
 $location_title = get_the_title();
 
-// Remove WordPress default title generation to prevent duplicates
-remove_action('wp_head', '_wp_render_title_tag', 1);
+// Add meta tags to head
+add_action('wp_head', function() use ($location_title, $business) {
+    $meta_title = 'Service Areas - ' . $location_title . ' | ' . $business['name'];
+    $meta_description = 'Professional services in ' . $location_title . ' by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.';
+    
+    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
+    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="' . strtolower($location_title) . ', professional services, ' . $business['name'] . ', service areas, local business">' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
+}, 1);
 
 // Derive request slug from URL as an extra-robust matcher (in case WP returns parent context)
 $request_path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
@@ -142,24 +155,20 @@ if ($current_location) {
 // Generate meta title and description (treat empty strings as missing)
 $meta_title = !empty(trim($current_location['metaTitle'] ?? ''))
     ? trim($current_location['metaTitle'])
-    : ($business['name'] . ' - ' . $location_title . ' Roofing Services | Professional Roofing in ' . $business['state']);
+    : ('Professional Services in ' . $location_title . ', ' . $business['state'] . ' | ' . $business['name']);
 $meta_description = !empty(trim($current_location['metaDescription'] ?? ''))
     ? trim($current_location['metaDescription'])
-    : ('Professional roofing services in ' . $location_title . ', ' . $business['state'] . '. Expert roof repairs, replacements, and inspections. Licensed & insured roofing contractor. Call ' . $business['name'] . ' for a free estimate today.');
+    : ('Get professional services in ' . $location_title . ', ' . $business['state'] . '. Expert installation, repair, and maintenance services. Local expertise with quality workmanship. Call ' . $business['name'] . ' for a free estimate today.');
 
 // Debug: Log the final meta title
 error_log('=== LOCATION FINAL RESULT DEBUG ===');
 error_log('Location meta title result: ' . $meta_title);
 error_log('Location current_location found: ' . ($current_location ? 'YES' : 'NO'));
-error_log('Location title: ' . $location_title);
-error_log('Business name: ' . $business['name']);
-error_log('Business state: ' . $business['state']);
 if ($current_location) {
     error_log('Location current_location metaTitle: ' . ($current_location['metaTitle'] ?? 'NOT SET'));
     error_log('Location current_location name: ' . ($current_location['name'] ?? 'NOT SET'));
 } else {
     error_log('Location current_location is NULL - using fallback meta title');
-    error_log('Fallback meta title: ' . $meta_title);
 }
 error_log('=== LOCATION FINAL RESULT DEBUG END ===');
 
@@ -194,28 +203,14 @@ if (empty($location_description) || strlen($location_description) < 100 || strip
 error_log('Location description length: ' . strlen($location_description));
 error_log('Location description preview: ' . substr($location_description, 0, 200));
 
-// Add single meta tags to head - use wizard location data
-add_action('wp_head', function() use ($meta_title, $meta_description, $business, $location_title) {
+// Add meta tags to head - Use higher priority to ensure they override default
+add_action('wp_head', function() use ($meta_title, $meta_description) {
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta name="keywords" content="' . strtolower($location_title) . ', professional services, ' . $business['name'] . ', service areas, local business">' . "\n";
-    echo '<meta name="author" content="' . esc_attr($business['name']) . '">' . "\n";
-    echo '<meta name="robots" content="index, follow">' . "\n";
-    
-    // Open Graph Meta Tags
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta property="og:type" content="website">' . "\n";
-    echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
-    echo '<meta property="og:site_name" content="' . esc_attr($business['name']) . '">' . "\n";
-    
-    // Twitter Card Meta Tags
-    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    
-    // Canonical URL
-    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
 // Also force document title for themes/plugins that override <title>
@@ -232,7 +227,7 @@ get_header(); ?>
     <?php
     // Get theme settings
     $settings = get_option('bsg_settings', []);
-    $business_name = !empty($settings['business_name']) ? $settings['business_name'] : 'Roofing Pros';
+    $business_name = !empty($settings['business_name']) ? $settings['business_name'] : 'Your Business';
     $phone = $settings['phone'] ?? '(555) 123-4567';
     $email = $settings['email'] ?? 'info@business.com';
     $address = $settings['address'] ?? '123 Main Street';

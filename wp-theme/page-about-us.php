@@ -5,28 +5,18 @@
  * This template displays the about us page with all sections
  */
 
-// Get settings using the proper function
-$settings = bsg_get_settings();
-$business_name = $settings['business_name'] ?? 'Roofing Pros';
+// Get settings
+$settings = get_option('bsg_settings', array());
+$business_name = $settings['business_name'] ?? 'Your Business';
 $phone = $settings['phone'] ?? '';
 $email = $settings['email'] ?? '';
 
-// Remove WordPress default title generation to prevent duplicates
-remove_action('wp_head', '_wp_render_title_tag', 1);
-
 // Add meta tags to head
 add_action('wp_head', function() use ($settings, $business_name) {
-    // DEBUG: Log what settings we have
-    error_log('=== ABOUT PAGE DEBUG ===');
-    error_log('Settings about_page_meta_title: ' . ($settings['about_page_meta_title'] ?? 'NOT SET'));
-    error_log('Settings about_page_meta_description: ' . ($settings['about_page_meta_description'] ?? 'NOT SET'));
-    error_log('Business name: ' . $business_name);
-    error_log('=== ABOUT PAGE DEBUG END ===');
-    
     // Get meta tags from wizard settings
-    $meta_title = $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Expert Roofing Services in Orlando';
-    $meta_description = $settings['about_page_meta_description'] ?? 'Learn about ' . $business_name . ', Orlando\'s trusted roofing company. Professional team, quality workmanship, and exceptional service. Call ' . $phone . ' for a free estimate!';
-    $meta_keywords = $settings['about_page_meta_keywords'] ?? 'about roofing pros, orlando roofing company, professional roofing team, roofing contractors orlando, expert roofing services';
+    $meta_title = $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Professional Services & Team';
+    $meta_description = $settings['about_page_meta_description'] ?? 'Learn about ' . $business_name . ' - our professional team, services, and commitment to excellence. Discover why we\'re the trusted choice for quality work.';
+    $meta_keywords = $settings['about_page_meta_keywords'] ?? 'about us, professional services, team, company, business, quality work';
     
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
@@ -39,14 +29,9 @@ add_action('wp_head', function() use ($settings, $business_name) {
     echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
-// Force custom document title from wizard settings
-add_filter('pre_get_document_title', function($title) use ($settings, $business_name) {
-    return $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Expert Roofing Services in Orlando';
-}, 99);
-
 // Add custom styles
 function bsg_about_page_styles() {
-    $settings = bsg_get_settings();
+    $settings = get_option('bsg_settings', array());
     ?>
     <style>
     /* About Page Hero Section */
@@ -375,33 +360,27 @@ get_header();
     <!-- Hero Section -->
     <section class="about-hero-section" style="<?php if (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? '#1f2937'); ?>;<?php endif; ?>">
         <div class="about-hero-content">
-            <p class="tagline" style="color: <?php echo esc_attr($settings['hero_tagline_color'] ?? '#14b8a6'); ?>; font-size: 1.2rem; font-weight: 700; margin: 0 0 8px 0; letter-spacing: 0.5px;">
-                <?php echo esc_html($settings['hero_tagline'] ?? 'ABOUT US'); ?>
-            </p>
-            <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#1f2937'); ?>; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 24px 0;">
+            <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#1f2937'); ?>;">
                 About <?php echo esc_html($business_name); ?>
-            </h1>
-            <p style="color: <?php echo esc_attr($settings['hero_description_color'] ?? '#6b7280'); ?>; font-size: 1rem; margin: 0 0 32px 0; line-height: 1.6;">
-                <?php echo esc_html($settings['hero_description'] ?? 'Learn about ' . $business_name . ', Orlando\'s trusted roofing company. Professional team, quality workmanship, and exceptional service.'); ?>
-            </p>
-            <a href="tel:<?php echo esc_attr($phone); ?>" class="btn" style="background: #f59e0b; color: #ffffff; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+                    </h1>
+            <a href="tel:<?php echo esc_attr($phone); ?>" class="btn">
                 <i class="fa-solid fa-phone"></i> Call us Today
             </a>
-        </div>
-    </section>
+            </div>
+        </section>
 
     <!-- About Content Section - Side by Side Layout -->
     <section class="about-content-section">
         <div class="about-grid">
             <!-- Image on Left -->
             <div class="about-image-wrapper">
-                <?php 
-                // Use team image from wizard, or fallback to a professional roofing image
-                $team_image = !empty($settings['about_page_team_image']) ? $settings['about_page_team_image'] : 
-                              (!empty($settings['about_image']) ? $settings['about_image'] : 
-                              'https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
-                ?>
-                <img src="<?php echo esc_url($team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" loading="lazy" decoding="async">
+                <?php if (isset($settings['about_page_team_image']) && !empty($settings['about_page_team_image'])): ?>
+                    <img src="<?php echo esc_url($settings['about_page_team_image']); ?>" alt="About <?php echo esc_attr($business_name); ?>" loading="lazy" decoding="async">
+                        <?php else: ?>
+                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600;">
+                                Team Photo
+                            </div>
+                        <?php endif; ?>
                     </div>
                     
             <!-- Content on Right -->
@@ -412,6 +391,7 @@ get_header();
                             </svg>
                     WHO WE ARE
                 </p>
+                <h2>About <?php echo esc_html($business_name); ?></h2>
                 
                 <div class="about-description-content">
                             <?php 
@@ -435,24 +415,7 @@ get_header();
     <?php 
     // Check if about_page_why_items exist, if not use features as fallback
     $why_items = !empty($settings['about_page_why_items']) ? $settings['about_page_why_items'] : (!empty($settings['features']) ? $settings['features'] : []);
-    
-    // If no items, provide default roofing benefits
-    if (empty($why_items)) {
-        $why_items = [
-            [
-                'title' => 'Expert Team',
-                'description' => 'Our skilled roofing specialists possess extensive industry knowledge, ensuring that every installation and repair is executed to the highest standards of quality and safety.'
-            ],
-            [
-                'title' => 'Quality Materials',
-                'description' => 'We source premium roofing materials designed to withstand Florida\'s climate, ensuring durability and longevity for every project we undertake.'
-            ],
-            [
-                'title' => 'Local Expertise',
-                'description' => 'Our deep understanding of Orlando\'s unique roofing needs and local building codes ensures compliance and optimal performance for your roof.'
-            ]
-        ];
-    }
+    if (!empty($why_items)): 
     ?>
     <section class="why-section">
         <div class="container" style="max-width: 1200px; margin: 0 auto;">
@@ -499,9 +462,10 @@ get_header();
                     <?php endforeach; ?>
                 </div>
                 <?php endif; ?>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    <?php endif; ?>
 
     <!-- Reviews Section -->
     <?php 
