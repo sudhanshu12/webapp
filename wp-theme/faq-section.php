@@ -22,7 +22,8 @@ if (!empty($settings['faq_visible']) && !empty($settings['faqs']) && is_array($s
     $faq_padding = $settings['faq_padding'] ?? '80';
     $faq_toggle_color = $settings['faq_toggle_color'] ?? '#2ee6c5';
     $faqs = $settings['faqs'];
-    $faq_image = $settings['faq_image'] ?? '';
+    $faq_image = !empty($settings['faq_image']) ? $settings['faq_image'] : 
+                 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
     
     // Debug: Log FAQ image data
     error_log('=== FAQ IMAGE DEBUG ===');

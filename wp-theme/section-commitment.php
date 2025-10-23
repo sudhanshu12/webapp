@@ -11,7 +11,9 @@ $commitment_visible = $settings['commitment_visible'] ?? 1;
 $commitment_title = $settings['commitment_title'] ?? 'Our Commitment to You';
 $commitment_subtitle = $settings['commitment_subtitle'] ?? 'We promise to deliver exceptional service';
 $commitment_text = $settings['commitment_text'] ?? '';
-$commitment_image = $settings['commitment_bg_image'] ?? '';
+$commitment_image = !empty($settings['commitment_image']) ? $settings['commitment_image'] : 
+                   (!empty($settings['commitment_bg_image']) ? $settings['commitment_bg_image'] : 
+                   'https://images.unsplash.com/photo-1581578731548-c6a0c3f2fccb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
 
 // Debug: Log commitment data
 error_log('=== COMMITMENT DEBUG ===');
