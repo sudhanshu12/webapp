@@ -9,6 +9,13 @@ $settings = bsg_get_settings();
 $contact_settings = bsg_get_contact_settings();
 $colors = bsg_get_color_scheme();
 
+// DEBUG: Log what settings we have
+error_log('=== CONTACT PAGE DEBUG ===');
+error_log('Settings contact_meta_title: ' . ($settings['contact_meta_title'] ?? 'NOT SET'));
+error_log('Settings contact_meta_description: ' . ($settings['contact_meta_description'] ?? 'NOT SET'));
+error_log('Business name: ' . ($business['name'] ?? 'NOT SET'));
+error_log('=== CONTACT PAGE DEBUG END ===');
+
 // Generate meta title and description for Contact page
 $meta_title = $settings['contact_meta_title'] ?? ('Contact ' . $business['name'] . ' - Get Free Estimate | Professional Services in ' . $business['state']);
 $meta_description = $settings['contact_meta_description'] ?? ('Contact ' . $business['name'] . ' for professional ' . $business['business_type'] . ' services. Get free estimates, expert consultation, and reliable service. Call ' . $business['phone'] . ' or fill out our contact form today!');

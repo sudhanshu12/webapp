@@ -13,6 +13,13 @@ $email = $settings['email'] ?? '';
 
 // Add meta tags to head
 add_action('wp_head', function() use ($settings, $business_name) {
+    // DEBUG: Log what settings we have
+    error_log('=== ABOUT PAGE DEBUG ===');
+    error_log('Settings about_page_meta_title: ' . ($settings['about_page_meta_title'] ?? 'NOT SET'));
+    error_log('Settings about_page_meta_description: ' . ($settings['about_page_meta_description'] ?? 'NOT SET'));
+    error_log('Business name: ' . $business_name);
+    error_log('=== ABOUT PAGE DEBUG END ===');
+    
     // Get meta tags from wizard settings
     $meta_title = $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Expert Roofing Services in Orlando';
     $meta_description = $settings['about_page_meta_description'] ?? 'Learn about ' . $business_name . ', Orlando\'s trusted roofing company. Professional team, quality workmanship, and exceptional service. Call ' . $phone . ' for a free estimate!';
