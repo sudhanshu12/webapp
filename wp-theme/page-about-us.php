@@ -7,7 +7,7 @@
 
 // Get settings
 $settings = get_option('bsg_settings', array());
-$business_name = $settings['business_name'] ?? 'Your Business';
+$business_name = $settings['business_name'] ?? 'Roofing Pros';
 $phone = $settings['phone'] ?? '';
 $email = $settings['email'] ?? '';
 

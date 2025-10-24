@@ -24,21 +24,7 @@ error_log('Final settings loaded: ' . print_r($settings, true));
 
 $location_title = get_the_title();
 
-// Add meta tags to head
-add_action('wp_head', function() use ($location_title, $business) {
-    $meta_title = 'Service Areas - ' . $location_title . ' | ' . $business['name'];
-    $meta_description = 'Professional services in ' . $location_title . ' by ' . $business['name'] . '. Quality work, experienced team, and exceptional results. Contact us today for a free consultation.';
-    
-    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
-    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta name="keywords" content="' . strtolower($location_title) . ', professional services, ' . $business['name'] . ', service areas, local business">' . "\n";
-    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
-    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta property="og:type" content="website">' . "\n";
-    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
-    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
-}, 1);
+// Meta tags will be handled later after location matching
 
 // Derive request slug from URL as an extra-robust matcher (in case WP returns parent context)
 $request_path = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
@@ -47,6 +33,11 @@ $request_slug = $request_path ? trim(basename($request_path), '/') : '';
 // Get location data from settings to find the specific location
 $locations = $settings['locations'] ?? [];
 $current_location = null;
+
+// For individual location pages, use the URL slug as the primary identifier
+if (!empty($request_slug) && $request_slug !== 'service-locations') {
+    $location_title = ucwords(str_replace('-', ' ', $request_slug));
+}
 
 // Debug: Log the matching process
 error_log('=== LOCATION TEMPLATE DEBUG START ===');
@@ -67,6 +58,18 @@ if (!$current_location && !empty($request_slug)) {
             $current_location = $location;
             error_log('Location matched by REQUEST URI slug: ' . $location['slug'] . ' = ' . $request_slug);
             break;
+        }
+    }
+    
+    // If no exact slug match, try to match by converting slug to name format
+    if (!$current_location) {
+        $slug_to_name = ucwords(str_replace('-', ' ', $request_slug));
+        foreach ($locations as $location) {
+            if (!empty($location['name']) && $location['name'] === $slug_to_name) {
+                $current_location = $location;
+                error_log('Location matched by slug-to-name conversion: ' . $location['name'] . ' = ' . $slug_to_name);
+                break;
+            }
         }
     }
 }
@@ -152,6 +155,18 @@ if ($current_location) {
     }
 }
 
+// If still no location found, create a basic one from the URL slug
+if (!$current_location && !empty($request_slug) && $request_slug !== 'service-locations') {
+    $current_location = [
+        'name' => $location_title,
+        'slug' => $request_slug,
+        'metaTitle' => '',
+        'metaDescription' => '',
+        'description' => ''
+    ];
+    error_log('Location created from URL slug: ' . $location_title);
+}
+
 // Generate meta title and description (treat empty strings as missing)
 $meta_title = !empty(trim($current_location['metaTitle'] ?? ''))
     ? trim($current_location['metaTitle'])
@@ -227,7 +242,7 @@ get_header(); ?>
     <?php
     // Get theme settings
     $settings = get_option('bsg_settings', []);
-    $business_name = !empty($settings['business_name']) ? $settings['business_name'] : 'Your Business';
+    $business_name = !empty($settings['business_name']) ? $settings['business_name'] : 'Roofing Pros';
     $phone = $settings['phone'] ?? '(555) 123-4567';
     $email = $settings['email'] ?? 'info@business.com';
     $address = $settings['address'] ?? '123 Main Street';
