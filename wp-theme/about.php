@@ -1087,16 +1087,129 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         </section>
 
         <!-- Reviews Section -->
-        <?php include dirname(__FILE__) . '/section-reviews.php'; ?>
+        <section class="bsg-reviews animate-on-scroll-section" style="background-color: <?php echo esc_attr($settings['reviews_bg_color'] ?? '#f8fafc'); ?>; padding: 80px 0;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+                <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
+                    <h2 style="color: <?php echo esc_attr($settings['reviews_heading_color'] ?? '#1f2937'); ?>; font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">
+                        <?php echo esc_html($settings['reviews_heading'] ?? 'What Our Customers Say'); ?>
+                    </h2>
+                </div>
+                
+                <?php 
+                $reviews = $settings['reviews'] ?? [];
+                if (!empty($reviews) && is_array($reviews)): 
+                    $total_reviews = count($reviews);
+                    $avg_rating = $total_reviews ? round(array_sum(array_map(function($r){return floatval($r['rating'] ?? 0);}, $reviews)) / $total_reviews, 1) : 0;
+                ?>
+                <div class="reviews-google-bar" style="background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); padding: 2rem; margin-bottom: 2rem; text-align: center;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1rem;">
+                        <span style="font-size: 1.5rem; font-weight: 700; color: #1f2937;">Google</span>
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.2rem; font-weight: 600; color: #1f2937;">Excellent</span>
+                            <div style="display: flex; gap: 0.2rem;">
+                                <?php for($i = 0; $i < 5; $i++): ?>
+                                <span style="color: #fbbf24;">★</span>
+                                <?php endfor; ?>
+                            </div>
+                            <span style="font-size: 1.1rem; font-weight: 600; color: #1f2937;"><?php echo $avg_rating; ?></span>
+                        </div>
+                        <span style="color: #6b7280;"><?php echo $total_reviews; ?> reviews</span>
+                    </div>
+                </div>
+                
+                <div class="reviews-slider" style="display: flex; gap: 2rem; overflow-x: auto; scroll-behavior: smooth; padding-bottom: 8px;">
+                    <?php foreach (array_slice($reviews, 0, 5) as $review): ?>
+                    <div class="review-card" style="background: #fff; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); padding: 1.5rem; min-width: 300px; flex-shrink: 0;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                            <div style="width: 40px; height: 40px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 600;">
+                                <?php echo strtoupper(substr($review['name'] ?? 'A', 0, 1)); ?>
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; color: #1f2937;"><?php echo esc_html($review['name'] ?? 'Anonymous'); ?></div>
+                                <div style="font-size: 0.9rem; color: #6b7280;">Verified Customer</div>
+                            </div>
+                        </div>
+                        <div style="color: #1f2937; line-height: 1.6; margin-bottom: 1rem;">
+                            <?php echo esc_html($review['comment'] ?? 'Great service!'); ?>
+                        </div>
+                        <div style="color: #6b7280; font-size: 0.9rem;">
+                            — <?php echo esc_html($review['date'] ?? date('Y-m-d')); ?>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
+            </div>
+        </section>
 
-        <!-- Service Areas Section (shared) -->
-        <?php include dirname(__FILE__) . '/section-areas.php'; ?>
-
-        <!-- Standard Services Section -->
-        <?php include dirname(__FILE__) . '/section-services.php'; ?>
+        <!-- Service Areas Section -->
+        <section class="bsg-section locations-section animate-on-scroll-section" style="background-color: <?php echo esc_attr($settings['service_areas_bg_color'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['service_areas_text_color'] ?? '#ffffff'); ?>; padding: 60px 0;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+                <div class="bsg-two-col-layout" style="display:flex;align-items:flex-start;gap:3rem;">
+                    <div class="bsg-text-content" style="flex:1;min-width:320px;">
+                        <div class="bsg-icon-heading" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:10px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2ee6c5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            <span class="bsg-section-header tagline" style="background:<?php echo esc_attr($settings['service_areas_bg_color'] ?? '#232834'); ?>;color:<?php echo esc_attr($settings['service_areas_text_color'] ?? '#fff'); ?>;">
+                                <?php echo esc_html($settings['locations_label'] ?? 'SERVICE AREAS'); ?>
+                            </span>
+                        </div>
+                        <h2 style="color:<?php echo esc_attr($settings['service_areas_heading_color'] ?? '#ffffff'); ?>; font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem;">
+                            <?php echo esc_html($settings['locations_title'] ?? 'Areas We Serve'); ?>
+                        </h2>
+                        <p style="margin-bottom:2rem; color: <?php echo esc_attr($settings['service_areas_text_color'] ?? '#ffffff'); ?>; font-size: 1.1rem; line-height: 1.6;">
+                            <?php echo wp_kses_post($settings['locations_description'] ?? 'Proudly serving Orlando and surrounding areas with professional roofing services. We\'re committed to delivering quality work wherever you are.'); ?>
+                        </p>
+                        <?php 
+                        $locations = $settings['locations'] ?? [];
+                        if (!empty($locations)): 
+                        ?>
+                        <div class="locations-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem 2rem;margin-bottom:2rem;">
+                            <?php foreach (array_slice($locations, 0, 6) as $location): ?>
+                            <?php
+                            $loc_name = $location['name'] ?? '';
+                            if (empty($loc_name)) continue;
+                            $href = !empty($location['slug']) ? home_url('/service-locations/' . $location['slug'] . '/') : '#';
+                            ?>
+                            <div style="display:flex;align-items:center;gap:0.5rem;color:<?php echo esc_attr($settings['service_areas_text_color'] ?? '#ffffff'); ?>;">
+                                <span style="color:#2ee6c5;font-weight:600;">✓</span>
+                                <a href="<?php echo esc_url($href); ?>" style="color:<?php echo esc_attr($settings['service_areas_text_color'] ?? '#ffffff'); ?>;text-decoration:none;font-weight:500;">
+                                    <?php echo esc_html($loc_name); ?>
+                                </a>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Commitment Section -->
-        <?php include dirname(__FILE__) . '/section-commitment.php'; ?>
+        <section class="commitment-section animate-on-scroll-section" style="background-color: <?php echo esc_attr($settings['commitment_bg_color'] ?? '#1e3a8a'); ?>; color: <?php echo esc_attr($settings['commitment_text_color'] ?? '#ffffff'); ?>; padding: 80px 0;">
+            <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+                <div class="two-col-layout" style="display: flex; align-items: center; gap: 4rem;">
+                    <div class="text-content" style="flex: 1;">
+                        <div class="section-header" style="margin-bottom: 2rem;">
+                            <span class="tagline" style="color: <?php echo esc_attr($settings['commitment_tagline_color'] ?? '#14b8a6'); ?>; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+                                <?php echo esc_html($settings['commitment_tagline'] ?? 'OUR COMMITMENT'); ?>
+                            </span>
+                            <h2 style="color: <?php echo esc_attr($settings['commitment_heading_color'] ?? '#ffffff'); ?>; font-size: 2.5rem; font-weight: 800; margin: 1rem 0;">
+                                <?php echo esc_html($settings['commitment_title'] ?? 'Our Promise Of Reliability'); ?>
+                            </h2>
+                            <p style="color: <?php echo esc_attr($settings['commitment_text_color'] ?? '#ffffff'); ?>; font-size: 1.1rem; line-height: 1.6; margin-bottom: 2rem;">
+                                <?php echo esc_html($settings['commitment_subtitle'] ?? 'We promise to deliver exceptional service'); ?>
+                            </p>
+                        </div>
+                        <div style="color: <?php echo esc_attr($settings['commitment_text_color'] ?? '#ffffff'); ?>; font-size: 1rem; line-height: 1.6;">
+                            <?php echo wp_kses_post($settings['commitment_text'] ?? 'At ' . ($business['name'] ?? 'Roofing Pros') . ' in Orlando, we\'re dedicated to providing reliable, high-quality roofing services with integrity and care. From repairs to replacements, we ensure your roof is in expert hands—on time, on budget, every time.'); ?>
+                        </div>
+                    </div>
+                    <div class="image-content" style="flex: 1; text-align: center;">
+                        <img src="<?php echo esc_url($settings['commitment_image'] ?? 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'); ?>" alt="Our Commitment" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);" loading="lazy" decoding="async">
+                    </div>
+                </div>
+            </div>
+        </section>
 
         </main>
     
