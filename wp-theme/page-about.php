@@ -29,8 +29,16 @@ get_header();
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 0; text-align: center; }
-        .hero h1 { font-size: 3.5rem; font-weight: 800; margin: 0 0 2rem 0; color: #000; }
+        .hero { 
+            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), 
+                       url('<?php echo esc_url($settings['hero_bg_image'] ?? 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'); 
+            background-size: cover; 
+            background-position: center; 
+            color: white; 
+            padding: 120px 0; 
+            text-align: center; 
+        }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; margin: 0 0 2rem 0; color: white; }
         .btn { background: #f59e0b; color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
         .section { padding: 80px 0; }
         .section-white { background: #fff; }
@@ -83,9 +91,18 @@ get_header();
         <div class="grid-2">
             <div>
                 <h2>About <?php echo esc_html($business_name); ?></h2>
-                <p class="mb-2">
-                    <?php echo esc_html($settings['about_description'] ?? 'With over ' . ($settings['about_years'] ?? '15') . ' years of experience in the ' . strtolower($settings['business_type'] ?? 'roofing') . ' industry, ' . $business_name . ' brings unparalleled expertise and quality service to the residents of ' . ($settings['location'] ?? 'your area') . '. Our team is dedicated to delivering exceptional results that exceed your expectations.'); ?>
-                </p>
+                <div class="mb-2">
+                    <?php 
+                    $about_description = $settings['about_description'] ?? '';
+                    if (!empty($about_description)) {
+                        // Clean up any HTML tags and display as plain text
+                        $clean_description = strip_tags($about_description);
+                        echo '<p>' . esc_html($clean_description) . '</p>';
+                    } else {
+                        echo '<p>With over ' . esc_html($settings['about_years'] ?? '15') . ' years of experience in the ' . strtolower($settings['business_type'] ?? 'roofing') . ' industry, ' . esc_html($business_name) . ' brings unparalleled expertise and quality service to the residents of ' . esc_html($settings['location'] ?? 'your area') . '. Our team is dedicated to delivering exceptional results that exceed your expectations.</p>';
+                    }
+                    ?>
+                </div>
                 
                 <!-- Years of Experience -->
                 <div class="experience-box">
@@ -205,43 +222,6 @@ get_header();
                 <div style="display: flex; align-items: center; gap: 0.5rem; color: white; font-size: 1.1rem;">
                     <span style="color: #f59e0b; font-weight: 600;">✓</span>
                     <span><?php echo esc_html($location['name'] ?? ''); ?></span>
-                </div>
-            <?php endforeach; ?>
-        </div>
-        <?php endif; ?>
-    </div>
-</section>
-
-<!-- Reviews Section -->
-<section class="section section-white">
-    <div class="container">
-        <div class="text-center mb-3">
-            <h2>What People Say</h2>
-            <p class="text-gray">Customer Reviews</p>
-        </div>
-        
-        <?php 
-        $reviews = $settings['reviews'] ?? [];
-        if (!empty($reviews)): 
-        ?>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-            <?php foreach (array_slice($reviews, 0, 5) as $review): ?>
-                <div class="review-card">
-                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                        <div style="width: 40px; height: 40px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
-                            <?php echo strtoupper(substr($review['name'] ?? 'A', 0, 1)); ?>
-                        </div>
-                        <div>
-                            <div style="font-weight: 600; color: #1f2937;"><?php echo esc_html($review['name'] ?? 'Anonymous'); ?></div>
-                            <div style="font-size: 0.9rem; color: #6b7280;">Verified Customer</div>
-                        </div>
-                    </div>
-                    <div style="color: #4b5563; line-height: 1.6; margin-bottom: 1rem;">
-                        <?php echo esc_html($review['comment'] ?? 'Great service!'); ?>
-                    </div>
-                    <div style="color: #9ca3af; font-size: 0.9rem;">
-                        — <?php echo esc_html($review['date'] ?? date('Y-m-d')); ?>
-                    </div>
                 </div>
             <?php endforeach; ?>
         </div>
