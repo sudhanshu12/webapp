@@ -72,6 +72,21 @@ if (!$current_location && !empty($request_slug)) {
             }
         }
     }
+    
+    // If still no match, try to match by removing zip code from slug
+    if (!$current_location) {
+        // Remove potential zip code from the end of the slug (e.g., "mission-hills-12345" -> "mission-hills")
+        $slug_without_zip = preg_replace('/-\d{5}$/', '', $request_slug);
+        if ($slug_without_zip !== $request_slug) {
+            foreach ($locations as $location) {
+                if (!empty($location['slug']) && $location['slug'] === $slug_without_zip) {
+                    $current_location = $location;
+                    error_log('Location matched by slug without zip: ' . $location['slug'] . ' = ' . $slug_without_zip);
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Try multiple matching strategies
@@ -157,23 +172,30 @@ if ($current_location) {
 
 // If still no location found, create a basic one from the URL slug
 if (!$current_location && !empty($request_slug) && $request_slug !== 'service-locations') {
+    // Extract zip code from slug if present (e.g., "mission-hills-12345" -> zip: "12345")
+    $zip_code = '';
+    if (preg_match('/-(\d{5})$/', $request_slug, $matches)) {
+        $zip_code = $matches[1];
+    }
+    
     $current_location = [
         'name' => $location_title,
         'slug' => $request_slug,
+        'zip' => $zip_code,
         'metaTitle' => '',
         'metaDescription' => '',
         'description' => ''
     ];
-    error_log('Location created from URL slug: ' . $location_title);
+    error_log('Location created from URL slug: ' . $location_title . ($zip_code ? ' (ZIP: ' . $zip_code . ')' : ''));
 }
 
 // Generate meta title and description (treat empty strings as missing)
 $meta_title = !empty(trim($current_location['metaTitle'] ?? ''))
     ? trim($current_location['metaTitle'])
-    : ($business['name'] . ' - ' . $location_title . ' ' . ucfirst($business['business_type'] ?? 'Services') . ' | Professional ' . ucfirst($business['business_type'] ?? 'Services') . ' in ' . $business['state']);
+    : ($business['name'] . ' - ' . $location_title . ($current_location['zip'] ?? '') . ' ' . ucfirst($business['business_type'] ?? 'Services') . ' | Professional ' . ucfirst($business['business_type'] ?? 'Services') . ' in ' . $business['state']);
 $meta_description = !empty(trim($current_location['metaDescription'] ?? ''))
     ? trim($current_location['metaDescription'])
-    : ('Professional ' . strtolower($business['business_type'] ?? 'services') . ' in ' . $location_title . ', ' . $business['state'] . '. Expert ' . strtolower($business['business_type'] ?? 'services') . ' repairs, replacements, and inspections. Licensed & insured ' . strtolower($business['business_type'] ?? 'service') . ' contractor. Call ' . $business['name'] . ' for a free estimate today.');
+    : ('Professional ' . strtolower($business['business_type'] ?? 'services') . ' in ' . $location_title . ($current_location['zip'] ? ', ' . $current_location['zip'] : '') . ', ' . $business['state'] . '. Expert ' . strtolower($business['business_type'] ?? 'services') . ' repairs, replacements, and inspections. Licensed & insured ' . strtolower($business['business_type'] ?? 'service') . ' contractor. Call ' . $business['name'] . ' for a free estimate today.');
 
 // Debug: Log the final meta title
 error_log('=== LOCATION FINAL RESULT DEBUG ===');
