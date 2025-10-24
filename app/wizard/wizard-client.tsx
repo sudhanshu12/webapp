@@ -1456,46 +1456,55 @@ export default function WizardClient() {
   };
 
   const updateService = (id: string, field: keyof Service, value: string) => {
-    const updatedServices = services.map(service => {
-      if (service.id === id) {
-        const updatedService = { ...service, [field]: value };
-        // Auto-generate slug when name changes
-        if (field === 'name' && value.trim()) {
-          updatedService.slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    setServices(prevServices => {
+      const updatedServices = prevServices.map(service => {
+        if (service.id === id) {
+          const updatedService = { ...service, [field]: value };
+          // Auto-generate slug when name changes
+          if (field === 'name' && value.trim()) {
+            updatedService.slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+          }
+          return updatedService;
         }
-        return updatedService;
+        return service;
+      });
+      
+      // Auto-save to localStorage immediately
+      if (isLoaded && session?.user?.email) {
+        const userEmail = session.user.email;
+        const userKey = `bsg_services_${userEmail}`;
+        setTimeout(() => {
+          saveLS(userKey, updatedServices);
+          console.log(`💾 Auto-saved service ${id} to localStorage for user: ${userEmail}`);
+          
+          // Also save to Supabase with debouncing
+          debouncedSupabaseSave(form);
+        }, 0);
       }
-      return service;
+      
+      return updatedServices;
     });
-    setServices(updatedServices);
-    
-    // Auto-save to localStorage immediately
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_services_${userEmail}`;
-      setTimeout(() => {
-        saveLS(userKey, updatedServices);
-        console.log(`💾 Auto-saved service ${id} to localStorage for user: ${userEmail}`);
-        
-        // Also save to Supabase with debouncing
-        debouncedSupabaseSave(form);
-      }, 0);
-    }
   };
 
   const removeService = (id: string) => {
-    const updatedServices = services.filter(service => service.id !== id);
-    setServices(updatedServices);
-    
-    // Auto-save to localStorage immediately
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_services_${userEmail}`;
-      setTimeout(() => {
-        saveLS(userKey, updatedServices);
-        console.log(`💾 Auto-saved service removal to localStorage for user: ${userEmail}`);
-      }, 0);
-    }
+    setServices(prevServices => {
+      const updatedServices = prevServices.filter(service => service.id !== id);
+      
+      // Auto-save to localStorage immediately
+      if (isLoaded && session?.user?.email) {
+        const userEmail = session.user.email;
+        const userKey = `bsg_services_${userEmail}`;
+        setTimeout(() => {
+          saveLS(userKey, updatedServices);
+          console.log(`💾 Auto-saved service removal to localStorage for user: ${userEmail}`);
+          
+          // Also save to Supabase with debouncing
+          debouncedSupabaseSave(form);
+        }, 0);
+      }
+      
+      return updatedServices;
+    });
   };
 
   const generateServiceAI = async (id: string) => {
@@ -1583,60 +1592,62 @@ export default function WizardClient() {
   };
 
   const updateLocation = (id: string, field: keyof Location, value: string) => {
-    const updatedLocations = locations.map(location => {
-      if (location.id === id) {
-        const updatedLocation = { ...location, [field]: value };
-        
-        // Auto-generate slug when name or zip changes
-        if ((field === 'name' || field === 'zip') && (updatedLocation.name.trim() || updatedLocation.zip.trim())) {
-          const nameSlug = updatedLocation.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-          const zipSlug = updatedLocation.zip.trim();
-          updatedLocation.slug = nameSlug + (zipSlug ? '-' + zipSlug : '');
+    setLocations(prevLocations => {
+      const updatedLocations = prevLocations.map(location => {
+        if (location.id === id) {
+          const updatedLocation = { ...location, [field]: value };
+          
+          // Auto-generate slug when name or zip changes
+          if ((field === 'name' || field === 'zip') && (updatedLocation.name.trim() || updatedLocation.zip.trim())) {
+            const nameSlug = updatedLocation.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            const zipSlug = updatedLocation.zip.trim();
+            updatedLocation.slug = nameSlug + (zipSlug ? '-' + zipSlug : '');
+          }
+          
+          return updatedLocation;
         }
-        
-        // Auto-fetch state and ZIP when city name changes (with delay to avoid too many API calls)
-        if (field === 'name' && value.trim()) {
-          setTimeout(() => {
-            fetchLocationData(value.trim()).then(data => {
-              if (data) {
-                setLocations(prevLocations => 
-                  prevLocations.map(loc => {
-                    if (loc.id === id) {
-                      const updatedLoc = { ...loc, state: data.state || loc.state, zip: data.zip || loc.zip };
-                      // Regenerate slug with new zip
-                      if (updatedLoc.name.trim() || updatedLoc.zip.trim()) {
-                        const nameSlug = updatedLoc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-                        const zipSlug = updatedLoc.zip.trim();
-                        updatedLoc.slug = nameSlug + (zipSlug ? '-' + zipSlug : '');
-                      }
-                      return updatedLoc;
-                    }
-                    return loc;
-                  })
-                );
-              }
-            });
-          }, 1000); // 1 second delay
-        }
-        
-        return updatedLocation;
+        return location;
+      });
+      
+      // Auto-save to localStorage and Supabase
+      if (isLoaded && session?.user?.email) {
+        const userEmail = session.user.email;
+        const userKey = `bsg_locations_${userEmail}`;
+        setTimeout(() => {
+          saveLS(userKey, updatedLocations);
+          console.log(`💾 Auto-saved location update to localStorage for user: ${userEmail}`);
+          
+          // Also save to Supabase with debouncing
+          debouncedSupabaseSave(form);
+        }, 0);
       }
-      return location;
+      
+      return updatedLocations;
     });
     
-    setLocations(updatedLocations);
-    
-    // Auto-save to localStorage and Supabase
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_locations_${userEmail}`;
+    // Auto-fetch state and ZIP when city name changes (with delay to avoid too many API calls)
+    if (field === 'name' && value.trim()) {
       setTimeout(() => {
-        saveLS(userKey, updatedLocations);
-        console.log(`💾 Auto-saved location update to localStorage for user: ${userEmail}`);
-        
-        // Also save to Supabase with debouncing
-        debouncedSupabaseSave(form);
-      }, 0);
+        fetchLocationData(value.trim()).then(data => {
+          if (data) {
+            setLocations(prevLocations => 
+              prevLocations.map(loc => {
+                if (loc.id === id) {
+                  const updatedLoc = { ...loc, state: data.state || loc.state, zip: data.zip || loc.zip };
+                  // Regenerate slug with new zip
+                  if (updatedLoc.name.trim() || updatedLoc.zip.trim()) {
+                    const nameSlug = updatedLoc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                    const zipSlug = updatedLoc.zip.trim();
+                    updatedLoc.slug = nameSlug + (zipSlug ? '-' + zipSlug : '');
+                  }
+                  return updatedLoc;
+                }
+                return loc;
+              })
+            );
+          }
+        });
+      }, 1000); // 1 second delay
     }
   };
 
@@ -1664,21 +1675,24 @@ export default function WizardClient() {
   };
 
   const removeLocation = (id: string) => {
-    const updatedLocations = locations.filter(location => location.id !== id);
-    setLocations(updatedLocations);
-    
-    // Auto-save to localStorage immediately
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_locations_${userEmail}`;
-      setTimeout(() => {
-        saveLS(userKey, updatedLocations);
-        console.log(`💾 Auto-saved location removal to localStorage for user: ${userEmail}`);
-        
-        // Also save to Supabase with debouncing
-        debouncedSupabaseSave(form);
-      }, 0);
-    }
+    setLocations(prevLocations => {
+      const updatedLocations = prevLocations.filter(location => location.id !== id);
+      
+      // Auto-save to localStorage immediately
+      if (isLoaded && session?.user?.email) {
+        const userEmail = session.user.email;
+        const userKey = `bsg_locations_${userEmail}`;
+        setTimeout(() => {
+          saveLS(userKey, updatedLocations);
+          console.log(`💾 Auto-saved location removal to localStorage for user: ${userEmail}`);
+          
+          // Also save to Supabase with debouncing
+          debouncedSupabaseSave(form);
+        }, 0);
+      }
+      
+      return updatedLocations;
+    });
   };
 
   const generateLocationAI = async (id: string) => {
