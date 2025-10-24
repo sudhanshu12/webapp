@@ -47,7 +47,7 @@ function bsg_auto_template_selection($template) {
         strpos($page_slug, 'about-us') !== false) {
         
         // Use about template
-        $about_template = get_template_directory() . '/page-about-us.php';
+        $about_template = get_template_directory() . '/page-about.php';
         if (file_exists($about_template)) {
             return $about_template;
         }
@@ -115,8 +115,8 @@ function bsg_force_template_assignment() {
         if (strpos($page_slug, 'about') !== false || 
             strpos($page_slug, 'about-us') !== false) {
             
-            if ($current_template !== 'page-about-us.php') {
-                update_post_meta($page->ID, '_wp_page_template', 'page-about-us.php');
+            if ($current_template !== 'page-about.php') {
+                update_post_meta($page->ID, '_wp_page_template', 'page-about.php');
             }
         }
         
@@ -185,8 +185,8 @@ function bsg_auto_assign_template_on_save($post_id, $post) {
     if (strpos($page_slug, 'about') !== false || 
         strpos($page_slug, 'about-us') !== false) {
         
-        if ($current_template !== 'page-about-us.php') {
-            update_post_meta($post_id, '_wp_page_template', 'page-about-us.php');
+        if ($current_template !== 'page-about.php') {
+            update_post_meta($post_id, '_wp_page_template', 'page-about.php');
         }
     }
     
@@ -1100,7 +1100,7 @@ function bsg_create_default_pages() {
             'post_content' => $about_content,
             'post_status' => 'publish',
             'post_type' => 'page',
-            'page_template' => 'page-about-us.php'
+            'page_template' => 'page-about.php'
         ]);
         
         if ($about_id && !is_wp_error($about_id)) {
@@ -1525,7 +1525,7 @@ function bsg_safe_auto_create_pages() {
                 'post_content' => '<h2>About ' . ($settings['business_name'] ?? 'Our Company') . '</h2><p>Professional services in your area.</p>',
                 'post_status' => 'publish',
                 'post_type' => 'page',
-                'page_template' => 'page-about-us.php'
+                'page_template' => 'page-about.php'
             ]);
             if ($about_id && !is_wp_error($about_id)) {
                 $created[] = 'About Us';
@@ -2880,7 +2880,7 @@ function bsg_safe_create_pages() {
                 'post_content' => $about_content,
                 'post_status' => 'publish',
                 'post_type' => 'page',
-                'page_template' => 'page-about-us.php'
+                'page_template' => 'page-about.php'
             ]);
             if ($about_id && !is_wp_error($about_id)) {
                 $created_pages[] = 'About Us page';
