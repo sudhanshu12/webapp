@@ -10,6 +10,8 @@ $email = 'sscexamsinfo@gmail.com';
 $hero_bg_image = '';
 $about_description = '';
 $about_team_image = '';
+$about_hero_tagline = '';
+$about_hero_title = '';
 
 // Only get settings if function exists and don't trigger any debug
 if (function_exists('bsg_get_settings')) {
@@ -19,8 +21,12 @@ if (function_exists('bsg_get_settings')) {
         $phone = $settings['phone'] ?? '8755026291';
         $email = $settings['email'] ?? 'sscexamsinfo@gmail.com';
         $hero_bg_image = $settings['hero_bg_image'] ?? $hero_bg_image;
-        $about_description = $settings['about_description'] ?? '';
-        $about_team_image = $settings['about_page_team_image'] ?? $settings['about_image'] ?? $about_team_image;
+        
+        // Get about page specific content from wizard
+        $about_description = $settings['about_page_who_description'] ?? $settings['about_description'] ?? '';
+        $about_team_image = $settings['about_page_team_image'] ?? $settings['about_image'] ?? '';
+        $about_hero_tagline = $settings['about_page_hero_tagline'] ?? 'ABOUT ' . strtoupper($business_name);
+        $about_hero_title = $settings['about_page_hero_title'] ?? 'Professional roofing services you can count on';
     }
 }
 
@@ -65,9 +71,9 @@ get_header();
 <!-- Hero Section -->
 <section class="about-hero">
     <div class="container">
-        <h1>ABOUT <?php echo esc_html($business_name); ?></h1>
+        <h1><?php echo esc_html($about_hero_tagline); ?></h1>
         <p style="font-size: 1.2rem; margin: 0 0 2rem 0; color: white;">
-            Professional roofing services you can count on
+            <?php echo esc_html($about_hero_title); ?>
         </p>
         <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
             📞 Call (<?php echo esc_attr($phone); ?>)
@@ -84,10 +90,10 @@ get_header();
                 <div style="margin-bottom: 2rem;">
                     <?php 
                     if (!empty($about_description)) {
-                        // Display the description from wizard (may contain HTML formatting)
+                        // Display the description from wizard (contains HTML formatting from the wizard)
                         echo $about_description;
                     } else {
-                        // Enhanced fallback content
+                        // Fallback content if wizard description is empty
                         echo '<p>Welcome to <strong>' . esc_html($business_name) . '</strong>, Orlando\'s trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements.</p>';
                         echo '<p>Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs that stand the test of time. We understand that your roof is one of the most important investments in your home, which is why we approach every project with meticulous attention to detail and unwavering commitment to quality.</p>';
                         echo '<h3 style="color: #1f2937; margin: 2rem 0 1rem 0; font-size: 1.5rem;">Why Choose ' . esc_html($business_name) . '?</h3>';
