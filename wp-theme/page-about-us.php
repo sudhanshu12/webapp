@@ -5,11 +5,16 @@
  * This template displays the about us page with all sections
  */
 
-// Get settings
-$settings = get_option('bsg_settings', array());
+// Get settings using the proper function
+$settings = bsg_get_settings();
 $business_name = $settings['business_name'] ?? 'Roofing Pros';
 $phone = $settings['phone'] ?? '';
 $email = $settings['email'] ?? '';
+
+// Force custom document title from wizard settings
+add_filter('pre_get_document_title', function($title) use ($settings, $business_name) {
+    return $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Expert Roofing Services in Orlando';
+}, 99);
 
 // Add meta tags to head
 add_action('wp_head', function() use ($settings, $business_name) {
@@ -360,10 +365,16 @@ get_header();
     <!-- Hero Section -->
     <section class="about-hero-section" style="<?php if (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? '#1f2937'); ?>;<?php endif; ?>">
         <div class="about-hero-content">
-            <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#1f2937'); ?>;">
+            <p class="tagline" style="color: <?php echo esc_attr($settings['hero_tagline_color'] ?? '#14b8a6'); ?>; font-size: 1.2rem; font-weight: 700; margin: 0 0 8px 0; letter-spacing: 0.5px;">
+                <?php echo esc_html($settings['hero_tagline'] ?? 'ABOUT US'); ?>
+            </p>
+            <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#1f2937'); ?>; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 24px 0;">
                 About <?php echo esc_html($business_name); ?>
-                    </h1>
-            <a href="tel:<?php echo esc_attr($phone); ?>" class="btn">
+            </h1>
+            <p style="color: <?php echo esc_attr($settings['hero_description_color'] ?? '#6b7280'); ?>; font-size: 1rem; margin: 0 0 32px 0; line-height: 1.6;">
+                <?php echo esc_html($settings['hero_description'] ?? 'Learn about ' . $business_name . ', Orlando\'s trusted roofing company. Professional team, quality workmanship, and exceptional service.'); ?>
+            </p>
+            <a href="tel:<?php echo esc_attr($phone); ?>" class="btn" style="background: #f59e0b; color: #ffffff; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem;">
                 <i class="fa-solid fa-phone"></i> Call us Today
             </a>
             </div>
@@ -374,14 +385,14 @@ get_header();
         <div class="about-grid">
             <!-- Image on Left -->
             <div class="about-image-wrapper">
-                <?php if (isset($settings['about_page_team_image']) && !empty($settings['about_page_team_image'])): ?>
-                    <img src="<?php echo esc_url($settings['about_page_team_image']); ?>" alt="About <?php echo esc_attr($business_name); ?>" loading="lazy" decoding="async">
-                        <?php else: ?>
-                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; font-weight: 600;">
-                                Team Photo
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                <?php 
+                // Use about_page_team_image or about_image from settings, with roofing fallback
+                $team_image = !empty($settings['about_page_team_image']) ? $settings['about_page_team_image'] : 
+                              (!empty($settings['about_image']) ? $settings['about_image'] : 
+                              'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
+                ?>
+                <img src="<?php echo esc_url($team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" loading="lazy" decoding="async">
+            </div>
                     
             <!-- Content on Right -->
             <div class="about-content-text">
