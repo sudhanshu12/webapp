@@ -53,7 +53,9 @@ error_log('=== LOCATION TEMPLATE DEBUG END ===');
 
 // Prefer direct slug match from the request path first
 if (!$current_location && !empty($request_slug)) {
+    error_log('Trying to match request slug: ' . $request_slug);
     foreach ($locations as $location) {
+        error_log('Checking location slug: ' . ($location['slug'] ?? 'NULL') . ' against request: ' . $request_slug);
         if (!empty($location['slug']) && $location['slug'] === $request_slug) {
             $current_location = $location;
             error_log('Location matched by REQUEST URI slug: ' . $location['slug'] . ' = ' . $request_slug);
@@ -64,7 +66,9 @@ if (!$current_location && !empty($request_slug)) {
     // If no exact slug match, try to match by converting slug to name format
     if (!$current_location) {
         $slug_to_name = ucwords(str_replace('-', ' ', $request_slug));
+        error_log('Trying to match slug-to-name: ' . $slug_to_name);
         foreach ($locations as $location) {
+            error_log('Checking location name: ' . ($location['name'] ?? 'NULL') . ' against slug-to-name: ' . $slug_to_name);
             if (!empty($location['name']) && $location['name'] === $slug_to_name) {
                 $current_location = $location;
                 error_log('Location matched by slug-to-name conversion: ' . $location['name'] . ' = ' . $slug_to_name);
@@ -203,9 +207,13 @@ error_log('Location meta title result: ' . $meta_title);
 error_log('Location current_location found: ' . ($current_location ? 'YES' : 'NO'));
 if ($current_location) {
     error_log('Location current_location metaTitle: ' . ($current_location['metaTitle'] ?? 'NOT SET'));
+    error_log('Location current_location metaDescription: ' . ($current_location['metaDescription'] ?? 'NOT SET'));
     error_log('Location current_location name: ' . ($current_location['name'] ?? 'NOT SET'));
+    error_log('Location current_location slug: ' . ($current_location['slug'] ?? 'NOT SET'));
 } else {
     error_log('Location current_location is NULL - using fallback meta title');
+    error_log('Request slug: ' . $request_slug);
+    error_log('Location title: ' . $location_title);
 }
 error_log('=== LOCATION FINAL RESULT DEBUG END ===');
 
