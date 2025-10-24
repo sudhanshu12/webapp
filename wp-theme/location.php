@@ -589,12 +589,9 @@ $contact_page = get_page_by_path('contact-us');
         <section class="hero-section animate-on-scroll-section" style="<?php if (!empty($settings['location_page_hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['location_page_hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php elseif (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? 'var(--surface-color)'); ?>;<?php endif; ?> padding: 90px 0;">
         <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 60px;">
             <div class="hero-content" style="margin-right: 20px;">
-                <h1 style="color: <?php echo esc_attr($settings['location_hero_heading_color'] ?? $settings['hero_heading_color'] ?? '#000000'); ?>; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 24px 0;">
+                <h1 style="color: <?php echo esc_attr($settings['location_hero_heading_color'] ?? $settings['hero_heading_color'] ?? '#000000'); ?>; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 32px 0;">
                     <?php echo esc_html($hero_title); ?>
                 </h1>
-                <p style="color: <?php echo esc_attr($settings['location_hero_description_color'] ?? $settings['hero_description_color'] ?? '#6b7280'); ?>; font-size: 1.25rem; margin: 0 0 32px 0; line-height: 1.6; max-width: 600px;">
-                    <?php echo esc_html($meta_description); ?>
-                </p>
                 <div class="hero-actions">
                     <a href="tel:<?php echo esc_attr($phone); ?>" class="btn btn-dark" style="background: #f59e0b; color: #ffffff; display:inline-flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; max-width:520px; border-radius:10px; padding:1rem 1.25rem; font-weight:700; font-size:1.1rem;">
                         <i class="fa-solid fa-phone"></i> Call us Today
