@@ -151,32 +151,32 @@ get_header();
         <div class="about-why-grid">
             <div class="about-why-card">
                 <div class="about-why-icon">✓</div>
-                <h3 style="color: white; margin-bottom: 1rem;">Quality Guarantee</h3>
-                <p style="color: rgba(255,255,255,0.9);">We stand behind our work with comprehensive warranties and quality guarantees.</p>
+                <h3 style="color: white; margin-bottom: 1rem;">Proven Expertise</h3>
+                <p style="color: rgba(255,255,255,0.9);">Years of successful delivery.</p>
             </div>
             
             <div class="about-why-card">
                 <div class="about-why-icon">$</div>
-                <h3 style="color: white; margin-bottom: 1rem;">Competitive Pricing</h3>
-                <p style="color: rgba(255,255,255,0.9);">Fair, transparent pricing with no hidden costs or surprises.</p>
+                <h3 style="color: white; margin-bottom: 1rem;">Tailored Solutions</h3>
+                <p style="color: rgba(255,255,255,0.9);">Built for your unique needs.</p>
             </div>
             
             <div class="about-why-card">
                 <div class="about-why-icon">📄</div>
-                <h3 style="color: white; margin-bottom: 1rem;">Licensed & Insured</h3>
-                <p style="color: rgba(255,255,255,0.9);">Fully licensed and insured for your peace of mind.</p>
+                <h3 style="color: white; margin-bottom: 1rem;">End-to-End Support</h3>
+                <p style="color: rgba(255,255,255,0.9);">Guidance at every step.</p>
             </div>
             
             <div class="about-why-card">
                 <div class="about-why-icon">💻</div>
-                <h3 style="color: white; margin-bottom: 1rem;">Modern Technology</h3>
-                <p style="color: rgba(255,255,255,0.9);">Latest tools and techniques for superior results.</p>
+                <h3 style="color: white; margin-bottom: 1rem;">Cutting-Edge Technology</h3>
+                <p style="color: rgba(255,255,255,0.9);">Modern, reliable, scalable systems.</p>
             </div>
             
             <div class="about-why-card">
                 <div class="about-why-icon">🎯</div>
-                <h3 style="color: white; margin-bottom: 1rem;">Expert Team</h3>
-                <p style="color: rgba(255,255,255,0.9);">Experienced professionals dedicated to excellence.</p>
+                <h3 style="color: white; margin-bottom: 1rem;">Results-Driven</h3>
+                <p style="color: rgba(255,255,255,0.9);">Focused on measurable business impact.</p>
             </div>
         </div>
     </div>
