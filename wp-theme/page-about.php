@@ -3,16 +3,18 @@
  * Template Name: BSG About Page
  */
 
-// Get settings
-$settings = bsg_get_settings();
-$business_name = $settings['business_name'] ?? 'Roofing Pros';
-$phone = $settings['phone'] ?? '';
-$email = $settings['email'] ?? '';
+// Get basic settings without debug output
+$business_name = 'Roofing Pros';
+$phone = '8755026291';
+$email = 'sscexamsinfo@gmail.com';
 
-// Set page title
-add_filter('pre_get_document_title', function($title) use ($settings, $business_name) {
-    return $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Expert Roofing Services';
-}, 99);
+// Try to get settings safely
+if (function_exists('bsg_get_settings')) {
+    $settings = bsg_get_settings();
+    $business_name = $settings['business_name'] ?? 'Roofing Pros';
+    $phone = $settings['phone'] ?? '8755026291';
+    $email = $settings['email'] ?? 'sscexamsinfo@gmail.com';
+}
 
 get_header();
 ?>
@@ -20,7 +22,7 @@ get_header();
 <style>
     .about-hero { 
         background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), 
-                   url('<?php echo esc_url($settings['hero_bg_image'] ?? 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'); 
+                   url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'); 
         background-size: cover; 
         background-position: center; 
         color: white; 
@@ -46,9 +48,9 @@ get_header();
 <!-- Hero Section -->
 <section class="about-hero">
     <div class="container">
-        <h1><?php echo esc_html($settings['about_page_hero_tagline'] ?? 'ABOUT ' . strtoupper($business_name)); ?></h1>
+        <h1>ABOUT <?php echo esc_html($business_name); ?></h1>
         <p style="font-size: 1.2rem; margin: 0 0 2rem 0; color: white;">
-            <?php echo esc_html($settings['about_page_hero_title'] ?? 'Professional ' . strtolower($settings['business_type'] ?? 'roofing') . ' services you can count on'); ?>
+            Professional roofing services you can count on
         </p>
         <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
             📞 Call (<?php echo esc_attr($phone); ?>)
@@ -63,20 +65,15 @@ get_header();
             <div>
                 <h2>About <?php echo esc_html($business_name); ?></h2>
                 <div style="margin-bottom: 2rem;">
-                    <?php 
-                    $about_description = $settings['about_description'] ?? '';
-                    if (!empty($about_description)) {
-                        // Display the description as HTML (it may contain formatting)
-                        echo $about_description;
-                    } else {
-                        echo '<p>With over ' . esc_html($settings['about_years'] ?? '15') . ' years of experience in the ' . strtolower($settings['business_type'] ?? 'roofing') . ' industry, ' . esc_html($business_name) . ' brings unparalleled expertise and quality service to the residents of ' . esc_html($settings['location'] ?? 'your area') . '. Our team is dedicated to delivering exceptional results that exceed your expectations.</p>';
-                    }
-                    ?>
+                    <p>Welcome to <?php echo esc_html($business_name); ?>, Orlando's trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements. Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs.</p>
+                    
+                    <h3>Why Choose Us</h3>
+                    <p>Customers choose <?php echo esc_html($business_name); ?> for our unwavering dedication to quality, reliability, and customer satisfaction. We offer personalized service, competitive pricing, and a warranty you can trust. Let us enhance your home's value and curb appeal—call us today at <?php echo esc_html($phone); ?>!</p>
                 </div>
                 
                 <!-- Years of Experience -->
                 <div class="about-experience-box">
-                    <div class="about-experience-number"><?php echo esc_html($settings['about_years'] ?? '15'); ?></div>
+                    <div class="about-experience-number">15</div>
                     <div class="about-experience-text">Years of Experience</div>
                 </div>
                 
@@ -87,22 +84,76 @@ get_header();
             
             <!-- Team Image -->
             <div>
-                <?php 
-                $about_image = $settings['about_page_team_image'] ?? $settings['about_image'] ?? 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
-                ?>
-                <img src="<?php echo esc_url($about_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
             </div>
         </div>
     </div>
 </section>
 
 <!-- Services Section -->
-<?php include dirname(__FILE__) . '/section-services.php'; ?>
+<section class="about-section" style="background-color: #313746; color: white;">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <div style="background:#2ee6c5;color:#fff;display:inline-block;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;margin-bottom:8px;">
+                TOP RATED SERVICES
+            </div>
+            <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 0.5rem 0;line-height:1.1;letter-spacing:-1px;color: white;">
+                Our Services
+            </h2>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div style="background: #232834; padding: 2rem; border-radius: 12px; text-align: center;">
+                <div style="width: 60px; height: 60px; background: #2ee6c5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">🌱</div>
+                <h3 style="color: white; margin-bottom: 1rem;">Roof Repair</h3>
+                <p style="color: #d1d5db;">Professional roof repair services to fix leaks, damage, and maintain your roof's integrity.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- Reviews Section -->
-<?php include dirname(__FILE__) . '/section-reviews.php'; ?>
+<section class="about-section" style="background-color: #ffffff;">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <div style="background:#2ee6c5;color:#fff;display:inline-block;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;margin-bottom:8px;">
+                CUSTOMER REVIEWS
+            </div>
+            <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 0.5rem 0;line-height:1.1;letter-spacing:-1px;color: #111827;">
+                What Our Customers Say
+            </h2>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px;">
+                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                    <div style="color: #fbbf24; font-size: 1.2rem;">★★★★★</div>
+                    <span style="margin-left: 0.5rem; font-weight: 600;">Jackson Martin</span>
+                </div>
+                <p style="color: #4b5563; font-style: italic;">"Amazing experience with Roofing Pros from start to finish! Professional, reliable, and the results exceeded my expectations."</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- Commitment Section -->
-<?php include dirname(__FILE__) . '/section-commitment.php'; ?>
+<section class="about-section" style="background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; color: white;">
+    <div class="container">
+        <div style="text-align: center;">
+            <div style="background:#2ee6c5;color:#fff;display:inline-block;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;margin-bottom:8px;">
+                COMMITTED TO QUALITY
+            </div>
+            <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 1rem 0;line-height:1.1;letter-spacing:-1px;color: white;">
+                Our Promise Of Reliability
+            </h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: white;">
+                At <?php echo esc_html($business_name); ?> in Orlando, we're dedicated to providing reliable, high-quality roofing services with integrity and care. From repairs to replacements, we ensure your roof is in expert hands—on time, on budget, every time.
+            </p>
+            <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
+                📞 Request An Estimate
+            </a>
+        </div>
+    </div>
+</section>
 
 <?php get_footer(); ?>
