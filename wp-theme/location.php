@@ -43,11 +43,13 @@ if (!empty($request_slug) && $request_slug !== 'service-locations') {
 error_log('=== LOCATION TEMPLATE DEBUG START ===');
 error_log('Location matching debug - Page title: ' . $location_title);
 error_log('Location matching debug - Page slug: ' . get_post_field('post_name', get_the_ID()));
+error_log('Location matching debug - Request slug: ' . $request_slug);
 error_log('Location matching debug - Settings loaded: ' . (empty($settings) ? 'NO' : 'YES'));
 error_log('Location matching debug - Locations count: ' . count($locations));
 error_log('Location matching debug - Available locations: ' . print_r(array_column($locations, 'name'), true));
 if (!empty($locations)) {
     error_log('Location matching debug - First location: ' . print_r($locations[0], true));
+    error_log('Location matching debug - All locations: ' . print_r($locations, true));
 }
 error_log('=== LOCATION TEMPLATE DEBUG END ===');
 
