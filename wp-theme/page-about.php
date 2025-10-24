@@ -7,9 +7,9 @@
 $business_name = 'Roofing Pros';
 $phone = '8755026291';
 $email = 'sscexamsinfo@gmail.com';
-$hero_bg_image = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80';
+$hero_bg_image = '';
 $about_description = '';
-$about_team_image = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
+$about_team_image = '';
 
 // Only get settings if function exists and don't trigger any debug
 if (function_exists('bsg_get_settings')) {
@@ -29,10 +29,14 @@ get_header();
 
 <style>
     .about-hero { 
+        <?php if (!empty($hero_bg_image)): ?>
         background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), 
                    url('<?php echo esc_url($hero_bg_image); ?>'); 
         background-size: cover; 
         background-position: center; 
+        <?php else: ?>
+        background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+        <?php endif; ?>
         color: white; 
         padding: 120px 0; 
         text-align: center; 
@@ -104,7 +108,13 @@ get_header();
             
             <!-- Team Image -->
             <div>
+                <?php if (!empty($about_team_image)): ?>
                 <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
+                <?php else: ?>
+                <div class="about-team-image" style="background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem;">
+                    Team Image
+                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
@@ -197,7 +207,7 @@ get_header();
 </section>
 
 <!-- Commitment Section -->
-<section class="about-section" style="background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; color: white;">
+<section class="about-section" style="<?php if (!empty($hero_bg_image)): ?>background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), url('<?php echo esc_url($hero_bg_image); ?>'); background-size: cover; background-position: center;<?php else: ?>background: linear-gradient(135deg, #1f2937 0%, #374151 100%);<?php endif; ?> color: white;">
     <div class="container">
         <div style="text-align: center;">
             <div style="background:#2ee6c5;color:#fff;display:inline-block;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;margin-bottom:8px;">
