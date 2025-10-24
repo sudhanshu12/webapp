@@ -811,7 +811,7 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         
         /* Force hero colors to match homepage */
         .hero-section h1 {
-            color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#000000'); ?> !important;
+            color: #000000 !important;
         }
         .hero-section .btn-dark {
             background: <?php echo esc_attr($settings['button_primary_color'] ?? '#f59e0b'); ?> !important;
@@ -893,11 +893,8 @@ echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         <section class="hero-section" style="<?php if (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? 'var(--surface-color)'); ?>;<?php endif; ?> padding: 90px 0;">
             <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 60px;">
             <div class="hero-content" style="margin-right: 20px;">
-                <p style="color: <?php echo esc_attr($about_hero_tagline_color); ?>; font-size: 1rem; font-weight: 600; margin: 0 0 12px 0; text-transform: uppercase; letter-spacing: 1px;">
-                    <?php echo esc_html($about_hero_tagline); ?>
-                </p>
-                <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#000000'); ?>; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 24px 0;">
-                    <?php echo esc_html($about_hero_title); ?>
+                <h1 style="color: #000000; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 24px 0;">
+                    About <?php echo esc_html($business['name']); ?>
                 </h1>
                 <div class="hero-actions">
                     <a href="tel:<?php echo esc_attr($phone); ?>" class="btn btn-dark" style="background: <?php echo esc_attr($settings['button_primary_color'] ?? '#f59e0b'); ?>; color: #ffffff; display:inline-flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; max-width:520px; border-radius:10px; padding:1rem 1.25rem; font-weight:700; font-size:1.1rem;">
