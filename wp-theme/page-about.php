@@ -49,7 +49,7 @@ get_header();
     .about-experience-box { background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem; }
     .about-experience-number { font-size: 3rem; font-weight: 800; color: #f59e0b; margin: 0; }
     .about-experience-text { color: #4b5563; font-size: 1.1rem; font-weight: 600; }
-    .about-team-image { width: 100%; height: 400px; object-fit: cover; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+    .about-team-image { width: 100%; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); background: #f8fafc; }
     .about-why-section { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 80px 0; }
     .about-why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
     .about-why-card { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
@@ -87,10 +87,18 @@ get_header();
                         // Display the description from wizard (may contain HTML formatting)
                         echo $about_description;
                     } else {
-                        // Fallback content
-                        echo '<p>Welcome to ' . esc_html($business_name) . ', Orlando\'s trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements. Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs.</p>';
-                        echo '<h3>Why Choose Us</h3>';
-                        echo '<p>Customers choose ' . esc_html($business_name) . ' for our unwavering dedication to quality, reliability, and customer satisfaction. We offer personalized service, competitive pricing, and a warranty you can trust. Let us enhance your home\'s value and curb appeal—call us today at ' . esc_html($phone) . '!</p>';
+                        // Enhanced fallback content
+                        echo '<p>Welcome to <strong>' . esc_html($business_name) . '</strong>, Orlando\'s trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements.</p>';
+                        echo '<p>Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs that stand the test of time. We understand that your roof is one of the most important investments in your home, which is why we approach every project with meticulous attention to detail and unwavering commitment to quality.</p>';
+                        echo '<h3 style="color: #1f2937; margin: 2rem 0 1rem 0; font-size: 1.5rem;">Why Choose ' . esc_html($business_name) . '?</h3>';
+                        echo '<ul style="color: #4b5563; line-height: 1.8; margin: 0 0 1.5rem 0;">';
+                        echo '<li><strong>Expert Craftsmanship:</strong> Our team brings years of experience and professional expertise to every project</li>';
+                        echo '<li><strong>Quality Materials:</strong> We use only the finest materials from trusted manufacturers</li>';
+                        echo '<li><strong>Licensed & Insured:</strong> Fully licensed and insured for your peace of mind</li>';
+                        echo '<li><strong>Competitive Pricing:</strong> Fair, transparent pricing with no hidden costs</li>';
+                        echo '<li><strong>Customer Satisfaction:</strong> We stand behind our work with comprehensive warranties</li>';
+                        echo '</ul>';
+                        echo '<p>Let us enhance your home\'s value and curb appeal—call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
                     }
                     ?>
                 </div>
@@ -111,8 +119,10 @@ get_header();
                 <?php if (!empty($about_team_image)): ?>
                 <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
                 <?php else: ?>
-                <div class="about-team-image" style="background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem;">
-                    Team Image
+                <div class="about-team-image" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem; border: 2px dashed #d1d5db;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">Team Photo</div>
+                    <div style="font-size: 0.9rem; text-align: center;">Upload team image in wizard</div>
                 </div>
                 <?php endif; ?>
             </div>
