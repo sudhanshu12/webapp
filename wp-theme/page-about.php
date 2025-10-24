@@ -44,7 +44,7 @@ get_header();
         background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
         <?php endif; ?>
         color: white; 
-        padding: 120px 0; 
+        padding: 90px 0; 
         text-align: center; 
     }
     .about-hero h1 { font-size: 3.5rem; font-weight: 800; margin: 0 0 2rem 0; color: white; }
@@ -60,6 +60,9 @@ get_header();
     .about-why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
     .about-why-card { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
     .about-why-icon { width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem; }
+    .about-why-section h2 { color: white !important; }
+    .about-why-section h3 { color: white !important; }
+    .about-why-section p { color: rgba(255,255,255,0.9) !important; }
     @media (max-width: 768px) {
         .about-grid-2 { grid-template-columns: 1fr; gap: 2rem; }
         .about-hero h1 { font-size: 2.5rem; }
@@ -84,10 +87,17 @@ get_header();
 <!-- About Content Section -->
 <section class="about-section about-section-white">
     <div class="container">
+        <!-- Team Image Above Description -->
+        <?php if (!empty($about_team_image)): ?>
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" style="width: 100%; max-width: 500px; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+        </div>
+        <?php endif; ?>
+        
         <div class="about-grid-2">
             <div>
                 <h2>About <?php echo esc_html($business_name); ?></h2>
-                <div style="margin-bottom: 2rem;">
+                <div style="margin-bottom: 2rem; line-height: 1.8;">
                     <?php 
                     if (!empty($about_description)) {
                         // Display the description from wizard (contains HTML formatting from the wizard)
@@ -120,18 +130,8 @@ get_header();
                 </a>
             </div>
             
-            <!-- Team Image -->
-            <div>
-                <?php if (!empty($about_team_image)): ?>
-                <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
-                <?php else: ?>
-                <div class="about-team-image" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem; border: 2px dashed #d1d5db;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
-                    <div style="font-weight: 600; margin-bottom: 0.5rem;">Team Photo</div>
-                    <div style="font-size: 0.9rem; text-align: center;">Upload team image in wizard</div>
-                </div>
-                <?php endif; ?>
-            </div>
+            <!-- Empty right column for layout -->
+            <div></div>
         </div>
     </div>
 </section>
