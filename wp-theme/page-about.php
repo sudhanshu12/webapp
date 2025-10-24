@@ -128,14 +128,8 @@ get_header();
 <!-- Services Section -->
 <?php include dirname(__FILE__) . '/section-services.php'; ?>
 
-<!-- Service Areas Section -->
-<?php include dirname(__FILE__) . '/section-areas.php'; ?>
-
 <!-- Reviews Section -->
 <?php include dirname(__FILE__) . '/section-reviews.php'; ?>
-
-<!-- FAQ Section -->
-<?php include dirname(__FILE__) . '/faq-section.php'; ?>
 
 <!-- Commitment Section -->
 <?php include dirname(__FILE__) . '/section-commitment.php'; ?>
