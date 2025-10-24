@@ -67,7 +67,10 @@ get_header();
 <!-- Hero Section -->
 <section class="hero">
     <div class="container">
-        <h1>About <?php echo esc_html($business_name); ?></h1>
+        <h1><?php echo esc_html($settings['about_hero_tagline'] ?? 'ABOUT ' . strtoupper($business_name)); ?></h1>
+        <p style="font-size: 1.2rem; margin: 0 0 2rem 0; color: #4b5563;">
+            <?php echo esc_html($settings['about_hero_title'] ?? 'Professional ' . strtolower($settings['business_type'] ?? 'roofing') . ' services you can count on'); ?>
+        </p>
         <a href="tel:<?php echo esc_attr($phone); ?>" class="btn">
             📞 Call (<?php echo esc_attr($phone); ?>)
         </a>
