@@ -36,26 +36,19 @@ get_header();
 ?>
 
 <main>
-    <!-- Hero Section (Same as location/service pages) -->
-    <section class="hero-section animate-on-scroll-section" style="<?php if (!empty($settings['about_page_hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['about_page_hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php elseif (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? 'var(--surface-color)'); ?>;<?php endif; ?> padding: 90px 0;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 60px;">
-            <div class="hero-content" style="margin-right: 20px;">
-                <h1 style="color: <?php echo esc_attr($settings['about_hero_heading_color'] ?? $settings['hero_heading_color'] ?? '#000000'); ?>; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 32px 0;">
-                    <?php echo esc_html($settings['about_page_meta_title'] ?? 'About ' . $business_name); ?>
-                </h1>
-                <p style="color: <?php echo esc_attr($settings['about_hero_tagline_color'] ?? $settings['hero_tagline_color'] ?? '#4b5563'); ?>; font-size: 1.2rem; margin: 0 0 32px 0; line-height: 1.6;">
-                    <?php echo esc_html($settings['about_page_meta_description'] ?? 'Your trusted partner for professional roofing services'); ?>
-                </p>
-                <div class="hero-actions">
-                    <a href="tel:<?php echo esc_attr($phone); ?>" class="btn btn-dark" style="background: #f59e0b; color: #ffffff; display:inline-flex; align-items:center; justify-content:center; gap:0.6rem; width:100%; max-width:520px; border-radius:10px; padding:1rem 1.25rem; font-weight:700; font-size:1.1rem;">
-                        <i class="fa-solid fa-phone"></i> Call us Today
-                    </a>
-                </div>
-            </div>
+    <!-- Hero Section -->
+    <section class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 0; text-align: center;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <h1 style="color: #000000; font-size: 3.5rem; font-weight: 800; margin: 0 0 2rem 0; line-height: 1.2;">
+                About <?php echo esc_html($business_name); ?>
+            </h1>
+            <a href="tel:<?php echo esc_attr($phone); ?>" class="btn" style="background: #f59e0b; color: #ffffff; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+                <i class="fa-solid fa-phone"></i> Call (<?php echo esc_attr($phone); ?>)
+            </a>
         </div>
     </section>
 
-    <!-- About Description and Team Image Side by Side -->
+    <!-- About Content Section - Two Column Layout -->
     <section class="about-content-section" style="background: #ffffff; padding: 80px 0;">
         <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
             <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
@@ -73,6 +66,21 @@ get_header();
                         }
                         ?>
                     </div>
+                    
+                    <!-- Services List -->
+                    <?php 
+                    $services = $settings['services'] ?? [];
+                    if (!empty($services)): 
+                    ?>
+                    <div class="services-list" style="margin-bottom: 2rem;">
+                        <h3 style="color: #1f2937; font-size: 1.5rem; font-weight: 600; margin: 0 0 1rem 0;">Our Services</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                            <?php foreach (array_slice($services, 0, 8) as $service): ?>
+                                <div style="color: #4b5563; font-size: 1rem;">• <?php echo esc_html($service['name'] ?? ''); ?></div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     
                     <!-- Years of Experience -->
                     <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem;">
@@ -96,7 +104,7 @@ get_header();
         </div>
     </section>
 
-    <!-- Why Work With Us Section (5 items) -->
+    <!-- Why Work With Us Section - 5 Items -->
     <section class="why-work-section" style="background: #f8fafc; padding: 80px 0;">
         <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
             <div style="text-align: center; margin-bottom: 3rem;">
@@ -138,6 +146,30 @@ get_header();
         </div>
     </section>
 
+    <!-- Service Areas Section - Dark Background -->
+    <section class="service-areas-section" style="background: #1f2937; color: white; padding: 80px 0;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 0 0 1rem 0;">Proudly Serving <?php echo esc_html($settings['location'] ?? 'Your Area'); ?> And The Surrounding Areas</h2>
+                <p style="color: #d1d5db; font-size: 1.2rem; margin: 0;">Proudly serving <?php echo esc_html($settings['location'] ?? 'your area'); ?> and surrounding areas with professional <?php echo strtolower($settings['business_type'] ?? 'services'); ?>. We're committed to delivering quality work wherever you are.</p>
+            </div>
+            
+            <?php 
+            $locations = $settings['locations'] ?? [];
+            if (!empty($locations)): 
+            ?>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+                <?php foreach (array_slice($locations, 0, 8) as $location): ?>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: white; font-size: 1.1rem;">
+                        <span style="color: #f59e0b; font-weight: 600;">✓</span>
+                        <span><?php echo esc_html($location['name'] ?? ''); ?></span>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+        </div>
+    </section>
+
     <!-- Reviews Section -->
     <section class="reviews-section" style="background: #ffffff; padding: 80px 0;">
         <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
@@ -168,33 +200,6 @@ get_header();
                         <div style="color: #9ca3af; font-size: 0.9rem;">
                             — <?php echo esc_html($review['date'] ?? date('Y-m-d')); ?>
                         </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-            <?php endif; ?>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section class="services-section" style="background: #f8fafc; padding: 80px 0;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <h2 style="color: #1f2937; font-size: 2.5rem; font-weight: 700; margin: 0 0 1rem 0;">Our Services</h2>
-                <p style="color: #6b7280; font-size: 1.2rem; margin: 0;">Professional <?php echo strtolower($settings['business_type'] ?? 'roofing'); ?> services tailored to your needs</p>
-            </div>
-            
-            <?php 
-            $services = $settings['services'] ?? [];
-            if (!empty($services)): 
-            ?>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-                <?php foreach (array_slice($services, 0, 6) as $service): ?>
-                    <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center;">
-                        <div style="width: 60px; height: 60px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">
-                            <?php echo esc_html($service['icon'] ?? '🏠'); ?>
-                        </div>
-                        <h3 style="color: #1f2937; font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem 0;"><?php echo esc_html($service['name'] ?? ''); ?></h3>
-                        <p style="color: #6b7280; margin: 0; font-size: 0.9rem;"><?php echo esc_html($service['description'] ?? ''); ?></p>
                     </div>
                 <?php endforeach; ?>
             </div>
