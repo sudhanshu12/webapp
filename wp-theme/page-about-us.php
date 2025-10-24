@@ -365,10 +365,7 @@ get_header();
     <!-- Hero Section -->
     <section class="about-hero-section" style="<?php if (!empty($settings['hero_bg_image'])): ?>background-image: linear-gradient(to left, transparent 0%, rgba(255,255,255,0.2) 30%, rgba(255,255,255,0.7) 80%, rgba(255,255,255,3) 100%), url('<?php echo esc_url($settings['hero_bg_image']); ?>'); background-size: cover; background-position: center;<?php else: ?>background-color: <?php echo esc_attr($settings['hero_bg_color'] ?? '#1f2937'); ?>;<?php endif; ?>">
         <div class="about-hero-content">
-            <p class="tagline" style="color: <?php echo esc_attr($settings['hero_tagline_color'] ?? '#14b8a6'); ?>; font-size: 1.2rem; font-weight: 700; margin: 0 0 8px 0; letter-spacing: 0.5px;">
-                <?php echo esc_html($settings['hero_tagline'] ?? 'ABOUT US'); ?>
-            </p>
-            <h1 style="color: <?php echo esc_attr($settings['hero_heading_color'] ?? '#1f2937'); ?>; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 24px 0;">
+            <h1 style="color: #000000; white-space: normal; word-wrap: break-word; line-height: 1.2; font-size: 3.2rem; font-weight: 800; margin: 0 0 24px 0;">
                 About <?php echo esc_html($business_name); ?>
             </h1>
             <p style="color: <?php echo esc_attr($settings['hero_description_color'] ?? '#6b7280'); ?>; font-size: 1rem; margin: 0 0 32px 0; line-height: 1.6;">
