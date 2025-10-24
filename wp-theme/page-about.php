@@ -35,23 +35,52 @@ add_action('wp_head', function() use ($settings, $business_name) {
 get_header();
 ?>
 
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?php echo esc_html($settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Professional Services & Team'); ?></title>
+    <meta name="description" content="<?php echo esc_attr($settings['about_page_meta_description'] ?? 'Learn about ' . $business_name . ' - our professional team, services, and commitment to excellence.'); ?>">
+    <style>
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .hero-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 0; text-align: center; }
+        .about-content-section { background: #ffffff; padding: 80px 0; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .why-work-section { background: #f8fafc; padding: 80px 0; }
+        .service-areas-section { background: #1f2937; color: white; padding: 80px 0; }
+        .reviews-section { background: #ffffff; padding: 80px 0; }
+        .commitment-section { background: #1e3a8a; color: white; padding: 80px 0; }
+        .btn { background: #f59e0b; color: #ffffff; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem; }
+        .card { text-align: center; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .icon { width: 60px; height: 60px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem; }
+        .review-card { background: #f8fafc; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        @media (max-width: 768px) {
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .hero-section h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
 <main>
     <!-- Hero Section -->
-    <section class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 0; text-align: center;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <section class="hero-section">
+        <div class="container">
             <h1 style="color: #000000; font-size: 3.5rem; font-weight: 800; margin: 0 0 2rem 0; line-height: 1.2;">
                 About <?php echo esc_html($business_name); ?>
             </h1>
-            <a href="tel:<?php echo esc_attr($phone); ?>" class="btn" style="background: #f59e0b; color: #ffffff; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+            <a href="tel:<?php echo esc_attr($phone); ?>" class="btn">
                 <i class="fa-solid fa-phone"></i> Call (<?php echo esc_attr($phone); ?>)
             </a>
         </div>
     </section>
 
     <!-- About Content Section - Two Column Layout -->
-    <section class="about-content-section" style="background: #ffffff; padding: 80px 0;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
-            <div class="about-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
+    <section class="about-content-section">
+        <div class="container">
+            <div class="about-grid">
                 <!-- Content -->
                 <div class="about-content">
                     <h2 style="color: #1f2937; font-size: 2.5rem; font-weight: 700; margin: 0 0 1.5rem 0;">About <?php echo esc_html($business_name); ?></h2>
@@ -88,7 +117,7 @@ get_header();
                         <div style="color: #4b5563; font-size: 1.1rem; font-weight: 600;">Years of Experience</div>
                     </div>
                     
-                    <a href="tel:<?php echo esc_attr($phone); ?>" class="btn" style="background: #f59e0b; color: #ffffff; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem;">
+                    <a href="tel:<?php echo esc_attr($phone); ?>" class="btn">
                         <i class="fa-solid fa-phone"></i> Call Us Today
                     </a>
                 </div>
@@ -105,40 +134,40 @@ get_header();
     </section>
 
     <!-- Why Work With Us Section - 5 Items -->
-    <section class="why-work-section" style="background: #f8fafc; padding: 80px 0;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <section class="why-work-section">
+        <div class="container">
             <div style="text-align: center; margin-bottom: 3rem;">
                 <h2 style="color: #1f2937; font-size: 2.5rem; font-weight: 700; margin: 0 0 1rem 0;">Why Work With Us?</h2>
                 <p style="color: #6b7280; font-size: 1.2rem; margin: 0;">Benefits of Working with an Expert Team</p>
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-                <div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-                    <div style="width: 60px; height: 60px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">✓</div>
+                <div class="card">
+                    <div class="icon">✓</div>
                     <h3 style="color: #1f2937; font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem 0;">Proven Expertise</h3>
                     <p style="color: #6b7280; margin: 0;">Years of successful delivery.</p>
                 </div>
                 
-                <div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-                    <div style="width: 60px; height: 60px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">⚙️</div>
+                <div class="card">
+                    <div class="icon">⚙️</div>
                     <h3 style="color: #1f2937; font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem 0;">Tailored Solutions</h3>
                     <p style="color: #6b7280; margin: 0;">Built for your unique needs.</p>
                 </div>
                 
-                <div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-                    <div style="width: 60px; height: 60px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">🎯</div>
+                <div class="card">
+                    <div class="icon">🎯</div>
                     <h3 style="color: #1f2937; font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem 0;">End-to-End Support</h3>
                     <p style="color: #6b7280; margin: 0;">Guidance at every step.</p>
                 </div>
                 
-                <div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-                    <div style="width: 60px; height: 60px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">💻</div>
+                <div class="card">
+                    <div class="icon">💻</div>
                     <h3 style="color: #1f2937; font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem 0;">Cutting-Edge Technology</h3>
                     <p style="color: #6b7280; margin: 0;">Modern, reliable, scalable systems.</p>
                 </div>
                 
-                <div style="text-align: center; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-                    <div style="width: 60px; height: 60px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">📊</div>
+                <div class="card">
+                    <div class="icon">📊</div>
                     <h3 style="color: #1f2937; font-size: 1.25rem; font-weight: 600; margin: 0 0 0.5rem 0;">Results-Driven</h3>
                     <p style="color: #6b7280; margin: 0;">Focused on measurable business impact.</p>
                 </div>
@@ -147,8 +176,8 @@ get_header();
     </section>
 
     <!-- Service Areas Section - Dark Background -->
-    <section class="service-areas-section" style="background: #1f2937; color: white; padding: 80px 0;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <section class="service-areas-section">
+        <div class="container">
             <div style="text-align: center; margin-bottom: 3rem;">
                 <h2 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 0 0 1rem 0;">Proudly Serving <?php echo esc_html($settings['location'] ?? 'Your Area'); ?> And The Surrounding Areas</h2>
                 <p style="color: #d1d5db; font-size: 1.2rem; margin: 0;">Proudly serving <?php echo esc_html($settings['location'] ?? 'your area'); ?> and surrounding areas with professional <?php echo strtolower($settings['business_type'] ?? 'services'); ?>. We're committed to delivering quality work wherever you are.</p>
@@ -171,8 +200,8 @@ get_header();
     </section>
 
     <!-- Reviews Section -->
-    <section class="reviews-section" style="background: #ffffff; padding: 80px 0;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <section class="reviews-section">
+        <div class="container">
             <div style="text-align: center; margin-bottom: 3rem;">
                 <h2 style="color: #1f2937; font-size: 2.5rem; font-weight: 700; margin: 0 0 1rem 0;">What People Say</h2>
                 <p style="color: #6b7280; font-size: 1.2rem; margin: 0;">Customer Reviews</p>
@@ -184,7 +213,7 @@ get_header();
             ?>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
                 <?php foreach (array_slice($reviews, 0, 5) as $review): ?>
-                    <div style="background: #f8fafc; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                    <div class="review-card">
                         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
                             <div style="width: 40px; height: 40px; background: #f59e0b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
                                 <?php echo strtoupper(substr($review['name'] ?? 'A', 0, 1)); ?>
@@ -208,8 +237,8 @@ get_header();
     </section>
 
     <!-- Commitment Section -->
-    <section class="commitment-section" style="background: #1e3a8a; color: white; padding: 80px 0;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+    <section class="commitment-section">
+        <div class="container">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
                 <div>
                     <h2 style="color: white; font-size: 2.5rem; font-weight: 700; margin: 0 0 1rem 0;">Our Promise Of Reliability</h2>
@@ -226,4 +255,5 @@ get_header();
     </section>
 </main>
 
-<?php get_footer(); ?>
+</body>
+</html>
