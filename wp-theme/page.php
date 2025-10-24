@@ -57,8 +57,13 @@ get_header(); ?>
         ?>
     </div>
 
-    <!-- Standard About Section -->
-    <?php include dirname(__FILE__) . '/section-about.php'; ?>
+    <!-- Standard About Section - Don't include on about pages -->
+    <?php 
+    $page_slug = get_post_field('post_name', get_the_ID());
+    if (strpos($page_slug, 'about') === false && strpos($page_slug, 'about-us') === false) {
+        include dirname(__FILE__) . '/section-about.php';
+    }
+    ?>
 </main>
 
 <?php
