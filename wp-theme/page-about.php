@@ -7,6 +7,9 @@
 $business_name = 'Roofing Pros';
 $phone = '8755026291';
 $email = 'sscexamsinfo@gmail.com';
+$hero_bg_image = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80';
+$about_description = '';
+$about_team_image = 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
 
 // Only get settings if function exists and don't trigger any debug
 if (function_exists('bsg_get_settings')) {
@@ -15,6 +18,9 @@ if (function_exists('bsg_get_settings')) {
         $business_name = $settings['business_name'] ?? 'Roofing Pros';
         $phone = $settings['phone'] ?? '8755026291';
         $email = $settings['email'] ?? 'sscexamsinfo@gmail.com';
+        $hero_bg_image = $settings['hero_bg_image'] ?? $hero_bg_image;
+        $about_description = $settings['about_description'] ?? '';
+        $about_team_image = $settings['about_page_team_image'] ?? $settings['about_image'] ?? $about_team_image;
     }
 }
 
@@ -24,7 +30,7 @@ get_header();
 <style>
     .about-hero { 
         background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), 
-                   url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80'); 
+                   url('<?php echo esc_url($hero_bg_image); ?>'); 
         background-size: cover; 
         background-position: center; 
         color: white; 
@@ -72,10 +78,17 @@ get_header();
             <div>
                 <h2>About <?php echo esc_html($business_name); ?></h2>
                 <div style="margin-bottom: 2rem;">
-                    <p>Welcome to <?php echo esc_html($business_name); ?>, Orlando's trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements. Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs.</p>
-                    
-                    <h3>Why Choose Us</h3>
-                    <p>Customers choose <?php echo esc_html($business_name); ?> for our unwavering dedication to quality, reliability, and customer satisfaction. We offer personalized service, competitive pricing, and a warranty you can trust. Let us enhance your home's value and curb appeal—call us today at <?php echo esc_html($phone); ?>!</p>
+                    <?php 
+                    if (!empty($about_description)) {
+                        // Display the description from wizard (may contain HTML formatting)
+                        echo $about_description;
+                    } else {
+                        // Fallback content
+                        echo '<p>Welcome to ' . esc_html($business_name) . ', Orlando\'s trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements. Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs.</p>';
+                        echo '<h3>Why Choose Us</h3>';
+                        echo '<p>Customers choose ' . esc_html($business_name) . ' for our unwavering dedication to quality, reliability, and customer satisfaction. We offer personalized service, competitive pricing, and a warranty you can trust. Let us enhance your home\'s value and curb appeal—call us today at ' . esc_html($phone) . '!</p>';
+                    }
+                    ?>
                 </div>
                 
                 <!-- Years of Experience -->
@@ -91,7 +104,7 @@ get_header();
             
             <!-- Team Image -->
             <div>
-                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
+                <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
             </div>
         </div>
     </div>
