@@ -1565,11 +1565,25 @@ export default function WizardClient() {
       useDefaultPrompt: true,
       customPrompt: ''
     };
-    setLocations([...locations, newLocation]);
+    const updatedLocations = [...locations, newLocation];
+    setLocations(updatedLocations);
+    
+    // Auto-save to localStorage immediately
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_locations_${userEmail}`;
+      setTimeout(() => {
+        saveLS(userKey, updatedLocations);
+        console.log(`💾 Auto-saved new location to localStorage for user: ${userEmail}`);
+        
+        // Also save to Supabase with debouncing
+        debouncedSupabaseSave(form);
+      }, 0);
+    }
   };
 
   const updateLocation = (id: string, field: keyof Location, value: string) => {
-    setLocations(locations.map(location => {
+    const updatedLocations = locations.map(location => {
       if (location.id === id) {
         const updatedLocation = { ...location, [field]: value };
         
@@ -1608,7 +1622,22 @@ export default function WizardClient() {
         return updatedLocation;
       }
       return location;
-    }));
+    });
+    
+    setLocations(updatedLocations);
+    
+    // Auto-save to localStorage and Supabase
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_locations_${userEmail}`;
+      setTimeout(() => {
+        saveLS(userKey, updatedLocations);
+        console.log(`💾 Auto-saved location update to localStorage for user: ${userEmail}`);
+        
+        // Also save to Supabase with debouncing
+        debouncedSupabaseSave(form);
+      }, 0);
+    }
   };
 
   const fetchLocationData = async (cityName: string) => {
@@ -1635,7 +1664,21 @@ export default function WizardClient() {
   };
 
   const removeLocation = (id: string) => {
-    setLocations(locations.filter(location => location.id !== id));
+    const updatedLocations = locations.filter(location => location.id !== id);
+    setLocations(updatedLocations);
+    
+    // Auto-save to localStorage immediately
+    if (isLoaded && session?.user?.email) {
+      const userEmail = session.user.email;
+      const userKey = `bsg_locations_${userEmail}`;
+      setTimeout(() => {
+        saveLS(userKey, updatedLocations);
+        console.log(`💾 Auto-saved location removal to localStorage for user: ${userEmail}`);
+        
+        // Also save to Supabase with debouncing
+        debouncedSupabaseSave(form);
+      }, 0);
+    }
   };
 
   const generateLocationAI = async (id: string) => {
