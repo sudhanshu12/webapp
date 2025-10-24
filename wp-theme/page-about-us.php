@@ -477,51 +477,138 @@ get_header();
 
     <!-- Reviews Section -->
     <?php 
-    // Force reviews to be visible
-    $original_reviews_visible = $settings['reviews_visible'] ?? null;
-    $settings['reviews_visible'] = true;
-    include dirname(__FILE__) . '/section-reviews.php';
-    // Restore original setting
-    if ($original_reviews_visible !== null) {
-        $settings['reviews_visible'] = $original_reviews_visible;
-    }
+    $reviews = $settings['reviews'] ?? [];
+    if (!empty($reviews)): 
     ?>
-
-    <!-- Services Section -->
-    <?php 
-    // Force services to be visible
-    $original_services_visible = $settings['services_visible'] ?? null;
-    $settings['services_visible'] = true;
-    include dirname(__FILE__) . '/section-services.php';
-    // Restore original setting
-    if ($original_services_visible !== null) {
-        $settings['services_visible'] = $original_services_visible;
-    }
-    ?>
+    <section class="bsg-section reviews-section animate-on-scroll-section" style="background-color: #ffffff; color: var(--text-color); padding: 80px 0; min-height: 300px;">
+        <div class="container" style="background:#fff;border-radius:0;padding:2.5rem 2rem;box-shadow:0 2px 16px rgba(0,0,0,0.10);max-width:1200px;margin-left:auto;margin-right:auto;">
+            <div class="bsg-section-header" style="text-align:left;margin-bottom:1.2rem;">
+                <div class="tagline" style="display:inline-flex;align-items:center;gap:0.7rem;margin-bottom:10px;margin-top:0;background:none;">
+                    <span style="display:inline-flex;align-items:center;font-size:1rem;letter-spacing:2px;font-weight:700;text-transform:uppercase;background:rgba(46,230,197,0.08);border-radius:6px;padding:2px 14px 2px 8px;color:#6b7280 !important;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="margin-right:8px;vertical-align:middle;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#2ee6c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        CUSTOMER REVIEWS
+                    </span>
+                </div>
+                <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 0.5rem 0;line-height:1.1;letter-spacing:-1px;color:#111827 !important;">
+                    What Our Customers Say
+                </h2>
+            </div>
+            <div class="reviews-google-bar" style="background:#fff;border-radius:16px;padding:16px 32px 12px 32px;max-width:1020px;margin:0 auto 24px auto;display:flex;align-items:center;justify-content:center;gap:1.2rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+                <img src="https://ik.imagekit.io/kauapzysq/Adobe%20Express%20-%20file.png?updatedAt=1752473826860" alt="Google" style="height:40px;width:auto;object-fit:contain;display:block;" loading="lazy" decoding="async">
+                <span style="margin:0 10px;color:#232834;">Excellent</span>
+                <span style="color:#fbbf24;font-size:1.2rem;">
+                    <?php for($i = 0; $i < 5; $i++): ?>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#fbbf24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    <?php endfor; ?>
+                </span>
+                <span style="font-weight:600;font-size:1.1rem;color:#232834;"> 4.8 </span>
+                <span style="color:#888;"> <?php echo count($reviews); ?> reviews</span>
+            </div>
+            <div class="reviews-slider-wrapper" style="position:relative;display:flex;align-items:center;">
+                <div class="reviews-slider" style="overflow-x:auto;scroll-behavior:smooth;display:flex;gap:2rem;padding-bottom:8px;width:100%;">
+                    <?php foreach(array_slice($reviews, 0, 5) as $review): ?>
+                    <div class="review-card" style="background:#fff;border-radius:18px;box-shadow:0 2px 12px rgba(0,0,0,0.07);padding:22px 22px 18px 22px;max-width:320px;min-width:260px;width:100%;margin:0 10px;display:flex;flex-direction:column;gap:0.7rem;">
+                        <div style="display:flex;align-items:center;gap:0.8rem;">
+                            <div style="width:36px;height:36px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;color:#374151;font-weight:700;">
+                                <?php echo strtoupper(substr($review['name'] ?? 'U', 0, 1)); ?>
+                            </div>
+                            <div style="display:flex;flex-direction:column;line-height:1.2;">
+                                <span style="font-weight:700;color:#1f2937;"><?php echo esc_html($review['name'] ?? 'Customer'); ?></span>
+                                <span style="color:#6b7280;font-size:0.875rem;">Verified Customer</span>
+                            </div>
+                            <span style="margin-left:auto;color:#fbbf24;">
+                                <?php for($i = 0; $i < ($review['rating'] ?? 5); $i++): ?>
+                                <svg width="16" width="16" viewBox="0 0 24 24" fill="#fbbf24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <?php endfor; ?>
+                            </span>
+                        </div>
+                        <p style="margin:8px 0 6px 0;color:#111827;line-height:1.5;"><?php echo esc_html($review['comment'] ?? ''); ?></p>
+                        <span style="color:#9ca3af;font-size:0.85rem;">— <?php echo esc_html($review['date'] ?? ''); ?></span>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php endif; ?>
 
     <!-- Service Areas Section -->
     <?php 
-    // Force areas to be visible
-    $original_areas_visible = $settings['areas_visible'] ?? null;
-    $settings['areas_visible'] = true;
-    include dirname(__FILE__) . '/section-areas.php';
-    // Restore original setting
-    if ($original_areas_visible !== null) {
-        $settings['areas_visible'] = $original_areas_visible;
-    }
+    $locations = $settings['locations'] ?? [];
+    if (!empty($locations)): 
     ?>
+    <section class="bsg-section locations-section animate-on-scroll-section" style="background-color: #1f2937; color: #ffffff; padding: 60px 0; margin-top: 0;">
+        <div class="container">
+            <div class="bsg-two-col-layout" style="display:flex;align-items:flex-start;gap:3rem;">
+                <div class="bsg-text-content" style="flex:1;min-width:320px;">
+                    <div class="bsg-icon-heading" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:10px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2ee6c5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        <span class="bsg-section-header tagline" style="background:#1f2937;color:#ffffff;">
+                            SERVICE AREAS
+                        </span>
+                    </div>
+                    <h2 style="color:#ffffff;">
+                        Areas We Serve
+                    </h2>
+                    <p style="margin-bottom:2rem; color: #ffffff;">
+                        <?php echo esc_html($settings['locations_description'] ?? 'Proudly serving Orlando and surrounding areas with professional roofing services.'); ?>
+                    </p>
+                    <div class="locations-grid" id="locations-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem 2rem;margin-bottom:2rem;">
+                        <?php foreach(array_slice($locations, 0, 6) as $location): ?>
+                        <a href="<?php echo esc_url(home_url('/service-locations/' . $location['slug'] . '/')); ?>" class="location-card" style="display:flex;align-items:center;gap:0.7rem;background:rgba(255,255,255,0.08);color:#ffffff;padding:0.8rem 1rem;text-decoration:none;font-weight:500;transition:all 0.2s;border-radius:8px;border:1px solid rgba(255,255,255,0.2);" onmouseover="this.style.background='rgba(46,230,197,0.2)';this.style.borderColor='#2ee6c5';" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.borderColor='rgba(255,255,255,0.2)';">
+                            <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:#2ee6c5;border-radius:6px;color:#ffffff;font-size:14px;font-weight:bold;">
+                                ✓
+                            </span>
+                            <span style="font-weight: 500; color: #ffffff;"><?php echo esc_html($location['name']); ?></span>
+                        </a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="content-image" style="flex:1;min-width:320px;max-width:600px;display:flex;justify-content:center;align-items:center;">
+                    <div class="map-container" style="width:500px;height:400px;border-radius:8px;overflow:hidden;pointer-events:none;margin:0 auto;">
+                        <iframe 
+                            src="https://maps.google.com/maps?q=Orlando%2C+Florida&t=&z=10&ie=UTF8&iwloc=&output=embed" 
+                            width="500" 
+                            height="400" 
+                            style="border:0;border-radius:8px;pointer-events:none;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php endif; ?>
 
     <!-- Commitment Section -->
-    <?php 
-    // Force commitment to be visible
-    $original_commitment_visible = $settings['commitment_visible'] ?? null;
-    $settings['commitment_visible'] = true;
-    include dirname(__FILE__) . '/section-commitment.php';
-    // Restore original setting
-    if ($original_commitment_visible !== null) {
-        $settings['commitment_visible'] = $original_commitment_visible;
-    }
-    ?>
+    <section class="section commitment-section animate-on-scroll-section" style="background-color: #232834; color: #ffffff; padding: 105px 0;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 60px;">
+            <div class="two-col-layout" style="display: flex; align-items: center; gap: 3rem;">
+                <div class="content-image">
+                    <?php 
+                    $commitment_image = !empty($settings['commitment_bg_image']) ? $settings['commitment_bg_image'] : 
+                                      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80';
+                    ?>
+                    <img src="<?php echo esc_url($commitment_image); ?>" alt="Our Promise Of Reliability" loading="lazy" decoding="async">
+                </div>
+                <div class="text-content">
+                    <div class="icon-heading">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        <span>OUR COMMITMENT</span>
+                    </div>
+                    <h2 style="color: #ffffff;">Our Promise Of Reliability</h2>
+                    <p class="commitment-subtitle" style="color: #cfd8dc;">We promise to deliver exceptional service</p>
+                    <div class="commitment-text">
+                        <p><?php echo esc_html($settings['commitment_text'] ?? 'At ' . $business_name . ' in Orlando, we\'re dedicated to providing reliable, high-quality roofing services with integrity and care. From repairs to replacements, we ensure your roof is in expert hands—on time, on budget, every time.'); ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Contact Section -->
     <section id="contact" class="contact-section" style="padding: 80px 20px; background-color: #1f2937;">
