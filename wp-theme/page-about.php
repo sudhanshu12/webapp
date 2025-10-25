@@ -121,13 +121,55 @@ get_header();
     .about-why-section h2 { color: <?php echo esc_attr($why_h2_color); ?> !important; }
     .about-why-section h3 { color: <?php echo esc_attr($why_item_title_color); ?> !important; }
     .about-why-section p { color: <?php echo esc_attr($why_item_description_color); ?> !important; }
-    .about-description { line-height: 1.6; margin-bottom: 2rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
-    .about-description p { margin-bottom: 1rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
+    .about-description { 
+        line-height: 1.6; 
+        margin-bottom: 2rem; 
+        color: <?php echo esc_attr($about_who_description_color); ?>; 
+        font-size: 1rem; 
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    .about-description p { 
+        margin-bottom: 1rem; 
+        color: <?php echo esc_attr($about_who_description_color); ?>; 
+        font-size: 1rem !important; 
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+        line-height: 1.6 !important;
+    }
     .about-description h1, .about-description h2, .about-description h3, .about-description h4, .about-description h5, .about-description h6 { color: #000000 !important; }
     .about-description h3 { color: #000000 !important; margin: 1.5rem 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; }
-    .about-description ul { color: <?php echo esc_attr($about_who_description_color); ?>; line-height: 1.6; margin: 0 0 1rem 0; }
-    .about-description li { margin-bottom: 0.25rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
-    .about-description strong { color: #000000 !important; font-weight: 700; }
+    .about-description ul { 
+        color: <?php echo esc_attr($about_who_description_color); ?>; 
+        line-height: 1.6; 
+        margin: 0 0 1rem 0; 
+        font-size: 1rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+    }
+    .about-description li { 
+        margin-bottom: 0.25rem; 
+        color: <?php echo esc_attr($about_who_description_color); ?>; 
+        font-size: 1rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+        line-height: 1.6 !important;
+    }
+    .about-description strong { 
+        color: #000000 !important; 
+        font-weight: 700; 
+        font-size: 1rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+    }
+    
+    /* Ensure all text elements in about description have consistent styling */
+    .about-description * {
+        font-size: 1rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+        line-height: 1.6 !important;
+    }
+    
+    /* Override for headings to maintain their hierarchy */
+    .about-description h1, .about-description h2, .about-description h3, .about-description h4, .about-description h5, .about-description h6 {
+        font-size: inherit !important;
+        font-weight: inherit !important;
+    }
     
     /* Style for Ready to Get Started section */
     .about-cta-section {
