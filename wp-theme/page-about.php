@@ -152,7 +152,7 @@ get_header();
     .about-cta-section h3 {
         font-size: 1.5rem;
         font-weight: 600;
-        color: #2c3e50;
+        color: #000000 !important;
         margin: 0 0 1rem 0;
     }
     
@@ -170,6 +170,81 @@ get_header();
     
     .about-cta-section .contact-info strong {
         color: #2c3e50;
+    }
+    
+    /* Animation styles from homepage */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes heroContentFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes heroElementSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes heroActionsSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Scroll-triggered animation classes */
+    .animate-on-scroll-section {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .animate-on-scroll-section.animated {
+        opacity: 1;
+        transform: translateY(0);
+        animation: fadeInUp 0.6s ease forwards;
+    }
+    
+    /* Debug indicator - shows when animation is working */
+    .animate-on-scroll-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #f97316, #22d3aa);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .animate-on-scroll-section.animated::before {
+        opacity: 1;
     }
     
     @media (max-width: 768px) {
@@ -323,31 +398,37 @@ if (file_exists(dirname(__FILE__) . '/section-commitment.php')) {
 ?>
 
 <script>
-// Scroll Animation for About Page
+// Enhanced Scroll Animation for About Page (same as homepage)
 document.addEventListener('DOMContentLoaded', function() {
-    const sections = document.querySelectorAll('.animate-on-scroll-section');
+    console.log('🎬 About page animation script loaded successfully');
     
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animated');
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
+    // Scroll-triggered animations
+    function animateOnScroll() {
+        const sections = document.querySelectorAll('.animate-on-scroll-section');
         
         sections.forEach(section => {
-            observer.observe(section);
-        });
-    } else {
-        // Fallback for browsers without IntersectionObserver
-        sections.forEach(section => {
-            section.classList.add('animated');
+            const rect = section.getBoundingClientRect();
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+            
+            if (isVisible) {
+                section.classList.add('animated');
+            }
         });
     }
+    
+    // Make function globally available
+    window.animateOnScroll = animateOnScroll;
+    
+    // Add scroll listener
+    window.addEventListener('scroll', animateOnScroll);
+    
+    // Run immediately and after delays to ensure all sections are animated
+    animateOnScroll();
+    setTimeout(animateOnScroll, 100);
+    setTimeout(animateOnScroll, 500);
+    setTimeout(animateOnScroll, 1000);
+    
+    console.log('🚀 About page animations initialized and ready');
 });
 </script>
 
