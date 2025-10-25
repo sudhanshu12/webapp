@@ -105,9 +105,10 @@ get_header();
     .about-why-section p { color: <?php echo esc_attr($why_item_description_color); ?> !important; }
     .about-description { line-height: 1.6; margin-bottom: 2rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
     .about-description p { margin-bottom: 1rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
-    .about-description h3 { color: #000000; margin: 1.5rem 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; }
+    .about-description h3 { color: #000000 !important; margin: 1.5rem 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; }
     .about-description ul { color: <?php echo esc_attr($about_who_description_color); ?>; line-height: 1.6; margin: 0 0 1rem 0; }
     .about-description li { margin-bottom: 0.25rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
+    .about-description strong { color: #000000 !important; font-weight: 700; }
     @media (max-width: 768px) {
         .about-hero h1 { font-size: 2.5rem; }
         .about-section { padding: 60px 0; }
@@ -132,16 +133,9 @@ get_header();
 <!-- About Content Section -->
 <section class="about-section about-section-white">
     <div class="container">
-        <!-- Team Image Above Content -->
-        <?php if (!empty($about_team_image)): ?>
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
-        </div>
-        <?php endif; ?>
-        
         <div class="about-grid-2">
             <div>
-                <h2 style="color: #000000;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
+                <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
                 <div class="about-description">
                     <?php 
                     if (!empty($about_description)) {
@@ -163,11 +157,16 @@ get_header();
                     }
                     ?>
                 </div>
-                
             </div>
             
-            <!-- Empty right column for layout -->
+            <!-- Team Image Side by Side -->
+            <?php if (!empty($about_team_image)): ?>
+            <div style="text-align: center;">
+                <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
+            </div>
+            <?php else: ?>
             <div></div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
