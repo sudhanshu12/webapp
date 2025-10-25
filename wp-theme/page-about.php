@@ -51,11 +51,10 @@ get_header();
     .about-btn { background: #f59e0b; color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
     .about-section { padding: 80px 0; }
     .about-section-white { background: #fff; }
-    .about-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
     .about-experience-box { background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem; }
     .about-experience-number { font-size: 3rem; font-weight: 800; color: #f59e0b; margin: 0; }
     .about-experience-text { color: #4b5563; font-size: 1.1rem; font-weight: 600; }
-    .about-team-image { width: 100%; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); background: #f8fafc; }
+    .about-team-image { width: 100%; max-width: 500px; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); background: #f8fafc; }
     .about-why-section { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 80px 0; }
     .about-why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
     .about-why-card { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
@@ -63,8 +62,12 @@ get_header();
     .about-why-section h2 { color: white !important; }
     .about-why-section h3 { color: white !important; }
     .about-why-section p { color: rgba(255,255,255,0.9) !important; }
+    .about-description { line-height: 1.8; margin-bottom: 2rem; }
+    .about-description p { margin-bottom: 1.5rem; }
+    .about-description h3 { color: #1f2937; margin: 2rem 0 1rem 0; font-size: 1.5rem; }
+    .about-description ul { color: #4b5563; line-height: 1.8; margin: 0 0 1.5rem 0; }
+    .about-description li { margin-bottom: 0.5rem; }
     @media (max-width: 768px) {
-        .about-grid-2 { grid-template-columns: 1fr; gap: 2rem; }
         .about-hero h1 { font-size: 2.5rem; }
         .about-section { padding: 60px 0; }
         .about-why-grid { grid-template-columns: 1fr; }
@@ -90,48 +93,43 @@ get_header();
         <!-- Team Image Above Description -->
         <?php if (!empty($about_team_image)): ?>
         <div style="text-align: center; margin-bottom: 3rem;">
-            <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" style="width: 100%; max-width: 500px; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+            <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
         </div>
         <?php endif; ?>
         
-        <div class="about-grid-2">
-            <div>
-                <h2>About <?php echo esc_html($business_name); ?></h2>
-                <div style="margin-bottom: 2rem; line-height: 1.8;">
-                    <?php 
-                    if (!empty($about_description)) {
-                        // Display the description from wizard (contains HTML formatting from the wizard)
-                        echo $about_description;
-                    } else {
-                        // Fallback content if wizard description is empty
-                        echo '<p>Welcome to <strong>' . esc_html($business_name) . '</strong>, Orlando\'s trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements.</p>';
-                        echo '<p>Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs that stand the test of time. We understand that your roof is one of the most important investments in your home, which is why we approach every project with meticulous attention to detail and unwavering commitment to quality.</p>';
-                        echo '<h3 style="color: #1f2937; margin: 2rem 0 1rem 0; font-size: 1.5rem;">Why Choose ' . esc_html($business_name) . '?</h3>';
-                        echo '<ul style="color: #4b5563; line-height: 1.8; margin: 0 0 1.5rem 0;">';
-                        echo '<li><strong>Expert Craftsmanship:</strong> Our team brings years of experience and professional expertise to every project</li>';
-                        echo '<li><strong>Quality Materials:</strong> We use only the finest materials from trusted manufacturers</li>';
-                        echo '<li><strong>Licensed & Insured:</strong> Fully licensed and insured for your peace of mind</li>';
-                        echo '<li><strong>Competitive Pricing:</strong> Fair, transparent pricing with no hidden costs</li>';
-                        echo '<li><strong>Customer Satisfaction:</strong> We stand behind our work with comprehensive warranties</li>';
-                        echo '</ul>';
-                        echo '<p>Let us enhance your home\'s value and curb appeal—call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
-                    }
-                    ?>
-                </div>
-                
-                <!-- Years of Experience -->
-                <div class="about-experience-box">
-                    <div class="about-experience-number">15</div>
-                    <div class="about-experience-text">Years of Experience</div>
-                </div>
-                
-                <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
-                    📞 Call Us Today
-                </a>
+        <div>
+            <h2>About <?php echo esc_html($business_name); ?></h2>
+            <div class="about-description">
+                <?php 
+                if (!empty($about_description)) {
+                    // Display the description from wizard (contains HTML formatting from the wizard)
+                    echo $about_description;
+                } else {
+                    // Fallback content if wizard description is empty
+                    echo '<p>Welcome to <strong>' . esc_html($business_name) . '</strong>, Orlando\'s trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements.</p>';
+                    echo '<p>Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs that stand the test of time. We understand that your roof is one of the most important investments in your home, which is why we approach every project with meticulous attention to detail and unwavering commitment to quality.</p>';
+                    echo '<h3>Why Choose ' . esc_html($business_name) . '?</h3>';
+                    echo '<ul>';
+                    echo '<li><strong>Expert Craftsmanship:</strong> Our team brings years of experience and professional expertise to every project</li>';
+                    echo '<li><strong>Quality Materials:</strong> We use only the finest materials from trusted manufacturers</li>';
+                    echo '<li><strong>Licensed & Insured:</strong> Fully licensed and insured for your peace of mind</li>';
+                    echo '<li><strong>Competitive Pricing:</strong> Fair, transparent pricing with no hidden costs</li>';
+                    echo '<li><strong>Customer Satisfaction:</strong> We stand behind our work with comprehensive warranties</li>';
+                    echo '</ul>';
+                    echo '<p>Let us enhance your home\'s value and curb appeal—call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
+                }
+                ?>
             </div>
             
-            <!-- Empty right column for layout -->
-            <div></div>
+            <!-- Years of Experience -->
+            <div class="about-experience-box">
+                <div class="about-experience-number">15</div>
+                <div class="about-experience-text">Years of Experience</div>
+            </div>
+            
+            <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
+                📞 Call Us Today
+            </a>
         </div>
     </div>
 </section>
