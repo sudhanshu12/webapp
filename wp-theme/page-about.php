@@ -283,8 +283,7 @@ get_header();
     </div>
 </section>
 
-<!-- Service Section (shared) -->
-<?php include dirname(__FILE__) . '/section-services.php'; ?>
+<!-- Service Section removed -->
 
 <!-- Service Areas Section -->
 <?php 
