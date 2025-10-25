@@ -158,11 +158,19 @@ get_header();
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
     }
     
-    /* Ensure all text elements in about description have consistent styling */
-    .about-description * {
+    /* Ensure only paragraph text has consistent styling, not headings */
+    .about-description p {
         font-size: 1rem !important;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
         line-height: 1.6 !important;
+        color: <?php echo esc_attr($about_who_description_color); ?> !important;
+    }
+    
+    .about-description li {
+        font-size: 1rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+        line-height: 1.6 !important;
+        color: <?php echo esc_attr($about_who_description_color); ?> !important;
     }
     
     /* Override any inline styles that might come from wizard content */
@@ -171,19 +179,6 @@ get_header();
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
         line-height: 1.6 !important;
         color: <?php echo esc_attr($about_who_description_color); ?> !important;
-    }
-    
-    .about-description div[style] {
-        font-size: 1rem !important;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
-        line-height: 1.6 !important;
-        color: <?php echo esc_attr($about_who_description_color); ?> !important;
-    }
-    
-    /* Override for headings to maintain their hierarchy */
-    .about-description h1, .about-description h2, .about-description h3, .about-description h4, .about-description h5, .about-description h6 {
-        font-size: inherit !important;
-        font-weight: inherit !important;
     }
     
     /* Style for Ready to Get Started section */
@@ -336,9 +331,9 @@ get_header();
             width: 90%;
             height: auto;
             min-height: 200px;
+            }
         }
-    }
-</style>
+    </style>
 
 <!-- Hero Section -->
 <section class="about-hero">
@@ -355,10 +350,10 @@ get_header();
 
 <!-- About Content Section -->
 <section class="about-section about-section-white">
-    <div class="container">
+            <div class="container">
         <div class="about-grid-2">
             <div>
-                <h2 style="color: #000000 !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
+                <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
                 <div class="about-description" style="font-size: 1rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important; line-height: 1.6 !important;">
                     <?php 
                     if (!empty($about_description)) {
@@ -387,10 +382,10 @@ get_header();
             <div style="text-align: center;">
                 <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
             </div>
-            <?php else: ?>
+                        <?php else: ?>
             <div></div>
-            <?php endif; ?>
-        </div>
+                        <?php endif; ?>
+                    </div>
     </div>
 </section>
 
@@ -414,12 +409,12 @@ get_header();
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
                         <path d="M20 6L9 17l-5-5"></path>
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path>
-                    </svg>
+                            </svg>
                 </div>
                 <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.1px; white-space: nowrap;">Proven Expertise</h3>
                 <p style="color: #ffffff; margin: 0; line-height: 1.4; font-size: 0.9rem; font-weight: 400; white-space: nowrap;">Years of successful delivery.</p>
-            </div>
-
+                        </div>
+                        
             <!-- Tailored Solutions -->
             <div class="benefit-item animated" style="text-align: center;">
                 <div style="width: 60px; height: 60px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; border: 1px solid rgba(255, 255, 255, 0.3);">
@@ -447,8 +442,8 @@ get_header();
                 <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.1px; white-space: nowrap;">End-to-End Support</h3>
                 <p style="color: #ffffff; margin: 0; line-height: 1.4; font-size: 0.9rem; font-weight: 400; white-space: nowrap;">Guidance at every step.</p>
             </div>
-            </div>
-            
+                        </div>
+                        
             <!-- Second row: 2 items centered -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; justify-items: center; max-width: 600px;">
 
@@ -465,8 +460,8 @@ get_header();
                 </div>
                 <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.1px; white-space: nowrap;">Cutting-Edge Technology</h3>
                 <p style="color: #ffffff; margin: 0; line-height: 1.4; font-size: 0.9rem; font-weight: 400; white-space: nowrap;">Modern, reliable, scalable systems.</p>
-            </div>
-
+                            </div>
+                            
             <!-- Results-Driven -->
             <div class="benefit-item animated" style="text-align: center;">
                 <div style="width: 60px; height: 60px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; border: 1px solid rgba(255, 255, 255, 0.3);">
@@ -478,36 +473,36 @@ get_header();
                 </div>
                 <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.1px; white-space: nowrap;">Results-Driven</h3>
                 <p style="color: #ffffff; margin: 0; line-height: 1.4; font-size: 0.9rem; font-weight: 400; white-space: nowrap;">Focused on measurable business impact.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
 
 <!-- Service Section removed -->
 
 <!-- Service Areas Section -->
-<?php 
+                                <?php
 // Debug: Check if section-areas.php exists and is readable
 if (file_exists(dirname(__FILE__) . '/section-areas.php')) {
     include dirname(__FILE__) . '/section-areas.php';
-} else {
+                                            } else {
     echo '<!-- section-areas.php not found -->';
 }
 ?>
 
 <!-- Reviews Section -->
-<?php 
+                    <?php
 // Debug: Check if section-reviews.php exists and is readable
 if (file_exists(dirname(__FILE__) . '/section-reviews.php')) {
     include dirname(__FILE__) . '/section-reviews.php';
-} else {
+                } else {
     echo '<!-- section-reviews.php not found -->';
 }
 ?>
 
 <!-- Commitment Section -->
-<?php 
+                    <?php
 // Debug: Check if section-commitment.php exists and is readable
 if (file_exists(dirname(__FILE__) . '/section-commitment.php')) {
     include dirname(__FILE__) . '/section-commitment.php';
