@@ -158,7 +158,7 @@ get_header();
     <div class="container">
         <div class="about-grid-2">
             <div>
-                <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
+                <h2 style="color: #000000 !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
                 <div class="about-description">
                     <?php 
                     if (!empty($about_description)) {
