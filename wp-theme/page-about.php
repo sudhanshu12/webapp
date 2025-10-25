@@ -29,8 +29,9 @@ $reviews_text_color = '#000000';
 
 
 // Initialize Who We Are section variables with defaults
-$about_page_who_we_are_tagline = 'WHO WE ARE';
 $about_page_who_we_are_headline = 'About Our Company';
+$about_page_who_we_are_tagline = 'WHO WE ARE';
+
 
 // Only get settings if function exists and don't trigger any debug
 if (function_exists('bsg_get_settings')) {
@@ -104,7 +105,7 @@ get_header();
     .about-btn { background: #f59e0b; color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
     .about-section { padding: 80px 0; }
     .about-section-white { background: #fff; }
-    .about-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
     .about-experience-box { background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem; }
     .about-experience-number { font-size: 3rem; font-weight: 800; color: #f59e0b; margin: 0; }
     .about-experience-text { color: #4b5563; font-size: 1.1rem; font-weight: 600; }
@@ -381,9 +382,9 @@ get_header();
 <section class="about-hero">
     <div class="container">
         <div class="hero-content">
-            <h1><?php echo esc_html($about_hero_tagline ?: 'ABOUT ' . strtoupper($business_name)); ?></h1>
-            <h2><?php echo esc_html($about_hero_title); ?></h2>
-            <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
+            <h1 style="opacity: 1 !important; transform: translateY(0) scale(1) !important; animation: none !important;"><?php echo esc_html($about_hero_tagline ?: 'ABOUT ' . strtoupper($business_name)); ?></h1>
+            <h2 style="opacity: 1 !important; transform: translateY(0) scale(1) !important; animation: none !important;"><?php echo esc_html($about_hero_title); ?></h2>
+            <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn" style="opacity: 1 !important; transform: translateY(0) scale(1) !important; animation: none !important;">
                 📞 Call (<?php echo esc_attr($phone); ?>)
             </a>
         </div>
@@ -396,8 +397,8 @@ get_header();
         <div class="about-grid-2">
             <!-- Team Image on Left -->
             <?php if (!empty($about_team_image)): ?>
-            <div style="text-align: center;">
-                <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
+            <div style="text-align: center; display: flex; align-items: center; justify-content: center;">
+                <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image" style="max-width: 100%; height: auto;">
             </div>
             <?php else: ?>
             <div style="text-align: center; background: #f8f9fa; border-radius: 12px; padding: 2rem; display: flex; align-items: center; justify-content: center; min-height: 400px;">
@@ -412,12 +413,12 @@ get_header();
             <!-- Content on Right -->
             <div>
                 <!-- WHO WE ARE Tagline -->
-                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
-                    <span style="color: <?php echo esc_attr($about_who_h2_color); ?>; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">👤 WHO WE ARE</span>
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem; justify-content: center;">
+                    <span style="color: <?php echo esc_attr($about_who_h2_color); ?>; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">👤 <?php echo esc_html($about_page_who_we_are_tagline); ?></span>
                 </div>
                 
                 <!-- Main Heading -->
-                <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none; text-align: left;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
+                <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none; text-align: center;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
                 
                 <!-- Description -->
                 <div class="about-description" style="font-size: 1rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important; line-height: 1.6 !important; text-align: left;">
