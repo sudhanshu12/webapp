@@ -182,46 +182,49 @@ get_header();
 </section>
 
 <!-- Why Work With Us Section -->
-<section class="about-why-section">
+<section class="about-why-section" style="background: <?php echo esc_attr($settings['about_page_why_work_with_us_background_color'] ?? '#f7a83b'); ?>; color: white; padding: 80px 0;">
     <div class="container">
         <div style="text-align: center; margin-bottom: 3rem;">
-            <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1rem 0; color: <?php echo esc_attr($why_h2_color); ?>;">
-                Why Work With Us?
+            <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1rem 0; color: <?php echo esc_attr($settings['about_page_why_work_with_us_heading_color'] ?? '#ffffff'); ?>;">
+                <?php echo esc_html($settings['about_page_why_work_with_us_heading'] ?? 'Why Work With Us?'); ?>
             </h2>
-            <p style="font-size: 1.2rem; color: <?php echo esc_attr($why_subtitle_color); ?>;">
-                Benefits of Working with an Expert Team
+            <p style="font-size: 1.2rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_subtitle_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">
+                <?php echo esc_html($settings['about_page_why_work_with_us_subtitle'] ?? 'Benefits of Working with an Expert Team'); ?>
             </p>
         </div>
         
-        <div class="about-why-grid">
-            <div class="about-why-card">
-                <div class="about-why-icon">✓</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Proven Expertise</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Years of successful delivery.</p>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;">
+            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px);">
+                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">✓</div>
+                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">Proven Expertise</h3>
+                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Years of successful delivery.</p>
             </div>
             
-            <div class="about-why-card">
-                <div class="about-why-icon">$</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Tailored Solutions</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Built for your unique needs.</p>
+            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px);">
+                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">$</div>
+                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">Tailored Solutions</h3>
+                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Built for your unique needs.</p>
             </div>
             
-            <div class="about-why-card">
-                <div class="about-why-icon">📄</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">End-to-End Support</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Guidance at every step.</p>
+            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px);">
+                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">📄</div>
+                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">End-to-End Support</h3>
+                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Guidance at every step.</p>
+            </div>
+        </div>
+        
+        <!-- Bottom row - 2 cards centered -->
+        <div style="display: flex; justify-content: center; gap: 2rem;">
+            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); max-width: 300px; flex: 1;">
+                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">💻</div>
+                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">Cutting-Edge Technology</h3>
+                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Modern, reliable, scalable systems.</p>
             </div>
             
-            <div class="about-why-card">
-                <div class="about-why-icon">💻</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Cutting-Edge Technology</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Modern, reliable, scalable systems.</p>
-            </div>
-            
-            <div class="about-why-card">
-                <div class="about-why-icon">🎯</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Results-Driven</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Focused on measurable business impact.</p>
+            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); max-width: 300px; flex: 1;">
+                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">🎯</div>
+                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">Results-Driven</h3>
+                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Focused on measurable business impact.</p>
             </div>
         </div>
     </div>
