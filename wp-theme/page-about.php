@@ -55,20 +55,24 @@ get_header();
     .about-experience-box { background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem; }
     .about-experience-number { font-size: 3rem; font-weight: 800; color: #f59e0b; margin: 0; }
     .about-experience-text { color: #4b5563; font-size: 1.1rem; font-weight: 600; }
-    .about-team-image { width: 100%; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+    .about-team-image { width: 100%; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; background: white; }
     .about-why-section { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 80px 0; }
     .about-why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem; }
-    .about-why-grid .about-why-card:nth-child(4), .about-why-grid .about-why-card:nth-child(5) { grid-column: span 1; }
+    .about-why-grid .about-why-card:nth-child(4), .about-why-grid .about-why-card:nth-child(5) { 
+        grid-column: span 1; 
+        justify-self: center; 
+        max-width: 300px; 
+    }
     .about-why-card { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
     .about-why-icon { width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem; }
     .about-why-section h2 { color: white !important; }
     .about-why-section h3 { color: white !important; }
     .about-why-section p { color: rgba(255,255,255,0.9) !important; }
-    .about-description { line-height: 1.8; margin-bottom: 2rem; }
-    .about-description p { margin-bottom: 1.5rem; }
-    .about-description h3 { color: #1f2937; margin: 2rem 0 1rem 0; font-size: 1.5rem; }
-    .about-description ul { color: #4b5563; line-height: 1.8; margin: 0 0 1.5rem 0; }
-    .about-description li { margin-bottom: 0.5rem; }
+    .about-description { line-height: 1.6; margin-bottom: 2rem; color: #000000; }
+    .about-description p { margin-bottom: 1rem; color: #000000; }
+    .about-description h3 { color: #000000; margin: 1.5rem 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; }
+    .about-description ul { color: #000000; line-height: 1.6; margin: 0 0 1rem 0; }
+    .about-description li { margin-bottom: 0.25rem; color: #000000; }
     @media (max-width: 768px) {
         .about-hero h1 { font-size: 2.5rem; }
         .about-section { padding: 60px 0; }
@@ -134,7 +138,7 @@ get_header();
                 <?php if (!empty($about_team_image)): ?>
                 <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
                 <?php else: ?>
-                <div class="about-team-image" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem; border: 2px dashed #d1d5db;">
+                <div class="about-team-image" style="background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem; border: 2px dashed #d1d5db;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
                     <div style="font-weight: 600; margin-bottom: 0.5rem;">Team Photo</div>
                     <div style="font-size: 0.9rem; text-align: center;">Upload team image in wizard</div>
