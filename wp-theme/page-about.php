@@ -168,14 +168,14 @@ get_header();
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
     }
     
-    /* Style for WHO WE ARE text in description */
+    /* Hide any WHO WE ARE text that appears in description */
     .about-description p:first-child {
-        color: <?php echo esc_attr($about_who_h2_color); ?> !important;
-        font-weight: 600 !important;
-        font-size: 1rem !important;
-        letter-spacing: 0.5px !important;
-        text-transform: uppercase !important;
-        margin-bottom: 0.5rem !important;
+        display: none !important;
+    }
+    
+    /* Hide any WHO WE ARE text in description */
+    .about-description p:contains("WHO WE ARE") {
+        display: none !important;
     }
     
     /* Ensure only paragraph text has consistent styling, not headings */
@@ -553,6 +553,14 @@ if (file_exists(dirname(__FILE__) . '/section-commitment.php')) {
            function forceAboutDescriptionStyling() {
                const aboutDesc = document.querySelector('.about-description');
                if (aboutDesc) {
+                   // Hide any WHO WE ARE text in description
+                   const allParagraphs = aboutDesc.querySelectorAll('p');
+                   allParagraphs.forEach(p => {
+                       if (p.textContent.includes('WHO WE ARE')) {
+                           p.style.display = 'none';
+                       }
+                   });
+                   
                    // Force styling on all child elements
                    const allElements = aboutDesc.querySelectorAll('*');
                    allElements.forEach(element => {
