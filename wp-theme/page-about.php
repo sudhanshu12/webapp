@@ -108,7 +108,16 @@ get_header();
     .about-experience-box { background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem; }
     .about-experience-number { font-size: 3rem; font-weight: 800; color: #f59e0b; margin: 0; }
     .about-experience-text { color: #4b5563; font-size: 1.1rem; font-weight: 600; }
-    .about-team-image { width: 100%; max-width: 500px; object-fit: contain; object-position: center; border-radius: 12px; background: white; }
+    .about-team-image { 
+        width: 100%; 
+        max-width: 400px; 
+        height: 500px; 
+        object-fit: cover; 
+        object-position: center; 
+        border-radius: 12px; 
+        background: white;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
     .about-why-section { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 80px 0; }
     .about-why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem; }
     .about-why-grid .about-why-card:nth-child(4), .about-why-grid .about-why-card:nth-child(5) { 
@@ -383,11 +392,35 @@ get_header();
 
 <!-- About Content Section -->
 <section class="about-section about-section-white animate-on-scroll-section">
-            <div class="container">
+    <div class="container">
         <div class="about-grid-2">
+            <!-- Team Image on Left -->
+            <?php if (!empty($about_team_image)): ?>
+            <div style="text-align: center;">
+                <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
+            </div>
+            <?php else: ?>
+            <div style="text-align: center; background: #f8f9fa; border-radius: 12px; padding: 2rem; display: flex; align-items: center; justify-content: center; min-height: 400px;">
+                <div style="text-align: center; color: #6b7280;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+                    <p style="margin: 0; font-size: 1.1rem;">Team Image</p>
+                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.7;">Add your team photo in the wizard</p>
+                </div>
+            </div>
+            <?php endif; ?>
+            
+            <!-- Content on Right -->
             <div>
-                <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none; text-align: center;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
-                <div class="about-description" style="font-size: 1rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important; line-height: 1.6 !important;">
+                <!-- WHO WE ARE Tagline -->
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <span style="color: <?php echo esc_attr($about_who_h2_color); ?>; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">👤 WHO WE ARE</span>
+                </div>
+                
+                <!-- Main Heading -->
+                <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none; text-align: left;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
+                
+                <!-- Description -->
+                <div class="about-description" style="font-size: 1rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important; line-height: 1.6 !important; text-align: left;">
                     <?php 
                     if (!empty($about_description)) {
                         // Display the description from wizard (contains HTML formatting from the wizard)
@@ -409,16 +442,7 @@ get_header();
                     ?>
                 </div>
             </div>
-            
-            <!-- Team Image Side by Side -->
-            <?php if (!empty($about_team_image)): ?>
-            <div style="text-align: center;">
-                <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
-            </div>
-                        <?php else: ?>
-            <div></div>
-                        <?php endif; ?>
-                    </div>
+        </div>
     </div>
 </section>
 
