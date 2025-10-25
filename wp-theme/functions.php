@@ -4353,16 +4353,12 @@ function bsg_settings_page() {
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row">About Label</th>
-                        <td><input type="text" name="about_label" value="<?php echo esc_attr($current_settings['about_label'] ?? 'ABOUT US'); ?>" class="regular-text" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Title</th>
-                        <td><input type="text" name="about_title" value="<?php echo esc_attr($current_settings['about_title'] ?? 'Your Trusted Roofing Partner'); ?>" class="regular-text" /></td>
-                    </tr>
-                    <tr>
                         <th scope="row">About Description</th>
                         <td><textarea name="about_description" rows="3" class="large-text"><?php echo esc_textarea($current_settings['about_description'] ?? ''); ?></textarea></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">About Home Image URL</th>
+                        <td><input type="url" name="about_home_image" value="<?php echo esc_attr($current_settings['about_home_image'] ?? ''); ?>" class="regular-text" /></td>
                     </tr>
                     <tr>
                         <th scope="row">About Image URL</th>
@@ -4397,6 +4393,10 @@ function bsg_settings_page() {
                         <td><input type="color" name="about_description_color" value="<?php echo esc_attr($current_settings['about_description_color'] ?? '#6b7280'); ?>" /></td>
                     </tr>
                     <tr>
+                        <th scope="row">About Description Font Size</th>
+                        <td><input type="text" name="about_description_font_size" value="<?php echo esc_attr($current_settings['about_description_font_size'] ?? '0.90rem'); ?>" class="regular-text" /></td>
+                    </tr>
+                    <tr>
                         <th scope="row">About Years Experience</th>
                         <td><input type="text" name="about_years" value="<?php echo esc_attr($current_settings['about_years'] ?? '15+'); ?>" class="regular-text" /></td>
                     </tr>
@@ -4428,10 +4428,6 @@ function bsg_settings_page() {
                         <th scope="row">About Button Link</th>
                         <td><input type="text" name="about_button_link" value="<?php echo esc_attr($current_settings['about_button_link'] ?? 'about-us'); ?>" class="regular-text" /></td>
                     </tr>
-                    <tr>
-                        <th scope="row">About Section Padding</th>
-                        <td><input type="number" name="about_padding" value="<?php echo esc_attr($current_settings['about_padding'] ?? 80); ?>" class="small-text" /> px</td>
-                    </tr>
                 </table>
                 
                 <h3>About Page</h3>
@@ -4443,22 +4439,6 @@ function bsg_settings_page() {
                     <tr>
                         <th scope="row">About Hero Title</th>
                         <td><input type="text" name="about_hero_title" value="<?php echo esc_attr($current_settings['about_hero_title'] ?? 'Professional Services You Can Count On'); ?>" class="regular-text" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Hero Text Color</th>
-                        <td><input type="color" name="about_hero_text_color" value="<?php echo esc_attr($current_settings['about_hero_text_color'] ?? '#fff'); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Hero Background Color</th>
-                        <td><input type="color" name="about_hero_bg_color" value="<?php echo esc_attr($current_settings['about_hero_bg_color'] ?? '#232834'); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Hero Tagline Color</th>
-                        <td><input type="color" name="about_hero_tagline_color" value="<?php echo esc_attr($current_settings['about_hero_tagline_color'] ?? '#b0b0b0'); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Hero Title Color</th>
-                        <td><input type="color" name="about_hero_title_color" value="<?php echo esc_attr($current_settings['about_hero_title_color'] ?? '#fff'); ?>" /></td>
                     </tr>
                 </table>
             </div>
