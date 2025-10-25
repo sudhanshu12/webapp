@@ -230,30 +230,9 @@ get_header();
     </div>
 </section>
 
-<!-- Service Areas Section - Copy from Homepage -->
-<?php include dirname(__FILE__) . '/section-areas.php'; ?>
+<!-- Service Section (shared) -->
+<?php include dirname(__FILE__) . '/section-services.php'; ?>
 
-<!-- Reviews Section - Copy from Homepage -->
 <?php include dirname(__FILE__) . '/section-reviews.php'; ?>
-
-<!-- Commitment Section -->
-<section class="about-section" style="<?php if (!empty($hero_bg_image)): ?>background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), url('<?php echo esc_url($hero_bg_image); ?>'); background-size: cover; background-position: center;<?php else: ?>background: linear-gradient(135deg, #1f2937 0%, #374151 100%);<?php endif; ?> color: white;">
-    <div class="container">
-        <div style="text-align: center;">
-            <div style="background:#2ee6c5;color:#fff;display:inline-block;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;margin-bottom:8px;">
-                COMMITTED TO QUALITY
-            </div>
-            <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 1rem 0;line-height:1.1;letter-spacing:-1px;color: white;">
-                Our Promise Of Reliability
-            </h2>
-            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: white;">
-                At <?php echo esc_html($business_name); ?> in Orlando, we're dedicated to providing reliable, high-quality roofing services with integrity and care. From repairs to replacements, we ensure your roof is in expert hands—on time, on budget, every time.
-            </p>
-            <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
-                📞 Request An Estimate
-            </a>
-        </div>
-    </div>
-</section>
 
 <?php get_footer(); ?>
