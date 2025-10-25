@@ -316,4 +316,33 @@ if (file_exists(dirname(__FILE__) . '/section-commitment.php')) {
 }
 ?>
 
+<script>
+// Scroll Animation for About Page
+document.addEventListener('DOMContentLoaded', function() {
+    const sections = document.querySelectorAll('.animate-on-scroll-section');
+    
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    } else {
+        // Fallback for browsers without IntersectionObserver
+        sections.forEach(section => {
+            section.classList.add('animated');
+        });
+    }
+});
+</script>
+
 <?php get_footer(); ?>
