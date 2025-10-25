@@ -13,6 +13,11 @@ $about_team_image = '';
 $about_hero_tagline = '';
 $about_hero_title = '';
 
+// Initialize meta variables with defaults
+$meta_title = '';
+$meta_description = '';
+$meta_keywords = '';
+
 // Initialize color variables with defaults
 $about_who_h2_color = '#000000';
 $about_who_description_color = '#4b5563';
@@ -39,6 +44,11 @@ if (function_exists('bsg_get_settings')) {
         $email = $settings['email'] ?? 'sscexamsinfo@gmail.com';
         $hero_bg_image = $settings['hero_bg_image'] ?? $hero_bg_image;
         
+        // Get meta data from wizard
+        $meta_title = $settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? 'About ' . $business_name . ' - Professional Services';
+        $meta_description = $settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ' and our professional services. Contact us for expert solutions.';
+        $meta_keywords = $settings['about_page_meta_keywords'] ?? $settings['about_meta_keywords'] ?? 'about, company, services, professional';
+        
         // Get about page specific content from wizard
         $about_description = $settings['about_page_who_description'] ?? $settings['about_description'] ?? '';
         $about_team_image = $settings['about_page_team_image'] ?? $settings['about_image'] ?? '';
@@ -63,6 +73,19 @@ if (function_exists('bsg_get_settings')) {
         $about_page_who_we_are_headline = $settings['about_page_who_we_are_headline'] ?? 'About Our Company';
     }
 }
+
+// Set meta tags
+add_action('wp_head', function() use ($meta_title, $meta_description, $meta_keywords, $business_name) {
+    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
+    echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta name="keywords" content="' . esc_attr($meta_keywords) . '">' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
+    echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+});
 
 get_header();
 ?>
@@ -175,10 +198,10 @@ get_header();
 <section class="about-why-section" style="background: <?php echo esc_attr($settings['about_page_why_work_with_us_background_color'] ?? '#f7a83b'); ?>; color: white; padding: 80px 0;">
     <div class="container">
         <div style="text-align: center; margin-bottom: 3rem;">
-            <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1rem 0; color: <?php echo esc_attr($settings['about_page_why_work_with_us_heading_color'] ?? '#ffffff'); ?>;">
+            <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1rem 0; color: <?php echo esc_attr($why_h2_color); ?>;">
                 <?php echo esc_html($settings['about_page_why_work_with_us_heading'] ?? 'Why Work With Us?'); ?>
             </h2>
-            <p style="font-size: 1.2rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_subtitle_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">
+            <p style="font-size: 1.2rem; color: <?php echo esc_attr($why_subtitle_color); ?>;">
                 <?php echo esc_html($settings['about_page_why_work_with_us_subtitle'] ?? 'Benefits of Working with an Expert Team'); ?>
             </p>
         </div>
@@ -186,20 +209,20 @@ get_header();
         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;">
             <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px);">
                 <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">✓</div>
-                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">Proven Expertise</h3>
-                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Years of successful delivery.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Proven Expertise</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Years of successful delivery.</p>
             </div>
             
             <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px);">
                 <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">$</div>
-                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">Tailored Solutions</h3>
-                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Built for your unique needs.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Tailored Solutions</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Built for your unique needs.</p>
             </div>
             
             <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px);">
                 <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">📄</div>
-                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">End-to-End Support</h3>
-                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Guidance at every step.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">End-to-End Support</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Guidance at every step.</p>
             </div>
         </div>
         
@@ -207,14 +230,14 @@ get_header();
         <div style="display: flex; justify-content: center; gap: 2rem;">
             <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); max-width: 300px; flex: 1;">
                 <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">💻</div>
-                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">Cutting-Edge Technology</h3>
-                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Modern, reliable, scalable systems.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Cutting-Edge Technology</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Modern, reliable, scalable systems.</p>
             </div>
             
             <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); max-width: 300px; flex: 1;">
                 <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">🎯</div>
-                <h3 style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>; margin-bottom: 1rem;">Results-Driven</h3>
-                <p style="color: <?php echo esc_attr($settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>;">Focused on measurable business impact.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Results-Driven</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Focused on measurable business impact.</p>
             </div>
         </div>
     </div>
