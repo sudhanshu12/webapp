@@ -164,15 +164,6 @@ get_header();
                     ?>
                 </div>
                 
-                <!-- Years of Experience -->
-                <div class="about-experience-box">
-                    <div class="about-experience-number"><?php echo esc_html($years_of_experience); ?></div>
-                    <div class="about-experience-text"><?php echo esc_html($experience_label); ?></div>
-                </div>
-                
-                <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
-                    📞 Call Us Today
-                </a>
             </div>
             
             <!-- Empty right column for layout -->
