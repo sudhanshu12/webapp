@@ -44,7 +44,7 @@ get_header();
         background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
         <?php endif; ?>
         color: white; 
-        padding: 90px 0; 
+        padding: 60px 0; 
         text-align: center; 
     }
     .about-hero h1 { font-size: 3.5rem; font-weight: 800; margin: 0 0 2rem 0; color: white; }
@@ -71,6 +71,7 @@ get_header();
         .about-hero h1 { font-size: 2.5rem; }
         .about-section { padding: 60px 0; }
         .about-why-grid { grid-template-columns: 1fr; }
+        .about-grid-2 { grid-template-columns: 1fr; gap: 2rem; }
     }
 </style>
 
@@ -90,46 +91,54 @@ get_header();
 <!-- About Content Section -->
 <section class="about-section about-section-white">
     <div class="container">
-        <!-- Team Image Above Description -->
-        <?php if (!empty($about_team_image)): ?>
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
-        </div>
-        <?php endif; ?>
-        
-        <div>
-            <h2>About <?php echo esc_html($business_name); ?></h2>
-            <div class="about-description">
-                <?php 
-                if (!empty($about_description)) {
-                    // Display the description from wizard (contains HTML formatting from the wizard)
-                    echo $about_description;
-                } else {
-                    // Fallback content if wizard description is empty
-                    echo '<p>Welcome to <strong>' . esc_html($business_name) . '</strong>, Orlando\'s trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements.</p>';
-                    echo '<p>Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs that stand the test of time. We understand that your roof is one of the most important investments in your home, which is why we approach every project with meticulous attention to detail and unwavering commitment to quality.</p>';
-                    echo '<h3>Why Choose ' . esc_html($business_name) . '?</h3>';
-                    echo '<ul>';
-                    echo '<li><strong>Expert Craftsmanship:</strong> Our team brings years of experience and professional expertise to every project</li>';
-                    echo '<li><strong>Quality Materials:</strong> We use only the finest materials from trusted manufacturers</li>';
-                    echo '<li><strong>Licensed & Insured:</strong> Fully licensed and insured for your peace of mind</li>';
-                    echo '<li><strong>Competitive Pricing:</strong> Fair, transparent pricing with no hidden costs</li>';
-                    echo '<li><strong>Customer Satisfaction:</strong> We stand behind our work with comprehensive warranties</li>';
-                    echo '</ul>';
-                    echo '<p>Let us enhance your home\'s value and curb appeal—call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
-                }
-                ?>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
+            <div>
+                <h2>About <?php echo esc_html($business_name); ?></h2>
+                <div class="about-description">
+                    <?php 
+                    if (!empty($about_description)) {
+                        // Display the description from wizard (contains HTML formatting from the wizard)
+                        echo $about_description;
+                    } else {
+                        // Fallback content if wizard description is empty
+                        echo '<p>Welcome to <strong>' . esc_html($business_name) . '</strong>, Orlando\'s trusted roofing experts dedicated to providing top-quality roofing solutions. With years of experience and a commitment to excellence, we specialize in residential and commercial roofing, ensuring your property is protected against the elements.</p>';
+                        echo '<p>Our skilled team utilizes the latest techniques and materials to deliver durable, aesthetically pleasing roofs that stand the test of time. We understand that your roof is one of the most important investments in your home, which is why we approach every project with meticulous attention to detail and unwavering commitment to quality.</p>';
+                        echo '<h3>Why Choose ' . esc_html($business_name) . '?</h3>';
+                        echo '<ul>';
+                        echo '<li><strong>Expert Craftsmanship:</strong> Our team brings years of experience and professional expertise to every project</li>';
+                        echo '<li><strong>Quality Materials:</strong> We use only the finest materials from trusted manufacturers</li>';
+                        echo '<li><strong>Licensed & Insured:</strong> Fully licensed and insured for your peace of mind</li>';
+                        echo '<li><strong>Competitive Pricing:</strong> Fair, transparent pricing with no hidden costs</li>';
+                        echo '<li><strong>Customer Satisfaction:</strong> We stand behind our work with comprehensive warranties</li>';
+                        echo '</ul>';
+                        echo '<p>Let us enhance your home\'s value and curb appeal—call us today at <strong>' . esc_html($phone) . '</strong> for a free consultation!</p>';
+                    }
+                    ?>
+                </div>
+                
+                <!-- Years of Experience -->
+                <div class="about-experience-box">
+                    <div class="about-experience-number">15</div>
+                    <div class="about-experience-text">Years of Experience</div>
+                </div>
+                
+                <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
+                    📞 Call Us Today
+                </a>
             </div>
             
-            <!-- Years of Experience -->
-            <div class="about-experience-box">
-                <div class="about-experience-number">15</div>
-                <div class="about-experience-text">Years of Experience</div>
+            <!-- Team Image Side by Side -->
+            <div>
+                <?php if (!empty($about_team_image)): ?>
+                <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
+                <?php else: ?>
+                <div class="about-team-image" style="background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem; border: 2px dashed #d1d5db;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
+                    <div style="font-weight: 600; margin-bottom: 0.5rem;">Team Photo</div>
+                    <div style="font-size: 0.9rem; text-align: center;">Upload team image in wizard</div>
+                </div>
+                <?php endif; ?>
             </div>
-            
-            <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
-                📞 Call Us Today
-            </a>
         </div>
     </div>
 </section>
@@ -180,6 +189,38 @@ get_header();
     </div>
 </section>
 
+<!-- Service Areas Section -->
+<section class="about-section" style="background-color: #f8fafc;">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <div style="background:#2ee6c5;color:#fff;display:inline-block;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;margin-bottom:8px;">
+                SERVICE AREAS
+            </div>
+            <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 0.5rem 0;line-height:1.1;letter-spacing:-1px;color: #111827;">
+                Areas We Serve
+            </h2>
+            <p style="font-size: 1.2rem; color: #6b7280; max-width: 600px; margin: 0 auto;">
+                We proudly serve Orlando and surrounding areas with professional roofing services
+            </p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+            <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="color: #1f2937; font-size: 1.2rem; margin: 0 0 0.5rem 0;">Orlando</h3>
+                <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Downtown & Surrounding Areas</p>
+            </div>
+            <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="color: #1f2937; font-size: 1.2rem; margin: 0 0 0.5rem 0;">Mission Hills</h3>
+                <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Residential & Commercial</p>
+            </div>
+            <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                <h3 style="color: #1f2937; font-size: 1.2rem; margin: 0 0 0.5rem 0;">Santa Maria</h3>
+                <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Full Service Coverage</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Reviews Section -->
 <section class="about-section" style="background-color: #ffffff;">
     <div class="container">
@@ -193,28 +234,28 @@ get_header();
         </div>
         
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px;">
+            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
                 <div style="display: flex; align-items: center; margin-bottom: 1rem;">
                     <div style="color: #fbbf24; font-size: 1.2rem;">★★★★★</div>
-                    <span style="margin-left: 0.5rem; font-weight: 600;">Jackson Martin</span>
+                    <span style="margin-left: 0.5rem; font-weight: 600; color: #1f2937;">Jackson Martin</span>
                 </div>
-                <p style="color: #4b5563; font-style: italic;">"Amazing experience with Roofing Pros from start to finish! Professional, reliable, and the results exceeded my expectations."</p>
+                <p style="color: #4b5563; font-style: italic; line-height: 1.6;">"Amazing experience with Roofing Pros from start to finish! Professional, reliable, and the results exceeded my expectations."</p>
             </div>
             
-            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px;">
+            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
                 <div style="display: flex; align-items: center; margin-bottom: 1rem;">
                     <div style="color: #fbbf24; font-size: 1.2rem;">★★★★★</div>
-                    <span style="margin-left: 0.5rem; font-weight: 600;">Gabriel Perez</span>
+                    <span style="margin-left: 0.5rem; font-weight: 600; color: #1f2937;">Gabriel Perez</span>
                 </div>
-                <p style="color: #4b5563; font-style: italic;">"Great experience! Professional team, fair pricing, and excellent results. Would definitely recommend."</p>
+                <p style="color: #4b5563; font-style: italic; line-height: 1.6;">"Great experience! Professional team, fair pricing, and excellent results. Would definitely recommend."</p>
             </div>
             
-            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px;">
+            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
                 <div style="display: flex; align-items: center; margin-bottom: 1rem;">
                     <div style="color: #fbbf24; font-size: 1.2rem;">★★★★★</div>
-                    <span style="margin-left: 0.5rem; font-weight: 600;">Blake Miller</span>
+                    <span style="margin-left: 0.5rem; font-weight: 600; color: #1f2937;">Blake Miller</span>
                 </div>
-                <p style="color: #4b5563; font-style: italic;">"Highly recommend! Professional service and excellent results."</p>
+                <p style="color: #4b5563; font-style: italic; line-height: 1.6;">"Highly recommend! Professional service and excellent results."</p>
             </div>
         </div>
     </div>
