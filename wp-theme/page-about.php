@@ -251,11 +251,11 @@ get_header();
         color: #2c3e50;
     }
     
-    /* Animation styles from homepage */
+    /* Animation styles from homepage - Slower and more visible */
     @keyframes fadeInUp {
         from {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(50px);
         }
         to {
             opacity: 1;
@@ -266,7 +266,7 @@ get_header();
     @keyframes heroContentFadeIn {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(30px);
         }
         to {
             opacity: 1;
@@ -277,7 +277,7 @@ get_header();
     @keyframes heroElementSlideUp {
         from {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(40px);
         }
         to {
             opacity: 1;
@@ -288,7 +288,7 @@ get_header();
     @keyframes heroActionsSlideUp {
         from {
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(50px);
         }
         to {
             opacity: 1;
@@ -296,17 +296,17 @@ get_header();
         }
     }
     
-    /* Scroll-triggered animation classes */
+    /* Scroll-triggered animation classes - Slower and more visible */
     .animate-on-scroll-section {
         opacity: 0;
-        transform: translateY(40px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
+        transform: translateY(60px);
+        transition: opacity 1.2s ease, transform 1.2s ease;
     }
     
     .animate-on-scroll-section.animated {
         opacity: 1;
         transform: translateY(0);
-        animation: fadeInUp 0.6s ease forwards;
+        animation: fadeInUp 1.2s ease forwards;
     }
     
     /* Debug indicator - shows when animation is working */
@@ -381,46 +381,48 @@ get_header();
 
 <!-- Hero Section -->
 <section class="about-hero">
-            <div class="container">
+    <div class="container">
         <div class="hero-content">
             <h1 style="opacity: 1 !important; transform: translateY(0) scale(1) !important; animation: none !important;"><?php echo esc_html($about_hero_tagline ?: 'ABOUT ' . strtoupper($business_name)); ?></h1>
             <h2 style="opacity: 1 !important; transform: translateY(0) scale(1) !important; animation: none !important;"><?php echo esc_html($about_hero_title); ?></h2>
             <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn" style="opacity: 1 !important; transform: translateY(0) scale(1) !important; animation: none !important;">
                 📞 Call (<?php echo esc_attr($phone); ?>)
             </a>
-                </div>
-            </div>
-        </section>
+        </div>
+    </div>
+</section>
 
-<!-- About Content Section -->
-<section class="about-section about-section-white animate-on-scroll-section">
-            <div class="container">
+<!-- About Our Company Section - Directly below hero -->
+<section class="about-section about-section-white animate-on-scroll-section" style="padding: 60px 0;">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <!-- WHO WE ARE Tagline -->
+            <div style="display: flex; align-items: center; margin-bottom: 1rem; justify-content: center;">
+                <span style="color: <?php echo esc_attr($about_who_tagline_color); ?>; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">👤 <?php echo esc_html($about_page_who_we_are_tagline); ?></span>
+            </div>
+            
+            <!-- Main Heading -->
+            <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 3rem; font-weight: 800; margin-bottom: 2rem; text-shadow: none;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
+        </div>
+        
         <div class="about-grid-2">
             <!-- Team Image on Left -->
             <?php if (!empty($about_team_image)): ?>
             <div style="text-align: center; display: flex; align-items: center; justify-content: center;">
                 <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image" style="max-width: 100%; height: auto;">
             </div>
-                        <?php else: ?>
+            <?php else: ?>
             <div style="text-align: center; background: #f8f9fa; border-radius: 12px; padding: 2rem; display: flex; align-items: center; justify-content: center; min-height: 400px;">
                 <div style="text-align: center; color: #6b7280;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
                     <p style="margin: 0; font-size: 1.1rem;">Team Image</p>
                     <p style="margin: 0; font-size: 0.9rem; opacity: 0.7;">Add your team photo in the wizard</p>
                 </div>
-                            </div>
-                        <?php endif; ?>
+            </div>
+            <?php endif; ?>
             
             <!-- Content on Right -->
             <div>
-                <!-- WHO WE ARE Tagline -->
-                <div style="display: flex; align-items: center; margin-bottom: 0.5rem; justify-content: flex-start;">
-                    <span style="color: <?php echo esc_attr($about_who_tagline_color); ?>; font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;">👤 <?php echo esc_html($about_page_who_we_are_tagline); ?></span>
-                </div>
-                
-                <!-- Main Heading -->
-                <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none; text-align: left;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
-                
                 <!-- Description -->
                 <div class="about-description" style="font-size: 1rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important; line-height: 1.6 !important; text-align: left;">
                     <?php 
@@ -607,16 +609,19 @@ if (file_exists(dirname(__FILE__) . '/section-commitment.php')) {
            setTimeout(forceAboutDescriptionStyling, 100);
            setTimeout(forceAboutDescriptionStyling, 500);
            
-           // Scroll-triggered animations
+           // Enhanced scroll-triggered animations with better timing
            function animateOnScroll() {
                const sections = document.querySelectorAll('.animate-on-scroll-section');
                
-               sections.forEach(section => {
+               sections.forEach((section, index) => {
                    const rect = section.getBoundingClientRect();
-                   const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                   const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
                    
-                   if (isVisible) {
-                       section.classList.add('animated');
+                   if (isVisible && !section.classList.contains('animated')) {
+                       // Add staggered delay for better visual effect
+                       setTimeout(() => {
+                           section.classList.add('animated');
+                       }, index * 200); // 200ms delay between each section
                    }
                });
            }
@@ -624,14 +629,23 @@ if (file_exists(dirname(__FILE__) . '/section-commitment.php')) {
            // Make function globally available
            window.animateOnScroll = animateOnScroll;
            
-           // Add scroll listener
-           window.addEventListener('scroll', animateOnScroll);
+           // Add scroll listener with throttling for better performance
+           let ticking = false;
+           function requestTick() {
+               if (!ticking) {
+                   requestAnimationFrame(animateOnScroll);
+                   ticking = true;
+                   setTimeout(() => { ticking = false; }, 100);
+               }
+           }
+           
+           window.addEventListener('scroll', requestTick);
            
            // Run immediately and after delays to ensure all sections are animated
            animateOnScroll();
-           setTimeout(animateOnScroll, 100);
-           setTimeout(animateOnScroll, 500);
-           setTimeout(animateOnScroll, 1000);
+           setTimeout(animateOnScroll, 300);
+           setTimeout(animateOnScroll, 800);
+           setTimeout(animateOnScroll, 1500);
            
            // Fallback to ensure hero elements are visible
            setTimeout(function() {
