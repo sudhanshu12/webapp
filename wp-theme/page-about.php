@@ -13,6 +13,23 @@ $about_team_image = '';
 $about_hero_tagline = '';
 $about_hero_title = '';
 
+// Initialize color variables with defaults
+$about_who_h2_color = '#000000';
+$about_who_description_color = '#4b5563';
+$why_h2_color = '#ffffff';
+$why_subtitle_color = 'rgba(255,255,255,0.9)';
+$why_item_title_color = '#ffffff';
+$why_item_description_color = 'rgba(255,255,255,0.9)';
+$reviews_text_color = '#000000';
+
+// Initialize experience variables with defaults
+$years_of_experience = '15';
+$experience_label = 'Years of Experience';
+
+// Initialize Who We Are section variables with defaults
+$about_page_who_we_are_tagline = 'WHO WE ARE';
+$about_page_who_we_are_headline = 'About Our Company';
+
 // Only get settings if function exists and don't trigger any debug
 if (function_exists('bsg_get_settings')) {
     $settings = bsg_get_settings();
@@ -27,6 +44,23 @@ if (function_exists('bsg_get_settings')) {
         $about_team_image = $settings['about_page_team_image'] ?? $settings['about_image'] ?? '';
         $about_hero_tagline = $settings['about_page_hero_tagline'] ?? 'ABOUT ' . strtoupper($business_name);
         $about_hero_title = $settings['about_page_hero_title'] ?? 'Professional roofing services you can count on';
+        
+        // Get color settings from wizard
+        $about_who_h2_color = $settings['about_page_who_we_are_text_color'] ?? '#000000';
+        $about_who_description_color = $settings['about_page_who_we_are_description_color'] ?? '#4b5563';
+        $why_h2_color = $settings['about_page_why_work_with_us_heading_color'] ?? '#ffffff';
+        $why_subtitle_color = $settings['about_page_why_work_with_us_subtitle_color'] ?? 'rgba(255,255,255,0.9)';
+        $why_item_title_color = $settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff';
+        $why_item_description_color = $settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)';
+        $reviews_text_color = $settings['about_page_reviews_text_color'] ?? '#000000';
+        
+        // Get experience settings from wizard
+        $years_of_experience = $settings['about_page_years_of_experience'] ?? '15';
+        $experience_label = $settings['about_page_experience_label'] ?? 'Years of Experience';
+        
+        // Get Who We Are section settings from wizard
+        $about_page_who_we_are_tagline = $settings['about_page_who_we_are_tagline'] ?? 'WHO WE ARE';
+        $about_page_who_we_are_headline = $settings['about_page_who_we_are_headline'] ?? 'About Our Company';
     }
 }
 
@@ -66,14 +100,14 @@ get_header();
     }
     .about-why-card { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
     .about-why-icon { width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem; }
-    .about-why-section h2 { color: white !important; }
-    .about-why-section h3 { color: white !important; }
-    .about-why-section p { color: rgba(255,255,255,0.9) !important; }
-    .about-description { line-height: 1.6; margin-bottom: 2rem; color: #000000; }
-    .about-description p { margin-bottom: 1rem; color: #000000; }
-    .about-description h3 { color: #000000; margin: 1.5rem 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; }
-    .about-description ul { color: #000000; line-height: 1.6; margin: 0 0 1rem 0; }
-    .about-description li { margin-bottom: 0.25rem; color: #000000; }
+    .about-why-section h2 { color: <?php echo esc_attr($why_h2_color); ?> !important; }
+    .about-why-section h3 { color: <?php echo esc_attr($why_item_title_color); ?> !important; }
+    .about-why-section p { color: <?php echo esc_attr($why_item_description_color); ?> !important; }
+    .about-description { line-height: 1.6; margin-bottom: 2rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
+    .about-description p { margin-bottom: 1rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
+    .about-description h3 { color: <?php echo esc_attr($about_who_h2_color); ?>; margin: 1.5rem 0 0.5rem 0; font-size: 1.5rem; font-weight: 600; }
+    .about-description ul { color: <?php echo esc_attr($about_who_description_color); ?>; line-height: 1.6; margin: 0 0 1rem 0; }
+    .about-description li { margin-bottom: 0.25rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
     @media (max-width: 768px) {
         .about-hero h1 { font-size: 2.5rem; }
         .about-section { padding: 60px 0; }
@@ -100,7 +134,7 @@ get_header();
     <div class="container">
         <div class="about-grid-2">
             <div>
-                <h2>About <?php echo esc_html($business_name); ?></h2>
+                <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?>;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
                 <div class="about-description">
                     <?php 
                     if (!empty($about_description)) {
@@ -125,8 +159,8 @@ get_header();
                 
                 <!-- Years of Experience -->
                 <div class="about-experience-box">
-                    <div class="about-experience-number">15</div>
-                    <div class="about-experience-text">Years of Experience</div>
+                    <div class="about-experience-number"><?php echo esc_html($years_of_experience); ?></div>
+                    <div class="about-experience-text"><?php echo esc_html($experience_label); ?></div>
                 </div>
                 
                 <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
@@ -154,10 +188,10 @@ get_header();
 <section class="about-why-section">
     <div class="container">
         <div style="text-align: center; margin-bottom: 3rem;">
-            <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1rem 0; color: white;">
+            <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1rem 0; color: <?php echo esc_attr($why_h2_color); ?>;">
                 Why Work With Us?
             </h2>
-            <p style="font-size: 1.2rem; color: rgba(255,255,255,0.9);">
+            <p style="font-size: 1.2rem; color: <?php echo esc_attr($why_subtitle_color); ?>;">
                 Benefits of Working with an Expert Team
             </p>
         </div>
@@ -165,32 +199,32 @@ get_header();
         <div class="about-why-grid">
             <div class="about-why-card">
                 <div class="about-why-icon">✓</div>
-                <h3 style="color: white; margin-bottom: 1rem;">Proven Expertise</h3>
-                <p style="color: rgba(255,255,255,0.9);">Years of successful delivery.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Proven Expertise</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Years of successful delivery.</p>
             </div>
             
             <div class="about-why-card">
                 <div class="about-why-icon">$</div>
-                <h3 style="color: white; margin-bottom: 1rem;">Tailored Solutions</h3>
-                <p style="color: rgba(255,255,255,0.9);">Built for your unique needs.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Tailored Solutions</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Built for your unique needs.</p>
             </div>
             
             <div class="about-why-card">
                 <div class="about-why-icon">📄</div>
-                <h3 style="color: white; margin-bottom: 1rem;">End-to-End Support</h3>
-                <p style="color: rgba(255,255,255,0.9);">Guidance at every step.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">End-to-End Support</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Guidance at every step.</p>
             </div>
             
             <div class="about-why-card">
                 <div class="about-why-icon">💻</div>
-                <h3 style="color: white; margin-bottom: 1rem;">Cutting-Edge Technology</h3>
-                <p style="color: rgba(255,255,255,0.9);">Modern, reliable, scalable systems.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Cutting-Edge Technology</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Modern, reliable, scalable systems.</p>
             </div>
             
             <div class="about-why-card">
                 <div class="about-why-icon">🎯</div>
-                <h3 style="color: white; margin-bottom: 1rem;">Results-Driven</h3>
-                <p style="color: rgba(255,255,255,0.9);">Focused on measurable business impact.</p>
+                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Results-Driven</h3>
+                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Focused on measurable business impact.</p>
             </div>
         </div>
     </div>
