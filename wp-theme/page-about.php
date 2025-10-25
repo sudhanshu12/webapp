@@ -369,6 +369,9 @@ get_header();
             <div class="container">
         <div class="about-grid-2">
             <div>
+                <div style="text-align: center; margin-bottom: 0.5rem;">
+                    <p style="color: <?php echo esc_attr($about_who_h2_color); ?>; font-size: 1rem; font-weight: 600; margin: 0; letter-spacing: 0.5px; text-transform: uppercase;"><?php echo esc_html($about_page_who_we_are_tagline); ?></p>
+                </div>
                 <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none; text-align: center;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
                 <div class="about-description" style="font-size: 1rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important; line-height: 1.6 !important;">
                     <?php 
