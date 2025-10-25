@@ -42,10 +42,10 @@ if (function_exists('bsg_get_settings')) {
         $email = $settings['email'] ?? 'sscexamsinfo@gmail.com';
         $hero_bg_image = $settings['hero_bg_image'] ?? $hero_bg_image;
         
-        // Get meta data from wizard - prioritize about meta section
-        $meta_title = $settings['about_meta_title'] ?? $settings['about_page_meta_title'] ?? 'About ' . $business_name . ' - Professional Services';
-        $meta_description = $settings['about_meta_description'] ?? $settings['about_page_meta_description'] ?? 'Learn about ' . $business_name . ' and our professional services. Contact us for expert solutions.';
-        $meta_keywords = $settings['about_meta_keywords'] ?? $settings['about_page_meta_keywords'] ?? 'about, company, services, professional';
+        // Get meta data from wizard - prioritize about page meta section
+        $meta_title = $settings['about_page_meta_title'] ?? $settings['about_meta_title'] ?? 'About ' . $business_name . ' - Professional Services';
+        $meta_description = $settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ' and our professional services. Contact us for expert solutions.';
+        $meta_keywords = $settings['about_page_meta_keywords'] ?? $settings['about_meta_keywords'] ?? 'about, company, services, professional';
         
         // Get about page specific content from wizard
         $about_description = $settings['about_page_who_description'] ?? $settings['about_description'] ?? '';
