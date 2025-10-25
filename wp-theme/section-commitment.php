@@ -9,11 +9,11 @@ if (!isset($settings) || empty($settings)) {
 }
 
 // Debug: Log commitment section settings
-error_log('=== COMMITMENT SECTION DEBUG ===');
-error_log('Commitment visible: ' . ($settings['commitment_visible'] ?? 'NOT SET'));
-error_log('Commitment image: ' . ($settings['commitment_image'] ?? 'NOT SET'));
-error_log('Settings count: ' . count($settings));
-error_log('=== COMMITMENT SECTION DEBUG END ===');
+// error_log('=== COMMITMENT SECTION DEBUG ===');
+// error_log('Commitment visible: ' . ($settings['commitment_visible'] ?? 'NOT SET'));
+// error_log('Commitment image: ' . ($settings['commitment_image'] ?? 'NOT SET'));
+// error_log('Settings count: ' . count($settings));
+// error_log('=== COMMITMENT SECTION DEBUG END ===');
 $commitment_visible = $settings['commitment_visible'] ?? 1;
 $commitment_title = $settings['commitment_title'] ?? 'Our Commitment to You';
 $commitment_subtitle = $settings['commitment_subtitle'] ?? 'We promise to deliver exceptional service';
@@ -23,14 +23,15 @@ $commitment_image = !empty($settings['commitment_image']) ? $settings['commitmen
                    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
 
 // Debug: Log commitment data
-error_log('=== COMMITMENT DEBUG ===');
-error_log('Commitment image URL: ' . ($commitment_image ?: 'EMPTY'));
-error_log('Commitment image from settings: ' . ($settings['commitment_image'] ?? 'NOT SET'));
-error_log('Commitment heading color from settings: ' . ($settings['commitment_heading_color'] ?? 'NOT SET'));
-error_log('Commitment subtitle color from settings: ' . ($settings['commitment_subtitle_color'] ?? 'NOT SET'));
-error_log('=== COMMITMENT DEBUG END ===');
+// error_log('=== COMMITMENT DEBUG ===');
+// error_log('Commitment image URL: ' . ($commitment_image ?: 'EMPTY'));
+// error_log('Commitment image from settings: ' . ($settings['commitment_image'] ?? 'NOT SET'));
+// error_log('Commitment heading color from settings: ' . ($settings['commitment_heading_color'] ?? 'NOT SET'));
+// error_log('Commitment subtitle color from settings: ' . ($settings['commitment_subtitle_color'] ?? 'NOT SET'));
+// error_log('=== COMMITMENT DEBUG END ===');
 
-if ($commitment_visible):
+// Force show commitment section
+if (true):
 ?>
 <style>
 /* Mobile Responsive Styles for Commitment Section */

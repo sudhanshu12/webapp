@@ -2,11 +2,12 @@
 // Always use centralized settings loader so values match everywhere
 $settings = function_exists('bsg_get_settings') ? bsg_get_settings() : (get_option('bsg_settings', []) ?: []);
 $reviews = is_array($settings['reviews'] ?? null) ? $settings['reviews'] : [];
-echo "<!-- BSG REVIEWS DEBUG: reviews_count=" . count($reviews) . " visible=" . (isset($settings['reviews_visible']) ? ($settings['reviews_visible'] ? '1' : '0') : 'unset') . " -->\n";
+// echo "<!-- BSG REVIEWS DEBUG: reviews_count=" . count($reviews) . " visible=" . (isset($settings['reviews_visible']) ? ($settings['reviews_visible'] ? '1' : '0') : 'unset') . " -->\n";
 // Default: show reviews section unless explicitly disabled in wizard
 $reviews_visible = isset($settings['reviews_visible']) ? (bool)$settings['reviews_visible'] : true;
 
-if ($reviews_visible):
+// Force show reviews section
+if (true):
 ?>
 <style>
 /* Reviews Section Styles - Updated <?php echo date('Y-m-d H:i:s'); ?> */
