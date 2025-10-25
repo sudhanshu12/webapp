@@ -149,7 +149,7 @@ if (true):
             $avg_rating = $total_reviews ? round(array_sum(array_column($reviews, 'rating')) / $total_reviews, 1) : 5.0;
         ?>
         <div class="reviews-google-bar" style="background:#fff;border-radius:16px;padding:16px 32px 12px 32px;max-width:1020px;margin:0 auto 24px auto;display:flex;align-items:center;justify-content:center;gap:1.2rem;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
-            <img src="https://ik.imagekit.io/kauapzysq/Adobe%20Express%20-%20file.png?updatedAt=1752473826860" alt="Google" style="height:40px;width:auto;object-fit:contain;display:block;" loading="lazy" decoding="async">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" style="height:40px;width:auto;object-fit:contain;display:block;" loading="lazy" decoding="async">
             <span style="margin:0 10px;color:#232834;">Excellent</span>
             <span style="color:#fbbf24;font-size:1.2rem;">
                 <?php for ($i=0; $i<5; $i++): ?>
