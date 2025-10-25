@@ -318,49 +318,90 @@ get_header();
 </section>
 
 <!-- Why Work With Us Section -->
-<section class="about-why-section" style="background: <?php echo esc_attr($settings['about_page_why_work_with_us_background_color'] ?? '#f7a83b'); ?>; color: white; padding: 80px 0;">
-    <div class="container">
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <h2 style="font-size: 2.5rem; font-weight: 800; margin: 0 0 1rem 0; color: <?php echo esc_attr($why_h2_color); ?>;">
-                <?php echo esc_html($settings['about_page_why_work_with_us_heading'] ?? 'Why Work With Us?'); ?>
-            </h2>
-            <p style="font-size: 1.2rem; color: <?php echo esc_attr($why_subtitle_color); ?>;">
-                <?php echo esc_html($settings['about_page_why_work_with_us_subtitle'] ?? 'Benefits of Working with an Expert Team'); ?>
-            </p>
+<section class="why-work-with-us animate-on-scroll-section animated" style="padding: 5rem 0; background: <?php echo esc_attr($settings['button_primary_color'] ?? '#f59e0b'); ?>; position: relative; overflow: hidden;">
+    <!-- Background Pattern -->
+    <div style="position: absolute; top: 0; right: 0; width: 300px; height: 100%; background: linear-gradient(45deg, transparent 30%, rgba(59, 130, 246, 0.08) 50%, transparent 70%); transform: skewX(-15deg);"></div>
+    
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 2;">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h2 style="color: #ffffff; font-size: 3rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.5px; line-height: 1.1;">Why Work With Us?</h2>
+            <p style="color: #ffffff; font-size: 1.25rem; margin: 0; font-weight: 500;">Benefits of Working with an Expert Team</p>
         </div>
         
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem;">
-            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px);">
-                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">✓</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Proven Expertise</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Years of successful delivery.</p>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 4rem; margin-top: 4rem; max-width: 1000px; margin-left: auto; margin-right: auto;">
+            <!-- First row: 3 items -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; justify-items: center;">
+            <!-- Proven Expertise -->
+            <div class="benefit-item animated" style="text-align: center;">
+                <div style="width: 60px; height: 60px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; border: 1px solid rgba(255, 255, 255, 0.3);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                        <path d="M20 6L9 17l-5-5"></path>
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path>
+                    </svg>
+                </div>
+                <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.1px; white-space: nowrap;">Proven Expertise</h3>
+                <p style="color: #ffffff; margin: 0; line-height: 1.4; font-size: 0.9rem; font-weight: 400; white-space: nowrap;">Years of successful delivery.</p>
+            </div>
+
+            <!-- Tailored Solutions -->
+            <div class="benefit-item animated" style="text-align: center;">
+                <div style="width: 60px; height: 60px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; border: 1px solid rgba(255, 255, 255, 0.3);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                </div>
+                <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.1px; white-space: nowrap;">Tailored Solutions</h3>
+                <p style="color: #ffffff; margin: 0; line-height: 1.4; font-size: 0.9rem; font-weight: 400; white-space: nowrap;">Built for your unique needs.</p>
+            </div>
+
+            <!-- End-to-End Support -->
+            <div class="benefit-item animated" style="text-align: center;">
+                <div style="width: 60px; height: 60px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; border: 1px solid rgba(255, 255, 255, 0.3);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14,2 14,8 20,8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10,9 9,9 8,9"></polyline>
+                        <path d="M9 12l2 2 4-4"></path>
+                    </svg>
+                </div>
+                <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.1px; white-space: nowrap;">End-to-End Support</h3>
+                <p style="color: #ffffff; margin: 0; line-height: 1.4; font-size: 0.9rem; font-weight: 400; white-space: nowrap;">Guidance at every step.</p>
+            </div>
             </div>
             
-            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px);">
-                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">$</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Tailored Solutions</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Built for your unique needs.</p>
+            <!-- Second row: 2 items centered -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; justify-items: center; max-width: 600px;">
+
+            <!-- Cutting-Edge Technology -->
+            <div class="benefit-item animated" style="text-align: center;">
+                <div style="width: 60px; height: 60px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; border: 1px solid rgba(255, 255, 255, 0.3);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                        <circle cx="12" cy="9" r="1"></circle>
+                        <path d="M8 9h8"></path>
+                    </svg>
+                </div>
+                <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.1px; white-space: nowrap;">Cutting-Edge Technology</h3>
+                <p style="color: #ffffff; margin: 0; line-height: 1.4; font-size: 0.9rem; font-weight: 400; white-space: nowrap;">Modern, reliable, scalable systems.</p>
             </div>
-            
-            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px);">
-                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">📄</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">End-to-End Support</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Guidance at every step.</p>
+
+            <!-- Results-Driven -->
+            <div class="benefit-item animated" style="text-align: center;">
+                <div style="width: 60px; height: 60px; background: #fbbf24; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; border: 1px solid rgba(255, 255, 255, 0.3);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="6"></circle>
+                        <circle cx="12" cy="12" r="2"></circle>
+                    </svg>
+                </div>
+                <h3 style="color: #ffffff; font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; letter-spacing: -0.1px; white-space: nowrap;">Results-Driven</h3>
+                <p style="color: #ffffff; margin: 0; line-height: 1.4; font-size: 0.9rem; font-weight: 400; white-space: nowrap;">Focused on measurable business impact.</p>
             </div>
-        </div>
-        
-        <!-- Bottom row - 2 cards centered -->
-        <div style="display: flex; justify-content: center; gap: 2rem;">
-            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); max-width: 300px; flex: 1;">
-                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">💻</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Cutting-Edge Technology</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Modern, reliable, scalable systems.</p>
-            </div>
-            
-            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); max-width: 300px; flex: 1;">
-                <div style="width: 60px; height: 60px; background: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_background_color'] ?? 'rgba(255,255,255,0.2)'); ?>; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: <?php echo esc_attr($settings['about_page_why_work_with_us_icon_color'] ?? '#ffffff'); ?>; font-size: 1.5rem;">🎯</div>
-                <h3 style="color: <?php echo esc_attr($why_item_title_color); ?>; margin-bottom: 1rem;">Results-Driven</h3>
-                <p style="color: <?php echo esc_attr($why_item_description_color); ?>;">Focused on measurable business impact.</p>
             </div>
         </div>
     </div>
