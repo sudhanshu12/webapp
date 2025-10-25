@@ -90,7 +90,7 @@ get_header();
     .about-experience-box { background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem; }
     .about-experience-number { font-size: 3rem; font-weight: 800; color: #f59e0b; margin: 0; }
     .about-experience-text { color: #4b5563; font-size: 1.1rem; font-weight: 600; }
-    .about-team-image { width: 100%; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; background: white; }
+    .about-team-image { width: 100%; max-width: 500px; object-fit: contain; object-position: center; border-radius: 12px; background: white; }
     .about-why-section { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 80px 0; }
     .about-why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem; }
     .about-why-grid .about-why-card:nth-child(4), .about-why-grid .about-why-card:nth-child(5) { 
@@ -173,7 +173,7 @@ get_header();
                 <?php if (!empty($about_team_image)): ?>
                 <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
                 <?php else: ?>
-                <div class="about-team-image" style="background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem; border: 2px dashed #d1d5db;">
+                <div class="about-team-image" style="background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #6b7280; font-size: 1.2rem; border: 2px dashed #d1d5db; min-height: 300px;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">👥</div>
                     <div style="font-weight: 600; margin-bottom: 0.5rem;">Team Photo</div>
                     <div style="font-size: 0.9rem; text-align: center;">Upload team image in wizard</div>
