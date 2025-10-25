@@ -132,11 +132,51 @@ get_header();
     .about-description ul { color: <?php echo esc_attr($about_who_description_color); ?>; line-height: 1.6; margin: 0 0 1rem 0; }
     .about-description li { margin-bottom: 0.25rem; color: <?php echo esc_attr($about_who_description_color); ?>; }
     .about-description strong { color: #000000 !important; font-weight: 700; }
+    
+    /* Style for Ready to Get Started section */
+    .about-cta-section {
+        text-align: center;
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 12px;
+        border: 1px solid #e9ecef;
+        max-width: 800px;
+        margin: 2rem auto;
+        width: 100%;
+    }
+    
+    .about-cta-section h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0 0 1rem 0;
+    }
+    
+    .about-cta-section p {
+        margin: 0 0 1.5rem 0;
+        line-height: 1.6;
+        color: #34495e;
+    }
+    
+    .about-cta-section .contact-info {
+        margin: 0;
+        font-size: 1.1rem;
+        color: #7f8c8d;
+    }
+    
+    .about-cta-section .contact-info strong {
+        color: #2c3e50;
+    }
+    
     @media (max-width: 768px) {
         .about-hero h1 { font-size: 2.5rem; }
         .about-section { padding: 60px 0; }
         .about-why-grid { grid-template-columns: 1fr; }
         .about-grid-2 { grid-template-columns: 1fr; gap: 2rem; }
+        .about-cta-section {
+            margin: 1rem auto;
+            padding: 1.5rem;
+        }
     }
 </style>
 
@@ -247,12 +287,33 @@ get_header();
 <?php include dirname(__FILE__) . '/section-services.php'; ?>
 
 <!-- Service Areas Section -->
-<?php include dirname(__FILE__) . '/section-areas.php'; ?>
+<?php 
+// Debug: Check if section-areas.php exists and is readable
+if (file_exists(dirname(__FILE__) . '/section-areas.php')) {
+    include dirname(__FILE__) . '/section-areas.php';
+} else {
+    echo '<!-- section-areas.php not found -->';
+}
+?>
 
 <!-- Reviews Section -->
-<?php include dirname(__FILE__) . '/section-reviews.php'; ?>
+<?php 
+// Debug: Check if section-reviews.php exists and is readable
+if (file_exists(dirname(__FILE__) . '/section-reviews.php')) {
+    include dirname(__FILE__) . '/section-reviews.php';
+} else {
+    echo '<!-- section-reviews.php not found -->';
+}
+?>
 
 <!-- Commitment Section -->
-<?php include dirname(__FILE__) . '/section-commitment.php'; ?>
+<?php 
+// Debug: Check if section-commitment.php exists and is readable
+if (file_exists(dirname(__FILE__) . '/section-commitment.php')) {
+    include dirname(__FILE__) . '/section-commitment.php';
+} else {
+    echo '<!-- section-commitment.php not found -->';
+}
+?>
 
 <?php get_footer(); ?>
