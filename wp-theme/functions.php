@@ -3702,6 +3702,7 @@ function bsg_settings_page() {
             // Meta tags
             'homepage_meta_title', 'homepage_meta_description', 'homepage_meta_keywords',
             'about_meta_title', 'about_meta_description', 'about_meta_keywords',
+            'about_page_meta_title', 'about_page_meta_description', 'about_page_meta_keywords',
             'contact_meta_title', 'contact_meta_description', 'contact_meta_keywords',
             'services_meta_title', 'services_meta_description', 'services_meta_keywords',
             'locations_meta_title', 'locations_meta_description', 'locations_meta_keywords',

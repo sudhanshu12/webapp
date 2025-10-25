@@ -47,12 +47,6 @@ if (function_exists('bsg_get_settings')) {
         $meta_description = $settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ' and our professional services. Contact us for expert solutions.';
         $meta_keywords = $settings['about_page_meta_keywords'] ?? $settings['about_meta_keywords'] ?? 'about, company, services, professional';
         
-        // Debug: Log the meta values to see what's being retrieved
-        error_log('BSG About Page Meta Debug:');
-        error_log('about_page_meta_title: ' . ($settings['about_page_meta_title'] ?? 'NOT SET'));
-        error_log('about_page_meta_description: ' . ($settings['about_page_meta_description'] ?? 'NOT SET'));
-        error_log('Final meta_title: ' . $meta_title);
-        error_log('Final meta_description: ' . $meta_description);
         
         // Get about page specific content from wizard
         $about_description = $settings['about_page_who_description'] ?? $settings['about_description'] ?? '';
