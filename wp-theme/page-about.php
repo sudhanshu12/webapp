@@ -44,19 +44,21 @@ get_header();
         background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
         <?php endif; ?>
         color: white; 
-        padding: 60px 0; 
+        padding: 90px 0; 
         text-align: center; 
     }
     .about-hero h1 { font-size: 3.5rem; font-weight: 800; margin: 0 0 2rem 0; color: white; }
     .about-btn { background: #f59e0b; color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
     .about-section { padding: 80px 0; }
     .about-section-white { background: #fff; }
+    .about-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
     .about-experience-box { background: #f8fafc; padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem; }
     .about-experience-number { font-size: 3rem; font-weight: 800; color: #f59e0b; margin: 0; }
     .about-experience-text { color: #4b5563; font-size: 1.1rem; font-weight: 600; }
-    .about-team-image { width: 100%; max-width: 500px; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); background: #f8fafc; }
+    .about-team-image { width: 100%; height: 400px; object-fit: contain; object-position: center; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
     .about-why-section { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 80px 0; }
-    .about-why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+    .about-why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2rem; }
+    .about-why-grid .about-why-card:nth-child(4), .about-why-grid .about-why-card:nth-child(5) { grid-column: span 1; }
     .about-why-card { background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 12px; text-align: center; backdrop-filter: blur(10px); }
     .about-why-icon { width: 60px; height: 60px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem; }
     .about-why-section h2 { color: white !important; }
@@ -91,7 +93,7 @@ get_header();
 <!-- About Content Section -->
 <section class="about-section about-section-white">
     <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
+        <div class="about-grid-2">
             <div>
                 <h2>About <?php echo esc_html($business_name); ?></h2>
                 <div class="about-description">
@@ -189,77 +191,11 @@ get_header();
     </div>
 </section>
 
-<!-- Service Areas Section -->
-<section class="about-section" style="background-color: #f8fafc;">
-    <div class="container">
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <div style="background:#2ee6c5;color:#fff;display:inline-block;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;margin-bottom:8px;">
-                SERVICE AREAS
-            </div>
-            <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 0.5rem 0;line-height:1.1;letter-spacing:-1px;color: #111827;">
-                Areas We Serve
-            </h2>
-            <p style="font-size: 1.2rem; color: #6b7280; max-width: 600px; margin: 0 auto;">
-                We proudly serve Orlando and surrounding areas with professional roofing services
-            </p>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
-            <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <h3 style="color: #1f2937; font-size: 1.2rem; margin: 0 0 0.5rem 0;">Orlando</h3>
-                <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Downtown & Surrounding Areas</p>
-            </div>
-            <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <h3 style="color: #1f2937; font-size: 1.2rem; margin: 0 0 0.5rem 0;">Mission Hills</h3>
-                <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Residential & Commercial</p>
-            </div>
-            <div style="background: white; padding: 1.5rem; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                <h3 style="color: #1f2937; font-size: 1.2rem; margin: 0 0 0.5rem 0;">Santa Maria</h3>
-                <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">Full Service Coverage</p>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- Service Areas Section - Copy from Homepage -->
+<?php include dirname(__FILE__) . '/section-areas.php'; ?>
 
-<!-- Reviews Section -->
-<section class="about-section" style="background-color: #ffffff;">
-    <div class="container">
-        <div style="text-align: center; margin-bottom: 3rem;">
-            <div style="background:#2ee6c5;color:#fff;display:inline-block;padding:4px 18px;border-radius:4px;font-size:1rem;letter-spacing:2px;font-weight:600;margin-bottom:8px;">
-                CUSTOMER REVIEWS
-            </div>
-            <h2 style="font-size:2.5rem;font-weight:800;margin:0 0 0.5rem 0;line-height:1.1;letter-spacing:-1px;color: #111827;">
-                What Our Customers Say
-            </h2>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
-            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
-                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                    <div style="color: #fbbf24; font-size: 1.2rem;">★★★★★</div>
-                    <span style="margin-left: 0.5rem; font-weight: 600; color: #1f2937;">Jackson Martin</span>
-                </div>
-                <p style="color: #4b5563; font-style: italic; line-height: 1.6;">"Amazing experience with Roofing Pros from start to finish! Professional, reliable, and the results exceeded my expectations."</p>
-            </div>
-            
-            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
-                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                    <div style="color: #fbbf24; font-size: 1.2rem;">★★★★★</div>
-                    <span style="margin-left: 0.5rem; font-weight: 600; color: #1f2937;">Gabriel Perez</span>
-                </div>
-                <p style="color: #4b5563; font-style: italic; line-height: 1.6;">"Great experience! Professional team, fair pricing, and excellent results. Would definitely recommend."</p>
-            </div>
-            
-            <div style="background: #f9fafb; padding: 2rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
-                <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                    <div style="color: #fbbf24; font-size: 1.2rem;">★★★★★</div>
-                    <span style="margin-left: 0.5rem; font-weight: 600; color: #1f2937;">Blake Miller</span>
-                </div>
-                <p style="color: #4b5563; font-style: italic; line-height: 1.6;">"Highly recommend! Professional service and excellent results."</p>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- Reviews Section - Copy from Homepage -->
+<?php include dirname(__FILE__) . '/section-reviews.php'; ?>
 
 <!-- Commitment Section -->
 <section class="about-section" style="<?php if (!empty($hero_bg_image)): ?>background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), url('<?php echo esc_url($hero_bg_image); ?>'); background-size: cover; background-position: center;<?php else: ?>background: linear-gradient(135deg, #1f2937 0%, #374151 100%);<?php endif; ?> color: white;">
