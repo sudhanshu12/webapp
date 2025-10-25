@@ -135,14 +135,18 @@ get_header();
     
     /* Style for Ready to Get Started section */
     .about-cta-section {
-        text-align: center;
+        text-align: left;
         background: #f8f9fa;
         padding: 2rem;
         border-radius: 12px;
         border: 1px solid #e9ecef;
-        max-width: 800px;
+        width: 600px;
+        height: 240px;
         margin: 2rem auto;
-        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-sizing: border-box;
     }
     
     .about-cta-section h3 {
@@ -176,6 +180,9 @@ get_header();
         .about-cta-section {
             margin: 1rem auto;
             padding: 1.5rem;
+            width: 90%;
+            height: auto;
+            min-height: 200px;
         }
     }
 </style>
