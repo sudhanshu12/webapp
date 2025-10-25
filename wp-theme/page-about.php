@@ -184,7 +184,7 @@ get_header();
             
             <!-- Team Image Side by Side -->
             <?php if (!empty($about_team_image)): ?>
-            <div style="text-align: center;">
+            <div style="text-align: center; margin-bottom: 4460px;">
                 <img src="<?php echo esc_url($about_team_image); ?>" alt="About <?php echo esc_attr($business_name); ?>" class="about-team-image">
             </div>
             <?php else: ?>
