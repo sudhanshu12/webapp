@@ -168,6 +168,16 @@ get_header();
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
     }
     
+    /* Style for WHO WE ARE text in description */
+    .about-description p:first-child {
+        color: <?php echo esc_attr($about_who_h2_color); ?> !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        letter-spacing: 0.5px !important;
+        text-transform: uppercase !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
     /* Ensure only paragraph text has consistent styling, not headings */
     .about-description p {
         font-size: 1rem !important;
@@ -324,6 +334,13 @@ get_header();
         transform: translateY(0) scale(1) !important;
     }
     
+    /* Force hero tagline to be visible */
+    .about-hero h1 {
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
+        animation: none !important;
+    }
+    
     .about-hero h2 {
         opacity: 0;
         transform: translateY(35px) scale(0.95);
@@ -365,13 +382,10 @@ get_header();
 </section>
 
 <!-- About Content Section -->
-<section class="about-section about-section-white">
+<section class="about-section about-section-white animate-on-scroll-section">
             <div class="container">
         <div class="about-grid-2">
             <div>
-                <div style="text-align: center; margin-bottom: 0.5rem;">
-                    <p style="color: <?php echo esc_attr($about_who_h2_color); ?>; font-size: 1rem; font-weight: 600; margin: 0; letter-spacing: 0.5px; text-transform: uppercase;"><?php echo esc_html($about_page_who_we_are_tagline); ?></p>
-                </div>
                 <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none; text-align: center;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
                 <div class="about-description" style="font-size: 1rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important; line-height: 1.6 !important;">
                     <?php 
