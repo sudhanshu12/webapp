@@ -105,7 +105,8 @@ get_header();
         min-height: 80vh !important;
         text-align: center; 
     }
-    .about-hero h1 { font-size: 3.5rem; font-weight: 800; margin: 0 0 2rem 0; color: white; }
+    .about-hero h1 { font-size: 3.5rem; font-weight: 800; margin: 0 0 1rem 0; color: white; }
+    .about-hero h2 { font-size: 2rem; font-weight: 600; margin: 0 0 2rem 0; color: white; opacity: 0.9; }
     .about-btn { background: #f59e0b; color: white; padding: 16px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
     .about-section { padding: 80px 0; }
     .about-section-white { background: #fff; }
@@ -248,6 +249,31 @@ get_header();
         opacity: 1;
     }
     
+    /* Hero Animation Styles - Advanced Staggered Sequence */
+    .about-hero .hero-content {
+        opacity: 0;
+        transform: translateY(40px);
+        animation: heroContentFadeIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
+    }
+    
+    .about-hero h1 {
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+        animation: heroElementSlideUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
+    }
+    
+    .about-hero h2 {
+        opacity: 0;
+        transform: translateY(35px) scale(0.95);
+        animation: heroElementSlideUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s forwards;
+    }
+    
+    .about-hero .about-btn {
+        opacity: 0;
+        transform: translateY(35px) scale(0.95);
+        animation: heroActionsSlideUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s forwards;
+    }
+    
     @media (max-width: 768px) {
         .about-hero h1 { font-size: 2.5rem; }
         .about-section { padding: 60px 0; }
@@ -266,13 +292,13 @@ get_header();
 <!-- Hero Section -->
 <section class="about-hero">
     <div class="container">
-        <h1><?php echo esc_html($about_hero_tagline); ?></h1>
-        <p style="font-size: 1.2rem; margin: 0 0 2rem 0; color: white;">
-            <?php echo esc_html($about_hero_title); ?>
-        </p>
-        <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
-            📞 Call (<?php echo esc_attr($phone); ?>)
-        </a>
+        <div class="hero-content">
+            <h1><?php echo esc_html($about_hero_tagline); ?></h1>
+            <h2><?php echo esc_html($about_hero_title); ?></h2>
+            <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
+                📞 Call (<?php echo esc_attr($phone); ?>)
+            </a>
+        </div>
     </div>
 </section>
 
