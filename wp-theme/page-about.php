@@ -84,7 +84,7 @@ add_action('wp_head', function() use ($meta_title, $meta_description, $meta_keyw
 get_header();
 ?>
 
-<style>
+    <style>
     .about-hero { 
         <?php if (!empty($hero_bg_image)): ?>
         background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%), 
@@ -363,9 +363,6 @@ get_header();
             <div class="container">
         <div class="about-grid-2">
             <div>
-                <div style="text-align: center; margin-bottom: 1rem;">
-                    <p style="color: <?php echo esc_attr($about_who_h2_color); ?>; font-size: 1rem; font-weight: 600; margin: 0; letter-spacing: 0.5px;"><?php echo esc_html($about_page_who_we_are_tagline); ?></p>
-                </div>
                 <h2 style="color: <?php echo esc_attr($about_who_h2_color); ?> !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none; text-align: center;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
                 <div class="about-description" style="font-size: 1rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important; line-height: 1.6 !important;">
                     <?php 
@@ -411,8 +408,8 @@ get_header();
         <div style="text-align: center; margin-bottom: 4rem;">
             <h2 style="color: #ffffff; font-size: 3rem; font-weight: 800; margin-bottom: 0.75rem; letter-spacing: -0.5px; line-height: 1.1;">Why Work With Us?</h2>
             <p style="color: #ffffff; font-size: 1.25rem; margin: 0; font-weight: 500;">Benefits of Working with an Expert Team</p>
-        </div>
-        
+                    </div>
+                    
         <div style="display: flex; flex-direction: column; align-items: center; gap: 4rem; margin-top: 4rem; max-width: 1000px; margin-left: auto; margin-right: auto;">
             <!-- First row: 3 items -->
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem; justify-items: center;">
