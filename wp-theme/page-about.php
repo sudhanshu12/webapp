@@ -165,6 +165,21 @@ get_header();
         line-height: 1.6 !important;
     }
     
+    /* Override any inline styles that might come from wizard content */
+    .about-description p[style] {
+        font-size: 1rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+        line-height: 1.6 !important;
+        color: <?php echo esc_attr($about_who_description_color); ?> !important;
+    }
+    
+    .about-description div[style] {
+        font-size: 1rem !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+        line-height: 1.6 !important;
+        color: <?php echo esc_attr($about_who_description_color); ?> !important;
+    }
+    
     /* Override for headings to maintain their hierarchy */
     .about-description h1, .about-description h2, .about-description h3, .about-description h4, .about-description h5, .about-description h6 {
         font-size: inherit !important;
@@ -344,7 +359,7 @@ get_header();
         <div class="about-grid-2">
             <div>
                 <h2 style="color: #000000 !important; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; text-shadow: none;"><?php echo esc_html($about_page_who_we_are_headline); ?></h2>
-                <div class="about-description">
+                <div class="about-description" style="font-size: 1rem !important; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important; line-height: 1.6 !important;">
                     <?php 
                     if (!empty($about_description)) {
                         // Display the description from wizard (contains HTML formatting from the wizard)
@@ -501,39 +516,63 @@ if (file_exists(dirname(__FILE__) . '/section-commitment.php')) {
 }
 ?>
 
-<script>
-// Enhanced Scroll Animation for About Page (same as homepage)
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎬 About page animation script loaded successfully');
-    
-    // Scroll-triggered animations
-    function animateOnScroll() {
-        const sections = document.querySelectorAll('.animate-on-scroll-section');
-        
-        sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-            
-            if (isVisible) {
-                section.classList.add('animated');
-            }
-        });
-    }
-    
-    // Make function globally available
-    window.animateOnScroll = animateOnScroll;
-    
-    // Add scroll listener
-    window.addEventListener('scroll', animateOnScroll);
-    
-    // Run immediately and after delays to ensure all sections are animated
-    animateOnScroll();
-    setTimeout(animateOnScroll, 100);
-    setTimeout(animateOnScroll, 500);
-    setTimeout(animateOnScroll, 1000);
-    
-    console.log('🚀 About page animations initialized and ready');
-});
-</script>
+       <script>
+       // Enhanced Scroll Animation for About Page (same as homepage)
+       document.addEventListener('DOMContentLoaded', function() {
+           console.log('🎬 About page animation script loaded successfully');
+           
+           // Force consistent styling for about description
+           function forceAboutDescriptionStyling() {
+               const aboutDesc = document.querySelector('.about-description');
+               if (aboutDesc) {
+                   // Force styling on all child elements
+                   const allElements = aboutDesc.querySelectorAll('*');
+                   allElements.forEach(element => {
+                       element.style.fontSize = '1rem';
+                       element.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif';
+                       element.style.lineHeight = '1.6';
+                   });
+                   
+                   // Force styling on the container itself
+                   aboutDesc.style.fontSize = '1rem';
+                   aboutDesc.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif';
+                   aboutDesc.style.lineHeight = '1.6';
+               }
+           }
+           
+           // Apply styling immediately and after a delay
+           forceAboutDescriptionStyling();
+           setTimeout(forceAboutDescriptionStyling, 100);
+           setTimeout(forceAboutDescriptionStyling, 500);
+           
+           // Scroll-triggered animations
+           function animateOnScroll() {
+               const sections = document.querySelectorAll('.animate-on-scroll-section');
+               
+               sections.forEach(section => {
+                   const rect = section.getBoundingClientRect();
+                   const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                   
+                   if (isVisible) {
+                       section.classList.add('animated');
+                   }
+               });
+           }
+           
+           // Make function globally available
+           window.animateOnScroll = animateOnScroll;
+           
+           // Add scroll listener
+           window.addEventListener('scroll', animateOnScroll);
+           
+           // Run immediately and after delays to ensure all sections are animated
+           animateOnScroll();
+           setTimeout(animateOnScroll, 100);
+           setTimeout(animateOnScroll, 500);
+           setTimeout(animateOnScroll, 1000);
+           
+           console.log('🚀 About page animations initialized and ready');
+       });
+       </script>
 
 <?php get_footer(); ?>
