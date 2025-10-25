@@ -4402,11 +4402,55 @@ function bsg_settings_page() {
                 <table class="form-table">
                     <tr>
                         <th scope="row">About Hero Tagline</th>
-                        <td><input type="text" name="about_hero_tagline" value="<?php echo esc_attr($current_settings['about_hero_tagline'] ?? 'ABOUT'); ?>" class="regular-text" /></td>
+                        <td><input type="text" name="about_page_hero_tagline" value="<?php echo esc_attr($current_settings['about_page_hero_tagline'] ?? 'ABOUT'); ?>" class="regular-text" /></td>
                     </tr>
                     <tr>
                         <th scope="row">About Hero Title</th>
-                        <td><input type="text" name="about_hero_title" value="<?php echo esc_attr($current_settings['about_hero_title'] ?? 'Professional Services You Can Count On'); ?>" class="regular-text" /></td>
+                        <td><input type="text" name="about_page_hero_title" value="<?php echo esc_attr($current_settings['about_page_hero_title'] ?? 'Professional Services You Can Count On'); ?>" class="regular-text" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">About Description</th>
+                        <td><textarea name="about_page_who_description" rows="4" class="large-text"><?php echo esc_textarea($current_settings['about_page_who_description'] ?? ''); ?></textarea></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">About Team Image URL</th>
+                        <td><input type="url" name="about_page_team_image" value="<?php echo esc_attr($current_settings['about_page_team_image'] ?? ''); ?>" class="regular-text" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Who We Are Tagline</th>
+                        <td><input type="text" name="about_page_who_we_are_tagline" value="<?php echo esc_attr($current_settings['about_page_who_we_are_tagline'] ?? 'WHO WE ARE'); ?>" class="regular-text" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Who We Are Headline</th>
+                        <td><input type="text" name="about_page_who_we_are_headline" value="<?php echo esc_attr($current_settings['about_page_who_we_are_headline'] ?? 'About Our Company'); ?>" class="regular-text" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Who We Are Text Color</th>
+                        <td><input type="color" name="about_page_who_we_are_text_color" value="<?php echo esc_attr($current_settings['about_page_who_we_are_text_color'] ?? '#000000'); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Who We Are Description Color</th>
+                        <td><input type="color" name="about_page_who_we_are_description_color" value="<?php echo esc_attr($current_settings['about_page_who_we_are_description_color'] ?? '#4b5563'); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Why Work With Us Heading Color</th>
+                        <td><input type="color" name="about_page_why_work_with_us_heading_color" value="<?php echo esc_attr($current_settings['about_page_why_work_with_us_heading_color'] ?? '#ffffff'); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Why Work With Us Subtitle Color</th>
+                        <td><input type="color" name="about_page_why_work_with_us_subtitle_color" value="<?php echo esc_attr($current_settings['about_page_why_work_with_us_subtitle_color'] ?? 'rgba(255,255,255,0.9)'); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Why Work With Us Item Title Color</th>
+                        <td><input type="color" name="about_page_why_work_with_us_item_title_color" value="<?php echo esc_attr($current_settings['about_page_why_work_with_us_item_title_color'] ?? '#ffffff'); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Why Work With Us Item Description Color</th>
+                        <td><input type="color" name="about_page_why_work_with_us_item_description_color" value="<?php echo esc_attr($current_settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)'); ?>" /></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Reviews Text Color</th>
+                        <td><input type="color" name="about_page_reviews_text_color" value="<?php echo esc_attr($current_settings['about_page_reviews_text_color'] ?? '#000000'); ?>" /></td>
                     </tr>
                 </table>
             </div>
