@@ -27,9 +27,6 @@ $why_item_title_color = '#ffffff';
 $why_item_description_color = 'rgba(255,255,255,0.9)';
 $reviews_text_color = '#000000';
 
-// Initialize experience variables with defaults
-$years_of_experience = '15';
-$experience_label = 'Years of Experience';
 
 // Initialize Who We Are section variables with defaults
 $about_page_who_we_are_tagline = 'WHO WE ARE';
@@ -64,9 +61,6 @@ if (function_exists('bsg_get_settings')) {
         $why_item_description_color = $settings['about_page_why_work_with_us_item_description_color'] ?? 'rgba(255,255,255,0.9)';
         $reviews_text_color = $settings['about_page_reviews_text_color'] ?? '#000000';
         
-        // Get experience settings from wizard
-        $years_of_experience = $settings['about_page_years_of_experience'] ?? '15';
-        $experience_label = $settings['about_page_experience_label'] ?? 'Years of Experience';
         
         // Get Who We Are section settings from wizard
         $about_page_who_we_are_tagline = $settings['about_page_who_we_are_tagline'] ?? 'WHO WE ARE';

@@ -4396,38 +4396,6 @@ function bsg_settings_page() {
                         <th scope="row">About Description Font Size</th>
                         <td><input type="text" name="about_description_font_size" value="<?php echo esc_attr($current_settings['about_description_font_size'] ?? '0.90rem'); ?>" class="regular-text" /></td>
                     </tr>
-                    <tr>
-                        <th scope="row">About Years Experience</th>
-                        <td><input type="text" name="about_years" value="<?php echo esc_attr($current_settings['about_years'] ?? '15+'); ?>" class="regular-text" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Experience Label</th>
-                        <td><input type="text" name="about_experience_text" value="<?php echo esc_attr($current_settings['about_experience_text'] ?? 'Years of Experience'); ?>" class="regular-text" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Experience Background</th>
-                        <td><input type="color" name="about_experience_bg" value="<?php echo esc_attr($current_settings['about_experience_bg'] ?? '#374151'); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Experience Text Color</th>
-                        <td><input type="color" name="about_experience_text_color" value="<?php echo esc_attr($current_settings['about_experience_text_color'] ?? '#0ea5e9'); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Button Text</th>
-                        <td><input type="text" name="about_button_text" value="<?php echo esc_attr($current_settings['about_button_text'] ?? 'About Us'); ?>" class="regular-text" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Button Color</th>
-                        <td><input type="color" name="about_button_color" value="<?php echo esc_attr($current_settings['about_button_color'] ?? '#0ea5e9'); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Button Text Color</th>
-                        <td><input type="color" name="about_button_text_color" value="<?php echo esc_attr($current_settings['about_button_text_color'] ?? '#374151'); ?>" /></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">About Button Link</th>
-                        <td><input type="text" name="about_button_link" value="<?php echo esc_attr($current_settings['about_button_link'] ?? 'about-us'); ?>" class="regular-text" /></td>
-                    </tr>
                 </table>
                 
                 <h3>About Page</h3>
