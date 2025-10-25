@@ -318,6 +318,12 @@ get_header();
         animation: heroElementSlideUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s forwards;
     }
     
+    /* Fallback to ensure h1 is visible */
+    .about-hero h1.animated {
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
+    }
+    
     .about-hero h2 {
         opacity: 0;
         transform: translateY(35px) scale(0.95);
@@ -349,7 +355,7 @@ get_header();
 <section class="about-hero">
     <div class="container">
         <div class="hero-content">
-            <h1><?php echo esc_html($about_hero_tagline); ?></h1>
+            <h1><?php echo esc_html($about_hero_tagline ?: 'ABOUT ' . strtoupper($business_name)); ?></h1>
             <h2><?php echo esc_html($about_hero_title); ?></h2>
             <a href="tel:<?php echo esc_attr($phone); ?>" class="about-btn">
                 📞 Call (<?php echo esc_attr($phone); ?>)
@@ -575,6 +581,26 @@ if (file_exists(dirname(__FILE__) . '/section-commitment.php')) {
            setTimeout(animateOnScroll, 100);
            setTimeout(animateOnScroll, 500);
            setTimeout(animateOnScroll, 1000);
+           
+           // Fallback to ensure hero elements are visible
+           setTimeout(function() {
+               const heroH1 = document.querySelector('.about-hero h1');
+               const heroH2 = document.querySelector('.about-hero h2');
+               const heroBtn = document.querySelector('.about-hero .about-btn');
+               
+               if (heroH1 && heroH1.style.opacity === '0') {
+                   heroH1.style.opacity = '1';
+                   heroH1.style.transform = 'translateY(0) scale(1)';
+               }
+               if (heroH2 && heroH2.style.opacity === '0') {
+                   heroH2.style.opacity = '1';
+                   heroH2.style.transform = 'translateY(0) scale(1)';
+               }
+               if (heroBtn && heroBtn.style.opacity === '0') {
+                   heroBtn.style.opacity = '1';
+                   heroBtn.style.transform = 'translateY(0) scale(1)';
+               }
+           }, 2000);
            
            console.log('🚀 About page animations initialized and ready');
        });
