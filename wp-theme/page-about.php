@@ -44,7 +44,8 @@ get_header();
         background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
         <?php endif; ?>
         color: white; 
-        padding: 90px 0; 
+        padding: 90px 0 !important;
+        min-height: 80vh !important;
         text-align: center; 
     }
     .about-hero h1 { font-size: 3.5rem; font-weight: 800; margin: 0 0 2rem 0; color: white; }
