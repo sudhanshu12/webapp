@@ -47,6 +47,13 @@ if (function_exists('bsg_get_settings')) {
         $meta_description = $settings['about_page_meta_description'] ?? $settings['about_meta_description'] ?? 'Learn about ' . $business_name . ' and our professional services. Contact us for expert solutions.';
         $meta_keywords = $settings['about_page_meta_keywords'] ?? $settings['about_meta_keywords'] ?? 'about, company, services, professional';
         
+        // Debug: Log the meta values to see what's being retrieved
+        error_log('BSG About Page Meta Debug:');
+        error_log('about_page_meta_title: ' . ($settings['about_page_meta_title'] ?? 'NOT SET'));
+        error_log('about_page_meta_description: ' . ($settings['about_page_meta_description'] ?? 'NOT SET'));
+        error_log('Final meta_title: ' . $meta_title);
+        error_log('Final meta_description: ' . $meta_description);
+        
         // Get about page specific content from wizard
         $about_description = $settings['about_page_who_description'] ?? $settings['about_description'] ?? '';
         $about_team_image = $settings['about_page_team_image'] ?? $settings['about_image'] ?? '';
@@ -70,7 +77,17 @@ if (function_exists('bsg_get_settings')) {
     }
 }
 
-// Set meta tags
+// Override WordPress title and meta tags
+add_filter('wp_title', function($title) use ($meta_title) {
+    return $meta_title;
+}, 10, 1);
+
+add_filter('document_title_parts', function($title_parts) use ($meta_title) {
+    $title_parts['title'] = $meta_title;
+    return $title_parts;
+}, 10, 1);
+
+// Set meta tags with high priority to override WordPress defaults
 add_action('wp_head', function() use ($meta_title, $meta_description, $meta_keywords, $business_name) {
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
@@ -81,7 +98,7 @@ add_action('wp_head', function() use ($meta_title, $meta_description, $meta_keyw
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
-});
+}, 1);
 
 get_header();
 ?>
