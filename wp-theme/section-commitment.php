@@ -139,7 +139,7 @@ if ($commitment_visible):
         <div class="two-col-layout" style="display: flex; align-items: center; gap: 3rem;">
             <div class="content-image">
                 <?php if (!empty($commitment_image)): ?>
-                <img src="<?php echo esc_url($commitment_image); ?>" alt="<?php echo esc_attr($commitment_title); ?>" loading="lazy" decoding="async">
+                <img src="<?php echo esc_url($commitment_image); ?>" alt="<?php echo esc_attr($commitment_title); ?>" class="lazy-load-image" data-src="<?php echo esc_url($commitment_image); ?>" loading="lazy" decoding="async">
                 <?php else: ?>
                 <div class="commitment-placeholder" style="background: #f0f0f0; height: 300px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
                     <div style="text-align: center; color: #666;">

@@ -314,6 +314,21 @@ echo wp_json_encode($faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
             opacity: 1;
         }
         
+        /* Enhanced lazy loading styles */
+        .lazy-load-image {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .lazy-load-image.loaded {
+            opacity: 1;
+        }
+        
+        /* Ensure images are visible when they load */
+        .lazy-load-image[src] {
+            opacity: 1;
+        }
+        
         :root {
             --primary-color: <?php echo esc_attr($primary_color); ?>;
             --secondary-color: <?php echo esc_attr($secondary_color); ?>;
@@ -969,6 +984,45 @@ include dirname(__FILE__) . '/faq-section.php';
 <script>
 // Make sure this runs after WordPress footer loads
 document.addEventListener('DOMContentLoaded', function() {
+    
+    // Enhanced Lazy Loading with Intersection Observer
+    function initLazyLoading() {
+        const lazyImages = document.querySelectorAll('.lazy-load-image');
+        
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.classList.add('loaded');
+                            img.removeAttribute('data-src');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px', // Start loading 50px before the image comes into view
+                threshold: 0.1
+            });
+            
+            lazyImages.forEach(img => {
+                imageObserver.observe(img);
+            });
+        } else {
+            // Fallback for browsers without IntersectionObserver
+            lazyImages.forEach(img => {
+                if (img.dataset.src) {
+                    img.src = img.dataset.src;
+                    img.classList.add('loaded');
+                }
+            });
+        }
+    }
+    
+    // Initialize lazy loading
+    initLazyLoading();
     console.log('🎬 animateOnScroll script loaded successfully');
     
     // Scroll-triggered animations
