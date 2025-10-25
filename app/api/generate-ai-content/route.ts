@@ -214,32 +214,32 @@ Return ONLY a JSON object like this:
     {
       "name": "John Smith",
       "rating": 5,
-      "comment": "Excellent service and quality work! The team was professional and completed our ${businessData.business_type} project on time."
+      "comment": "Excellent service and quality work! The team was professional and completed our ${businessData.business_type} project on time. I was impressed with their attention to detail and communication throughout the entire process."
     },
     {
       "name": "Sarah Johnson",
       "rating": 5,
-      "comment": "Highly recommend ${businessData.business_name}! They were reliable, trustworthy, and delivered exactly as promised."
+      "comment": "Highly recommend ${businessData.business_name}! They were reliable, trustworthy, and delivered exactly as promised. The quality of work exceeded my expectations and I would definitely use them again."
     },
     {
       "name": "Mike Davis",
       "rating": 5,
-      "comment": "Outstanding workmanship and attention to detail. The ${businessData.business_type} service exceeded our expectations."
+      "comment": "Outstanding workmanship and attention to detail. The ${businessData.business_type} service exceeded our expectations. Professional team that completed the project on schedule and within budget."
     },
     {
       "name": "Lisa Wilson",
       "rating": 5,
-      "comment": "Professional team with great communication throughout the entire ${businessData.business_type} project. Very satisfied!"
+      "comment": "Professional team with great communication throughout the entire ${businessData.business_type} project. Very satisfied! They kept me informed every step of the way and the final result was perfect."
     },
     {
       "name": "Robert Brown",
       "rating": 5,
-      "comment": "Best ${businessData.business_type} company in ${businessData.location}! Fair pricing, quality work, and excellent customer service."
+      "comment": "Best ${businessData.business_type} company in ${businessData.location}! Fair pricing, quality work, and excellent customer service. I've recommended them to several friends who were equally impressed with their work."
     }
   ]
 }
 
-Focus on ${businessData.business_type} services and ${businessData.location} area. Make each comment 30-50 words. Use realistic names and 5-star ratings.`;
+Focus on ${businessData.business_type} services and ${businessData.location} area. Make each comment at least 2 lines (40-80 words) with detailed feedback. Use realistic names and 5-star ratings.`;
 				break;
 
 			case 'faq':

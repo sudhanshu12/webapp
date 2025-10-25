@@ -392,23 +392,19 @@ export default function WizardClient() {
     return `${firstName} ${lastName}`;
   };
 
-  // Generate random date across multiple years (2022-2025)
+  // Generate random date from current year only
   const generateRandomDate = () => {
     const currentYear = new Date().getFullYear();
-    const startYear = currentYear - 3; // Go back 3 years
-    const endYear = currentYear;
+    const currentMonth = new Date().getMonth() + 1; // 1-12
     
-    // Random year between startYear and endYear
-    const randomYear = Math.floor(Math.random() * (endYear - startYear + 1)) + startYear;
-    
-    // Random month (1-12)
-    const randomMonth = Math.floor(Math.random() * 12) + 1;
+    // Random month from current year (1 to current month)
+    const randomMonth = Math.floor(Math.random() * currentMonth) + 1;
     
     // Random day (1-28 to avoid month/day issues)
     const randomDay = Math.floor(Math.random() * 28) + 1;
     
     // Create date string
-    const year = randomYear.toString();
+    const year = currentYear.toString();
     const month = randomMonth.toString().padStart(2, '0');
     const day = randomDay.toString().padStart(2, '0');
     
