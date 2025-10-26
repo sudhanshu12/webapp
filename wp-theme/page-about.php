@@ -81,10 +81,12 @@ add_filter('document_title_parts', function($title_parts) use ($meta_title) {
     return $title_parts;
 }, 10, 1);
 
+// Remove WordPress default title generation to prevent duplicates
+remove_action('wp_head', '_wp_render_title_tag', 1);
+
 // Set meta tags with high priority to override WordPress defaults
 add_action('wp_head', function() use ($meta_title, $meta_description, $meta_keywords, $business_name) {
-    // Remove default WordPress title and meta tags to prevent duplicates
-    remove_action('wp_head', '_wp_render_title_tag', 1);
+    // Remove default WordPress meta tags to prevent duplicates
     remove_action('wp_head', 'wp_generator');
     remove_action('wp_head', 'rel_canonical');
     

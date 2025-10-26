@@ -250,10 +250,12 @@ if (empty($location_description) || strlen($location_description) < 100 || strip
 error_log('Location description length: ' . strlen($location_description));
 error_log('Location description preview: ' . substr($location_description, 0, 200));
 
+// Remove WordPress default title generation to prevent duplicates
+remove_action('wp_head', '_wp_render_title_tag', 1);
+
 // Add meta tags to head - Use higher priority to ensure they override default
 add_action('wp_head', function() use ($meta_title, $meta_description) {
-    // Remove default WordPress title and meta tags to prevent duplicates
-    remove_action('wp_head', '_wp_render_title_tag', 1);
+    // Remove default WordPress meta tags to prevent duplicates
     remove_action('wp_head', 'wp_generator');
     remove_action('wp_head', 'rel_canonical');
     
