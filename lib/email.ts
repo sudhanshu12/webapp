@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend only if API key is available
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 export interface EmailVerificationData {
   email: string;
@@ -11,6 +12,10 @@ export interface EmailVerificationData {
 
 export async function sendVerificationEmail(data: EmailVerificationData) {
   try {
+    if (!resend) {
+      throw new Error('Resend API key not configured');
+    }
+
     const verificationUrl = `${process.env.NEXTAUTH_URL || 'https://createawebsite.click'}/verify-email?token=${data.verificationToken}&email=${encodeURIComponent(data.email)}`;
     
     const { data: emailData, error } = await resend.emails.send({
@@ -178,6 +183,10 @@ export async function sendVerificationEmail(data: EmailVerificationData) {
 // Fallback email service using Nodemailer (if Resend fails)
 export async function sendVerificationEmailFallback(data: EmailVerificationData) {
   try {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      throw new Error('SMTP credentials not configured');
+    }
+
     const nodemailer = require('nodemailer');
     
     const transporter = nodemailer.createTransporter({
