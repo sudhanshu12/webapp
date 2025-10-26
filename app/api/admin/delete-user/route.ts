@@ -28,10 +28,12 @@ export async function POST(request: NextRequest) {
     // Delete user and all related data in the correct order (respecting foreign key constraints)
     
     // 1. Delete credit transactions
-    const { error: transactionsError } = await supabase
+    const { error: transactionsError, count: transactionsCount } = await supabase
       .from('credit_transactions')
       .delete()
       .eq('user_id', userId)
+
+    console.log(`🗑️ Deleted ${transactionsCount || 0} credit transactions`);
 
     if (transactionsError) {
       console.error('❌ Error deleting credit transactions:', transactionsError)
@@ -39,10 +41,12 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Delete site creations
-    const { error: sitesError } = await supabase
+    const { error: sitesError, count: sitesCount } = await supabase
       .from('site_creations')
       .delete()
       .eq('user_id', userId)
+
+    console.log(`🗑️ Deleted ${sitesCount || 0} site creations`);
 
     if (sitesError) {
       console.error('❌ Error deleting site creations:', sitesError)
@@ -50,10 +54,12 @@ export async function POST(request: NextRequest) {
     }
 
     // 3. Delete user credits
-    const { error: creditsError } = await supabase
+    const { error: creditsError, count: creditsCount } = await supabase
       .from('user_credits')
       .delete()
       .eq('user_id', userId)
+
+    console.log(`🗑️ Deleted ${creditsCount || 0} user credits`);
 
     if (creditsError) {
       console.error('❌ Error deleting user credits:', creditsError)
@@ -61,10 +67,12 @@ export async function POST(request: NextRequest) {
     }
 
     // 4. Finally, delete the user (OAuth connections will cascade automatically)
-    const { error: userError } = await supabase
+    const { error: userError, count: userCount } = await supabase
       .from('users')
       .delete()
       .eq('id', userId)
+
+    console.log(`🗑️ Deleted ${userCount || 0} users`);
 
     if (userError) {
       console.error('❌ Error deleting user:', userError)
