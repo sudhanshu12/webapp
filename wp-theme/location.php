@@ -263,6 +263,9 @@ add_action('wp_head', function() use ($meta_title, $meta_description) {
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    
+    // Canonical URL
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
 // Also force document title for themes/plugins that override <title>

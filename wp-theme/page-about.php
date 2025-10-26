@@ -97,6 +97,9 @@ add_action('wp_head', function() use ($meta_title, $meta_description, $meta_keyw
     echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
+    
+    // Canonical URL
+    echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
 get_header();
