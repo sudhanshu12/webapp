@@ -24,6 +24,21 @@ interface CreditInfo {
   planType: string;
 }
 
+interface PaymentHistoryItem {
+  id: string;
+  type: string;
+  date: string;
+  amount: number;
+  currency: string;
+  credits: number;
+  package: string;
+  paymentMethod: string;
+  status: string;
+  orderId: string;
+  transactionId: string;
+  description?: string;
+}
+
 export default function BillingPage() {
   // Internal billing page for authenticated users - Enhanced with professional pricing and debugging
   const { data: session, status } = useSession();
@@ -40,6 +55,8 @@ export default function BillingPage() {
   const [country, setCountry] = useState<string>('US');
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'cashfree' | 'paypal'>('cashfree');
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<string[]>([]);
+  const [paymentHistory, setPaymentHistory] = useState<PaymentHistoryItem[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   useEffect(() => {
     // Load user from NextAuth session
@@ -113,6 +130,35 @@ export default function BillingPage() {
       }
     } catch (error) {
       console.error('Error fetching credits:', error);
+    }
+  };
+
+  const fetchPaymentHistory = async () => {
+    try {
+      if (!user?.id) {
+        console.log('No user ID found');
+        return;
+      }
+
+      setHistoryLoading(true);
+      console.log('Fetching payment history for user:', user.id);
+
+      const response = await fetch(`/api/payment-history?userId=${encodeURIComponent(user.id)}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Payment history API response:', data);
+        
+        if (data.success && data.paymentHistory) {
+          setPaymentHistory(data.paymentHistory);
+        }
+      } else {
+        console.error('Failed to fetch payment history:', response.status);
+      }
+    } catch (error) {
+      console.error('Error fetching payment history:', error);
+    } finally {
+      setHistoryLoading(false);
     }
   };
 
@@ -307,7 +353,10 @@ export default function BillingPage() {
 
   useEffect(() => {
     if (isLoaded && user) {
-      fetchCredits().then(() => setLoading(false));
+      fetchCredits().then(() => {
+        fetchPaymentHistory();
+        setLoading(false);
+      });
     } else if (isLoaded && !user) {
       // Redirect to login if no user is found
       window.location.href = '/login';
@@ -915,6 +964,150 @@ export default function BillingPage() {
                 {credits.usedCredits} / {credits.totalCredits}
               </span>
             </div>
+          </div>
+
+          {/* Payment History Section */}
+          <div style={{
+            marginTop: '32px',
+            padding: '24px',
+            background: '#ffffff',
+            borderRadius: '12px',
+            border: '1px solid #e5e7eb',
+            boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+          }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '20px'
+            }}>
+              <h3 style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: '#111827',
+                margin: 0
+              }}>
+                Payment History
+              </h3>
+              <button
+                onClick={fetchPaymentHistory}
+                disabled={historyLoading}
+                style={{
+                  padding: '8px 16px',
+                  background: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: historyLoading ? 'not-allowed' : 'pointer',
+                  opacity: historyLoading ? 0.7 : 1
+                }}
+              >
+                {historyLoading ? 'Loading...' : 'Refresh'}
+              </button>
+            </div>
+
+            {historyLoading ? (
+              <div style={{
+                textAlign: 'center',
+                padding: '40px',
+                color: '#6b7280'
+              }}>
+                Loading payment history...
+              </div>
+            ) : paymentHistory.length === 0 ? (
+              <div style={{
+                textAlign: 'center',
+                padding: '40px',
+                color: '#6b7280'
+              }}>
+                No payment history found
+              </div>
+            ) : (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}>
+                {paymentHistory.map((payment, index) => (
+                  <div key={payment.id} style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '16px',
+                    background: '#f9fafb',
+                    borderRadius: '8px',
+                    border: '1px solid #e5e7eb'
+                  }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        marginBottom: '4px'
+                      }}>
+                        <span style={{
+                          fontSize: '16px',
+                          fontWeight: '500',
+                          color: '#111827',
+                          textTransform: 'capitalize'
+                        }}>
+                          {payment.package} Pack
+                        </span>
+                        <span style={{
+                          fontSize: '12px',
+                          padding: '2px 8px',
+                          background: payment.status === 'completed' || payment.status === 'SUCCESS' ? '#dcfce7' : '#fef3c7',
+                          color: payment.status === 'completed' || payment.status === 'SUCCESS' ? '#166534' : '#92400e',
+                          borderRadius: '4px',
+                          fontWeight: '500'
+                        }}>
+                          {payment.status}
+                        </span>
+                      </div>
+                      <div style={{
+                        fontSize: '14px',
+                        color: '#6b7280',
+                        marginBottom: '4px'
+                      }}>
+                        {new Date(payment.date).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </div>
+                      <div style={{
+                        fontSize: '12px',
+                        color: '#9ca3af'
+                      }}>
+                        {payment.paymentMethod} • Order: {payment.orderId}
+                      </div>
+                    </div>
+                    <div style={{
+                      textAlign: 'right'
+                    }}>
+                      <div style={{
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        color: '#111827'
+                      }}>
+                        {payment.amount > 0 ? `${payment.currency === 'INR' ? '₹' : '$'}${payment.amount}` : 'Free'}
+                      </div>
+                      <div style={{
+                        fontSize: '14px',
+                        color: '#059669',
+                        fontWeight: '500'
+                      }}>
+                        +{payment.credits} credits
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
