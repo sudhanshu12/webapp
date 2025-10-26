@@ -28,6 +28,7 @@ export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [connectionStatus, setConnectionStatus] = useState<'checking' | 'connected' | 'error'>('checking');
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     checkAdminAuth();
@@ -74,20 +75,25 @@ export default function AdminPage() {
 
   const fetchUsers = async () => {
     try {
+      setRefreshing(true);
       const response = await fetch('/api/admin/users');
       if (response.ok) {
         const data = await response.json();
         setUsers(data.users);
         setUserCredits(data.userCredits);
+        setMessage(`✅ Refreshed! Found ${data.users.length} users`);
       } else {
         console.error('Failed to fetch users');
         setConnectionStatus('error');
+        setMessage('❌ Failed to fetch users');
       }
     } catch (error) {
       console.error('Error fetching users:', error);
       setConnectionStatus('error');
+      setMessage('❌ Error fetching users');
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -282,30 +288,62 @@ export default function AdminPage() {
               </span>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            style={{
-              background: '#dc2626',
-              color: 'white',
-              padding: '12px 24px',
-              borderRadius: '8px',
-              border: 'none',
-              fontSize: '16px',
-              fontWeight: '600',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#b91c1c';
-              e.currentTarget.style.transform = 'translateY(-1px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#dc2626';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            🚪 Logout
-          </button>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button
+              onClick={fetchUsers}
+              disabled={refreshing}
+              style={{
+                background: refreshing ? '#9ca3af' : '#3b82f6',
+                color: 'white',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: refreshing ? 'not-allowed' : 'pointer',
+                transition: 'all 0.3s ease',
+                opacity: refreshing ? 0.7 : 1
+              }}
+              onMouseEnter={(e) => {
+                if (!refreshing) {
+                  e.currentTarget.style.background = '#2563eb';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!refreshing) {
+                  e.currentTarget.style.background = '#3b82f6';
+                  e.currentTarget.style.transform = 'translateY(0)';
+                }
+              }}
+            >
+              {refreshing ? '🔄 Refreshing...' : '🔄 Refresh Users'}
+            </button>
+            <button
+              onClick={handleLogout}
+              style={{
+                background: '#dc2626',
+                color: 'white',
+                padding: '12px 24px',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = '#b91c1c';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = '#dc2626';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              🚪 Logout
+            </button>
+          </div>
         </div>
 
         {/* Credit Update Form */}
