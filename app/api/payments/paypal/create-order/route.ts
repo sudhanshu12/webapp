@@ -35,8 +35,8 @@ export async function POST(req: NextRequest) {
     
     const paypalBusinessEmail = process.env.PAYPAL_BUSINESS_EMAIL || 'sudhanshu@scaleblogging.com';
     
-    const returnUrl = `${process.env.NEXTAUTH_URL}/dashboard?payment=success&order_id=${orderId}`;
-    const cancelUrl = `${process.env.NEXTAUTH_URL}/billing?payment=cancelled`;
+    const returnUrl = `https://createawebsite.click/dashboard?payment=success&order_id=${orderId}`;
+    const cancelUrl = `https://createawebsite.click/billing?payment=cancelled`;
     
     // Create PayPal payment URL
     const approvalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(paypalBusinessEmail)}&item_name=${encodeURIComponent(selectedPackage.name + ' - ' + selectedPackage.credits + ' credits')}&amount=${paymentAmount}&currency_code=${paymentCurrency}&return=${encodeURIComponent(returnUrl)}&cancel_return=${encodeURIComponent(cancelUrl)}&custom=${orderId}`;

@@ -75,8 +75,8 @@ export async function POST(req: NextRequest) {
         customer_phone: '9999999999'
       },
       order_meta: {
-        return_url: `${process.env.NEXTAUTH_URL}/dashboard?payment=success&order_id=${orderId}`,
-        notify_url: `${process.env.NEXTAUTH_URL}/api/payments/cashfree/webhook`,
+        return_url: `https://createawebsite.click/dashboard?payment=success&order_id=${orderId}`,
+        notify_url: `https://createawebsite.click/api/payments/cashfree/webhook`,
         payment_methods: 'cc,dc,upi,nb,paypal,emi,paylater' // Include PayPal for all currencies
       },
       order_note: `Payment for ${selectedPackage.name} - ${selectedPackage.credits} credits (${currency} ${convertedPrice})`
