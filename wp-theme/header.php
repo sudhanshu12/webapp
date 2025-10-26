@@ -32,7 +32,7 @@
     
     if (!is_page_template('about.php') && !is_page_template('contact.php') && 
         !is_page_template('page-service.php') && !is_page_template('location.php') && 
-        !is_page_template('home-dynamic.php') && !is_page_template('page-about-us.php') &&
+        !is_page_template('home-dynamic.php') && !is_page_template('page-about.php') &&
         !is_page_template('page-contact-us.php') && !$is_service_page && !$is_location_page) {
         bsg_output_meta_tags('home');
     }

@@ -71,16 +71,6 @@ if (function_exists('bsg_get_settings')) {
     }
 }
 
-// Override WordPress title and meta tags
-add_filter('wp_title', function($title) use ($meta_title) {
-    return $meta_title;
-}, 10, 1);
-
-add_filter('document_title_parts', function($title_parts) use ($meta_title) {
-    $title_parts['title'] = $meta_title;
-    return $title_parts;
-}, 10, 1);
-
 // Remove WordPress default title generation to prevent duplicates
 remove_action('wp_head', '_wp_render_title_tag', 1);
 
