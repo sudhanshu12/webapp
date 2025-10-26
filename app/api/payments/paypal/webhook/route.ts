@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
         total_credits: newTotalCredits,
         used_credits: newUsedCredits,
         remaining_credits: newRemainingCredits,
-        plan_type: packageId, // This changes subscription from 'free' to 'starter' or 'pro'
+        plan_type: 'pro', // Database constraint only allows 'pro' as plan type
         updated_at: new Date().toISOString()
       }, { onConflict: 'user_id' });
 

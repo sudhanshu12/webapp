@@ -83,6 +83,7 @@ export async function POST(req: NextRequest) {
       // If no existingCredits found, use default values for new user
 
       // Update or create user credits with proper plan type
+      // Note: Database constraint only allows 'pro' as plan type, not 'starter'
       const { error: updateCreditsError } = await supabase
         .from('user_credits')
         .upsert({
@@ -90,7 +91,7 @@ export async function POST(req: NextRequest) {
           total_credits: newTotalCredits,
           used_credits: newUsedCredits,
           remaining_credits: newRemainingCredits,
-          plan_type: orderData.package_id, // This changes subscription from 'free' to 'starter' or 'pro'
+          plan_type: 'pro', // Database constraint only allows 'pro' as plan type
           updated_at: new Date().toISOString()
         }, { onConflict: 'user_id' });
 
