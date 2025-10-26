@@ -149,6 +149,30 @@ export async function POST(req: NextRequest) {
     console.log('Debug - convertedPrice value:', convertedPrice);
     console.log('Debug - typeof convertedPrice:', typeof convertedPrice);
     
+    // Create payment order record for webhook processing
+    const { error: orderError } = await supabase
+      .from('payment_orders')
+      .insert({
+        order_id: orderId,
+        user_id: userId,
+        user_email: userEmail,
+        package_id: packageId,
+        amount: finalAmount,
+        currency: orderCurrency,
+        status: 'PENDING',
+        payment_status: 'PENDING',
+        cashfree_order_id: cashfreeData.cf_order_id,
+        payment_session_id: cashfreeData.payment_session_id,
+        created_at: new Date().toISOString()
+      });
+
+    if (orderError) {
+      console.error('Error creating payment order record:', orderError);
+      // Don't fail the request, just log the error
+    } else {
+      console.log('Payment order record created successfully');
+    }
+    
     return NextResponse.json({
       success: true,
       paymentSessionId: cashfreeData.payment_session_id,
