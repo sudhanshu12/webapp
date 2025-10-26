@@ -29,19 +29,19 @@ export async function POST(req: NextRequest) {
     console.log('- selectedPackage.priceUSD:', selectedPackage.priceUSD);
     console.log('- userCurrency:', currency);
     
-    // Cashfree supports multiple currencies including USD, EUR, GBP, etc.
-    let convertedPrice, orderCurrency;
-    
-    if (currency === 'INR') {
-      // For India, convert USD to INR
-      const inrRate = 88.7; // Fixed INR rate
-      convertedPrice = Math.round(selectedPackage.priceUSD * inrRate);
-      orderCurrency = 'INR';
-    } else {
-      // For foreign currencies, use USD (Cashfree supports USD)
-      convertedPrice = selectedPackage.priceUSD;
-      orderCurrency = 'USD';
+    // Cashfree only supports INR for this merchant account
+    if (currency !== 'INR') {
+      return NextResponse.json({ 
+        error: 'Cashfree only supports INR currency. Please use PayPal for foreign currencies.',
+        supportedCurrency: 'INR',
+        requestedCurrency: currency
+      }, { status: 400 });
     }
+    
+    // Convert USD to INR for Cashfree
+    const inrRate = 88.7; // Fixed INR rate
+    const convertedPrice = Math.round(selectedPackage.priceUSD * inrRate);
+    const orderCurrency = 'INR';
     
     console.log('Currency conversion for Cashfree:', {
       userCurrency: currency,
