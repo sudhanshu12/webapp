@@ -28,19 +28,10 @@ export async function POST(req: NextRequest) {
       userEmail
     });
 
-    // Simple currency handling: INR for India, USD for all foreign countries
-    let paymentCurrency, paymentAmount;
-    
-    if (currency === 'INR') {
-      // For India, convert USD to INR
-      const inrRate = 88.7; // Fixed INR rate
-      paymentCurrency = 'INR';
-      paymentAmount = Math.round(selectedPackage.priceUSD * inrRate);
-    } else {
-      // For all foreign countries, use USD
-      paymentCurrency = 'USD';
-      paymentAmount = selectedPackage.priceUSD;
-    }
+    // PayPal account currency handling - use USD for all payments
+    // The PayPal account (sudhanshu@scaleblogging.com) accepts USD
+    const paymentCurrency = 'USD';
+    const paymentAmount = selectedPackage.priceUSD;
     
     const paypalBusinessEmail = process.env.PAYPAL_BUSINESS_EMAIL || 'sudhanshu@scaleblogging.com';
     
@@ -55,7 +46,8 @@ export async function POST(req: NextRequest) {
       paymentCurrency: paymentCurrency,
       paymentAmount: paymentAmount,
       originalAmountUSD: selectedPackage.priceUSD,
-      businessEmail: paypalBusinessEmail
+      businessEmail: paypalBusinessEmail,
+      note: 'All PayPal payments use USD currency'
     });
 
     return NextResponse.json({
@@ -66,7 +58,7 @@ export async function POST(req: NextRequest) {
       currency: paymentCurrency,
       originalAmount: selectedPackage.priceUSD,
       originalCurrency: 'USD',
-      message: `PayPal payment link created successfully in ${paymentCurrency}`
+      message: `PayPal payment link created successfully in USD (PayPal account accepts USD only)`
     });
 
   } catch (error) {
