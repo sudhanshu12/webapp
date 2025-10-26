@@ -16,6 +16,10 @@ export async function sendVerificationEmail(data: EmailVerificationData) {
       throw new Error('Resend API key not configured');
     }
 
+    console.log('Sending email via Resend to:', data.email);
+    console.log('Resend API key exists:', !!process.env.RESEND_API_KEY);
+    console.log('Resend API key length:', process.env.RESEND_API_KEY?.length);
+
     const verificationUrl = `${process.env.NEXTAUTH_URL || 'https://createawebsite.click'}/verify-email?token=${data.verificationToken}&email=${encodeURIComponent(data.email)}`;
     
     const { data: emailData, error } = await resend.emails.send({
@@ -168,8 +172,9 @@ export async function sendVerificationEmail(data: EmailVerificationData) {
     });
 
     if (error) {
-      console.error('Email sending error:', error);
-      throw new Error('Failed to send verification email');
+      console.error('Resend email sending error:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
+      throw new Error(`Failed to send verification email: ${error.message || 'Unknown error'}`);
     }
 
     console.log('Verification email sent successfully:', emailData);
