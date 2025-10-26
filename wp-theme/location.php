@@ -278,6 +278,117 @@ add_filter('wpseo_metadesc', function($desc) use ($meta_description) { return $m
 
 get_header(); ?>
 
+<!-- Structured Data (JSON-LD) for Location Page -->
+<script type="application/ld+json">
+<?php
+$location_schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'LocalBusiness',
+    'name' => $business_name,
+    'description' => $meta_description,
+    'url' => get_permalink(),
+    'telephone' => $phone,
+    'email' => $email,
+    'address' => [
+        '@type' => 'PostalAddress',
+        'streetAddress' => $address,
+        'addressLocality' => $location_name,
+        'addressRegion' => $state,
+        'postalCode' => $zip,
+    ],
+    'geo' => [
+        '@type' => 'GeoCoordinates',
+        'latitude' => $settings['latitude'] ?? '',
+        'longitude' => $settings['longitude'] ?? '',
+    ],
+    'serviceArea' => [
+        '@type' => 'GeoCircle',
+        'geoRadius' => '50000',
+        'geoMidpoint' => [
+            '@type' => 'GeoCoordinates',
+            'latitude' => $settings['latitude'] ?? '',
+            'longitude' => $settings['longitude'] ?? '',
+        ],
+    ],
+    'areaServed' => $location_name . ', ' . $state,
+    'openingHours' => $settings['business_hours'] ?? 'Mo-Fr 08:00-17:00',
+    'priceRange' => '$$',
+];
+
+// Add services if available
+$services = $settings['services'] ?? [];
+if (!empty($services)) {
+    $service_items = [];
+    foreach ($services as $service) {
+        if (!empty($service['name'])) {
+            $service_items[] = [
+                '@type' => 'Offer',
+                'name' => $service['name'],
+                'category' => $service['name'],
+                'areaServed' => $location_name . ', ' . $state,
+                'availableAtOrFrom' => [
+                    '@type' => 'Place',
+                    'name' => $business_name,
+                    'address' => $address,
+                ],
+                'itemOffered' => [
+                    '@type' => 'Service',
+                    'name' => $service['name'],
+                ],
+            ];
+        }
+    }
+    $location_schema['hasOfferCatalog'] = [
+        '@type' => 'OfferCatalog',
+        'name' => 'Services in ' . $location_name,
+        'itemListElement' => $service_items,
+    ];
+}
+
+// Add reviews if available
+$reviews = $settings['reviews'] ?? [];
+if (!empty($reviews) && is_array($reviews)) {
+    $total_reviews = count($reviews);
+    $avg_rating = $total_reviews ? round(array_sum(array_map(function($r){return floatval($r['rating'] ?? 0);}, $reviews)) / $total_reviews, 1) : 0;
+
+    $review_schemas = [];
+    foreach ($reviews as $review) {
+        if (empty($review['name']) || empty($review['rating']) || empty($review['text'])) { continue; }
+        $review_schemas[] = [
+            '@type' => 'Review',
+            'author' => [
+                '@type' => 'Person',
+                'name' => $review['name'],
+            ],
+            'reviewRating' => [
+                '@type' => 'Rating',
+                'ratingValue' => intval($review['rating']),
+                'bestRating' => 5,
+                'worstRating' => 1,
+            ],
+            'reviewBody' => $review['text'],
+            'datePublished' => !empty($review['date']) ? $review['date'] : null,
+        ];
+    }
+
+    if ($total_reviews > 0) {
+        $location_schema['aggregateRating'] = [
+            '@type' => 'AggregateRating',
+            'ratingValue' => $avg_rating,
+            'reviewCount' => $total_reviews,
+            'bestRating' => 5,
+            'worstRating' => 1,
+        ];
+        if (!empty($review_schemas)) {
+            $location_schema['review'] = $review_schemas;
+        }
+    }
+}
+
+echo wp_json_encode($location_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+?>
+</script>
+
 <main id="main" class="site-main">
     <?php
     // Get theme settings

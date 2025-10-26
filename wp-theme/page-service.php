@@ -184,6 +184,81 @@ add_filter('pre_get_document_title', function($title) use ($meta_title) {
 
 get_header(); ?>
 
+<!-- Structured Data (JSON-LD) for Service Page -->
+<script type="application/ld+json">
+<?php
+$service_schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'Service',
+    'name' => $service_title,
+    'description' => $meta_description,
+    'provider' => [
+        '@type' => 'LocalBusiness',
+        'name' => $business['name'],
+        'telephone' => $business['phone'],
+        'email' => $business['email'],
+        'address' => [
+            '@type' => 'PostalAddress',
+            'streetAddress' => $business['address'],
+        ],
+        'areaServed' => $business['location'],
+    ],
+    'serviceType' => $service_title,
+    'areaServed' => $business['location'],
+    'offers' => [
+        '@type' => 'Offer',
+        'itemOffered' => [
+            '@type' => 'Service',
+            'name' => $service_title,
+        ],
+        'areaServed' => $business['location'],
+    ],
+];
+
+// Add reviews if available
+$reviews = $settings['reviews'] ?? [];
+if (!empty($reviews) && is_array($reviews)) {
+    $total_reviews = count($reviews);
+    $avg_rating = $total_reviews ? round(array_sum(array_map(function($r){return floatval($r['rating'] ?? 0);}, $reviews)) / $total_reviews, 1) : 0;
+
+    $review_schemas = [];
+    foreach ($reviews as $review) {
+        if (empty($review['name']) || empty($review['rating']) || empty($review['text'])) { continue; }
+        $review_schemas[] = [
+            '@type' => 'Review',
+            'author' => [
+                '@type' => 'Person',
+                'name' => $review['name'],
+            ],
+            'reviewRating' => [
+                '@type' => 'Rating',
+                'ratingValue' => intval($review['rating']),
+                'bestRating' => 5,
+                'worstRating' => 1,
+            ],
+            'reviewBody' => $review['text'],
+            'datePublished' => !empty($review['date']) ? $review['date'] : null,
+        ];
+    }
+
+    if ($total_reviews > 0) {
+        $service_schema['aggregateRating'] = [
+            '@type' => 'AggregateRating',
+            'ratingValue' => $avg_rating,
+            'reviewCount' => $total_reviews,
+            'bestRating' => 5,
+            'worstRating' => 1,
+        ];
+        if (!empty($review_schemas)) {
+            $service_schema['review'] = $review_schemas;
+        }
+    }
+}
+
+echo wp_json_encode($service_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+?>
+</script>
+
 <main id="main" class="site-main">
     <?php
     // Get theme settings
