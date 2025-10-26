@@ -102,10 +102,30 @@ export async function POST(req: NextRequest) {
 
     if (!response.ok) {
       console.error('Cashfree API error:', response.status, responseText);
+      
+      // Try to parse error response for better error message
+      let errorMessage = 'Cashfree payment creation failed';
+      try {
+        const errorData = JSON.parse(responseText);
+        if (errorData.message) {
+          errorMessage = errorData.message;
+        } else if (errorData.error) {
+          errorMessage = errorData.error;
+        }
+      } catch (e) {
+        // Use default error message if parsing fails
+      }
+      
       return NextResponse.json({ 
-        error: 'Cashfree payment creation failed',
+        error: errorMessage,
         details: responseText,
-        status: response.status
+        status: response.status,
+        cashfreeConfig: {
+          baseUrl: cashfreeConfig.baseUrl,
+          environment: cashfreeConfig.environment,
+          hasAppId: !!cashfreeConfig.appId,
+          hasSecretKey: !!cashfreeConfig.secretKey
+        }
       }, { status: 500 });
     }
 

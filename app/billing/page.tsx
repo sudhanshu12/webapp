@@ -183,8 +183,8 @@ export default function BillingPage() {
         console.error('Response status:', response.status);
         
         // If Cashfree fails, offer PayPal as fallback
-        if (errorData.error && errorData.error.includes('not configured')) {
-          const usePayPal = confirm('Cashfree payment is not available. Would you like to use PayPal instead?');
+        if (errorData.error && (errorData.error.includes('not configured') || errorData.error.includes('failed'))) {
+          const usePayPal = confirm('Cashfree payment is not available. Would you like to try PayPal instead?');
           if (usePayPal) {
             setSelectedPaymentMethod('paypal');
             await handlePayPalPayment(packageId);
