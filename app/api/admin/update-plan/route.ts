@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,11 +13,16 @@ export async function POST(request: NextRequest) {
 
     console.log('Updating user plan type:', { userId, planType });
 
-    // Update user plan type
-    const { data: updatedUser, error: updateError } = await supabase
+    if (!supabaseAdmin) {
+      return NextResponse.json({ error: 'Supabase admin client not initialized' }, { status: 500 });
+    }
+
+    // Update user plan type and fix remaining credits
+    const { data: updatedUser, error: updateError } = await supabaseAdmin
       .from('user_credits')
       .update({
         plan_type: planType,
+        remaining_credits: 6, // Fix remaining credits for starter plan
         updated_at: new Date().toISOString()
       })
       .eq('user_id', userId)
