@@ -72,25 +72,31 @@ export default function BillingPage() {
     }
   }, [session, status]);
 
-  // Detect country and set currency - simple approach
+  // Detect country and set currency with real-time rates
   useEffect(() => {
     const detectCountryAndCurrency = async () => {
       try {
         const countryCode = await getCountryFromIP();
         setCountry(countryCode);
         
-        // Simple currency logic: INR for India, USD for all other countries
+        // Get currency with real-time exchange rates
         if (countryCode === 'IN') {
-          setCurrency(CURRENCIES.INR);
-          console.log('Detected India - using INR, rate:', CURRENCIES.INR.rate);
+          const currencyWithRate = await getCurrencyWithRealTimeRate('INR');
+          setCurrency(currencyWithRate);
+          console.log('Detected India - using INR with real-time rate:', currencyWithRate.rate);
         } else {
-          setCurrency(CURRENCIES.USD);
-          console.log('Detected foreign country:', countryCode, '- using USD, rate:', CURRENCIES.USD.rate);
+          const currencyWithRate = await getCurrencyWithRealTimeRate('USD');
+          setCurrency(currencyWithRate);
+          console.log('Detected foreign country:', countryCode, '- using USD with real-time rate:', currencyWithRate.rate);
         }
       } catch (error) {
-        console.error('Error detecting country:', error);
-        // Fallback to USD
-        setCurrency(CURRENCIES.USD);
+        console.error('Error detecting country or fetching rates:', error);
+        // Fallback to static rates
+        if (country === 'IN') {
+          setCurrency(CURRENCIES.INR);
+        } else {
+          setCurrency(CURRENCIES.USD);
+        }
       }
     };
 
