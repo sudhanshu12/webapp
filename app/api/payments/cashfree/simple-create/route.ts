@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cashfreeConfig, paymentPackages } from '@/lib/cashfree';
 import { CURRENCIES, convertPrice } from '@/lib/currency';
+import { supabase } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
