@@ -597,6 +597,11 @@ function bsg_generate_meta_tags($page_type = 'home', $custom_title = '', $custom
  * Output meta tags to head
  */
 function bsg_output_meta_tags($page_type = 'home', $custom_title = '', $custom_description = '') {
+    // Remove WordPress default meta tags to prevent duplicates
+    remove_action('wp_head', '_wp_render_title_tag', 1);
+    remove_action('wp_head', 'wp_generator');
+    remove_action('wp_head', 'rel_canonical');
+    
     $meta = bsg_generate_meta_tags($page_type, $custom_title, $custom_description);
     $business = bsg_get_business_info();
     
