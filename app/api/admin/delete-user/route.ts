@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../../lib/supabase'
+import { supabaseAdmin } from '../../../../lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     console.log(`🗑️ Deleting user ${userId} from Supabase...`);
 
     // First, check if the user exists
-    const { data: existingUser, error: userCheckError } = await supabase
+    const { data: existingUser, error: userCheckError } = await supabaseAdmin
       .from('users')
       .select('id, email')
       .eq('id', userId)
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     // Delete user and all related data in the correct order (respecting foreign key constraints)
     
     // 1. Delete credit transactions
-    const { error: transactionsError, count: transactionsCount } = await supabase
+    const { error: transactionsError, count: transactionsCount } = await supabaseAdmin
       .from('credit_transactions')
       .delete()
       .eq('user_id', userId)
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Delete site creations
-    const { error: sitesError, count: sitesCount } = await supabase
+    const { error: sitesError, count: sitesCount } = await supabaseAdmin
       .from('site_creations')
       .delete()
       .eq('user_id', userId)
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 3. Delete user credits
-    const { error: creditsError, count: creditsCount } = await supabase
+    const { error: creditsError, count: creditsCount } = await supabaseAdmin
       .from('user_credits')
       .delete()
       .eq('user_id', userId)
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 4. Finally, delete the user (OAuth connections will cascade automatically)
-    const { error: userError, count: userCount } = await supabase
+    const { error: userError, count: userCount } = await supabaseAdmin
       .from('users')
       .delete()
       .eq('id', userId)
