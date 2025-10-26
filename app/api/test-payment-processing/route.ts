@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { supabaseAdmin } from '@/lib/supabase';
 import { paymentPackages } from '@/lib/cashfree';
 
 export const dynamic = 'force-dynamic';
@@ -28,8 +28,12 @@ export async function POST(req: NextRequest) {
     const orderId = `test_order_${Date.now()}`;
     const creditsToAdd = selectedPackage.credits;
 
+    if (!supabaseAdmin) {
+      return NextResponse.json({ error: 'Supabase admin client not initialized' }, { status: 500 });
+    }
+
     // 1. Update user credits (simulate webhook)
-    const { data: existingCredits, error: creditsError } = await supabase
+    const { data: existingCredits, error: creditsError } = await supabaseAdmin
       .from('user_credits')
       .select('total_credits, used_credits, remaining_credits')
       .eq('user_id', userId)
@@ -45,7 +49,7 @@ export async function POST(req: NextRequest) {
       newRemainingCredits = existingCredits.remaining_credits + creditsToAdd;
     }
 
-    const { data: updatedCredits, error: updateCreditsError } = await supabase
+    const { data: updatedCredits, error: updateCreditsError } = await supabaseAdmin
       .from('user_credits')
       .upsert({
         user_id: userId,
@@ -64,7 +68,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Create purchase record
-    const { error: purchaseError } = await supabase
+    const { error: purchaseError } = await supabaseAdmin
       .from('purchases')
       .insert({
         user_id: userId,
