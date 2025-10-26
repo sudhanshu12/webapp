@@ -179,10 +179,7 @@ add_action('wp_head', function() use ($meta_title, $meta_description, $business)
     echo '<link rel="canonical" href="' . esc_url(get_permalink()) . '">' . "\n";
 }, 1);
 
-// Force document title
-add_filter('pre_get_document_title', function($title) use ($meta_title) {
-    return $meta_title ?: $title;
-}, 99);
+// Document title is handled by wp_head action above
 
 get_header(); ?>
 
