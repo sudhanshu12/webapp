@@ -590,7 +590,7 @@ export default function BillingPage() {
                     color: '#6b7280',
                     marginBottom: '24px'
                   }}>
-                    {formatPrice(0, currency)}/month
+                    Free
                   </div>
                   <div style={{
                     fontSize: '14px',
@@ -639,7 +639,7 @@ export default function BillingPage() {
                     color: '#111827',
                     marginBottom: '4px'
                   }}>
-                    {formatPrice(convertPrice(49, currency), currency)}
+                    {currency.code === 'INR' ? '₹4,343' : '$49'}
                   </div>
                   <div style={{
                     fontSize: '14px',
@@ -708,7 +708,7 @@ export default function BillingPage() {
                     color: '#111827',
                     marginBottom: '4px'
                   }}>
-                    {formatPrice(convertPrice(129, currency), currency)}
+                    {currency.code === 'INR' ? '₹11,457' : '$129'}
                   </div>
                   <div style={{
                     fontSize: '14px',
