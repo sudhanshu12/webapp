@@ -82,14 +82,9 @@ export default function BillingPage() {
 
   // Update available payment methods when currency changes
   useEffect(() => {
-    // Simple payment method logic: Cashfree for INR, PayPal for USD
-    if (currency.code === 'INR') {
-      setAvailablePaymentMethods(['cashfree']);
-      setSelectedPaymentMethod('cashfree');
-    } else {
-      setAvailablePaymentMethods(['paypal']);
-      setSelectedPaymentMethod('paypal');
-    }
+    // Use Cashfree for all currencies - it supports PayPal and other methods
+    setAvailablePaymentMethods(['cashfree']);
+    setSelectedPaymentMethod('cashfree');
   }, [currency]);
 
   const fetchCredits = async () => {
@@ -136,16 +131,9 @@ export default function BillingPage() {
         button.textContent = 'Processing...';
       }
 
-      // Payment method selection based on currency
-      if (currency.code === 'INR') {
-        console.log('India detected - using Cashfree payment');
-        // Use Cashfree for INR (India)
-        await handleCashfreePayment(packageId);
-      } else {
-        console.log('Foreign country detected - using PayPal payment');
-        // For foreign currencies, use PayPal directly
-        await handlePayPalPayment(packageId);
-      }
+      // Use Cashfree for all payments - it supports multiple currencies and PayPal
+      console.log('Using Cashfree payment for all currencies');
+      await handleCashfreePayment(packageId);
     } catch (error) {
       console.error('Purchase error:', error);
       alert('Payment failed. Please try again.');
