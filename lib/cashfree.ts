@@ -25,7 +25,7 @@ export const paymentPackages = {
   pro: {
     id: 'pro', 
     name: 'Pro Pack',
-    priceUSD: 0.01, // TESTING: ₹1 (0.01 USD)
+    priceUSD: 0.02, // INR 2 (0.02 USD)
     credits: 30,
     description: '30 Website Builds with All Templates'
   }
