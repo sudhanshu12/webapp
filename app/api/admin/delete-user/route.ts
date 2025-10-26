@@ -49,18 +49,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to delete site creations' }, { status: 500 })
     }
 
-    // 3. Delete OAuth connections
-    const { error: oauthError } = await supabase
-      .from('oauth_connections')
-      .delete()
-      .eq('user_id', userId)
-
-    if (oauthError) {
-      console.error('❌ Error deleting OAuth connections:', oauthError)
-      return NextResponse.json({ error: 'Failed to delete OAuth connections' }, { status: 500 })
-    }
-
-    // 4. Delete user credits
+    // 3. Delete user credits
     const { error: creditsError } = await supabase
       .from('user_credits')
       .delete()
@@ -71,7 +60,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to delete user credits' }, { status: 500 })
     }
 
-    // 5. Finally, delete the user
+    // 4. Finally, delete the user (OAuth connections will cascade automatically)
     const { error: userError } = await supabase
       .from('users')
       .delete()
