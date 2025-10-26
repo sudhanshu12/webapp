@@ -71,24 +71,28 @@ export async function POST(req: NextRequest) {
       .eq('user_id', userId)
       .single();
 
-    if (fetchError) {
-      console.error('Error fetching user credits:', fetchError);
-      return NextResponse.json({ error: 'User credits not found' }, { status: 404 });
-    }
+    let newTotalCredits = selectedPackage.credits;
+    let newUsedCredits = 0;
+    let newRemainingCredits = selectedPackage.credits;
 
-    // Update credits
-    const newTotalCredits = userCredits.total_credits + selectedPackage.credits;
-    const newRemainingCredits = userCredits.remaining_credits + selectedPackage.credits;
+    if (userCredits) {
+      // Existing user - add credits
+      newTotalCredits = userCredits.total_credits + selectedPackage.credits;
+      newUsedCredits = userCredits.used_credits;
+      newRemainingCredits = userCredits.remaining_credits + selectedPackage.credits;
+    }
+    // If no userCredits found, use default values for new user
 
     const { error: updateError } = await supabase
       .from('user_credits')
-      .update({
+      .upsert({
+        user_id: userId,
         total_credits: newTotalCredits,
+        used_credits: newUsedCredits,
         remaining_credits: newRemainingCredits,
         plan_type: packageId, // This changes subscription from 'free' to 'starter' or 'pro'
         updated_at: new Date().toISOString()
-      })
-      .eq('user_id', userId);
+      }, { onConflict: 'user_id' });
 
     if (updateError) {
       console.error('Error updating user credits:', updateError);

@@ -71,11 +71,6 @@ export async function POST(req: NextRequest) {
         .eq('user_id', orderData.user_id)
         .single();
 
-      if (creditsError && creditsError.code !== 'PGRST116') {
-        console.error('Error fetching user credits:', creditsError);
-        return NextResponse.json({ error: 'Failed to fetch user credits' }, { status: 500 });
-      }
-
       let newTotalCredits = packageCredits;
       let newUsedCredits = 0;
       let newRemainingCredits = packageCredits;
@@ -85,6 +80,7 @@ export async function POST(req: NextRequest) {
         newUsedCredits = existingCredits.used_credits;
         newRemainingCredits = existingCredits.remaining_credits + packageCredits;
       }
+      // If no existingCredits found, use default values for new user
 
       // Update or create user credits with proper plan type
       const { error: updateCreditsError } = await supabase
@@ -101,6 +97,26 @@ export async function POST(req: NextRequest) {
       if (updateCreditsError) {
         console.error('Error updating user credits:', updateCreditsError);
         return NextResponse.json({ error: 'Failed to update user credits' }, { status: 500 });
+      }
+
+      // Create purchase record
+      const { error: purchaseError } = await supabase
+        .from('purchases')
+        .insert({
+          user_id: orderData.user_id,
+          package_id: orderData.package_id,
+          credits_purchased: packageCredits,
+          amount_paid: orderData.amount,
+          currency: 'INR',
+          order_id: orderId,
+          transaction_id: orderId,
+          payment_method: 'cashfree',
+          status: 'completed',
+          created_at: new Date().toISOString()
+        });
+
+      if (purchaseError) {
+        console.error('Error creating purchase record:', purchaseError);
       }
 
       console.log(`Successfully updated credits for user ${orderData.user_id}. Added ${packageCredits} credits.`);

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { paymentPackages } from '@/lib/cashfree';
-import { getCurrencyWithRealTimeRate, convertPrice } from '@/lib/currency';
+import { supabase } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,6 +49,28 @@ export async function POST(req: NextRequest) {
       businessEmail: paypalBusinessEmail,
       note: 'All PayPal payments use USD currency'
     });
+
+    // Create pending purchase record for webhook processing
+    const { error: pendingError } = await supabase
+      .from('pending_purchases')
+      .insert({
+        order_id: orderId,
+        user_id: userId,
+        user_email: userEmail,
+        package_id: packageId,
+        amount: paymentAmount,
+        currency: paymentCurrency,
+        status: 'pending',
+        payment_method: 'paypal',
+        created_at: new Date().toISOString()
+      });
+
+    if (pendingError) {
+      console.error('Error creating pending purchase record:', pendingError);
+      // Don't fail the request, just log the error
+    } else {
+      console.log('Pending purchase record created successfully');
+    }
 
     return NextResponse.json({
       success: true,
