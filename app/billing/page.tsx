@@ -214,6 +214,26 @@ export default function BillingPage() {
 
   const handlePayPalPayment = async (packageId: string) => {
     try {
+      // Create pending purchase record first
+      const pendingResponse = await fetch('/api/payments/create-checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          packageId,
+          paymentMethod: 'paypal',
+          currency: currency.code
+        })
+      });
+
+      if (!pendingResponse.ok) {
+        throw new Error('Failed to create pending purchase');
+      }
+
+      const pendingData = await pendingResponse.json();
+      console.log('Pending purchase created:', pendingData);
+
       // Create PayPal order
       const response = await fetch('/api/payments/paypal/create-order', {
         method: 'POST',

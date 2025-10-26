@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { paymentPackages } from '@/lib/cashfree';
+import { getCurrencyWithRealTimeRate, convertPrice } from '@/lib/currency';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,34 +21,30 @@ export async function POST(req: NextRequest) {
     // Generate unique order ID
     const orderId = `paypal_order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-    // For foreign currencies, use the original USD price
-    const orderAmount = selectedPackage.priceUSD;
-    
     console.log('PayPal order creation:', {
       packageId,
       orderId,
-      orderAmount,
       currency,
       userEmail
     });
 
-    // For foreign currencies, use PayPal with INR currency (since PayPal account only accepts INR)
-    const paypalBusinessEmail = process.env.PAYPAL_BUSINESS_EMAIL || 'sudhanshu@scaleblogging.com';
+    // Get real-time currency rate for the user's currency
+    const currencyInfo = await getCurrencyWithRealTimeRate(currency);
+    const convertedAmount = convertPrice(selectedPackage.priceUSD, currencyInfo);
     
-    // Convert to INR for PayPal (since PayPal account only accepts INR)
-    const inrRate = 88.7; // Current INR rate
-    const inrAmount = Math.round(selectedPackage.priceUSD * inrRate);
+    const paypalBusinessEmail = process.env.PAYPAL_BUSINESS_EMAIL || 'sudhanshu@scaleblogging.com';
     
     const returnUrl = `${process.env.NEXTAUTH_URL}/dashboard?payment=success&order_id=${orderId}`;
     const cancelUrl = `${process.env.NEXTAUTH_URL}/billing?payment=cancelled`;
     
-    // Create PayPal payment URL with INR currency
-    const approvalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(paypalBusinessEmail)}&item_name=${encodeURIComponent(selectedPackage.name + ' - ' + selectedPackage.credits + ' credits')}&amount=${inrAmount}&currency_code=INR&return=${encodeURIComponent(returnUrl)}&cancel_return=${encodeURIComponent(cancelUrl)}&custom=${orderId}`;
+    // Create PayPal payment URL with user's currency
+    const approvalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(paypalBusinessEmail)}&item_name=${encodeURIComponent(selectedPackage.name + ' - ' + selectedPackage.credits + ' credits')}&amount=${convertedAmount}&currency_code=${currency}&return=${encodeURIComponent(returnUrl)}&cancel_return=${encodeURIComponent(cancelUrl)}&custom=${orderId}`;
     
-    console.log('PayPal payment URL created for foreign currency:', {
-      originalCurrency: currency,
-      originalAmount: orderAmount,
-      inrAmount: inrAmount,
+    console.log('PayPal payment URL created:', {
+      currency: currency,
+      originalAmountUSD: selectedPackage.priceUSD,
+      convertedAmount: convertedAmount,
+      exchangeRate: currencyInfo.rate,
       businessEmail: paypalBusinessEmail
     });
 
@@ -55,11 +52,12 @@ export async function POST(req: NextRequest) {
       success: true,
       orderId: orderId,
       approvalUrl: approvalUrl,
-      amount: inrAmount,
-      currency: 'INR',
-      originalAmount: orderAmount,
-      originalCurrency: currency,
-      message: 'PayPal payment link created successfully (converted to INR)'
+      amount: convertedAmount,
+      currency: currency,
+      originalAmount: selectedPackage.priceUSD,
+      originalCurrency: 'USD',
+      exchangeRate: currencyInfo.rate,
+      message: `PayPal payment link created successfully in ${currency}`
     });
 
   } catch (error) {
