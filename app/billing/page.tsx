@@ -123,6 +123,12 @@ export default function BillingPage() {
         return;
       }
 
+      console.log('Starting purchase process:', {
+        packageId,
+        currency: currency.code,
+        country: country
+      });
+
       // Show loading state
       const button = document.querySelector(`button[onclick*="${packageId}"]`) as HTMLButtonElement;
       if (button) {
@@ -132,9 +138,11 @@ export default function BillingPage() {
 
       // Payment method selection based on currency
       if (currency.code === 'INR') {
+        console.log('India detected - using Cashfree payment');
         // Use Cashfree for INR (India)
         await handleCashfreePayment(packageId);
       } else {
+        console.log('Foreign country detected - using PayPal payment');
         // For foreign currencies, use PayPal directly
         await handlePayPalPayment(packageId);
       }
@@ -205,6 +213,12 @@ export default function BillingPage() {
 
   const handlePayPalPayment = async (packageId: string) => {
     try {
+      console.log('Creating PayPal payment for foreign user:', {
+        packageId,
+        currency: currency.code,
+        userEmail: session?.user?.email
+      });
+
       // Create pending purchase record first
       const pendingResponse = await fetch('/api/payments/create-checkout', {
         method: 'POST',
@@ -217,6 +231,8 @@ export default function BillingPage() {
           currency: currency.code
         })
       });
+
+      console.log('Pending purchase response status:', pendingResponse.status);
 
       if (!pendingResponse.ok) {
         throw new Error('Failed to create pending purchase');
@@ -239,11 +255,14 @@ export default function BillingPage() {
         })
       });
 
+      console.log('PayPal API response status:', response.status);
+
       if (response.ok) {
         const data = await response.json();
         console.log('PayPal payment response:', data);
         
         if (data.approvalUrl) {
+          console.log('Redirecting to PayPal:', data.approvalUrl);
           // Redirect to PayPal
           window.location.href = data.approvalUrl;
         } else {
@@ -251,7 +270,7 @@ export default function BillingPage() {
         }
       } else {
         const errorData = await response.json();
-        console.log('PayPal not configured:', errorData);
+        console.error('PayPal payment failed:', errorData);
         throw new Error(`PayPal not available: ${errorData.message || 'PayPal business email not configured'}`);
       }
     } catch (error) {
