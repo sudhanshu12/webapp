@@ -38,36 +38,48 @@ export default function Dashboard() {
     const paymentSuccess = urlParams.get('payment');
     const orderId = urlParams.get('order_id');
     
-    if (paymentSuccess === 'success' && orderId && session?.user?.id) {
-      console.log('Payment success detected, processing automatically:', { orderId, userId: session.user.id });
+    if (paymentSuccess === 'success' && orderId && session?.user?.email) {
+      console.log('Payment success detected, processing automatically:', { orderId, userEmail: session.user.email });
       
-      // Auto-process the payment
-      fetch('/api/auto-process-payment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          orderId: orderId,
-          userId: session.user.id,
-          paymentMethod: 'auto'
+      // Get user ID from email first
+      fetch(`/api/users/check?email=${encodeURIComponent(session.user.email)}`)
+        .then(response => response.json())
+        .then(userData => {
+          if (userData.users && userData.users.length > 0) {
+            const userId = userData.users[0].id;
+            console.log('Found user ID:', userId);
+            
+            // Auto-process the payment
+            return fetch('/api/auto-process-payment', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                orderId: orderId,
+                userId: userId,
+                paymentMethod: 'auto'
+              })
+            });
+          } else {
+            throw new Error('User not found');
+          }
         })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          console.log('Payment processed automatically:', data);
-          // Refresh credits after processing
-          fetchCredits();
-          // Remove success parameters from URL
-          window.history.replaceState({}, '', '/dashboard');
-        } else {
-          console.error('Auto-payment processing failed:', data);
-        }
-      })
-      .catch(error => {
-        console.error('Error processing payment automatically:', error);
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            console.log('Payment processed automatically:', data);
+            // Refresh credits after processing
+            fetchCredits();
+            // Remove success parameters from URL
+            window.history.replaceState({}, '', '/dashboard');
+          } else {
+            console.error('Auto-payment processing failed:', data);
+          }
+        })
+        .catch(error => {
+          console.error('Error processing payment automatically:', error);
+        });
     }
   }, [session]);
 
