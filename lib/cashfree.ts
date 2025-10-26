@@ -18,7 +18,7 @@ export const paymentPackages = {
   starter: {
     id: 'starter',
     name: 'Starter Pack',
-    priceUSD: 0.01, // TESTING: ₹1 (0.01 USD)
+    priceUSD: 49, // Production price: $49 USD
     credits: 5,
     description: '5 Website Builds with Premium Templates'
   },
