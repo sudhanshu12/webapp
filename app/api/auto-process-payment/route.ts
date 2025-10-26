@@ -21,26 +21,22 @@ export async function POST(req: NextRequest) {
       paymentMethod
     });
 
-    // If packageId is provided, use it directly
+    // Always try to get package_id from payment_orders table first
+    const { data: paymentOrder, error: orderError } = await supabase
+      .from('payment_orders')
+      .select('package_id, user_id, amount, currency')
+      .eq('order_id', orderId)
+      .single();
+
     let finalPackageId = packageId;
     
-    // If packageId is not provided, try to detect from amount
-    if (!finalPackageId && amount) {
-      // For testing amounts (₹1 / $0.01), we need to check the order details
-      const { data: paymentOrder, error: orderError } = await supabase
-        .from('payment_orders')
-        .select('package_id')
-        .eq('order_id', orderId)
-        .single();
-
-      if (!orderError && paymentOrder) {
-        finalPackageId = paymentOrder.package_id;
-        console.log('Detected package from payment_orders:', finalPackageId);
-      } else {
-        // Fallback: assume starter for small amounts
-        finalPackageId = 'starter';
-        console.log('Using fallback package detection: starter');
-      }
+    if (!orderError && paymentOrder) {
+      finalPackageId = paymentOrder.package_id;
+      console.log('Detected package from payment_orders:', finalPackageId);
+    } else if (!finalPackageId) {
+      // Fallback: assume starter for small amounts
+      finalPackageId = 'starter';
+      console.log('Using fallback package detection: starter');
     }
 
     const selectedPackage = paymentPackages[finalPackageId as keyof typeof paymentPackages];
@@ -49,6 +45,22 @@ export async function POST(req: NextRequest) {
     }
 
     const creditsToAdd = selectedPackage.credits;
+
+    // Check if payment was already processed
+    const { data: existingPurchase, error: purchaseCheckError } = await supabase
+      .from('purchases')
+      .select('id')
+      .eq('order_id', orderId)
+      .single();
+
+    if (!purchaseCheckError && existingPurchase) {
+      console.log('Payment already processed for order:', orderId);
+      return NextResponse.json({
+        success: true,
+        message: 'Payment already processed',
+        alreadyProcessed: true
+      });
+    }
 
     // 1. Update user credits
     const { data: existingCredits, error: creditsError } = await supabase

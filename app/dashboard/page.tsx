@@ -32,6 +32,45 @@ export default function Dashboard() {
   });
   const [loading, setLoading] = useState(true);
 
+  // Auto-process payment if coming from success page
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentSuccess = urlParams.get('payment');
+    const orderId = urlParams.get('order_id');
+    
+    if (paymentSuccess === 'success' && orderId && session?.user?.id) {
+      console.log('Payment success detected, processing automatically:', { orderId, userId: session.user.id });
+      
+      // Auto-process the payment
+      fetch('/api/auto-process-payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          userId: session.user.id,
+          paymentMethod: 'auto'
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log('Payment processed automatically:', data);
+          // Refresh credits after processing
+          fetchCredits();
+          // Remove success parameters from URL
+          window.history.replaceState({}, '', '/dashboard');
+        } else {
+          console.error('Auto-payment processing failed:', data);
+        }
+      })
+      .catch(error => {
+        console.error('Error processing payment automatically:', error);
+      });
+    }
+  }, [session]);
+
   // Set page metadata
   useEffect(() => {
     document.title = 'Dashboard - Manage Your Websites | Create A Website Click';
