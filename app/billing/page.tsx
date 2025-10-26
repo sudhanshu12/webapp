@@ -82,10 +82,10 @@ export default function BillingPage() {
         // Simple currency logic: INR for India, USD for all other countries
         if (countryCode === 'IN') {
           setCurrency(CURRENCIES.INR);
-          console.log('Detected India - using INR');
+          console.log('Detected India - using INR, rate:', CURRENCIES.INR.rate);
         } else {
           setCurrency(CURRENCIES.USD);
-          console.log('Detected foreign country:', countryCode, '- using USD');
+          console.log('Detected foreign country:', countryCode, '- using USD, rate:', CURRENCIES.USD.rate);
         }
       } catch (error) {
         console.error('Error detecting country:', error);
@@ -690,6 +690,7 @@ export default function BillingPage() {
                     marginBottom: '4px'
                   }}>
                     {currency.code === 'INR' ? `₹${Math.round(49 * currency.rate)}` : '$49'}
+                    {/* Debug: {JSON.stringify({code: currency.code, rate: currency.rate})} */}
                   </div>
                   <div style={{
                     fontSize: '14px',
@@ -759,6 +760,7 @@ export default function BillingPage() {
                     marginBottom: '4px'
                   }}>
                     {currency.code === 'INR' ? `₹${Math.round(129 * currency.rate)}` : '$129'}
+                    {/* Debug: {JSON.stringify({code: currency.code, rate: currency.rate})} */}
                   </div>
                   <div style={{
                     fontSize: '14px',
