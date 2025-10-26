@@ -18,8 +18,10 @@ export async function POST(request: NextRequest) {
       .eq('id', userId)
       .single()
 
+    console.log(`🔍 User check result:`, { existingUser, userCheckError });
+
     if (userCheckError || !existingUser) {
-      console.error('❌ User not found:', userId)
+      console.error('❌ User not found:', userId, userCheckError)
       return NextResponse.json({ error: 'User not found' }, { status: 404 })
     }
 
