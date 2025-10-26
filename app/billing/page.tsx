@@ -55,31 +55,23 @@ export default function BillingPage() {
     }
   }, [session, status]);
 
-  // Detect country and set currency with real-time rates
+  // Detect country and set currency - simple approach
   useEffect(() => {
     const detectCountryAndCurrency = async () => {
       try {
         const countryCode = await getCountryFromIP();
         setCountry(countryCode);
         
-        // Get currency code for country
-        const countryCurrencyMap: Record<string, string> = {
-          'US': 'USD', 'IN': 'INR', 'GB': 'GBP', 'CA': 'CAD', 'AU': 'AUD',
-          'JP': 'JPY', 'SG': 'SGD', 'AE': 'AED', 'SA': 'SAR',
-          'DE': 'EUR', 'FR': 'EUR', 'IT': 'EUR', 'ES': 'EUR', 'NL': 'EUR',
-          'BE': 'EUR', 'AT': 'EUR', 'FI': 'EUR', 'IE': 'EUR', 'PT': 'EUR',
-          'GR': 'EUR', 'LU': 'EUR', 'MT': 'EUR', 'CY': 'EUR', 'SK': 'EUR',
-          'SI': 'EUR', 'EE': 'EUR', 'LV': 'EUR', 'LT': 'EUR',
-        };
-        
-        const currencyCode = countryCurrencyMap[countryCode] || 'USD';
-        
-        // Get real-time currency rate
-        const detectedCurrency = await getCurrencyWithRealTimeRate(currencyCode);
-        setCurrency(detectedCurrency);
-        console.log('Detected country:', countryCode, 'Currency:', detectedCurrency.code, 'Rate:', detectedCurrency.rate);
+        // Simple currency logic: INR for India, USD for all other countries
+        if (countryCode === 'IN') {
+          setCurrency(CURRENCIES.INR);
+          console.log('Detected India - using INR');
+        } else {
+          setCurrency(CURRENCIES.USD);
+          console.log('Detected foreign country:', countryCode, '- using USD');
+        }
       } catch (error) {
-        console.error('Error detecting country or fetching currency rates:', error);
+        console.error('Error detecting country:', error);
         // Fallback to USD
         setCurrency(CURRENCIES.USD);
       }
@@ -90,13 +82,12 @@ export default function BillingPage() {
 
   // Update available payment methods when currency changes
   useEffect(() => {
-    const methods = CURRENCY_PAYMENT_METHODS[currency.code] || CURRENCY_PAYMENT_METHODS['INR'];
-    setAvailablePaymentMethods(methods.split(','));
-    
-    // Auto-select Cashfree if INR (more payment options), PayPal for others
+    // Simple payment method logic: Cashfree for INR, PayPal for USD
     if (currency.code === 'INR') {
+      setAvailablePaymentMethods(['cashfree']);
       setSelectedPaymentMethod('cashfree');
     } else {
+      setAvailablePaymentMethods(['paypal']);
       setSelectedPaymentMethod('paypal');
     }
   }, [currency]);

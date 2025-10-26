@@ -28,23 +28,33 @@ export async function POST(req: NextRequest) {
       userEmail
     });
 
-    // Get real-time currency rate for the user's currency
-    const currencyInfo = await getCurrencyWithRealTimeRate(currency);
-    const convertedAmount = convertPrice(selectedPackage.priceUSD, currencyInfo);
+    // Simple currency handling: INR for India, USD for all foreign countries
+    let paymentCurrency, paymentAmount;
+    
+    if (currency === 'INR') {
+      // For India, convert USD to INR
+      const inrRate = 88.7; // Fixed INR rate
+      paymentCurrency = 'INR';
+      paymentAmount = Math.round(selectedPackage.priceUSD * inrRate);
+    } else {
+      // For all foreign countries, use USD
+      paymentCurrency = 'USD';
+      paymentAmount = selectedPackage.priceUSD;
+    }
     
     const paypalBusinessEmail = process.env.PAYPAL_BUSINESS_EMAIL || 'sudhanshu@scaleblogging.com';
     
     const returnUrl = `${process.env.NEXTAUTH_URL}/dashboard?payment=success&order_id=${orderId}`;
     const cancelUrl = `${process.env.NEXTAUTH_URL}/billing?payment=cancelled`;
     
-    // Create PayPal payment URL with user's currency
-    const approvalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(paypalBusinessEmail)}&item_name=${encodeURIComponent(selectedPackage.name + ' - ' + selectedPackage.credits + ' credits')}&amount=${convertedAmount}&currency_code=${currency}&return=${encodeURIComponent(returnUrl)}&cancel_return=${encodeURIComponent(cancelUrl)}&custom=${orderId}`;
+    // Create PayPal payment URL
+    const approvalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(paypalBusinessEmail)}&item_name=${encodeURIComponent(selectedPackage.name + ' - ' + selectedPackage.credits + ' credits')}&amount=${paymentAmount}&currency_code=${paymentCurrency}&return=${encodeURIComponent(returnUrl)}&cancel_return=${encodeURIComponent(cancelUrl)}&custom=${orderId}`;
     
     console.log('PayPal payment URL created:', {
-      currency: currency,
+      userCurrency: currency,
+      paymentCurrency: paymentCurrency,
+      paymentAmount: paymentAmount,
       originalAmountUSD: selectedPackage.priceUSD,
-      convertedAmount: convertedAmount,
-      exchangeRate: currencyInfo.rate,
       businessEmail: paypalBusinessEmail
     });
 
@@ -52,12 +62,11 @@ export async function POST(req: NextRequest) {
       success: true,
       orderId: orderId,
       approvalUrl: approvalUrl,
-      amount: convertedAmount,
-      currency: currency,
+      amount: paymentAmount,
+      currency: paymentCurrency,
       originalAmount: selectedPackage.priceUSD,
       originalCurrency: 'USD',
-      exchangeRate: currencyInfo.rate,
-      message: `PayPal payment link created successfully in ${currency}`
+      message: `PayPal payment link created successfully in ${paymentCurrency}`
     });
 
   } catch (error) {
