@@ -45,10 +45,7 @@ add_action('wp_head', function() use ($settings) {
     echo '<link rel="canonical" href="' . esc_url(home_url('/')) . '">' . "\n";
 }, 1);
 
-// Force custom document title from wizard settings
-add_filter('pre_get_document_title', function($title) use ($settings) {
-    return $settings['homepage_meta_title'] ?? 'Create Professional Rank and Rent Websites in Minutes - Create A Website Click';
-}, 99);
+// Document title is handled by wp_head action above
 
 // Performance optimized - minimal debug output
 
