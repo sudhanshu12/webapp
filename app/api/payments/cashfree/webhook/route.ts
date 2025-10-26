@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       // Update user credits
       const { data: existingCredits, error: creditsError } = await supabase
         .from('user_credits')
-        .select('total_credits, used_credits')
+        .select('total_credits, used_credits, remaining_credits')
         .eq('user_id', orderData.user_id)
         .single();
 
@@ -78,20 +78,23 @@ export async function POST(req: NextRequest) {
 
       let newTotalCredits = packageCredits;
       let newUsedCredits = 0;
+      let newRemainingCredits = packageCredits;
 
       if (existingCredits) {
         newTotalCredits = existingCredits.total_credits + packageCredits;
         newUsedCredits = existingCredits.used_credits;
+        newRemainingCredits = existingCredits.remaining_credits + packageCredits;
       }
 
-      // Update or create user credits
+      // Update or create user credits with proper plan type
       const { error: updateCreditsError } = await supabase
         .from('user_credits')
         .upsert({
           user_id: orderData.user_id,
           total_credits: newTotalCredits,
           used_credits: newUsedCredits,
-          plan_type: orderData.package_id,
+          remaining_credits: newRemainingCredits,
+          plan_type: orderData.package_id, // This changes subscription from 'free' to 'starter' or 'pro'
           updated_at: new Date().toISOString()
         }, { onConflict: 'user_id' });
 

@@ -85,6 +85,7 @@ export async function POST(req: NextRequest) {
       .update({
         total_credits: newTotalCredits,
         remaining_credits: newRemainingCredits,
+        plan_type: packageId, // This changes subscription from 'free' to 'starter' or 'pro'
         updated_at: new Date().toISOString()
       })
       .eq('user_id', userId);
