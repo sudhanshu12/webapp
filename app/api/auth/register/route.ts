@@ -84,7 +84,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Send verification email
+    let emailSent = false;
+    let emailError = null;
+    
     try {
+      console.log('Attempting to send verification email to:', email);
+      console.log('Resend API key configured:', !!process.env.RESEND_API_KEY);
+      console.log('SMTP credentials configured:', !!(process.env.SMTP_USER && process.env.SMTP_PASS));
+      
       await sendVerificationEmail({
         email: email,
         firstName: firstName,
@@ -93,11 +100,13 @@ export async function POST(request: NextRequest) {
       })
       
       console.log(`Verification email sent successfully to: ${email}`)
+      emailSent = true;
     } catch (emailError) {
-      console.error('Primary email service failed, trying fallback:', emailError)
+      console.error('Primary email service failed:', emailError)
       
       // Try fallback email service
       try {
+        console.log('Attempting fallback SMTP email service...');
         await sendVerificationEmailFallback({
           email: email,
           firstName: firstName,
@@ -106,8 +115,10 @@ export async function POST(request: NextRequest) {
         })
         
         console.log(`Fallback verification email sent successfully to: ${email}`)
+        emailSent = true;
       } catch (fallbackError) {
         console.error('Both email services failed:', fallbackError)
+        emailError = fallbackError;
         // Don't fail registration if email sending fails
         // User can still verify manually or resend email
       }
@@ -115,8 +126,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'User registered successfully. Please check your email for verification instructions.',
-      emailSent: true
+      message: emailSent 
+        ? 'User registered successfully. Please check your email for verification instructions.'
+        : 'User registered successfully, but email verification could not be sent. Please contact support.',
+      emailSent: emailSent,
+      emailError: emailError ? emailError.message : null
     })
 
   } catch (error) {
