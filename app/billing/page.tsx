@@ -640,7 +640,7 @@ export default function BillingPage() {
                     color: '#111827',
                     marginBottom: '4px'
                   }}>
-                    {currency.code === 'INR' ? '₹4,343' : '$49'}
+                    {currency.code === 'INR' ? '₹1' : '$0.01'}
                   </div>
                   <div style={{
                     fontSize: '14px',
