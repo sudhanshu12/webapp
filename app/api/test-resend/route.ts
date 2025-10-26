@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     console.log('API Key starts with:', process.env.RESEND_API_KEY?.substring(0, 5))
 
     const { data, error } = await resend.emails.send({
-      from: 'Create A Website Click <noreply@createawebsite.click>',
+      from: 'Create A Website Click <noreply@start.createawebsite.click>',
       to: [email],
       subject: 'Resend API Test - Create A Website Click',
       html: `

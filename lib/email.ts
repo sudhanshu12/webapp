@@ -23,7 +23,7 @@ export async function sendVerificationEmail(data: EmailVerificationData) {
     const verificationUrl = `${process.env.NEXTAUTH_URL || 'https://createawebsite.click'}/verify-email?token=${data.verificationToken}&email=${encodeURIComponent(data.email)}`;
     
     const { data: emailData, error } = await resend.emails.send({
-      from: 'Create A Website Click <noreply@createawebsite.click>',
+      from: 'Create A Website Click <noreply@start.createawebsite.click>',
       to: [data.email],
       subject: 'Verify Your Email Address - Create A Website Click',
       html: `
