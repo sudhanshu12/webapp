@@ -51,9 +51,45 @@ LEMON_SQUEEZY_VARIANT_ID = [your-variant-id]
 LEMON_SQUEEZY_WEBHOOK_SECRET = [your-webhook-secret]
 ```
 
-**Note:** Get these from your Lemon Squeezy dashboard after creating your account and store.
+### Email Service Configuration (Required for User Registration)
+**Primary Email Service (Resend) - Recommended:**
+```
+RESEND_API_KEY = [your-resend-api-key]
+```
+
+**Fallback Email Service (SMTP) - Optional:**
+```
+SMTP_HOST = smtp.gmail.com
+SMTP_PORT = 587
+SMTP_USER = [your-email@gmail.com]
+SMTP_PASS = [your-app-password]
+SMTP_FROM = noreply@createawebsite.click
+```
+
+**Note:** 
+- Resend is the primary email service (recommended for production)
+- SMTP is used as fallback if Resend fails
+- For Gmail SMTP, use App Password instead of regular password
+- Get Resend API key from: https://resend.com/api-keys
 
 ---
+
+## Setup Instructions
+
+1. **Copy all environment variables** from above to your Vercel Dashboard
+2. **Set up Resend account** at https://resend.com and get your API key
+3. **Optional:** Set up SMTP fallback with Gmail App Password
+4. **Deploy** your application to Vercel
+5. **Test** user registration and email verification
+
+---
+
+## Troubleshooting
+
+- **Email not sending:** Check Resend API key and SMTP credentials
+- **Verification not working:** Ensure NEXTAUTH_URL is set correctly
+- **Google OAuth issues:** Verify Google Client ID and Secret
+- **Database errors:** Check Supabase credentials and permissions
 
 ## For Local Development
 

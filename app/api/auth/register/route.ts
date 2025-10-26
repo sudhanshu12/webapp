@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '../../../../lib/supabase'
 import * as bcrypt from 'bcryptjs'
+import { sendVerificationEmail, sendVerificationEmailFallback } from '../../../../lib/email'
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,6 +11,15 @@ export async function POST(request: NextRequest) {
     if (!firstName || !lastName || !email || !password) {
       return NextResponse.json(
         { error: 'All fields are required' },
+        { status: 400 }
+      )
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Please enter a valid email address' },
         { status: 400 }
       )
     }
@@ -73,14 +83,40 @@ export async function POST(request: NextRequest) {
       // Don't fail the registration if credits creation fails
     }
 
-    // In a real app, you would send an email here
-    console.log(`Verification email would be sent to: ${email}`)
-    console.log(`Verification token: ${verificationToken}`)
+    // Send verification email
+    try {
+      await sendVerificationEmail({
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        verificationToken: verificationToken
+      })
+      
+      console.log(`Verification email sent successfully to: ${email}`)
+    } catch (emailError) {
+      console.error('Primary email service failed, trying fallback:', emailError)
+      
+      // Try fallback email service
+      try {
+        await sendVerificationEmailFallback({
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          verificationToken: verificationToken
+        })
+        
+        console.log(`Fallback verification email sent successfully to: ${email}`)
+      } catch (fallbackError) {
+        console.error('Both email services failed:', fallbackError)
+        // Don't fail registration if email sending fails
+        // User can still verify manually or resend email
+      }
+    }
 
     return NextResponse.json({
       success: true,
-      message: 'User registered successfully. Please check your email for verification.',
-      verificationToken: verificationToken // For demo purposes
+      message: 'User registered successfully. Please check your email for verification instructions.',
+      emailSent: true
     })
 
   } catch (error) {

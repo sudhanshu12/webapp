@@ -17,7 +17,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [emailSent, setEmailSent] = useState(false);
-  const [verificationToken, setVerificationToken] = useState('');
+  const [resendingEmail, setResendingEmail] = useState(false);
 
   // Set page metadata
   useEffect(() => {
@@ -84,9 +84,6 @@ export default function RegisterPage() {
         return;
       }
 
-      // Store verification token for demo
-      setVerificationToken(data.verificationToken);
-      
       // Show email sent message
       setEmailSent(true);
     } catch (err) {
@@ -112,6 +109,38 @@ export default function RegisterPage() {
     }
   };
 
+  const handleResendEmail = async () => {
+    setResendingEmail(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/auth/resend-verification', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Failed to resend verification email');
+        return;
+      }
+
+      // Show success message
+      setError('');
+      alert('Verification email sent successfully! Please check your inbox.');
+    } catch (err) {
+      setError('Failed to resend verification email. Please try again.');
+    } finally {
+      setResendingEmail(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#4C1D95] flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
@@ -121,28 +150,55 @@ export default function RegisterPage() {
           
           {emailSent ? (
             <div className="text-center">
-              <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
-                <h3 className="font-semibold mb-2">📧 Verification Email Sent!</h3>
-                <p className="text-sm mb-3">
-                  We've sent a verification email to <strong>{formData.email}</strong>. 
+              <div className="mb-6 p-6 bg-green-50 border border-green-200 text-green-800 rounded-xl">
+                <div className="text-4xl mb-4">📧</div>
+                <h3 className="text-xl font-bold mb-3 text-green-900">Verification Email Sent!</h3>
+                <p className="text-sm mb-4 text-green-700">
+                  We've sent a verification email to <strong className="text-green-900">{formData.email}</strong>. 
                   Please check your inbox and click the verification link to activate your account.
                 </p>
-                <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-xs text-blue-700 mb-2">
-                    <strong>Demo:</strong> Click the button below to simulate email verification:
+                
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <h4 className="font-semibold text-blue-900 mb-2">📋 Next Steps:</h4>
+                  <ul className="text-sm text-blue-800 text-left space-y-1">
+                    <li>• Check your email inbox (and spam folder)</li>
+                    <li>• Click the verification link in the email</li>
+                    <li>• Return here to log in to your account</li>
+                  </ul>
+                </div>
+                
+                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-xs text-yellow-800">
+                    <strong>Note:</strong> The verification link will expire in 24 hours. If you don't receive the email within a few minutes, please check your spam folder or contact support.
                   </p>
-                  <Link 
-                    href={`/verify-email?token=${verificationToken}&email=${formData.email}`}
-                    className="inline-block bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-sm font-medium transition-colors"
-                  >
-                    Verify Email (Demo)
-                  </Link>
                 </div>
               </div>
-              <div className="mt-4">
-                <Link href="/login" className="text-blue-600 hover:underline font-medium">
+              
+              <div className="space-y-3">
+                <Link 
+                  href="/login" 
+                  className="block w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg font-medium transition-colors"
+                >
                   Go to Login Page
                 </Link>
+                
+                <button
+                  onClick={handleResendEmail}
+                  disabled={resendingEmail}
+                  className="block w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-2 px-4 rounded-lg font-medium transition-colors text-sm"
+                >
+                  {resendingEmail ? 'Sending...' : 'Resend Verification Email'}
+                </button>
+                
+                <button
+                  onClick={() => {
+                    setEmailSent(false);
+                    setError('');
+                  }}
+                  className="text-gray-600 hover:text-gray-800 text-sm underline"
+                >
+                  Try registering again
+                </button>
               </div>
             </div>
           ) : (
