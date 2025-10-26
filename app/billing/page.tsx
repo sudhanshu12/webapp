@@ -192,6 +192,7 @@ export default function BillingPage() {
       } else {
         const errorData = await response.json();
         console.error('Cashfree payment error:', errorData);
+        console.error('Response status:', response.status);
         
         // If Cashfree fails, offer PayPal as fallback
         if (errorData.error && errorData.error.includes('not configured')) {
@@ -203,7 +204,7 @@ export default function BillingPage() {
           }
         }
         
-        alert(`Payment failed: ${errorData.error || 'Unknown error'}`);
+        alert(`Payment failed: ${errorData.error || errorData.message || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('Cashfree payment error:', error);
@@ -219,27 +220,8 @@ export default function BillingPage() {
         userEmail: session?.user?.email
       });
 
-      // Create pending purchase record first
-      const pendingResponse = await fetch('/api/payments/create-checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          packageId,
-          paymentMethod: 'paypal',
-          currency: currency.code
-        })
-      });
-
-      console.log('Pending purchase response status:', pendingResponse.status);
-
-      if (!pendingResponse.ok) {
-        throw new Error('Failed to create pending purchase');
-      }
-
-      const pendingData = await pendingResponse.json();
-      console.log('Pending purchase created:', pendingData);
+      // Skip pending purchase creation for now - PayPal will handle it via webhook
+      console.log('Skipping pending purchase creation - PayPal will handle via webhook');
 
       // Create PayPal order
       const response = await fetch('/api/payments/paypal/create-order', {
@@ -266,12 +248,14 @@ export default function BillingPage() {
           // Redirect to PayPal
           window.location.href = data.approvalUrl;
         } else {
+          console.error('No approvalUrl in PayPal response:', data);
           throw new Error('PayPal payment link not received');
         }
       } else {
         const errorData = await response.json();
         console.error('PayPal payment failed:', errorData);
-        throw new Error(`PayPal not available: ${errorData.message || 'PayPal business email not configured'}`);
+        console.error('Response status:', response.status);
+        throw new Error(`PayPal payment failed: ${errorData.error || errorData.message || 'Unknown error'}`);
       }
     } catch (error) {
       console.error('PayPal payment error:', error);
