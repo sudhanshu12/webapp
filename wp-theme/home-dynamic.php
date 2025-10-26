@@ -13,9 +13,10 @@ echo '<!-- BSG DYNAMIC TEMPLATE ACTIVE -->';
 
 // Add custom meta tags to head - this must be done before get_header()
 add_action('wp_head', function() use ($settings) {
-    // Remove default WordPress title and meta tags
+    // Remove default WordPress title and meta tags to prevent duplicates
     remove_action('wp_head', '_wp_render_title_tag', 1);
     remove_action('wp_head', 'wp_generator');
+    remove_action('wp_head', 'rel_canonical');
     
     // Get meta tags from wizard settings
     $meta_title = $settings['homepage_meta_title'] ?? 'Create Professional Rank and Rent Websites in Minutes - Create A Website Click';
@@ -25,13 +26,22 @@ add_action('wp_head', function() use ($settings) {
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
     echo '<meta name="keywords" content="' . esc_attr($meta_keywords) . '">' . "\n";
+    echo '<meta name="author" content="' . esc_attr($settings['business_name'] ?? 'Create A Website Click') . '">' . "\n";
+    echo '<meta name="robots" content="index, follow">' . "\n";
+    
+    // Open Graph Meta Tags
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta property="og:description" content="' . esc_attr($meta_description) . '">' . "\n";
     echo '<meta property="og:type" content="website">' . "\n";
+    echo '<meta property="og:url" content="' . esc_url(home_url('/')) . '">' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr($settings['business_name'] ?? 'Create A Website Click') . '">' . "\n";
     
+    // Twitter Card Meta Tags
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
     echo '<meta name="twitter:title" content="' . esc_attr($meta_title) . '">' . "\n";
     echo '<meta name="twitter:description" content="' . esc_attr($meta_description) . '">' . "\n";
-    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    
+    // Canonical URL
     echo '<link rel="canonical" href="' . esc_url(home_url('/')) . '">' . "\n";
 }, 1);
 
@@ -121,41 +131,6 @@ $button_color = $colors['button'];
 // Load WordPress header with all necessary meta tags and assets
 get_header();
 ?>
-<!-- Enhanced Meta Tags for Homepage -->
-<title><?php echo esc_html($settings['homepage_meta_title'] ?? $business_name . ' - Professional Services in ' . ($settings['state'] ?? 'Your Area')); ?></title>
-<meta name="description" content="<?php echo esc_attr($settings['homepage_meta_description'] ?? $business_name . ' provides professional services in ' . ($settings['state'] ?? 'your area') . '. Get free estimates, expert installation, and reliable service. Call ' . $phone . ' today!'); ?>">
-<meta name="keywords" content="<?php echo esc_attr($settings['homepage_meta_keywords'] ?? 'professional services, ' . strtolower($business_name) . ', ' . ($settings['state'] ?? 'your area') . ', installation, repair, contractor, free estimate'); ?>">
-<meta name="author" content="<?php echo esc_attr($business_name); ?>">
-<meta name="robots" content="index, follow">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- Performance Optimizations -->
-<link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-<link rel="dns-prefetch" href="//ik.imagekit.io">
-<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-<link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
-
-<!-- Open Graph Meta Tags -->
-<meta property="og:title" content="<?php echo esc_attr($settings['homepage_meta_title'] ?? $business_name . ' - Professional Services in ' . ($settings['state'] ?? 'Your Area')); ?>">
-<meta property="og:description" content="<?php echo esc_attr($settings['homepage_meta_description'] ?? $business_name . ' provides professional services in ' . ($settings['state'] ?? 'your area') . '. Get free estimates, expert installation, and reliable service.'); ?>">
-<meta property="og:type" content="website">
-<meta property="og:url" content="<?php echo esc_url(home_url('/')); ?>">
-<meta property="og:site_name" content="<?php echo esc_attr($business_name); ?>">
-
-<!-- Twitter Card Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="<?php echo esc_attr($settings['homepage_meta_title'] ?? $business_name . ' - Professional Services in ' . ($settings['state'] ?? 'Your Area')); ?>">
-<meta name="twitter:description" content="<?php echo esc_attr($settings['homepage_meta_description'] ?? $business_name . ' provides professional services in ' . ($settings['state'] ?? 'your area') . '. Get free estimates, expert installation, and reliable service.'); ?>">
-
-<!-- Canonical URL -->
-<link rel="canonical" href="<?php echo esc_url(home_url('/')); ?>">
-<meta property="og:url" content="<?php echo esc_url(home_url('/')); ?>">
-<meta property="og:site_name" content="<?php echo esc_attr($business_name); ?>">
-
-<!-- Twitter Card Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="<?php echo esc_attr($settings['homepage_meta_title'] ?? $business_name . ' - ' . ($tagline ?? 'Professional Services')); ?>">
-<meta name="twitter:description" content="<?php echo esc_attr($settings['homepage_meta_description'] ?? $business_name . ' provides professional services in ' . ($settings['location'] ?? 'your area') . '. Get free estimates, expert installation, and reliable service.'); ?>">
 
 <!-- Structured Data (JSON-LD) -->
 <script type="application/ld+json">

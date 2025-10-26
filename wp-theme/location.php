@@ -252,6 +252,11 @@ error_log('Location description preview: ' . substr($location_description, 0, 20
 
 // Add meta tags to head - Use higher priority to ensure they override default
 add_action('wp_head', function() use ($meta_title, $meta_description) {
+    // Remove default WordPress title and meta tags to prevent duplicates
+    remove_action('wp_head', '_wp_render_title_tag', 1);
+    remove_action('wp_head', 'wp_generator');
+    remove_action('wp_head', 'rel_canonical');
+    
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";

@@ -150,6 +150,11 @@ if (empty($service_description) || strlen($service_description) < 100 || strip_t
 
 // Add single meta tags to head - use wizard service data
 add_action('wp_head', function() use ($meta_title, $meta_description, $business) {
+    // Remove default WordPress title and meta tags to prevent duplicates
+    remove_action('wp_head', '_wp_render_title_tag', 1);
+    remove_action('wp_head', 'wp_generator');
+    remove_action('wp_head', 'rel_canonical');
+    
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
     echo '<meta name="keywords" content="' . strtolower($service_title) . ', professional services, ' . $business['name'] . ', quality work">' . "\n";
