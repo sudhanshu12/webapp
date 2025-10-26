@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../../lib/supabase'
+import { supabase } from '@/lib/supabase'
 import * as bcrypt from 'bcryptjs'
-import { sendVerificationEmail, sendVerificationEmailFallback } from '../../../../lib/email'
+import { sendVerificationEmail, sendVerificationEmailFallback } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { sendVerificationEmail, sendVerificationEmailFallback } from '../../../../lib/email'
+import { sendVerificationEmail, sendVerificationEmailFallback } from '@/lib/email'
 
 export async function POST(request: NextRequest) {
   try {
