@@ -18,6 +18,14 @@ add_action('wp_head', function() use ($settings) {
     remove_action('wp_head', 'wp_generator');
     remove_action('wp_head', 'rel_canonical');
     
+    // Debug: Log meta tag settings
+    error_log('=== HOMEPAGE META TAGS DEBUG ===');
+    error_log('homepage_meta_title: ' . ($settings['homepage_meta_title'] ?? 'NOT SET'));
+    error_log('homepage_meta_description: ' . ($settings['homepage_meta_description'] ?? 'NOT SET'));
+    error_log('homepage_meta_keywords: ' . ($settings['homepage_meta_keywords'] ?? 'NOT SET'));
+    error_log('business_name: ' . ($settings['business_name'] ?? 'NOT SET'));
+    error_log('=== HOMEPAGE META TAGS DEBUG END ===');
+    
     // Get meta tags from wizard settings
     $meta_title = $settings['homepage_meta_title'] ?? 'Create Professional Rank and Rent Websites in Minutes - Create A Website Click';
     $meta_description = $settings['homepage_meta_description'] ?? 'Build professional rank and rent business websites in minutes. Create stunning, SEO-optimized websites for your business with our easy-to-use platform.';
