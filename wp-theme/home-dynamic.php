@@ -17,38 +17,62 @@ $meta_title = $settings['homepage_meta_title'] ??
               $settings['title'] ?? 
               ($settings['business_name'] ?? 'Your Business') . ' - Professional Services';
 
+// Completely override WordPress title generation from the very beginning
+add_filter('pre_get_document_title', function() use ($meta_title) {
+    return $meta_title;
+}, 1);
+
+add_filter('wp_title', function($title) use ($meta_title) {
+    return $meta_title;
+}, 1);
+
+add_filter('document_title_parts', function($title_parts) use ($meta_title) {
+    return ['title' => $meta_title];
+}, 1);
+
+// Remove ALL WordPress title-related actions and filters
+remove_action('wp_head', '_wp_render_title_tag', 1);
+remove_action('wp_head', 'wp_generator');
+remove_action('wp_head', 'rel_canonical');
+
+// Remove any existing title filters that might interfere
+remove_all_filters('wp_title');
+remove_all_filters('pre_get_document_title');
+remove_all_filters('document_title_parts');
+
+// Re-add our title filters with highest priority
+add_filter('pre_get_document_title', function() use ($meta_title) {
+    return $meta_title;
+}, 999);
+
+add_filter('wp_title', function($title) use ($meta_title) {
+    return $meta_title;
+}, 999);
+
+add_filter('document_title_parts', function($title_parts) use ($meta_title) {
+    return ['title' => $meta_title];
+}, 999);
+
+// Start output buffering BEFORE get_header() to catch and remove any empty title tags
+ob_start(function($buffer) use ($meta_title) {
+    // Remove empty title tags more aggressively
+    $buffer = preg_replace('/<title><\/title>/', '', $buffer);
+    $buffer = preg_replace('/<title>\s*<\/title>/', '', $buffer);
+    $buffer = preg_replace('/<title>\s*<\/title>/', '', $buffer);
+    
+    // Remove any title tags that don't contain our custom title
+    $buffer = preg_replace('/<title>[^<]*<\/title>/', '', $buffer);
+    
+    // Ensure our title is present and is the only title
+    if (strpos($buffer, '<title>' . esc_html($meta_title) . '</title>') === false) {
+        $buffer = str_replace('</head>', '<title>' . esc_html($meta_title) . '</title>' . "\n" . '</head>', $buffer);
+    }
+    
+    return $buffer;
+});
+
 // Add custom meta tags to head - this must be done before get_header()
 add_action('wp_head', function() use ($settings, $meta_title) {
-    // Remove default WordPress title and meta tags to prevent duplicates
-    remove_action('wp_head', '_wp_render_title_tag', 1);
-    remove_action('wp_head', 'wp_generator');
-    remove_action('wp_head', 'rel_canonical');
-    
-    // Also remove the title tag filter to prevent empty title
-    remove_filter('wp_title', 'bsg_custom_title');
-    remove_filter('document_title_parts', 'bsg_custom_document_title');
-    
-    // Force our custom title to prevent empty title tag
-    add_filter('pre_get_document_title', function() use ($meta_title) {
-        return $meta_title;
-    }, 999);
-    
-    // Additional filter to override any empty title
-    add_filter('wp_title', function($title) use ($meta_title) {
-        return empty($title) ? $meta_title : $title;
-    }, 999);
-    
-    // Start output buffering to catch and remove any empty title tags
-    ob_start(function($buffer) use ($meta_title) {
-        // Remove empty title tags
-        $buffer = preg_replace('/<title><\/title>/', '', $buffer);
-        $buffer = preg_replace('/<title>\s*<\/title>/', '', $buffer);
-        // Ensure our title is present
-        if (strpos($buffer, '<title>' . esc_html($meta_title) . '</title>') === false) {
-            $buffer = str_replace('</head>', '<title>' . esc_html($meta_title) . '</title>' . "\n" . '</head>', $buffer);
-        }
-        return $buffer;
-    });
     
     // Debug: Add visible debugging output to browser
     echo '<!-- HOMEPAGE META TAGS DEBUG -->' . "\n";
