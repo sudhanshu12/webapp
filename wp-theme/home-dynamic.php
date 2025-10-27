@@ -789,13 +789,21 @@ echo wp_json_encode($faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
         .hero-section .hero-content p:not(.subtitle) {
             color: <?php echo esc_attr($settings['hero_subheading_color'] ?? '#8f8f8f'); ?> !important;
         }
-        .hero-section .hero-actions .btn-teal {
-            background: <?php echo esc_attr($settings['hero_book_btn_bg'] ?? '#2ee6c5'); ?> !important;
-            color: <?php echo esc_attr($settings['hero_book_btn_text'] ?? '#ffffff'); ?> !important;
-        }
         .hero-section .hero-actions .btn-dark {
             background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#232834'); ?> !important;
             color: <?php echo esc_attr($settings['hero_call_btn_text'] ?? '#ffffff'); ?> !important;
+            padding: 18px 36px !important;
+            border-radius: 12px !important;
+            font-weight: 700 !important;
+            font-size: 1.2rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+            transition: all 0.3s ease !important;
+        }
+        .hero-section .hero-actions .btn-dark:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
         }
         .hero-section .google-rating span {
             color: <?php echo esc_attr($settings['hero_reviews_text_color'] ?? '#232834'); ?> !important;
@@ -818,9 +826,11 @@ echo wp_json_encode($faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
                         <?php echo esc_html($settings['hero_description']); ?>
                     </p>
                     <?php endif; ?>
-                    <div class="hero-actions" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-                        <a href="<?php echo esc_url($settings['hero_book_btn_link'] ?? '#'); ?>" class="btn btn-teal" style="background: <?php echo esc_attr($settings['hero_book_btn_bg'] ?? '#2ee6c5'); ?>; color: <?php echo esc_attr($settings['hero_book_btn_text'] ?? '#ffffff'); ?>; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">Book Online</a>
-                        <a href="<?php echo esc_url($settings['hero_call_btn_link'] ?? 'tel:' . ($phone ?? '')); ?>" class="btn btn-dark" style="background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['hero_call_btn_text'] ?? '#ffffff'); ?>; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-block;">Call <?php echo esc_html($phone); ?></a>
+                    <div class="hero-actions" style="display: flex; justify-content: center; margin-bottom: 1.5rem;">
+                        <a href="<?php echo esc_url($settings['hero_call_btn_link'] ?? 'tel:' . ($phone ?? '')); ?>" class="btn btn-dark" style="background: <?php echo esc_attr($settings['hero_call_btn_bg'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['hero_call_btn_text'] ?? '#ffffff'); ?>; padding: 18px 36px; border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.75rem; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;">
+                            <i class="fa-solid fa-phone" style="font-size: 1.1rem;"></i>
+                            Call <?php echo esc_html($phone); ?>
+                        </a>
                     </div>
                     <div class="google-rating" style="display: flex; align-items: center; gap: 0.5rem;">
                         <div class="stars" style="display: flex; gap: 0.2rem;">
