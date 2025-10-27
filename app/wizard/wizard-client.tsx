@@ -2979,17 +2979,17 @@ export default function WizardClient() {
 
                       {/* Preview Box */}
                       <div style={{
-                        border: '2px solid #f59e0b',
+                        border: `2px solid ${form.global_primary_color || '#2563eb'}`,
                         borderRadius: '12px',
                         padding: '28px',
-                        backgroundColor: '#fef9e7',
+                        backgroundColor: form.use_default_color_scheme ? '#fef9e7' : (getThemeColors(form.color_theme || 'ocean').light),
                         marginTop: '20px',
                         boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)'
                       }}>
                         <div style={{
                           fontWeight: 700,
                           marginBottom: '20px',
-                          color: '#78350f',
+                          color: form.use_default_color_scheme ? '#78350f' : (getThemeColors(form.color_theme || 'ocean').text),
                           fontSize: '14px',
                           textTransform: 'uppercase',
                           letterSpacing: '0.5px'
@@ -3000,7 +3000,7 @@ export default function WizardClient() {
                         {/* Preview content */}
                         <div style={{
                           padding: '0',
-                          color: '#78350f',
+                          color: form.use_default_color_scheme ? '#78350f' : (getThemeColors(form.color_theme || 'ocean').text),
                           marginBottom: '16px',
                           fontSize: '22px',
                           fontWeight: 700,
@@ -3011,7 +3011,7 @@ export default function WizardClient() {
                         
                         <p style={{
                           fontSize: '15px',
-                          color: '#1a1a1a',
+                          color: form.use_default_color_scheme ? '#1a1a1a' : (getThemeColors(form.color_theme || 'ocean').text),
                           marginBottom: '24px',
                           lineHeight: '1.6',
                           fontWeight: 400
@@ -3020,7 +3020,7 @@ export default function WizardClient() {
                         </p>
                         
                         <button style={{
-                          backgroundColor: '#f59e0b',
+                          backgroundColor: form.use_default_color_scheme ? '#f59e0b' : (form.global_primary_color || getThemeColors(form.color_theme || 'ocean').primary),
                           color: '#ffffff',
                           border: 'none',
                           padding: '12px 24px',
