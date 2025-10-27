@@ -10,6 +10,9 @@
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="https://ik.imagekit.io">
     
+    <!-- Performance Script -->
+    <script src="<?php echo get_template_directory_uri(); ?>/assets/js/performance.js" defer></script>
+    
     <!-- Critical CSS for faster rendering -->
     <style>
         /* Critical CSS for above-the-fold content */

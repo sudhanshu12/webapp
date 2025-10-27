@@ -5027,3 +5027,144 @@ if (!function_exists('bsg_get_section_visibility')) {
         return [];
     }
 }
+
+// ========================================
+// IMAGE OPTIMIZATION FUNCTIONS
+// ========================================
+
+// Enable WebP and AVIF image formats
+function bsg_add_image_support() {
+    add_theme_support('webp');
+    add_theme_support('avif');
+}
+add_action('after_setup_theme', 'bsg_add_image_support');
+
+// Add responsive image sizes
+function bsg_add_image_sizes() {
+    add_image_size('hero-large', 1920, 1080, true);
+    add_image_size('hero-medium', 1200, 675, true);
+    add_image_size('hero-small', 800, 450, true);
+    add_image_size('team-large', 600, 600, true);
+    add_image_size('team-medium', 400, 400, true);
+    add_image_size('team-small', 300, 300, true);
+    add_image_size('content-large', 800, 600, true);
+    add_image_size('content-medium', 600, 450, true);
+    add_image_size('content-small', 400, 300, true);
+}
+add_action('after_setup_theme', 'bsg_add_image_sizes');
+
+// Generate WebP versions of uploaded images
+function bsg_generate_webp_images($attachment_id) {
+    $file_path = get_attached_file($attachment_id);
+    if (!$file_path || !file_exists($file_path)) {
+        return;
+    }
+    
+    $file_info = pathinfo($file_path);
+    $webp_path = $file_info['dirname'] . '/' . $file_info['filename'] . '.webp';
+    
+    // Only convert if WebP doesn't exist
+    if (!file_exists($webp_path)) {
+        $image = wp_get_image_editor($file_path);
+        if (!is_wp_error($image)) {
+            $image->set_quality(85);
+            $image->save($webp_path, 'image/webp');
+        }
+    }
+}
+add_action('wp_generate_attachment_metadata', 'bsg_generate_webp_images');
+
+// Serve WebP images when supported
+function bsg_serve_webp_images($html, $attachment_id) {
+    if (strpos($_SERVER['HTTP_ACCEPT'] ?? '', 'image/webp') !== false) {
+        $file_path = get_attached_file($attachment_id);
+        if ($file_path) {
+            $file_info = pathinfo($file_path);
+            $webp_path = $file_info['dirname'] . '/' . $file_info['filename'] . '.webp';
+            
+            if (file_exists($webp_path)) {
+                $webp_url = str_replace($file_info['dirname'], dirname(wp_get_attachment_url($attachment_id)), $webp_path);
+                $html = str_replace(wp_get_attachment_url($attachment_id), $webp_url, $html);
+            }
+        }
+    }
+    return $html;
+}
+add_filter('wp_get_attachment_image', 'bsg_serve_webp_images', 10, 2);
+
+// Optimize image compression
+function bsg_optimize_image_quality($quality, $mime_type) {
+    switch ($mime_type) {
+        case 'image/jpeg':
+            return 85; // Reduce from default 90 to 85
+        case 'image/png':
+            return 9; // PNG compression level (0-9)
+        case 'image/webp':
+            return 85; // WebP quality
+        default:
+            return $quality;
+    }
+}
+add_filter('wp_editor_set_quality', 'bsg_optimize_image_quality', 10, 2);
+
+// Add lazy loading to images
+function bsg_add_lazy_loading($attr, $attachment, $size) {
+    if (!isset($attr['loading'])) {
+        $attr['loading'] = 'lazy';
+    }
+    if (!isset($attr['decoding'])) {
+        $attr['decoding'] = 'async';
+    }
+    return $attr;
+}
+add_filter('wp_get_attachment_image_attributes', 'bsg_add_lazy_loading', 10, 3);
+
+// Add responsive image srcset
+function bsg_add_responsive_images($html, $attachment_id, $size, $icon, $attr) {
+    $image_sizes = array(
+        'hero-large' => '(min-width: 1200px)',
+        'hero-medium' => '(min-width: 768px)',
+        'hero-small' => '(max-width: 767px)',
+        'team-large' => '(min-width: 600px)',
+        'team-medium' => '(min-width: 400px)',
+        'team-small' => '(max-width: 399px)',
+        'content-large' => '(min-width: 800px)',
+        'content-medium' => '(min-width: 600px)',
+        'content-small' => '(max-width: 599px)'
+    );
+    
+    $srcset = array();
+    foreach ($image_sizes as $size_name => $media_query) {
+        $image_url = wp_get_attachment_image_url($attachment_id, $size_name);
+        if ($image_url) {
+            $image_meta = wp_get_attachment_metadata($attachment_id);
+            if (isset($image_meta['sizes'][$size_name])) {
+                $width = $image_meta['sizes'][$size_name]['width'];
+                $srcset[] = $image_url . ' ' . $width . 'w';
+            }
+        }
+    }
+    
+    if (!empty($srcset)) {
+        $html = str_replace('<img', '<img srcset="' . implode(', ', $srcset) . '"', $html);
+    }
+    
+    return $html;
+}
+add_filter('wp_get_attachment_image', 'bsg_add_responsive_images', 10, 5);
+
+// Compress existing images on upload
+function bsg_compress_uploaded_images($metadata, $attachment_id) {
+    if (isset($metadata['file'])) {
+        $file_path = get_attached_file($attachment_id);
+        if ($file_path && file_exists($file_path)) {
+            $image = wp_get_image_editor($file_path);
+            if (!is_wp_error($image)) {
+                $image->set_quality(85);
+                $image->save($file_path);
+            }
+        }
+    }
+    return $metadata;
+}
+add_filter('wp_generate_attachment_metadata', 'bsg_compress_uploaded_images', 10, 2);
