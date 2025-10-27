@@ -69,21 +69,7 @@ $settings = bsg_get_settings();
                     
                     <div class="contact-form">
                         <h2>Send Us a Message</h2>
-                        <form style="display: flex; flex-direction: column; gap: 1rem;">
-                            <input type="text" name="name" placeholder="Your Name" required style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px;">
-                            <input type="email" name="email" placeholder="Your Email" required style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px;">
-                            <input type="tel" name="phone" placeholder="Your Phone" style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px;">
-                            <select name="service" style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px;">
-                                <option value="">Select Service</option>
-                                <option value="general">General Inquiry</option>
-                                <option value="quote">Free Quote</option>
-                                <option value="emergency">Emergency Service</option>
-                            </select>
-                            <textarea name="message" placeholder="Your Message" rows="5" required style="padding: 1rem; border: 1px solid #ddd; border-radius: 6px; resize: vertical;"></textarea>
-                            <button type="submit" class="btn btn-primary" style="background: var(--button-color); color: #ffffff; padding: 1rem 2rem; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
-                                Send Message
-                            </button>
-                        </form>
+                        <?php echo bsg_render_contact_form(); ?>
       </div>
     </div>
   </div>

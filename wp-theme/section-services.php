@@ -8,6 +8,50 @@ $services = $settings['services'] ?? [];
 $all_pages = get_pages(['sort_column' => 'menu_order']); // Fetch all pages for service linking
 ?>
 <?php if ($services_visible): ?>
+<style>
+/* Mobile Responsive Fixes for Services Section */
+@media (max-width: 768px) {
+    .services-section {
+        padding: 40px 0 !important;
+    }
+    
+    .services-section .container {
+        padding: 0 1rem !important;
+    }
+    
+    .section-header {
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+        text-align: center !important;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem !important;
+    }
+    
+    .services-arrow {
+        display: none !important;
+    }
+    
+    .services-carousel {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scroll-snap-type: x mandatory !important;
+        padding: 0 1rem !important;
+    }
+    
+    .service-card {
+        scroll-snap-align: start !important;
+        margin-right: 1rem !important;
+        min-width: 280px !important;
+        width: 280px !important;
+    }
+    
+    .services-progress-bar {
+        margin-top: 1rem !important;
+    }
+}
+</style>
 <section class="section services-section animate-on-scroll-section" style="background-color: <?php echo esc_attr($settings['services_bg_color'] ?? '#313746'); ?>; color: <?php echo esc_attr($settings['services_text_color'] ?? '#ffffff'); ?>; padding: <?php echo esc_attr($settings['services_padding'] ?? '60'); ?>px 0;">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 60px;">
         <div class="section-header" style="display:flex;align-items:center;justify-content:space-between;gap:2rem;">

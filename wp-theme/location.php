@@ -798,6 +798,63 @@ $contact_page = get_page_by_path('contact-us');
         background: #22d3aa !important;
         transform: translateY(-2px) !important;
     }
+    
+    /* Mobile Responsive Fixes for Location Page */
+    @media (max-width: 768px) {
+        .content-layout {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+        }
+        
+        .services-contact-box {
+            position: static !important;
+            margin: 2rem auto !important;
+            max-width: 100% !important;
+        }
+        
+        .contact-card {
+            flex-direction: column !important;
+        }
+        
+        .contact-left,
+        .contact-right {
+            flex: none !important;
+            min-width: 100% !important;
+            width: 100% !important;
+        }
+        
+        .container {
+            padding: 0 1rem !important;
+        }
+        
+        .location-content {
+            padding: 40px 0 !important;
+        }
+        
+        .contact-section-custom {
+            padding: 40px 0 !important;
+        }
+        
+        .contact-section-custom h1 {
+            font-size: 2rem !important;
+        }
+        
+        .contact-section-custom p {
+            font-size: 1rem !important;
+        }
+        
+        .location-content h2 {
+            font-size: 2rem !important;
+        }
+        
+        .location-content h3 {
+            font-size: 1.5rem !important;
+        }
+        
+        .location-content p {
+            font-size: 1rem !important;
+        }
+    }
     </style>
     <section class="location-content animate-on-scroll-section" style="padding: <?php echo esc_attr($settings['location_content_padding'] ?? '80'); ?>px 0; background: <?php echo esc_attr($settings['location_description_bg'] ?? $settings['location_content_bg_color'] ?? '#ffffff'); ?>; color: <?php echo esc_attr($settings['location_description_text_color'] ?? '#232834'); ?>;">
         <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">

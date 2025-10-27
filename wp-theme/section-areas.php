@@ -3,6 +3,58 @@
 $settings = function_exists('bsg_get_settings') ? bsg_get_settings() : (get_option('bsg_settings', []) ?: []);
 $locations = $settings['locations'] ?? [];
 ?>
+<style>
+/* Mobile Responsive Fixes for Service Areas Section */
+@media (max-width: 768px) {
+    .bsg-two-col-layout {
+        flex-direction: column !important;
+        gap: 2rem !important;
+    }
+    
+    .bsg-text-content,
+    .content-image {
+        flex: none !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .locations-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.8rem !important;
+    }
+    
+    .map-container {
+        width: 100% !important;
+        height: 300px !important;
+    }
+    
+    .map-container iframe {
+        width: 100% !important;
+        height: 300px !important;
+    }
+    
+    .bsg-section {
+        padding: 40px 0 !important;
+    }
+    
+    .container {
+        padding: 0 1rem !important;
+    }
+    
+    h2 {
+        font-size: 2rem !important;
+        text-align: center !important;
+    }
+    
+    p {
+        text-align: center !important;
+    }
+    
+    .bsg-icon-heading {
+        justify-content: center !important;
+    }
+}
+</style>
 <section class="bsg-section locations-section animate-on-scroll-section" style="background-color: <?php echo esc_attr($settings['service_areas_bg_color'] ?? '#232834'); ?>; color: <?php echo esc_attr($settings['service_areas_text_color'] ?? '#ffffff'); ?>; padding: 60px 0; margin-top: 0;">
     <div class="container">
         <div class="bsg-two-col-layout" style="display:flex;align-items:flex-start;gap:3rem;">

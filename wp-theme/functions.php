@@ -410,6 +410,12 @@ function bsg_template_redirect() {
 add_action('template_redirect', 'bsg_template_redirect');
 add_action('init', 'bsg_add_rewrite_rules');
 
+// Contact form handling hooks
+add_action('init', 'bsg_handle_contact_form_submission');
+add_action('wp_ajax_bsg_ajax_contact_form_submission', 'bsg_ajax_contact_form_submission');
+add_action('wp_ajax_nopriv_bsg_ajax_contact_form_submission', 'bsg_ajax_contact_form_submission');
+add_action('after_switch_theme', 'bsg_create_contact_messages_table');
+
 // Add query vars for services and locations
 function bsg_add_query_vars($vars) {
     $vars[] = 'service';
@@ -2786,6 +2792,149 @@ add_action('wp_loaded', 'bsg_immediate_cleanup');
 // }
 // add_action('admin_menu', 'bsg_add_admin_menu');
 
+// Add admin menu for contact messages
+function bsg_add_contact_messages_menu() {
+    add_theme_page(
+        'Contact Messages',
+        'Contact Messages',
+        'manage_options',
+        'bsg-contact-messages',
+        'bsg_contact_messages_page'
+    );
+}
+add_action('admin_menu', 'bsg_add_contact_messages_menu');
+
+// Admin page for contact messages
+function bsg_contact_messages_page() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'bsg_contact_messages';
+    
+    // Handle status updates
+    if (isset($_POST['update_status']) && wp_verify_nonce($_POST['nonce'], 'bsg_update_message_status')) {
+        $message_id = intval($_POST['message_id']);
+        $new_status = sanitize_text_field($_POST['status']);
+        $admin_notes = sanitize_textarea_field($_POST['admin_notes']);
+        
+        $wpdb->update(
+            $table_name,
+            array('status' => $new_status, 'admin_notes' => $admin_notes),
+            array('id' => $message_id),
+            array('%s', '%s'),
+            array('%d')
+        );
+        
+        echo '<div class="notice notice-success"><p>Message status updated successfully!</p></div>';
+    }
+    
+    // Get messages
+    $messages = $wpdb->get_results("SELECT * FROM $table_name ORDER BY submitted_at DESC");
+    
+    ?>
+    <div class="wrap">
+        <h1>Contact Messages</h1>
+        
+        <?php if (empty($messages)): ?>
+            <p>No contact messages found.</p>
+        <?php else: ?>
+            <table class="wp-list-table widefat fixed striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Subject</th>
+                        <th>Message</th>
+                        <th>Status</th>
+                        <th>Submitted</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($messages as $message): ?>
+                        <tr>
+                            <td><?php echo $message->id; ?></td>
+                            <td><?php echo esc_html($message->name); ?></td>
+                            <td><a href="mailto:<?php echo esc_attr($message->email); ?>"><?php echo esc_html($message->email); ?></a></td>
+                            <td><?php echo esc_html($message->subject); ?></td>
+                            <td><?php echo esc_html(wp_trim_words($message->message, 20)); ?></td>
+                            <td>
+                                <span class="status-<?php echo esc_attr($message->status); ?>">
+                                    <?php echo esc_html(ucfirst($message->status)); ?>
+                                </span>
+                            </td>
+                            <td><?php echo esc_html(date('M j, Y g:i A', strtotime($message->submitted_at))); ?></td>
+                            <td>
+                                <button type="button" class="button" onclick="toggleMessageDetails(<?php echo $message->id; ?>)">
+                                    View Details
+                                </button>
+                            </td>
+                        </tr>
+                        <tr id="details-<?php echo $message->id; ?>" style="display: none;">
+                            <td colspan="8">
+                                <div style="background: #f9f9f9; padding: 20px; margin: 10px 0;">
+                                    <h3>Full Message</h3>
+                                    <p><strong>Name:</strong> <?php echo esc_html($message->name); ?></p>
+                                    <p><strong>Email:</strong> <a href="mailto:<?php echo esc_attr($message->email); ?>"><?php echo esc_html($message->email); ?></a></p>
+                                    <p><strong>Subject:</strong> <?php echo esc_html($message->subject); ?></p>
+                                    <p><strong>Message:</strong></p>
+                                    <div style="background: white; padding: 15px; border: 1px solid #ddd; margin: 10px 0;">
+                                        <?php echo nl2br(esc_html($message->message)); ?>
+                                    </div>
+                                    <p><strong>IP Address:</strong> <?php echo esc_html($message->ip_address); ?></p>
+                                    <p><strong>Submitted:</strong> <?php echo esc_html(date('F j, Y \a\t g:i A', strtotime($message->submitted_at))); ?></p>
+                                    
+                                    <form method="post" style="margin-top: 20px;">
+                                        <?php wp_nonce_field('bsg_update_message_status', 'nonce'); ?>
+                                        <input type="hidden" name="message_id" value="<?php echo $message->id; ?>">
+                                        
+                                        <p>
+                                            <label><strong>Status:</strong></label><br>
+                                            <select name="status">
+                                                <option value="new" <?php selected($message->status, 'new'); ?>>New</option>
+                                                <option value="read" <?php selected($message->status, 'read'); ?>>Read</option>
+                                                <option value="replied" <?php selected($message->status, 'replied'); ?>>Replied</option>
+                                                <option value="closed" <?php selected($message->status, 'closed'); ?>>Closed</option>
+                                            </select>
+                                        </p>
+                                        
+                                        <p>
+                                            <label><strong>Admin Notes:</strong></label><br>
+                                            <textarea name="admin_notes" rows="3" cols="50" placeholder="Add notes about this message..."><?php echo esc_textarea($message->admin_notes); ?></textarea>
+                                        </p>
+                                        
+                                        <p>
+                                            <input type="submit" name="update_status" class="button button-primary" value="Update Status">
+                                        </p>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            
+            <script>
+            function toggleMessageDetails(messageId) {
+                const detailsRow = document.getElementById('details-' + messageId);
+                if (detailsRow.style.display === 'none') {
+                    detailsRow.style.display = 'table-row';
+                } else {
+                    detailsRow.style.display = 'none';
+                }
+            }
+            </script>
+            
+            <style>
+            .status-new { color: #d63638; font-weight: bold; }
+            .status-read { color: #dba617; font-weight: bold; }
+            .status-replied { color: #00a32a; font-weight: bold; }
+            .status-closed { color: #50575e; font-weight: bold; }
+            </style>
+        <?php endif; ?>
+    </div>
+    <?php
+}
+
 // Admin page for page creation - temporarily disabled
 // function bsg_page_creator_page() {
 //     if (isset($_POST['create_pages'])) {
@@ -3275,6 +3424,229 @@ function bsg_get_footer_settings() {
 }
 
 /**
+ * Create contact messages table on theme activation
+ */
+function bsg_create_contact_messages_table() {
+    global $wpdb;
+    
+    $table_name = $wpdb->prefix . 'bsg_contact_messages';
+    
+    $charset_collate = $wpdb->get_charset_collate();
+    
+    $sql = "CREATE TABLE $table_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        name varchar(100) NOT NULL,
+        email varchar(100) NOT NULL,
+        subject varchar(200) DEFAULT '',
+        message text NOT NULL,
+        ip_address varchar(45) DEFAULT '',
+        user_agent text DEFAULT '',
+        submitted_at datetime DEFAULT CURRENT_TIMESTAMP,
+        status varchar(20) DEFAULT 'new',
+        admin_notes text DEFAULT '',
+        PRIMARY KEY (id)
+    ) $charset_collate;";
+    
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
+}
+
+/**
+ * Handle contact form submission
+ */
+function bsg_handle_contact_form_submission() {
+    // Check if form was submitted
+    if (!isset($_POST['bsg_contact_form']) || !wp_verify_nonce($_POST['bsg_contact_nonce'], 'bsg_contact_form_action')) {
+        return;
+    }
+    
+    // Sanitize form data
+    $name = sanitize_text_field($_POST['name']);
+    $email = sanitize_email($_POST['email']);
+    $subject = sanitize_text_field($_POST['subject']);
+    $message = sanitize_textarea_field($_POST['message']);
+    
+    // Validate required fields
+    if (empty($name) || empty($email) || empty($message)) {
+        wp_die('Please fill in all required fields.');
+    }
+    
+    // Validate email
+    if (!is_email($email)) {
+        wp_die('Please enter a valid email address.');
+    }
+    
+    // Get user IP and user agent
+    $ip_address = $_SERVER['REMOTE_ADDR'] ?? '';
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    
+    // Save to database
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'bsg_contact_messages';
+    
+    $result = $wpdb->insert(
+        $table_name,
+        array(
+            'name' => $name,
+            'email' => $email,
+            'subject' => $subject,
+            'message' => $message,
+            'ip_address' => $ip_address,
+            'user_agent' => $user_agent,
+            'submitted_at' => current_time('mysql'),
+            'status' => 'new'
+        ),
+        array(
+            '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'
+        )
+    );
+    
+    if ($result === false) {
+        wp_die('Error saving message. Please try again.');
+    }
+    
+    // Send email notification to admin
+    $settings = bsg_get_settings();
+    $business = bsg_get_business_info();
+    
+    $admin_email = $business['email'] ?? get_option('admin_email');
+    $business_name = $business['name'] ?? get_bloginfo('name');
+    
+    $email_subject = 'New Contact Form Submission - ' . $business_name;
+    $email_message = "You have received a new message from your website contact form.\n\n";
+    $email_message .= "Name: $name\n";
+    $email_message .= "Email: $email\n";
+    $email_message .= "Subject: $subject\n";
+    $email_message .= "Message:\n$message\n\n";
+    $email_message .= "Submitted on: " . current_time('F j, Y \a\t g:i A') . "\n";
+    $email_message .= "IP Address: $ip_address\n";
+    
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: ' . $business_name . ' <noreply@' . $_SERVER['HTTP_HOST'] . '>',
+        'Reply-To: ' . $name . ' <' . $email . '>'
+    );
+    
+    wp_mail($admin_email, $email_subject, $email_message, $headers);
+    
+    // Send auto-reply to user
+    $user_subject = 'Thank you for contacting ' . $business_name;
+    $user_message = "Dear $name,\n\n";
+    $user_message .= "Thank you for contacting $business_name. We have received your message and will get back to you as soon as possible.\n\n";
+    $user_message .= "Your message:\n$message\n\n";
+    $user_message .= "Best regards,\n";
+    $user_message .= $business_name . " Team";
+    
+    $user_headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: ' . $business_name . ' <' . $admin_email . '>'
+    );
+    
+    wp_mail($email, $user_subject, $user_message, $user_headers);
+    
+    // Redirect with success message
+    $redirect_url = add_query_arg('contact_success', '1', wp_get_referer() ?: home_url());
+    wp_redirect($redirect_url);
+    exit;
+}
+
+/**
+ * Handle AJAX contact form submission
+ */
+function bsg_ajax_contact_form_submission() {
+    // Check nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'bsg_contact_form_action')) {
+        wp_send_json_error('Security check failed');
+    }
+    
+    // Sanitize form data
+    $name = sanitize_text_field($_POST['name']);
+    $email = sanitize_email($_POST['email']);
+    $subject = sanitize_text_field($_POST['subject']);
+    $message = sanitize_textarea_field($_POST['message']);
+    
+    // Validate required fields
+    if (empty($name) || empty($email) || empty($message)) {
+        wp_send_json_error('Please fill in all required fields.');
+    }
+    
+    // Validate email
+    if (!is_email($email)) {
+        wp_send_json_error('Please enter a valid email address.');
+    }
+    
+    // Get user IP and user agent
+    $ip_address = $_SERVER['REMOTE_ADDR'] ?? '';
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    
+    // Save to database
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'bsg_contact_messages';
+    
+    $result = $wpdb->insert(
+        $table_name,
+        array(
+            'name' => $name,
+            'email' => $email,
+            'subject' => $subject,
+            'message' => $message,
+            'ip_address' => $ip_address,
+            'user_agent' => $user_agent,
+            'submitted_at' => current_time('mysql'),
+            'status' => 'new'
+        ),
+        array(
+            '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'
+        )
+    );
+    
+    if ($result === false) {
+        wp_send_json_error('Error saving message. Please try again.');
+    }
+    
+    // Send email notification to admin
+    $settings = bsg_get_settings();
+    $business = bsg_get_business_info();
+    
+    $admin_email = $business['email'] ?? get_option('admin_email');
+    $business_name = $business['name'] ?? get_bloginfo('name');
+    
+    $email_subject = 'New Contact Form Submission - ' . $business_name;
+    $email_message = "You have received a new message from your website contact form.\n\n";
+    $email_message .= "Name: $name\n";
+    $email_message .= "Email: $email\n";
+    $email_message .= "Subject: $subject\n";
+    $email_message .= "Message:\n$message\n\n";
+    $email_message .= "Submitted on: " . current_time('F j, Y \a\t g:i A') . "\n";
+    $email_message .= "IP Address: $ip_address\n";
+    
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: ' . $business_name . ' <noreply@' . $_SERVER['HTTP_HOST'] . '>',
+        'Reply-To: ' . $name . ' <' . $email . '>'
+    );
+    
+    wp_mail($admin_email, $email_subject, $email_message, $headers);
+    
+    // Send auto-reply to user
+    $user_subject = 'Thank you for contacting ' . $business_name;
+    $user_message = "Dear $name,\n\n";
+    $user_message .= "Thank you for contacting $business_name. We have received your message and will get back to you as soon as possible.\n\n";
+    $user_message .= "Your message:\n$message\n\n";
+    $user_message .= "Best regards,\n";
+    $user_message .= $business_name . " Team";
+    
+    $user_headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: ' . $business_name . ' <' . $admin_email . '>'
+    );
+    
+    wp_mail($email, $user_subject, $user_message, $user_headers);
+    
+    wp_send_json_success('Message sent successfully! We will get back to you soon.');
+}
+
+/**
  * Render a standardized contact form used across the theme
  */
 function bsg_render_contact_form(): string {
@@ -3292,7 +3664,16 @@ function bsg_render_contact_form(): string {
     ob_start();
     ?>
     <div style="max-width: 100%; width: 100%;">
-        <form style="display:flex;flex-direction:column;gap:20px;background:<?php echo esc_attr($formBgColor); ?>;padding:0;">
+        <?php if (isset($_GET['contact_success'])): ?>
+            <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+                <strong>Success!</strong> Your message has been sent successfully. We will get back to you soon.
+            </div>
+        <?php endif; ?>
+        
+        <form id="bsg-contact-form" method="post" action="" style="display:flex;flex-direction:column;gap:20px;background:<?php echo esc_attr($formBgColor); ?>;padding:0;">
+            <?php wp_nonce_field('bsg_contact_form_action', 'bsg_contact_nonce'); ?>
+            <input type="hidden" name="bsg_contact_form" value="1">
+            
             <div>
                 <label style="color:<?php echo esc_attr($labelColor); ?>;font-weight:700;font-size:0.9rem;margin-bottom:8px;display:block;text-transform:uppercase;letter-spacing:0.5px;">Your Name</label>
                 <input type="text" name="name" required style="width:100%;padding:12px 0;border:none;border-bottom:2px solid <?php echo esc_attr($borderColor); ?>;background:transparent;color:<?php echo esc_attr($textColor); ?>;font-size:1rem;font-weight:500;transition:all 0.3s ease;box-sizing:border-box;outline:none;" onfocus="this.style.borderBottomColor='<?php echo esc_attr($primaryColor); ?>';this.style.borderBottomWidth='3px';this.style.color='#6b7280';" onblur="this.style.borderBottomColor='<?php echo esc_attr($borderColor); ?>';this.style.borderBottomWidth='2px';this.style.color='<?php echo esc_attr($textColor); ?>';" placeholder="Enter your full name">
@@ -3317,6 +3698,47 @@ function bsg_render_contact_form(): string {
                 Send Message
             </button>
         </form>
+        
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('bsg-contact-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    formData.append('action', 'bsg_ajax_contact_form_submission');
+                    formData.append('nonce', '<?php echo wp_create_nonce('bsg_contact_form_action'); ?>');
+                    
+                    const submitButton = form.querySelector('button[type="submit"]');
+                    const originalText = submitButton.textContent;
+                    submitButton.textContent = 'Sending...';
+                    submitButton.disabled = true;
+                    
+                    fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            form.innerHTML = '<div style="background: #d4edda; color: #155724; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #c3e6cb;"><strong>Success!</strong><br>' + data.data + '</div>';
+                        } else {
+                            alert('Error: ' + data.data);
+                            submitButton.textContent = originalText;
+                            submitButton.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                        submitButton.textContent = originalText;
+                        submitButton.disabled = false;
+                    });
+                });
+            }
+        });
+        </script>
     </div>
     <?php
     return (string) ob_get_clean();
