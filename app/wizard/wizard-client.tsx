@@ -1132,6 +1132,15 @@ export default function WizardClient() {
         }
         next.heading_color = palette.text;
         next.button_primary_color = palette.primary;
+        
+        // Update hero button colors to match theme button color for non-homepage pages
+        // Only update if not using default color scheme (which has custom hero colors)
+        if (!next.use_default_color_scheme) {
+          next.hero_book_btn_bg = palette.primary;
+          next.hero_call_btn_bg = palette.primary;
+          next.hero_book_btn_text = '#ffffff';
+          next.hero_call_btn_text = '#ffffff';
+        }
       }
       
       return next;

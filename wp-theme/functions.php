@@ -845,6 +845,23 @@ function bsg_generate_dynamic_css() {
         opacity: 0.9;
     }
     
+    /* Hero section buttons (except homepage) should match theme button color */
+    .service-hero .btn, .service-hero .btn-teal, .service-hero .btn-primary,
+    .location-hero .btn, .location-hero .btn-teal, .location-hero .btn-primary,
+    .about-hero .btn, .about-hero .btn-teal, .about-hero .btn-primary,
+    .contact-hero .btn, .contact-hero .btn-teal, .contact-hero .btn-primary {
+        background-color: var(--button-color) !important;
+        color: #ffffff !important;
+    }
+    
+    .service-hero .btn:hover, .service-hero .btn-teal:hover, .service-hero .btn-primary:hover,
+    .location-hero .btn:hover, .location-hero .btn-teal:hover, .location-hero .btn-primary:hover,
+    .about-hero .btn:hover, .about-hero .btn-teal:hover, .about-hero .btn-primary:hover,
+    .contact-hero .btn:hover, .contact-hero .btn-teal:hover, .contact-hero .btn-primary:hover {
+        background-color: var(--secondary-color) !important;
+        opacity: 0.9;
+    }
+    
     /* Apply theme colors to navigation */
     .main-header {
         background-color: var(--nav-bg-color) !important;
@@ -852,6 +869,14 @@ function bsg_generate_dynamic_css() {
     }
     
     .main-header .logo span {
+        color: var(--nav-text-color) !important;
+    }
+    
+    .main-header .logo {
+        color: var(--nav-text-color) !important;
+    }
+    
+    .main-header a.logo {
         color: var(--nav-text-color) !important;
     }
     
@@ -1025,6 +1050,13 @@ function bsg_generate_dynamic_css() {
     set_transient('bsg_dynamic_css_cache', $css, HOUR_IN_SECONDS);
     
     return $css;
+}
+
+/**
+ * Clear CSS cache when theme colors change
+ */
+function bsg_clear_css_cache() {
+    delete_transient('bsg_dynamic_css_cache');
 }
 
 /**
