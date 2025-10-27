@@ -406,10 +406,11 @@ export default function Home() {
                 <ul className="space-y-4 flex-grow">
                   {[
                     { text: '8 minutes average creation time', strong: '8 minutes' },
-                    { text: '$49/month all-inclusive', strong: '$49/month' },
+                    { text: '$49 all-inclusive', strong: '$49' },
                     { text: 'Zero technical skills required' },
                     { text: 'Instant previews and publishing' },
                     { text: 'Automatic updates and maintenance' }
+                  
                   ].map((item, index) => (
                     <li key={index} className="flex items-start">
                       <svg className="w-5 h-5 text-accent mr-3 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -483,7 +484,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="grid md:grid-cols-3 gap-12 items-center">
               {/* Left Side - Features */}
               <div className="space-y-8">
                 <div className="flex items-center gap-4">
@@ -505,87 +506,17 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Right Side - Video Player Mockup */}
-              <div className="relative">
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                  {/* Video Header */}
-                  <div className="bg-gray-800 px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-                        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"/>
-                        </svg>
-                      </div>
-                      <span className="text-white text-sm font-medium">Create A Website Click Demo: Generate co...</span>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1">
-                        <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
-                        </svg>
-                        <span className="text-gray-400 text-xs">Watch Later</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <svg className="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3 3 0 000-2.319l4.94-2.47C13.456 7.68 14.19 8 15 8z"/>
-                        </svg>
-                        <span className="text-gray-400 text-xs">Share</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Video Content */}
-                  <div className="bg-white">
-                    {/* Video Embed */}
-                    <div className="relative w-full h-64 bg-black rounded-t-lg overflow-hidden">
-                      <iframe 
-                        className="w-full h-full"
-                        src="https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE?autoplay=0&rel=0&modestbranding=1"
-                        title="Create A Website Click Demo - Watch It In Action"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                    
-                    {/* Video Info */}
-                    <div className="p-4">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                        Launch SEO WordPress Sites in 5 Minutes
-                      </h3>
-                      <p className="text-gray-600 text-sm mb-4">
-                        Turn a brief intake form into a professionally designed WordPress site, complete with text, images, and SEO pages.
-                      </p>
-
-                      {/* Action Buttons */}
-                      <div className="flex gap-3 mb-3">
-                        <button className="flex-1 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 hover:bg-gray-700 transition-colors">
-                          Go to Dashboard
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd"/>
-                          </svg>
-                        </button>
-                        <a 
-                          href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID_HERE" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="flex-1 bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2 hover:bg-gray-700 transition-colors"
-                        >
-                          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                          </svg>
-                          Watch on YouTube
-                        </a>
-                      </div>
-
-                      {/* Footer Text */}
-                      <div className="text-center">
-                        <p className="text-gray-500 text-xs">
-                          No credit card required • 5000+ sites generated
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+              {/* Right Side - Simple Video Embed */}
+              <div className="relative md:col-span-2">
+                <div className="relative w-full h-96 bg-black rounded-xl overflow-hidden">
+                  <iframe 
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/uR_tgg3YcF8?autoplay=0&rel=0&modestbranding=1"
+                    title="Create A Website Click Demo - Watch It In Action"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
                 </div>
               </div>
             </div>
@@ -863,7 +794,7 @@ export default function Home() {
                     'AI Website Generation',
                     'Basic Templates',
                     'Mobile Responsive',
-                    'Basic SEO'
+                    'SEO Optimized Content'
                   ],
                   button: 'Start Free',
                   popular: false
@@ -878,8 +809,8 @@ export default function Home() {
                     'Advanced AI Features',
                     'Premium Templates',
                     'Advanced SEO',
-                    'Analytics Dashboard',
-                    'Email Support'
+                    'Static Sites Integration',
+                    'Prompt Support'
                   ],
                   button: 'Buy Credits',
                   popular: true
@@ -893,7 +824,7 @@ export default function Home() {
                     '30 Website Creations',
                     'All AI Features',
                     'Custom Templates',
-                    'Advanced Analytics',
+                    'Static Website Generations',
                     'Priority Support',
                     'White Label Options'
                   ],
