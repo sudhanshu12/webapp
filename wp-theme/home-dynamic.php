@@ -55,18 +55,11 @@ add_filter('document_title_parts', function($title_parts) use ($meta_title) {
 
 // Start output buffering BEFORE get_header() to catch and remove any empty title tags
 ob_start(function($buffer) use ($meta_title) {
-    // Remove empty title tags more aggressively
-    $buffer = preg_replace('/<title><\/title>/', '', $buffer);
-    $buffer = preg_replace('/<title>\s*<\/title>/', '', $buffer);
-    $buffer = preg_replace('/<title>\s*<\/title>/', '', $buffer);
+    // Remove ALL title tags first
+    $buffer = preg_replace('/<title>.*?<\/title>/s', '', $buffer);
     
-    // Remove any title tags that don't contain our custom title
-    $buffer = preg_replace('/<title>[^<]*<\/title>/', '', $buffer);
-    
-    // Ensure our title is present and is the only title
-    if (strpos($buffer, '<title>' . esc_html($meta_title) . '</title>') === false) {
-        $buffer = str_replace('</head>', '<title>' . esc_html($meta_title) . '</title>' . "\n" . '</head>', $buffer);
-    }
+    // Insert our custom title right before </head>
+    $buffer = str_replace('</head>', '<title>' . esc_html($meta_title) . '</title>' . "\n" . '</head>', $buffer);
     
     return $buffer;
 });
@@ -96,7 +89,7 @@ add_action('wp_head', function() use ($settings, $meta_title) {
                     $settings['keywords'] ?? 
                     'professional services, expert help, quality work';
     
-    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
+    // Title is handled by output buffer above
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
     echo '<meta name="keywords" content="' . esc_attr($meta_keywords) . '">' . "\n";
     echo '<meta name="author" content="' . esc_attr($settings['business_name'] ?? 'Create A Website Click') . '">' . "\n";
@@ -125,10 +118,7 @@ add_action('wp_head', function() use ($settings, $meta_title) {
     echo '<link rel="canonical" href="' . esc_url(home_url('/')) . '">' . "\n";
 }, 1);
 
-// Add a final title override with highest priority to ensure it's last
-add_action('wp_head', function() use ($meta_title) {
-    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
-}, 99999);
+// Title is handled by output buffer above
 
 // Document title is handled by wp_head action above
 
