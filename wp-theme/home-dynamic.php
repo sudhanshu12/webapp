@@ -18,6 +18,15 @@ add_action('wp_head', function() use ($settings) {
     remove_action('wp_head', 'wp_generator');
     remove_action('wp_head', 'rel_canonical');
     
+    // Also remove the title tag filter to prevent empty title
+    remove_filter('wp_title', 'bsg_custom_title');
+    remove_filter('document_title_parts', 'bsg_custom_document_title');
+    
+    // Force our custom title to prevent empty title tag
+    add_filter('pre_get_document_title', function() use ($meta_title) {
+        return $meta_title;
+    }, 999);
+    
     // Debug: Add visible debugging output to browser
     echo '<!-- HOMEPAGE META TAGS DEBUG -->' . "\n";
     echo '<!-- homepage_meta_title: ' . ($settings['homepage_meta_title'] ?? 'NOT SET') . ' -->' . "\n";
