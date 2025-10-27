@@ -11,8 +11,14 @@ $colors = bsg_get_color_scheme();
 
 echo '<!-- BSG DYNAMIC TEMPLATE ACTIVE -->';
 
+// Define meta title early to prevent empty title tag
+$meta_title = $settings['homepage_meta_title'] ?? 
+              $settings['meta_title'] ?? 
+              $settings['title'] ?? 
+              ($settings['business_name'] ?? 'Your Business') . ' - Professional Services';
+
 // Add custom meta tags to head - this must be done before get_header()
-add_action('wp_head', function() use ($settings) {
+add_action('wp_head', function() use ($settings, $meta_title) {
     // Remove default WordPress title and meta tags to prevent duplicates
     remove_action('wp_head', '_wp_render_title_tag', 1);
     remove_action('wp_head', 'wp_generator');
@@ -27,6 +33,23 @@ add_action('wp_head', function() use ($settings) {
         return $meta_title;
     }, 999);
     
+    // Additional filter to override any empty title
+    add_filter('wp_title', function($title) use ($meta_title) {
+        return empty($title) ? $meta_title : $title;
+    }, 999);
+    
+    // Start output buffering to catch and remove any empty title tags
+    ob_start(function($buffer) use ($meta_title) {
+        // Remove empty title tags
+        $buffer = preg_replace('/<title><\/title>/', '', $buffer);
+        $buffer = preg_replace('/<title>\s*<\/title>/', '', $buffer);
+        // Ensure our title is present
+        if (strpos($buffer, '<title>' . esc_html($meta_title) . '</title>') === false) {
+            $buffer = str_replace('</head>', '<title>' . esc_html($meta_title) . '</title>' . "\n" . '</head>', $buffer);
+        }
+        return $buffer;
+    });
+    
     // Debug: Add visible debugging output to browser
     echo '<!-- HOMEPAGE META TAGS DEBUG -->' . "\n";
     echo '<!-- homepage_meta_title: ' . ($settings['homepage_meta_title'] ?? 'NOT SET') . ' -->' . "\n";
@@ -38,10 +61,6 @@ add_action('wp_head', function() use ($settings) {
     echo '<!-- HOMEPAGE META TAGS DEBUG END -->' . "\n";
     
     // Get meta tags from wizard settings with fallbacks
-    $meta_title = $settings['homepage_meta_title'] ?? 
-                  $settings['meta_title'] ?? 
-                  $settings['title'] ?? 
-                  ($settings['business_name'] ?? 'Your Business') . ' - Professional Services';
                   
     $meta_description = $settings['homepage_meta_description'] ?? 
                         $settings['meta_description'] ?? 
@@ -81,6 +100,11 @@ add_action('wp_head', function() use ($settings) {
     // Canonical URL
     echo '<link rel="canonical" href="' . esc_url(home_url('/')) . '">' . "\n";
 }, 1);
+
+// Add a final title override with highest priority to ensure it's last
+add_action('wp_head', function() use ($meta_title) {
+    echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
+}, 99999);
 
 // Document title is handled by wp_head action above
 
