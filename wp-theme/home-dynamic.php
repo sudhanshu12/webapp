@@ -24,12 +24,35 @@ add_action('wp_head', function() use ($settings) {
     error_log('homepage_meta_description: ' . ($settings['homepage_meta_description'] ?? 'NOT SET'));
     error_log('homepage_meta_keywords: ' . ($settings['homepage_meta_keywords'] ?? 'NOT SET'));
     error_log('business_name: ' . ($settings['business_name'] ?? 'NOT SET'));
+    
+    // Debug: Log all available settings keys
+    error_log('Available settings keys: ' . implode(', ', array_keys($settings)));
+    
+    // Debug: Check if settings array is empty
+    error_log('Settings array count: ' . count($settings));
+    error_log('Settings array empty: ' . (empty($settings) ? 'YES' : 'NO'));
+    
+    // Debug: Log first few settings to see structure
+    $first_few = array_slice($settings, 0, 5, true);
+    error_log('First few settings: ' . print_r($first_few, true));
+    
     error_log('=== HOMEPAGE META TAGS DEBUG END ===');
     
-    // Get meta tags from wizard settings
-    $meta_title = $settings['homepage_meta_title'] ?? 'Create Professional Rank and Rent Websites in Minutes - Create A Website Click';
-    $meta_description = $settings['homepage_meta_description'] ?? 'Build professional rank and rent business websites in minutes. Create stunning, SEO-optimized websites for your business with our easy-to-use platform.';
-    $meta_keywords = $settings['homepage_meta_keywords'] ?? 'rank and rent, professional business website, website builder, SEO website, business website';
+    // Get meta tags from wizard settings with fallbacks
+    $meta_title = $settings['homepage_meta_title'] ?? 
+                  $settings['meta_title'] ?? 
+                  $settings['title'] ?? 
+                  ($settings['business_name'] ?? 'Your Business') . ' - Professional Services';
+                  
+    $meta_description = $settings['homepage_meta_description'] ?? 
+                        $settings['meta_description'] ?? 
+                        $settings['description'] ?? 
+                        'Professional services you can trust. Get expert help today!';
+                        
+    $meta_keywords = $settings['homepage_meta_keywords'] ?? 
+                    $settings['meta_keywords'] ?? 
+                    $settings['keywords'] ?? 
+                    'professional services, expert help, quality work';
     
     echo '<title>' . esc_html($meta_title) . '</title>' . "\n";
     echo '<meta name="description" content="' . esc_attr($meta_description) . '">' . "\n";
