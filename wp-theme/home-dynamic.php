@@ -18,25 +18,15 @@ add_action('wp_head', function() use ($settings) {
     remove_action('wp_head', 'wp_generator');
     remove_action('wp_head', 'rel_canonical');
     
-    // Debug: Log meta tag settings
-    error_log('=== HOMEPAGE META TAGS DEBUG ===');
-    error_log('homepage_meta_title: ' . ($settings['homepage_meta_title'] ?? 'NOT SET'));
-    error_log('homepage_meta_description: ' . ($settings['homepage_meta_description'] ?? 'NOT SET'));
-    error_log('homepage_meta_keywords: ' . ($settings['homepage_meta_keywords'] ?? 'NOT SET'));
-    error_log('business_name: ' . ($settings['business_name'] ?? 'NOT SET'));
-    
-    // Debug: Log all available settings keys
-    error_log('Available settings keys: ' . implode(', ', array_keys($settings)));
-    
-    // Debug: Check if settings array is empty
-    error_log('Settings array count: ' . count($settings));
-    error_log('Settings array empty: ' . (empty($settings) ? 'YES' : 'NO'));
-    
-    // Debug: Log first few settings to see structure
-    $first_few = array_slice($settings, 0, 5, true);
-    error_log('First few settings: ' . print_r($first_few, true));
-    
-    error_log('=== HOMEPAGE META TAGS DEBUG END ===');
+    // Debug: Add visible debugging output to browser
+    echo '<!-- HOMEPAGE META TAGS DEBUG -->' . "\n";
+    echo '<!-- homepage_meta_title: ' . ($settings['homepage_meta_title'] ?? 'NOT SET') . ' -->' . "\n";
+    echo '<!-- homepage_meta_description: ' . ($settings['homepage_meta_description'] ?? 'NOT SET') . ' -->' . "\n";
+    echo '<!-- homepage_meta_keywords: ' . ($settings['homepage_meta_keywords'] ?? 'NOT SET') . ' -->' . "\n";
+    echo '<!-- business_name: ' . ($settings['business_name'] ?? 'NOT SET') . ' -->' . "\n";
+    echo '<!-- Settings array count: ' . count($settings) . ' -->' . "\n";
+    echo '<!-- Settings array empty: ' . (empty($settings) ? 'YES' : 'NO') . ' -->' . "\n";
+    echo '<!-- HOMEPAGE META TAGS DEBUG END -->' . "\n";
     
     // Get meta tags from wizard settings with fallbacks
     $meta_title = $settings['homepage_meta_title'] ?? 
@@ -59,6 +49,13 @@ add_action('wp_head', function() use ($settings) {
     echo '<meta name="keywords" content="' . esc_attr($meta_keywords) . '">' . "\n";
     echo '<meta name="author" content="' . esc_attr($settings['business_name'] ?? 'Create A Website Click') . '">' . "\n";
     echo '<meta name="robots" content="index, follow">' . "\n";
+    
+    // Debug: Show what meta tags are actually being output
+    echo '<!-- ACTUAL META TAGS OUTPUT -->' . "\n";
+    echo '<!-- Title: ' . esc_html($meta_title) . ' -->' . "\n";
+    echo '<!-- Description: ' . esc_attr($meta_description) . ' -->' . "\n";
+    echo '<!-- Keywords: ' . esc_attr($meta_keywords) . ' -->' . "\n";
+    echo '<!-- ACTUAL META TAGS OUTPUT END -->' . "\n";
     
     // Open Graph Meta Tags
     echo '<meta property="og:title" content="' . esc_attr($meta_title) . '">' . "\n";
