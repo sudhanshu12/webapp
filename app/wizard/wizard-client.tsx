@@ -407,7 +407,25 @@ export default function WizardClient() {
       timeoutId = setTimeout(async () => {
         if (isLoaded && session?.user?.email) {
           console.log('💾 Auto-saving to Supabase...');
-          await saveToSupabase(formData);
+          // Create a complete data object with current state
+          const completeData = {
+            ...formData,
+            services,
+            locations,
+            reviews,
+            features,
+            commitments,
+            faqs
+          };
+          console.log('📊 Complete data being saved:', {
+            servicesCount: services.length,
+            locationsCount: locations.length,
+            reviewsCount: reviews.length,
+            featuresCount: features.length,
+            commitmentsCount: commitments.length,
+            faqsCount: faqs.length
+          });
+          await saveToSupabase(completeData);
         }
       }, 2000); // Save to Supabase 2 seconds after last change
     };
@@ -1160,7 +1178,7 @@ export default function WizardClient() {
     }
   };
 
-  const saveToSupabase = async (formData: FormData) => {
+  const saveToSupabase = async (completeData: any) => {
     try {
       const response = await fetch('/api/save-wizard-data', {
         method: 'POST',
@@ -1168,15 +1186,9 @@ export default function WizardClient() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          services,
-          locations,
-          reviews,
-          features,
-          commitments,
-          faqs,
+          ...completeData,
           user_email: session?.user?.email || 'anonymous',
-          email: session?.user?.email || formData.email || 'anonymous'
+          email: session?.user?.email || completeData.email || 'anonymous'
         }),
       });
 
@@ -1185,8 +1197,8 @@ export default function WizardClient() {
         console.log('✅ Data saved to Supabase successfully:', result);
         
         // Also save to WordPress if WordPress site URL is provided
-        if (form.domain_name && form.domain_name.trim() !== '') {
-          await saveToWordPress(form);
+        if (completeData.domain_name && completeData.domain_name.trim() !== '') {
+          await saveToWordPress(completeData);
         }
         
         setLastSaved(new Date().toLocaleTimeString());
@@ -1304,12 +1316,14 @@ export default function WizardClient() {
     };
     const updatedServices = [...services, newService];
     setServices(updatedServices);
+    console.log('📝 Added new service, current services count:', updatedServices.length);
     
     // Auto-save to Supabase when service is added
     if (isLoaded && session?.user?.email) {
       const userEmail = session.user.email;
       setTimeout(() => {
         console.log(`💾 Auto-saving new service to Supabase for user: ${userEmail}`);
+        console.log('📝 Services being saved:', updatedServices);
         
         // Save to Supabase with debouncing
         debouncedSupabaseSave(form);
