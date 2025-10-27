@@ -355,19 +355,7 @@ export default function WizardClient() {
     return L > 0.6 ? '#111827' : '#ffffff';
   };
 
-  // Load/save form to localStorage to persist across clicks/reloads
-  const loadLS = <T,>(key: string, fallback: T): T => {
-    if (typeof window === 'undefined') return fallback;
-    try {
-      const v = localStorage.getItem(key);
-      return v ? (JSON.parse(v) as T) : fallback;
-    } catch {
-      return fallback;
-    }
-  };
-  const saveLS = (key: string, value: unknown) => {
-    try { if (typeof window !== 'undefined') localStorage.setItem(key, JSON.stringify(value)); } catch {}
-  };
+  // Note: localStorage removed - using Supabase only for cloud deployment
 
   // Generate random names for Google-like reviews
   const generateRandomName = () => {
@@ -705,82 +693,94 @@ export default function WizardClient() {
   // Add loading state to prevent hydration mismatches
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load data from localStorage after component mounts
+  // Load data from Supabase after component mounts
   useEffect(() => {
     // Wait for session to be available before loading data
     if (status === 'loading') return;
     
-    // Use user-specific localStorage key
-    const userEmail = session?.user?.email || 'anonymous';
-    const userKey = `bsg_form_${userEmail}`;
-    let savedForm = loadLS<FormData>(userKey, form);
+    const loadDataFromSupabase = async () => {
+      const userEmail = session?.user?.email;
+      if (!userEmail) {
+        setIsLoaded(true);
+        return;
+      }
+      
+      try {
+        const response = await fetch('/api/load-wizard-data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user_email: userEmail }),
+        });
+        
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          let savedForm = result.data;
+          
+          // If form has default color scheme enabled, apply the default colors
+          if (savedForm && (savedForm.use_default_color_scheme ?? true)) {
+            savedForm = {
+              ...savedForm,
+              // Apply all default colors
+              hero_headline: savedForm.hero_headline || 'Find Best Roofers Near You',
+              hero_description: savedForm.hero_description || 'Check here for the description',
+              hero_bg_color: '#f5f5f5',
+              hero_company_color: '#f59e0b',
+              hero_heading_color: '#000000',
+              hero_subheading_color: '#6b7280',
+              hero_description_color: '#6b7280',
+              hero_reviews_text_color: '#000000',
+              hero_reviews_star_color: '#fbbf24',
+              hero_book_btn_bg: '#14b8a6',
+              hero_book_btn_text: '#ffffff',
+              hero_call_btn_bg: '#1f2937',
+              hero_call_btn_text: '#ffffff',
+              services_bg_color: '#313746',
+              services_card_color: '#232834',
+              services_text_color: '#ffffff',
+              services_icon_color: '#2ee6c5',
+              features_bg_color: '#1e2834',
+              features_card_bg: '#1e2834',
+              features_text_color: '#ffffff',
+              about_bg_color: '#1f2937',
+              about_text_color: '#ffffff',
+              about_heading_color: '#ffffff',
+              reviews_bg_color: '#ffffff',
+              reviews_card_bg: '#f9fafb',
+              faq_bg_color: '#1f2732',
+              faq_text_color: '#ffffff',
+              faq_heading_color: '#ffffff',
+              footer_bg_color: '#0f172a',
+              footer_heading_color: '#ffffff',
+              footer_links_color: '#d1d5db',
+              nav_bg_color: '#fffbeb',
+              nav_text_color: '#78350f',
+              heading_color: '#78350f',
+              // Global color scheme palette (for Customize Colors section)
+              global_primary_color: '#f59e0b',
+              global_secondary_color: '#d97706',
+              button_primary_color: '#f59e0b',
+            };
+          }
+          
+          setForm(savedForm);
+          console.log('✅ Loaded form data from Supabase');
+        } else {
+          console.log('ℹ️ No saved data found in Supabase, using defaults');
+        }
+      } catch (error) {
+        console.error('❌ Error loading data from Supabase:', error);
+      } finally {
+        setIsLoaded(true);
+      }
+    };
     
-    // If form has default color scheme enabled, apply the default colors
-    if (savedForm && (savedForm.use_default_color_scheme ?? true)) {
-      savedForm = {
-        ...savedForm,
-        // Apply all default colors
-        hero_headline: savedForm.hero_headline || 'Find Best Roofers Near You',
-        hero_description: savedForm.hero_description || 'Check here for the description',
-        hero_bg_color: '#f5f5f5',
-        hero_company_color: '#f59e0b',
-        hero_heading_color: '#000000',
-        hero_subheading_color: '#6b7280',
-        hero_description_color: '#6b7280',
-        hero_reviews_text_color: '#000000',
-        hero_reviews_star_color: '#fbbf24',
-        hero_book_btn_bg: '#14b8a6',
-        hero_book_btn_text: '#ffffff',
-        hero_call_btn_bg: '#1f2937',
-        hero_call_btn_text: '#ffffff',
-        services_bg_color: '#313746',
-        services_card_color: '#232834',
-        services_text_color: '#ffffff',
-        services_icon_color: '#2ee6c5',
-        features_bg_color: '#1e2834',
-        features_card_bg: '#1e2834',
-        features_text_color: '#ffffff',
-        about_bg_color: '#1f2937',
-        about_text_color: '#ffffff',
-        about_heading_color: '#ffffff',
-        reviews_bg_color: '#ffffff',
-        reviews_card_bg: '#f9fafb',
-        faq_bg_color: '#1f2732',
-        faq_text_color: '#ffffff',
-        faq_heading_color: '#ffffff',
-        footer_bg_color: '#0f172a',
-        footer_heading_color: '#ffffff',
-        footer_links_color: '#d1d5db',
-        nav_bg_color: '#fffbeb',
-        nav_text_color: '#78350f',
-        heading_color: '#78350f',
-        // Global color scheme palette (for Customize Colors section)
-        global_primary_color: '#f59e0b',
-        global_secondary_color: '#d97706',
-        button_primary_color: '#f59e0b',
-      };
-    }
-    
-    if (savedForm) {
-      setForm(savedForm);
-    }
-    
-    // Also try to load from Supabase if user is authenticated
-    if (session?.user?.email) {
-      loadFromSupabase();
-    }
-    
-    setIsLoaded(true);
+    loadDataFromSupabase();
   }, [status, session]);
 
-  // Save form data to localStorage whenever it changes
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_form_${userEmail}`;
-      saveLS(userKey, form);
-    }
-  }, [form, isLoaded, session]);
+  // Note: Form data is now saved directly to Supabase via updateForm function
 
   // Dynamic content state
   const [services, setServices] = useState<Service[]>([
@@ -800,55 +800,7 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load services from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_services_${userEmail}`;
-      const savedServices = loadLS<Service[]>(userKey, []);
-      console.log('Loading services from localStorage:', savedServices);
-      // If no services in localStorage or empty array, use the default service
-      if (!savedServices || savedServices.length === 0) {
-        console.log('No services in localStorage, using default');
-        // Use the default service from state initialization
-        const defaultServices = [
-          {
-            id: '1',
-            name: 'Lawn Care',
-            description: 'Professional lawn care and maintenance services',
-            icon: '🌱',
-            image: '',
-            content: '',
-            slug: 'lawn-care',
-            metaTitle: '',
-            metaDescription: '',
-            featuresText: '',
-            useDefaultPrompt: true,
-            customPrompt: ''
-          }
-        ];
-        setServices(defaultServices);
-      } else {
-        console.log('Found services in localStorage:', savedServices.length);
-        // Generate slugs for services that don't have them
-        const servicesWithSlugs = savedServices.map(service => {
-          if (!service.slug && service.name.trim()) {
-            service.slug = service.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-          }
-          return service;
-        });
-        setServices(servicesWithSlugs);
-      }
-    }
-  }, [isLoaded]);
-  
-  useEffect(() => { 
-    if (isLoaded && services.length > 0 && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_services_${userEmail}`;
-      saveLS(userKey, services); 
-    }
-  }, [services, isLoaded, session]);
+  // Note: Services are now saved directly to Supabase via addService/updateService/removeService functions
 
   const [locations, setLocations] = useState<Location[]>([
     {
@@ -865,54 +817,11 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load locations from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_locations_${userEmail}`;
-      const savedLocations = loadLS<Location[]>(userKey, locations);
-      console.log('Loading locations from localStorage:', savedLocations);
-      // Generate slugs for locations that don't have them
-      const locationsWithSlugs = savedLocations.map(location => {
-        if (!location.slug && location.name.trim()) {
-          const nameSlug = location.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-          const zipSlug = location.zip.trim();
-          location.slug = nameSlug + (zipSlug ? '-' + zipSlug : '');
-        }
-        return location;
-      });
-      console.log('Locations with slugs:', locationsWithSlugs);
-      setLocations(locationsWithSlugs);
-    }
-  }, [isLoaded]);
-  
-  useEffect(() => { 
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_locations_${userEmail}`;
-      saveLS(userKey, locations); 
-    }
-  }, [locations, isLoaded, session]);
+  // Note: Locations are now saved directly to Supabase via addLocation/updateLocation/removeLocation functions
 
   const [reviews, setReviews] = useState<Review[]>([]);
   
-  // Load reviews from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_reviews_${userEmail}`;
-      const savedReviews = loadLS<Review[]>(userKey, reviews);
-      setReviews(savedReviews);
-    }
-  }, [isLoaded, session]);
-  
-  useEffect(() => { 
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_reviews_${userEmail}`;
-      saveLS(userKey, reviews); 
-    }
-  }, [reviews, isLoaded, session]);
+  // Note: Reviews are now saved directly to Supabase via addReview/updateReview/removeReview functions
 
   const [features, setFeatures] = useState<Feature[]>([
     {
@@ -923,23 +832,7 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load features from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_features_${userEmail}`;
-      const savedFeatures = loadLS<Feature[]>(userKey, features);
-      setFeatures(savedFeatures);
-    }
-  }, [isLoaded, session]);
-  
-  useEffect(() => { 
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_features_${userEmail}`;
-      saveLS(userKey, features); 
-    }
-  }, [features, isLoaded, session]);
+  // Note: Features are now saved directly to Supabase via addFeature/updateFeature/removeFeature functions
 
   
 
@@ -952,23 +845,7 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load commitments from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_commitments_${userEmail}`;
-      const savedCommitments = loadLS<Commitment[]>(userKey, commitments);
-      setCommitments(savedCommitments);
-    }
-  }, [isLoaded, session]);
-  
-  useEffect(() => { 
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_commitments_${userEmail}`;
-      saveLS(userKey, commitments); 
-    }
-  }, [commitments, isLoaded, session]);
+  // Note: Commitments are now saved directly to Supabase via addCommitment/updateCommitment/removeCommitment functions
 
   const [faqs, setFaqs] = useState<FAQ[]>([
     {
@@ -978,23 +855,7 @@ export default function WizardClient() {
     }
   ]);
   
-  // Load FAQs from localStorage after component mounts
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_faqs_${userEmail}`;
-      const savedFaqs = loadLS<FAQ[]>(userKey, faqs);
-      setFaqs(savedFaqs);
-    }
-  }, [isLoaded, session]);
-  
-  useEffect(() => {
-    if (isLoaded && session?.user?.email) {
-      const userEmail = session.user.email;
-      const userKey = `bsg_faqs_${userEmail}`;
-      saveLS(userKey, faqs); 
-    }
-  }, [faqs, isLoaded, session]);
+  // Note: FAQs are now saved directly to Supabase via addFAQ/updateFAQ/removeFAQ functions
 
   // Handle NextAuth session
   useEffect(() => {
@@ -1276,17 +1137,15 @@ export default function WizardClient() {
       return next;
     });
     
-    // Auto-save to localStorage immediately when form changes
+    // Auto-save to Supabase when form changes
     if (isLoaded && session?.user?.email) {
       const userEmail = session.user.email;
-      const userKey = `bsg_form_${userEmail}`;
       // Use setTimeout to ensure the state has been updated
       setTimeout(() => {
         const currentForm = { ...form, [field]: value };
-        saveLS(userKey, currentForm);
-        console.log(`💾 Auto-saved ${field} to localStorage for user: ${userEmail}`);
+        console.log(`💾 Auto-saving ${field} to Supabase for user: ${userEmail}`);
         
-        // Also save to Supabase with debouncing
+        // Save to Supabase with debouncing
         debouncedSupabaseSave(currentForm);
       }, 0);
     }
@@ -1437,15 +1296,13 @@ export default function WizardClient() {
     const updatedServices = [...services, newService];
     setServices(updatedServices);
     
-    // Auto-save to localStorage immediately
+    // Auto-save to Supabase when service is added
     if (isLoaded && session?.user?.email) {
       const userEmail = session.user.email;
-      const userKey = `bsg_services_${userEmail}`;
       setTimeout(() => {
-        saveLS(userKey, updatedServices);
-        console.log(`💾 Auto-saved new service to localStorage for user: ${userEmail}`);
+        console.log(`💾 Auto-saving new service to Supabase for user: ${userEmail}`);
         
-        // Also save to Supabase with debouncing
+        // Save to Supabase with debouncing
         debouncedSupabaseSave(form);
       }, 0);
     }
@@ -1465,15 +1322,13 @@ export default function WizardClient() {
         return service;
       });
       
-      // Auto-save to localStorage immediately
+      // Auto-save to Supabase when service is updated
       if (isLoaded && session?.user?.email) {
         const userEmail = session.user.email;
-        const userKey = `bsg_services_${userEmail}`;
         setTimeout(() => {
-          saveLS(userKey, updatedServices);
-          console.log(`💾 Auto-saved service ${id} to localStorage for user: ${userEmail}`);
+          console.log(`💾 Auto-saving service ${id} update to Supabase for user: ${userEmail}`);
           
-          // Also save to Supabase with debouncing
+          // Save to Supabase with debouncing
           debouncedSupabaseSave(form);
         }, 0);
       }
@@ -1486,15 +1341,13 @@ export default function WizardClient() {
     setServices(prevServices => {
       const updatedServices = prevServices.filter(service => service.id !== id);
       
-      // Auto-save to localStorage immediately
+      // Auto-save to Supabase when service is removed
       if (isLoaded && session?.user?.email) {
         const userEmail = session.user.email;
-        const userKey = `bsg_services_${userEmail}`;
         setTimeout(() => {
-          saveLS(userKey, updatedServices);
-          console.log(`💾 Auto-saved service removal to localStorage for user: ${userEmail}`);
+          console.log(`💾 Auto-saving service removal to Supabase for user: ${userEmail}`);
           
-          // Also save to Supabase with debouncing
+          // Save to Supabase with debouncing
           debouncedSupabaseSave(form);
         }, 0);
       }
@@ -1573,15 +1426,13 @@ export default function WizardClient() {
     const updatedLocations = [...locations, newLocation];
     setLocations(updatedLocations);
     
-    // Auto-save to localStorage immediately
+    // Auto-save to Supabase when location is added
     if (isLoaded && session?.user?.email) {
       const userEmail = session.user.email;
-      const userKey = `bsg_locations_${userEmail}`;
       setTimeout(() => {
-        saveLS(userKey, updatedLocations);
-        console.log(`💾 Auto-saved new location to localStorage for user: ${userEmail}`);
+        console.log(`💾 Auto-saving new location to Supabase for user: ${userEmail}`);
         
-        // Also save to Supabase with debouncing
+        // Save to Supabase with debouncing
         debouncedSupabaseSave(form);
       }, 0);
     }
@@ -1605,15 +1456,13 @@ export default function WizardClient() {
         return location;
       });
       
-      // Auto-save to localStorage and Supabase
+      // Auto-save to Supabase when location is updated
       if (isLoaded && session?.user?.email) {
         const userEmail = session.user.email;
-        const userKey = `bsg_locations_${userEmail}`;
         setTimeout(() => {
-          saveLS(userKey, updatedLocations);
-          console.log(`💾 Auto-saved location update to localStorage for user: ${userEmail}`);
+          console.log(`💾 Auto-saving location update to Supabase for user: ${userEmail}`);
           
-          // Also save to Supabase with debouncing
+          // Save to Supabase with debouncing
           debouncedSupabaseSave(form);
         }, 0);
       }
@@ -1674,15 +1523,13 @@ export default function WizardClient() {
     setLocations(prevLocations => {
       const updatedLocations = prevLocations.filter(location => location.id !== id);
       
-      // Auto-save to localStorage immediately
+      // Auto-save to Supabase when location is removed
       if (isLoaded && session?.user?.email) {
         const userEmail = session.user.email;
-        const userKey = `bsg_locations_${userEmail}`;
         setTimeout(() => {
-          saveLS(userKey, updatedLocations);
-          console.log(`💾 Auto-saved location removal to localStorage for user: ${userEmail}`);
+          console.log(`💾 Auto-saving location removal to Supabase for user: ${userEmail}`);
           
-          // Also save to Supabase with debouncing
+          // Save to Supabase with debouncing
           debouncedSupabaseSave(form);
         }, 0);
       }
@@ -2180,11 +2027,7 @@ export default function WizardClient() {
         { id: '2', name: 'Roof Repair', description: 'Expert roof repair and maintenance', slug: 'roof-repair', icon: '🛠️', image: '', content: '' }
       ];
       setServices(sampleServices);
-      if (session?.user?.email) {
-        const userEmail = session.user.email;
-        const userKey = `bsg_services_${userEmail}`;
-        saveLS(userKey, sampleServices);
-      }
+      // Note: Sample data is now saved directly to Supabase via debouncedSupabaseSave
     }
     
     if (locations.length === 0) {
@@ -2193,11 +2036,7 @@ export default function WizardClient() {
         { id: '2', name: 'Orlando', state: 'Florida', zip: '32801', description: 'Serving Orlando, Florida', slug: 'orlando-32801' }
       ];
       setLocations(sampleLocations);
-      if (session?.user?.email) {
-        const userEmail = session.user.email;
-        const userKey = `bsg_locations_${userEmail}`;
-        saveLS(userKey, sampleLocations);
-      }
+    // Note: Sample data is now saved directly to Supabase via debouncedSupabaseSave
     }
   };
 
@@ -2207,23 +2046,7 @@ export default function WizardClient() {
     console.log('Current locations state:', locations);
     console.log('Current form state:', form);
     
-    // Ensure data is properly synchronized with localStorage
-    const userEmail = session?.user?.email || 'anonymous';
-    const servicesKey = `bsg_services_${userEmail}`;
-    const locationsKey = `bsg_locations_${userEmail}`;
-    const currentServices = loadLS<Service[]>(servicesKey, []);
-    const currentLocations = loadLS<Location[]>(locationsKey, []);
-    
-    console.log('Current localStorage services:', currentServices);
-    console.log('Current localStorage locations:', currentLocations);
-    
-    // Use localStorage data if it's different from state
-    if (JSON.stringify(currentServices) !== JSON.stringify(services)) {
-      setServices(currentServices);
-    }
-    if (JSON.stringify(currentLocations) !== JSON.stringify(locations)) {
-      setLocations(currentLocations);
-    }
+    // Note: Data synchronization with localStorage removed - using Supabase only
     
     // Validate essential fields first
     if (!form.business_name || !form.business_type || !form.location) {
@@ -2237,9 +2060,9 @@ export default function WizardClient() {
       return;
     }
     
-    // Use the synchronized data from localStorage
-    const finalServices = currentServices;
-    const finalLocations = currentLocations;
+    // Note: Using current state data directly from Supabase
+    const finalServices = services;
+    const finalLocations = locations;
     
     // Ensure all services and locations have proper slugs before sending
     const servicesWithSlugs = finalServices.map(service => {
@@ -2306,7 +2129,7 @@ export default function WizardClient() {
       }
       
       // Notify other pages that credits have been updated
-      localStorage.setItem('creditsUpdated', Date.now().toString());
+      // Note: Credits tracking removed - using Supabase only
 
       console.log('Sending data to build-theme API:', {
         business_name: form.business_name,
