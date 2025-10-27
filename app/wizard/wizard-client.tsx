@@ -1686,27 +1686,82 @@ export default function WizardClient() {
       'My experience with [COMPANY_NAME] has been nothing short of exceptional. From the initial consultation to the final cleanup, everything was handled professionally. The team was on time, clean, and kept me informed throughout the process. I couldn\'t be happier with the results and will definitely use [COMPANY_NAME] again!'
     ];
 
-  // Generate random Google-like reviews in sets of 4
+  // Generate unique dynamic Google-like reviews in sets of 4
   const generateRandomReviews = () => {
+    const businessName = form.business_name || 'this company';
+    
+    // Dynamic review components for unique generation
+    const positiveAdjectives = [
+      'excellent', 'outstanding', 'fantastic', 'amazing', 'exceptional', 'superb', 'brilliant', 
+      'remarkable', 'impressive', 'wonderful', 'incredible', 'phenomenal', 'stellar', 'top-notch',
+      'first-rate', 'premium', 'superior', 'exemplary', 'outstanding', 'magnificent'
+    ];
+    
+    const serviceWords = [
+      'service', 'work', 'job', 'project', 'experience', 'results', 'quality', 'performance',
+      'delivery', 'execution', 'outcome', 'final product', 'completion', 'finish'
+    ];
+    
+    const teamDescriptions = [
+      'professional team', 'skilled professionals', 'expert staff', 'knowledgeable crew',
+      'experienced team', 'dedicated workers', 'competent staff', 'reliable team',
+      'friendly staff', 'courteous team', 'helpful professionals', 'accommodating crew'
+    ];
+    
+    const timeReferences = [
+      'on time', 'ahead of schedule', 'within the deadline', 'as promised', 'exactly when they said',
+      'punctually', 'promptly', 'quickly', 'efficiently', 'swiftly'
+    ];
+    
+    const qualityPhrases = [
+      'exceeded my expectations', 'went above and beyond', 'delivered exceptional results',
+      'provided outstanding quality', 'showed great attention to detail', 'demonstrated expertise',
+      'produced excellent work', 'achieved perfect results', 'delivered beyond what was promised'
+    ];
+    
+    const recommendationPhrases = [
+      'highly recommend', 'definitely recommend', 'strongly recommend', 'would recommend',
+      'absolutely recommend', 'surely recommend', 'certainly recommend', 'definitely suggest'
+    ];
+    
     const newReviews = Array.from({ length: 4 }, (_, index) => {
-      const randomTemplate = reviewTemplates[Math.floor(Math.random() * reviewTemplates.length)];
-      const businessName = form.business_name || 'this company';
+      // Generate unique review by combining different components
+      const adjective = positiveAdjectives[Math.floor(Math.random() * positiveAdjectives.length)];
+      const service = serviceWords[Math.floor(Math.random() * serviceWords.length)];
+      const team = teamDescriptions[Math.floor(Math.random() * teamDescriptions.length)];
+      const time = timeReferences[Math.floor(Math.random() * timeReferences.length)];
+      const quality = qualityPhrases[Math.floor(Math.random() * qualityPhrases.length)];
+      const recommend = recommendationPhrases[Math.floor(Math.random() * recommendationPhrases.length)];
       
-      // Replace [COMPANY_NAME] with actual business name
-      const personalizedComment = randomTemplate.replace(/\[COMPANY_NAME\]/g, businessName);
+      // Create different review structures for variety
+      const reviewStructures = [
+        // Short structure
+        `${businessName} provided ${adjective} ${service}! The ${team} was ${time}. ${recommend.charAt(0).toUpperCase() + recommend.slice(1)} ${businessName}!`,
+        
+        // Medium structure
+        `I was very impressed with ${businessName}. The ${team} delivered ${adjective} ${service} and ${quality}. ${recommend.charAt(0).toUpperCase() + recommend.slice(1)} ${businessName} to anyone looking for reliable service!`,
+        
+        // Long structure
+        `My experience with ${businessName} was absolutely ${adjective}. The ${team} was ${time} and ${quality}. The attention to detail and professionalism from ${businessName} was remarkable. I couldn't be happier with the results and ${recommend} ${businessName} to others!`,
+        
+        // Detailed structure
+        `${businessName} delivered exceptional ${service} from start to finish. The ${team} was knowledgeable, professional, and ${time}. The quality of work ${quality} and I was very pleased with the outcome. ${recommend.charAt(0).toUpperCase() + recommend.slice(1)} ${businessName} for any future projects!`
+      ];
+      
+      const selectedStructure = reviewStructures[Math.floor(Math.random() * reviewStructures.length)];
       
       return {
-        id: (Date.now() + index).toString(),
+        id: (Date.now() + index + Math.random() * 1000).toString(),
         name: generateRandomName(),
         rating: Math.floor(Math.random() * 2) + 4, // 4 or 5 stars
-        comment: personalizedComment,
+        comment: selectedStructure,
         date: generateRandomDate()
       };
     });
 
     // Add new reviews to existing ones instead of replacing
     setReviews(prevReviews => [...prevReviews, ...newReviews]);
-    setSuccess('✅ 4 new personalized Google reviews added successfully!');
+    setSuccess('✅ 4 new unique personalized Google reviews added successfully!');
     setTimeout(() => setSuccess(''), 3000);
   };
 
@@ -5670,7 +5725,7 @@ export default function WizardClient() {
                         onClick={generateRandomReviews}
                         style={{marginTop: '1rem'}}
                       >
-                        🎲 Generate 4 Personalized Reviews
+                        🎲 Generate 4 Unique Reviews
                       </button>
                     </div>
 					</div>
