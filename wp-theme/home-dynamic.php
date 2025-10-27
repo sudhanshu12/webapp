@@ -630,8 +630,8 @@ echo wp_json_encode($faq_schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
 
     <?php include dirname(__FILE__) . '/section-header.php'; ?>
     <style>
-        /* Homepage-specific: business name color */
-        .main-header .logo span { color: #451A03 !important; }
+        /* Homepage-specific: business name color - use navigation text color */
+        .main-header .logo span { color: <?php echo esc_attr($nav_text); ?> !important; }
         
         /* Force hero section height */
         .hero-section {
