@@ -1630,15 +1630,17 @@ export default function WizardClient() {
 
   // Review templates for random generation
   const reviewTemplates = [
-      // Short reviews (1 line)
-      'Great service!',
-      'Highly recommend!',
-      'Excellent work!',
-      'Very professional!',
-      'Outstanding quality!',
-      'Fantastic experience!',
-      'Amazing service!',
-      'Perfect results!',
+      // Short reviews (1 line) - Personalized
+      '[COMPANY_NAME] provided excellent service!',
+      'Great work from [COMPANY_NAME]!',
+      'Highly recommend [COMPANY_NAME]!',
+      '[COMPANY_NAME] is professional and reliable!',
+      'Outstanding quality from [COMPANY_NAME]!',
+      'Very satisfied with [COMPANY_NAME]!',
+      'Great experience with [COMPANY_NAME]!',
+      '[COMPANY_NAME] delivers top notch service!',
+      '[COMPANY_NAME] exceeded my expectations!',
+      'Fantastic work by [COMPANY_NAME]!',
       
       // Medium reviews (2 lines) - Generic
       'Outstanding service! The team was professional and delivered exactly what they promised. Highly recommend!',
@@ -1684,9 +1686,9 @@ export default function WizardClient() {
       'My experience with [COMPANY_NAME] has been nothing short of exceptional. From the initial consultation to the final cleanup, everything was handled professionally. The team was on time, clean, and kept me informed throughout the process. I couldn\'t be happier with the results and will definitely use [COMPANY_NAME] again!'
     ];
 
-  // Generate random Google-like reviews
+  // Generate random Google-like reviews in sets of 4
   const generateRandomReviews = () => {
-    const newReviews = Array.from({ length: 5 }, (_, index) => {
+    const newReviews = Array.from({ length: 4 }, (_, index) => {
       const randomTemplate = reviewTemplates[Math.floor(Math.random() * reviewTemplates.length)];
       const businessName = form.business_name || 'this company';
       
@@ -1702,8 +1704,9 @@ export default function WizardClient() {
       };
     });
 
-    setReviews(newReviews); // Replace all reviews with new random ones
-    setSuccess('✅ Random Google-like reviews added successfully!');
+    // Add new reviews to existing ones instead of replacing
+    setReviews(prevReviews => [...prevReviews, ...newReviews]);
+    setSuccess('✅ 4 new personalized Google reviews added successfully!');
     setTimeout(() => setSuccess(''), 3000);
   };
 
@@ -5667,7 +5670,7 @@ export default function WizardClient() {
                         onClick={generateRandomReviews}
                         style={{marginTop: '1rem'}}
                       >
-                        🎲 Generate Random Google Reviews
+                        🎲 Generate 4 Personalized Reviews
                       </button>
                     </div>
 					</div>
