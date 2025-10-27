@@ -22,12 +22,12 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
     --nav-bg: var(--surface-color);
 }
 
-/* Theme variable fallbacks if not set inline */
+/* Theme variable fallbacks if not set inline - SKY Theme */
 :root {
-  --primary-color: #2563eb;
-  --secondary-color: #0ea5e9;
-  --surface-color: #0f172a;
-  --text-color: #e5e7eb;
+  --primary-color: #0ea5e9;
+  --secondary-color: #38bdf8;
+  --surface-color: #e0f2fe;
+  --text-color: #23282d;
 }
 /* Ensure button classes use theme variables */
 .btn { --btn-bg: var(--primary-color); --btn-fg: #ffffff; }

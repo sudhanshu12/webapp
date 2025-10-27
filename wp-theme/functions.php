@@ -743,21 +743,21 @@ function bsg_get_section_visibility() {
 function bsg_get_color_scheme() {
     $settings = bsg_get_settings();
     
-    // Use global theme colors if available, otherwise fall back to professional landscaping defaults
-    $primary = $settings['global_primary_color'] ?? $settings['primary_color'] ?? '#059669';
-    $secondary = $settings['global_secondary_color'] ?? $settings['secondary_color'] ?? '#10b981';
-    $accent = $settings['global_accent_color'] ?? $settings['accent_color'] ?? '#16a34a';
-    $heading = $settings['heading_color'] ?? '#1f2937';
-    // Default CTA/button color is orange like the reference; overrideable via settings
-    $button = $settings['button_primary_color'] ?? '#f59e0b';
+    // Use global theme colors if available, otherwise fall back to SKY theme defaults
+    $primary = $settings['global_primary_color'] ?? $settings['primary_color'] ?? '#0ea5e9';
+    $secondary = $settings['global_secondary_color'] ?? $settings['secondary_color'] ?? '#38bdf8';
+    $accent = $settings['global_accent_color'] ?? $settings['accent_color'] ?? '#0c4a6e';
+    $heading = $settings['heading_color'] ?? '#23282d';
+    // Default CTA/button color is sky blue; overrideable via settings
+    $button = $settings['button_primary_color'] ?? '#0ea5e9';
     
-    // If no settings are loaded, use professional landscaping theme as default
+    // If no settings are loaded, use SKY theme as default
     if (empty($settings) || $settings === null) {
-        $primary = '#059669';
-        $secondary = '#10b981';
-        $accent = '#16a34a';
-        $heading = '#1f2937';
-        $button = '#059669';
+        $primary = '#0ea5e9';
+        $secondary = '#38bdf8';
+        $accent = '#0c4a6e';
+        $heading = '#23282d';
+        $button = '#0ea5e9';
     }
     
     return [
@@ -793,9 +793,9 @@ function bsg_generate_dynamic_css() {
     
     $colors = bsg_get_color_scheme();
     $settings = bsg_get_settings();
-    // Default navbar like reference: light cream background with brown text, overrideable from settings
-    $nav_bg = isset($settings['nav_bg_color']) && !empty($settings['nav_bg_color']) ? $settings['nav_bg_color'] : '#fff4d6';
-    $nav_text = isset($settings['nav_text_color']) && !empty($settings['nav_text_color']) ? $settings['nav_text_color'] : '#6b3b1e';
+    // Default navbar using SKY theme: dark blue background with white text, overrideable from settings
+    $nav_bg = isset($settings['nav_bg_color']) && !empty($settings['nav_bg_color']) ? $settings['nav_bg_color'] : '#0c4a6e';
+    $nav_text = isset($settings['nav_text_color']) && !empty($settings['nav_text_color']) ? $settings['nav_text_color'] : '#ffffff';
     
     $css = "
     :root {
