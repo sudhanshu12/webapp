@@ -5,11 +5,30 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
-    // Get user ID from request headers (sent by client)
+    // Get user ID or email from request headers
     const userId = request.headers.get('x-user-id')
+    const userEmail = request.headers.get('x-user-email')
     
-    if (!userId) {
+    if (!userId && !userEmail) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    let finalUserId = userId;
+
+    // If we have email but not ID, fetch the user ID from email
+    if (userEmail && !userId) {
+      const { data: user, error: userError } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', userEmail)
+        .single()
+
+      if (userError || !user) {
+        console.error('Error fetching user:', userError)
+        return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      }
+
+      finalUserId = user.id;
     }
 
     const { siteName, creditsToDeduct = 1 } = await request.json()
@@ -22,7 +41,7 @@ export async function POST(request: NextRequest) {
     const { data: credits, error: fetchError } = await supabase
       .from('user_credits')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', finalUserId)
       .single()
 
     if (fetchError) {
@@ -53,7 +72,7 @@ export async function POST(request: NextRequest) {
         used_credits: newUsedCredits,
         updated_at: new Date().toISOString()
       })
-      .eq('user_id', userId)
+      .eq('user_id', finalUserId)
 
     if (updateError) {
       console.error('Error updating credits:', updateError)
@@ -64,7 +83,7 @@ export async function POST(request: NextRequest) {
     const { error: siteError } = await supabase
       .from('site_creations')
       .insert({
-        user_id: userId,
+        user_id: finalUserId,
         site_name: siteName,
         credits_used: creditsToDeduct,
         status: 'completed'
@@ -76,7 +95,7 @@ export async function POST(request: NextRequest) {
       await supabase
         .from('user_credits')
         .update({ used_credits: credits.used_credits })
-        .eq('user_id', userId)
+        .eq('user_id', finalUserId)
       return NextResponse.json({ error: 'Failed to record site creation' }, { status: 500 })
     }
 
@@ -84,10 +103,11 @@ export async function POST(request: NextRequest) {
     const { error: transactionError } = await supabase
       .from('credit_transactions')
       .insert({
-        user_id: userId,
-        type: 'deduct',
+        user_id: finalUserId,
+        type: 'site_creation',
         amount: creditsToDeduct,
-        description: `Site creation: ${siteName}`
+        description: `Site creation: ${siteName}`,
+        site_name: siteName
       })
 
     if (transactionError) {

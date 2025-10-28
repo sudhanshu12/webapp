@@ -131,7 +131,17 @@ export default function Dashboard() {
 
   const fetchSites = async () => {
     try {
-      const response = await fetch('/api/credits/history?limit=10');
+      if (!session?.user?.email) {
+        console.log('No session found for fetching sites');
+        return;
+      }
+      
+      const response = await fetch('/api/credits/history?limit=10', {
+        headers: {
+          'x-user-email': session.user.email
+        }
+      });
+      
       if (response.ok) {
         const data = await response.json();
         // Filter only site creations from history
@@ -141,6 +151,9 @@ export default function Dashboard() {
           title: site.site_name,
           created_at: site.created_at
         })));
+        console.log('Sites fetched:', siteCreations.length);
+      } else {
+        console.error('Failed to fetch sites:', response.statusText);
       }
     } catch (error) {
       console.error('Error fetching sites:', error);
