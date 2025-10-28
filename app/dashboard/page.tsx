@@ -144,8 +144,32 @@ export default function Dashboard() {
       
       if (response.ok) {
         const data = await response.json();
+        console.log('Credits history API response:', data);
+        console.log('All transactions:', data.history);
+        
         // Filter only site creations from history
         const siteCreations = data.history.filter((item: any) => item.type === 'site_creation');
+        console.log('Site creation transactions:', siteCreations);
+        
+        // If no site_creation records found, check for any deduct records with site names
+        if (siteCreations.length === 0) {
+          console.log('No site_creation records found, checking for deduct records...');
+          const deductRecords = data.history.filter((item: any) => 
+            item.type === 'deduct' && item.description && item.description.includes('Site creation')
+          );
+          console.log('Deduct records with site creation:', deductRecords);
+          
+          if (deductRecords.length > 0) {
+            setSites(deductRecords.map((site: any) => ({
+              id: site.id,
+              title: site.description?.replace('Site creation: ', '') || 'Unknown Site',
+              created_at: site.created_at
+            })));
+            console.log('Sites from deduct records:', deductRecords.length);
+            return;
+          }
+        }
+        
         setSites(siteCreations.map((site: any) => ({
           id: site.id,
           title: site.site_name,
@@ -154,6 +178,8 @@ export default function Dashboard() {
         console.log('Sites fetched:', siteCreations.length);
       } else {
         console.error('Failed to fetch sites:', response.statusText);
+        const errorText = await response.text();
+        console.error('Error details:', errorText);
       }
     } catch (error) {
       console.error('Error fetching sites:', error);
