@@ -14,12 +14,7 @@ const CACHE_DURATION = 30000; // 30 seconds cache
 
 export function useCredits() {
   const { data: session, status } = useSession();
-  const [credits, setCredits] = useState<CreditInfo>({
-    totalCredits: 1,
-    usedCredits: 0,
-    remainingCredits: 1,
-    planType: 'free'
-  });
+  const [credits, setCredits] = useState<CreditInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -63,7 +58,7 @@ export function useCredits() {
       console.error('Error fetching credits:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch credits');
       
-      // Set default credits on error
+      // Only set default credits on actual error, not during loading
       const defaultCredits = {
         totalCredits: 1,
         usedCredits: 0,
@@ -88,7 +83,10 @@ export function useCredits() {
     if (status === 'authenticated' && session?.user?.email) {
       fetchCredits(session.user.email);
     } else if (status === 'unauthenticated') {
+      setCredits(null);
       setLoading(false);
+    } else if (status === 'loading') {
+      setLoading(true);
     }
   }, [session, status, fetchCredits]);
 

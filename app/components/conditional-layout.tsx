@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { useCredits } from '../hooks/useCredits';
+import { useCredits, clearCreditsCache } from '../hooks/useCredits';
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
@@ -51,6 +51,10 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
   }, [showDropdown]);
 
   const handleSignOut = async () => {
+    // Clear credits cache for faster logout
+    if (session?.user?.email) {
+      clearCreditsCache(session.user.email);
+    }
     await signOut({ callbackUrl: '/login' });
   };
 

@@ -319,7 +319,7 @@ export default function WizardClient() {
   const { data: session, status } = useSession();
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
-  const { credits, refreshCredits } = useCredits();
+  const { credits, loading: creditsLoading, refreshCredits } = useCredits();
 
   // Helper function to get theme colors - Updated to match professional landscaping theme
   const getThemeColors = (theme: string) => {
@@ -6590,10 +6590,10 @@ export default function WizardClient() {
                         border: '1px solid #e9ecef'
                       }}>
                         <div style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px' }}>
-                          💳 Your Credits: {credits.usedCredits} / {credits.totalCredits}
+                          💳 Your Credits: {creditsLoading ? 'Loading...' : `${credits?.usedCredits || 0} / ${credits?.totalCredits || 0}`}
                         </div>
                         <div style={{ fontSize: '14px', color: '#6c757d' }}>
-                          Plan: {credits.planType.charAt(0).toUpperCase() + credits.planType.slice(1)}
+                          Plan: {creditsLoading ? 'Loading...' : (credits?.planType ? credits.planType.charAt(0).toUpperCase() + credits.planType.slice(1) : 'Free')}
                         </div>
                       </div>
 
@@ -6642,24 +6642,24 @@ export default function WizardClient() {
                           type="button" 
                           className="button button-primary button-hero"
                           onClick={downloadTheme}
-                          disabled={loading || !(form.business_name && form.business_type && form.phone && form.email && form.address) || credits.remainingCredits < 1}
+                          disabled={loading || !(form.business_name && form.business_type && form.phone && form.email && form.address) || (credits?.remainingCredits || 0) < 1}
                           style={{
                             fontSize: '18px',
                             padding: '18px 36px',
-                            backgroundColor: (form.business_name && form.business_type && form.phone && form.email && form.address && credits.remainingCredits >= 1) ? '#0073aa' : '#6c757d',
-                            borderColor: (form.business_name && form.business_type && form.phone && form.email && form.address && credits.remainingCredits >= 1) ? '#0073aa' : '#6c757d',
+                            backgroundColor: (form.business_name && form.business_type && form.phone && form.email && form.address && (credits?.remainingCredits || 0) >= 1) ? '#0073aa' : '#6c757d',
+                            borderColor: (form.business_name && form.business_type && form.phone && form.email && form.address && (credits?.remainingCredits || 0) >= 1) ? '#0073aa' : '#6c757d',
                             color: '#ffffff',
                             borderRadius: '8px',
                             border: 'none',
-                            cursor: (loading || !(form.business_name && form.business_type && form.phone && form.email && form.address) || credits.remainingCredits < 1) ? 'not-allowed' : 'pointer',
-                            opacity: (loading || !(form.business_name && form.business_type && form.phone && form.email && form.address) || credits.remainingCredits < 1) ? 0.7 : 1,
+                            cursor: (loading || !(form.business_name && form.business_type && form.phone && form.email && form.address) || (credits?.remainingCredits || 0) < 1) ? 'not-allowed' : 'pointer',
+                            opacity: (loading || !(form.business_name && form.business_type && form.phone && form.email && form.address) || (credits?.remainingCredits || 0) < 1) ? 0.7 : 1,
                             transition: 'all 0.3s ease',
                             fontWeight: '600',
-                            boxShadow: (form.business_name && form.business_type && form.phone && form.email && form.address && credits.remainingCredits >= 1) ? '0 4px 12px rgba(0, 115, 170, 0.3)' : 'none',
+                            boxShadow: (form.business_name && form.business_type && form.phone && form.email && form.address && (credits?.remainingCredits || 0) >= 1) ? '0 4px 12px rgba(0, 115, 170, 0.3)' : 'none',
                             minWidth: '200px'
                           }}
                         >
-                          {loading ? '🔄 Creating...' : credits.remainingCredits < 1 ? '❌ No Credits' : '📦 WordPress Theme (1 Credit)'}
+                          {loading ? '🔄 Creating...' : (credits?.remainingCredits || 0) < 1 ? '❌ No Credits' : '📦 WordPress Theme (1 Credit)'}
                         </button>
                         
                       </div>
@@ -6672,14 +6672,14 @@ export default function WizardClient() {
                       }}>
                         {!(form.business_name && form.business_type && form.phone && form.email && form.address) 
                           ? 'Fill in all required general fields to activate the Create Site button'
-                          : credits.remainingCredits < 1
+                          : (credits?.remainingCredits || 0) < 1
                           ? 'You need to purchase more credits to create a site'
                           : 'This will generate a complete WordPress theme with all your content embedded'
                         }
                       </p>
 
                       {/* Upgrade to Pro Button - Show for free users */}
-                      {credits.planType === 'free' && (
+                      {credits?.planType === 'free' && (
                         <div style={{
                           marginTop: '30px',
                           padding: '20px',
