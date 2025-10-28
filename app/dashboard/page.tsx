@@ -66,7 +66,7 @@ export default function Dashboard() {
           if (data.success) {
             console.log('Payment processed automatically:', data);
             // Refresh credits after processing
-            fetchCredits();
+            refreshCredits();
             // Remove success parameters from URL
             window.history.replaceState({}, '', '/dashboard');
           } else {
