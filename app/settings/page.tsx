@@ -10,6 +10,7 @@ export default function Settings() {
   const [user, setUser] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [openRouterKey, setOpenRouterKey] = useState('');
+  const [openAIKey, setOpenAIKey] = useState('');
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -20,10 +21,9 @@ export default function Settings() {
       window.location.href = '/login';
     }
     
-    // Load OpenRouter API key from localStorage
-    const savedKey = localStorage.getItem('openRouterApiKey');
-    if (savedKey) {
-      setOpenRouterKey(savedKey);
+    // Load API keys from Supabase
+    if (status === 'authenticated' && session?.user?.email) {
+      loadAPIKeys(session.user.email);
     }
   }, [session, status]);
 
@@ -68,14 +68,86 @@ export default function Settings() {
     await signOut({ callbackUrl: '/login' });
   };
 
-  const handleSaveOpenRouterKey = () => {
+  const loadAPIKeys = async (email: string) => {
+    try {
+      const response = await fetch(`/api/load-wizard-data?email=${encodeURIComponent(email)}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.openrouter_api_key) {
+          setOpenRouterKey(data.openrouter_api_key);
+        }
+        if (data.openai_api_key) {
+          setOpenAIKey(data.openai_api_key);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading API keys:', error);
+    }
+  };
+
+  const handleSaveOpenRouterKey = async () => {
     if (!openRouterKey.trim()) {
       setMessage('Please enter your OpenRouter API key');
       return;
     }
     
-    localStorage.setItem('openRouterApiKey', openRouterKey.trim());
-    setMessage('✅ OpenRouter API key saved successfully!');
+    try {
+      const response = await fetch('/api/save-wizard-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          openrouter_api_key: openRouterKey.trim(),
+          user_email: session?.user?.email || 'anonymous',
+          email: session?.user?.email || 'anonymous'
+        }),
+      });
+
+      if (response.ok) {
+        setMessage('✅ OpenRouter API key saved successfully!');
+      } else {
+        setMessage('❌ Failed to save OpenRouter API key');
+      }
+    } catch (error) {
+      console.error('Error saving OpenRouter API key:', error);
+      setMessage('❌ Error saving OpenRouter API key');
+    }
+    
+    // Clear message after 3 seconds
+    setTimeout(() => {
+      setMessage('');
+    }, 3000);
+  };
+
+  const handleSaveOpenAIKey = async () => {
+    if (!openAIKey.trim()) {
+      setMessage('Please enter your OpenAI API key');
+      return;
+    }
+    
+    try {
+      const response = await fetch('/api/save-wizard-data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          openai_api_key: openAIKey.trim(),
+          user_email: session?.user?.email || 'anonymous',
+          email: session?.user?.email || 'anonymous'
+        }),
+      });
+
+      if (response.ok) {
+        setMessage('✅ OpenAI API key saved successfully!');
+      } else {
+        setMessage('❌ Failed to save OpenAI API key');
+      }
+    } catch (error) {
+      console.error('Error saving OpenAI API key:', error);
+      setMessage('❌ Error saving OpenAI API key');
+    }
     
     // Clear message after 3 seconds
     setTimeout(() => {
@@ -403,6 +475,46 @@ export default function Settings() {
               Manage your API keys for external services
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div>
+                <label style={{ fontSize: '14px', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>
+                  OpenAI API Key
+                </label>
+                <input
+                  type="password"
+                  value={openAIKey}
+                  onChange={(e) => setOpenAIKey(e.target.value)}
+                  placeholder="Enter your OpenAI API key"
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px',
+                    background: '#0f172a',
+                    border: '1px solid #334155',
+                    borderRadius: '6px',
+                    color: 'white',
+                    fontSize: '14px'
+                  }}
+                />
+                <p style={{ color: '#94a3b8', fontSize: '12px', marginTop: '4px' }}>
+                  Get your API key from <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6' }}>OpenAI Platform</a>
+                </p>
+              </div>
+              <button
+                onClick={handleSaveOpenAIKey}
+                style={{
+                  background: '#3b82f6',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  marginBottom: '16px'
+                }}
+              >
+                Save OpenAI Key
+              </button>
+              
               <div>
                 <label style={{ fontSize: '14px', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>
                   OpenRouter API Key
