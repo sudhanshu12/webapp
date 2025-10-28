@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import ConditionalLayout from '../components/conditional-layout';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { useCredits } from '../hooks/useCredits';
 
 interface Site {
   id: string;
@@ -24,12 +25,7 @@ export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [sites, setSites] = useState<Site[]>([]);
-  const [credits, setCredits] = useState<CreditInfo>({
-    totalCredits: 1,
-    usedCredits: 0,
-    remainingCredits: 1,
-    planType: 'free'
-  });
+  const { credits, loading: creditsLoading, refreshCredits } = useCredits();
   const [loading, setLoading] = useState(true);
 
   // Auto-process payment if coming from success page
@@ -131,45 +127,6 @@ export default function Dashboard() {
     }
   }, [session, status]);
 
-  const fetchCredits = async () => {
-    try {
-      // Get user email from NextAuth session
-      if (!session?.user?.email) {
-        console.log('No session found');
-        return;
-      }
-      
-      // Fetch credits from Supabase API using email
-      const response = await fetch('/api/credits/check', {
-        headers: {
-          'x-user-email': session.user.email
-        }
-      });
-      
-      if (response.ok) {
-        const creditData = await response.json();
-        setCredits(creditData);
-      } else {
-        console.error('Failed to fetch credits:', response.statusText);
-        // Set default credits if API fails
-        setCredits({
-          totalCredits: 1,
-          usedCredits: 0,
-          remainingCredits: 1,
-          planType: 'free'
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching credits:', error);
-      // Set default credits on error
-      setCredits({
-        totalCredits: 1,
-        usedCredits: 0,
-        remainingCredits: 1,
-        planType: 'free'
-      });
-    }
-  };
 
 
   const fetchSites = async () => {
@@ -193,7 +150,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (isLoaded && user) {
       const loadData = async () => {
-        await Promise.all([fetchCredits(), fetchSites()]);
+        await fetchSites();
         setLoading(false);
       };
       loadData();
@@ -207,14 +164,14 @@ export default function Dashboard() {
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'creditsUpdated' && user) {
-        fetchCredits();
+        refreshCredits();
         fetchSites();
       }
     };
 
     const handleFocus = () => {
       if (user) {
-        fetchCredits();
+        refreshCredits();
         fetchSites();
       }
     };
@@ -226,7 +183,7 @@ export default function Dashboard() {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [user]);
+  }, [user, refreshCredits]);
 
   const handleLogout = () => {
     localStorage.removeItem('currentUser');

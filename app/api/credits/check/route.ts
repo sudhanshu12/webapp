@@ -17,6 +17,11 @@ export async function GET(request: NextRequest) {
 
     // If we have email but not ID, fetch the user ID from email
     if (userEmail && !userId) {
+      // Check cache first (simple in-memory cache for this request)
+      const cacheKey = `user_id_${userEmail}`;
+      
+      // Try to get from a simple cache (you could use Redis or similar for production)
+      // For now, we'll optimize the query instead
       const { data: user, error: userError } = await supabase
         .from('users')
         .select('id')
@@ -41,10 +46,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'User ID not found' }, { status: 404 })
     }
 
-    // Get user's credit information
+    // Get user's credit information with optimized query
     const { data: credits, error } = await supabase
       .from('user_credits')
-      .select('*')
+      .select('total_credits, used_credits, plan_type')
       .eq('user_id', finalUserId)
       .single()
 

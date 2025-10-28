@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { useCredits } from '../hooks/useCredits';
 
 interface Service {
   id: string;
@@ -318,6 +319,7 @@ export default function WizardClient() {
   const { data: session, status } = useSession();
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const { credits, refreshCredits } = useCredits();
 
   // Helper function to get theme colors - Updated to match professional landscaping theme
   const getThemeColors = (theme: string) => {
@@ -880,7 +882,7 @@ export default function WizardClient() {
     if (status === 'authenticated' && session?.user?.email) {
       setUserEmail(session.user.email);
       setUserId((session.user as any).id);
-      fetchCredits(session.user.email);
+      // Credits are now handled by the useCredits hook
     } else if (status === 'unauthenticated') {
       window.location.href = '/login';
     }
@@ -890,13 +892,13 @@ export default function WizardClient() {
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'creditsUpdated' && userEmail) {
-        fetchCredits(userEmail);
+        refreshCredits();
       }
     };
 
     const handleFocus = () => {
       if (userEmail) {
-        fetchCredits(userEmail);
+        refreshCredits();
       }
     };
 
@@ -907,7 +909,7 @@ export default function WizardClient() {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('focus', handleFocus);
     };
-  }, [userEmail]);
+  }, [userEmail, refreshCredits]);
 
   const [activeTab, setActiveTab] = useState('general');
   const [success, setSuccess] = useState('');
@@ -917,85 +919,6 @@ export default function WizardClient() {
   const [locationLoading, setLocationLoading] = useState<{ [key: string]: boolean }>({});
   const [showDownloadSection, setShowDownloadSection] = useState(false);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
-  const [credits, setCredits] = useState({
-    totalCredits: 1,
-    usedCredits: 0,
-    remainingCredits: 1,
-    planType: 'free'
-  });
-
-  const fetchCredits = async (userEmail: string) => {
-    try {
-      if (!userEmail) {
-        console.log('❌ No user email provided for credit fetch');
-        return;
-      }
-      
-      console.log('🔍 Fetching credits for email:', userEmail);
-      
-      const response = await fetch('/api/credits/check', {
-        headers: {
-          'x-user-email': userEmail
-        }
-      });
-      
-      console.log('📡 Credits API response status:', response.status);
-      
-      if (response.ok) {
-        const creditData = await response.json();
-        console.log('✅ Credits fetched:', creditData);
-        setCredits(creditData);
-      } else {
-        const errorData = await response.json();
-        console.error('❌ Failed to fetch credits:', response.status, errorData);
-        
-        // Set default credits immediately
-        console.log('🔧 Setting default credits due to API failure');
-        setCredits({
-          totalCredits: 1,
-          usedCredits: 0,
-          remainingCredits: 1,
-          planType: 'free'
-        });
-        
-        // Try to create missing credits in background
-        console.log('🔧 Attempting to create missing credits...');
-        const createResponse = await fetch('/api/credits/create-missing', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: userEmail })
-        });
-        
-        if (createResponse.ok) {
-          const createData = await createResponse.json();
-          console.log('✅ Missing credits created:', createData);
-          // Retry fetching credits
-          const retryResponse = await fetch('/api/credits/check', {
-            headers: {
-              'x-user-email': userEmail
-            }
-          });
-          
-          if (retryResponse.ok) {
-            const retryData = await retryResponse.json();
-            console.log('✅ Credits fetched after creation:', retryData);
-            setCredits(retryData);
-          }
-        }
-      }
-    } catch (error) {
-      console.error('❌ Error fetching credits:', error);
-      // Set default credits on any error
-      setCredits({
-        totalCredits: 1,
-        usedCredits: 0,
-        remainingCredits: 1,
-        planType: 'free'
-      });
-    }
-  };
 
   const updateForm = (field: keyof FormData, value: any) => {
     setForm(prev => {
@@ -2206,7 +2129,7 @@ export default function WizardClient() {
       
       // Refresh credits display
       if (userEmail) {
-        await fetchCredits(userEmail);
+        refreshCredits();
       }
       
       // Notify other pages that credits have been updated

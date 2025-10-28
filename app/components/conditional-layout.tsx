@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { useCredits } from '../hooks/useCredits';
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
@@ -15,35 +16,8 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
   const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [credits, setCredits] = useState<any>(null);
-  const [creditsLoading, setCreditsLoading] = useState(true);
+  const { credits, loading: creditsLoading } = useCredits();
 
-  const fetchCredits = async () => {
-    try {
-      setCreditsLoading(true);
-      
-      // Get user email from NextAuth session
-      if (!session?.user?.email) {
-        setCreditsLoading(false);
-        return;
-      }
-      
-      const response = await fetch('/api/credits/check', {
-        headers: {
-          'x-user-email': session.user.email
-        }
-      });
-      
-      if (response.ok) {
-        const creditData = await response.json();
-        setCredits(creditData);
-      }
-    } catch (error) {
-      console.error('Error fetching credits:', error);
-    } finally {
-      setCreditsLoading(false);
-    }
-  };
 
   useEffect(() => {
     setMounted(true);
@@ -55,30 +29,9 @@ export default function ConditionalLayout({ children }: ConditionalLayoutProps) 
         firstName: session.user.name?.split(' ')[0] || 'User',
         id: (session.user as any).id
       });
-      fetchCredits();
     }
   }, [session, status]);
 
-  // Listen for credit updates
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'creditsUpdated') {
-        fetchCredits();
-      }
-    };
-
-    const handleFocus = () => {
-      fetchCredits();
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('focus', handleFocus);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, []);
 
   // Close dropdown when clicking outside
   useEffect(() => {
